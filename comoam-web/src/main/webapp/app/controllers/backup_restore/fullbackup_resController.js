@@ -64,7 +64,7 @@ angular.module('fullbackup_restore', ['ui.router',
                                 	    $scope.fullbackup = function(){
                                 	    	var vm_img_dir = $scope.installConfig.vm_img_dir;
                 	    					var deployment_prefix = $scope.installConfig.deployment_prefix;
-                                	    	if($scope.remote_server == null){
+                                	    	if($scope.remote_server == null||$scope.remote_server == false){
                             	    			$scope.fullbackupConfig ={                         	    					
                                     					full_backup_dir : vm_img_dir+"/"+deployment_prefix
                                     			};
@@ -81,7 +81,7 @@ angular.module('fullbackup_restore', ['ui.router',
                                 	    $scope.fullrestore = function(){
                                 	    	var vm_img_dir = $scope.installConfig.vm_img_dir;
                 	    					var deployment_prefix = $scope.installConfig.deployment_prefix;
-                                	    	if($scope.remote_server == null){
+                                	    	if($scope.remote_server == null||$scope.remote_server == false){
                             	    			$scope.fullbackupConfig ={                         	    					
                                     					full_backup_dir : vm_img_dir+"/"+deployment_prefix
                                     			};
