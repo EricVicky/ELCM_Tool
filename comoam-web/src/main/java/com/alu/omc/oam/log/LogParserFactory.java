@@ -62,7 +62,41 @@ public class LogParserFactory
         parserCache.put(new ActionKey(Action.CHHOSTNAME, Environment.OPENSTACK, COMType.QOSAC), osqosacchhostnameParser());
         parserCache.put(new ActionKey(Action.FULLBACKUP, Environment.KVM), kvmfullBackupParser());
         parserCache.put(new ActionKey(Action.FULLRESTORE, Environment.KVM), kvmfullRestoreParser());
+        parserCache.put(new ActionKey(Action.FULLBACKUP, Environment.KVM, COMType.ATC), kvmfullatcBackupParser());
+        parserCache.put(new ActionKey(Action.FULLRESTORE, Environment.KVM, COMType.ATC), kvmfullatcRestoreParser());
+        parserCache.put(new ActionKey(Action.FULLBACKUP, Environment.KVM, COMType.QOSAC), kvmfullqosacBackupParser());
+        parserCache.put(new ActionKey(Action.FULLRESTORE, Environment.KVM, COMType.QOSAC), kvmfullqosacRestoreParser());
     }
+    
+    private ILogParser kvmfullqosacBackupParser() {
+    	Map<String, String> dict = new LinkedHashMap<String, String>();
+    	dict.put("PLAY\\sRECAP", "Finished");
+        dict.put("TASK\\:\\s\\[vnf\\_full\\_backup\\s\\|\\smkdir\\sto\\scopy\\ssnapshot\\sfor\\sVM\\]", "Full Backup");
+        dict.put("ansible-playbook", "Start");
+        return new LogParser(dict);
+	}
+    private ILogParser kvmfullqosacRestoreParser() {
+    	Map<String, String> dict = new LinkedHashMap<String, String>();
+    	dict.put("PLAY\\sRECAP", "Finished");
+        dict.put("TASK\\:\\s\\[vnf\\_full\\_restore\\s\\|\\smkdir\\sto\\scopy\\ssnapshot\\sfor\\sVM\\]", "Full Restore");
+        dict.put("ansible-playbook", "Start");
+        return new LogParser(dict);
+	}
+    
+    private ILogParser kvmfullatcBackupParser() {
+    	Map<String, String> dict = new LinkedHashMap<String, String>();
+    	dict.put("PLAY\\sRECAP", "Finished");
+        dict.put("TASK\\:\\s\\[vnf\\_full\\_backup\\s\\|\\smkdir\\sto\\scopy\\ssnapshot\\sfor\\sVM\\]", "Full Backup");
+        dict.put("ansible-playbook", "Start");
+        return new LogParser(dict);
+	}
+    private ILogParser kvmfullatcRestoreParser() {
+    	Map<String, String> dict = new LinkedHashMap<String, String>();
+    	dict.put("PLAY\\sRECAP", "Finished");
+        dict.put("TASK\\:\\s\\[vnf\\_full\\_restore\\s\\|\\smkdir\\sto\\scopy\\ssnapshot\\sfor\\sVM\\]", "Full Restore");
+        dict.put("ansible-playbook", "Start");
+        return new LogParser(dict);
+	}
     
     private ILogParser oschhostnameParser() {
     	Map<String, String> dict = new LinkedHashMap<String, String>();

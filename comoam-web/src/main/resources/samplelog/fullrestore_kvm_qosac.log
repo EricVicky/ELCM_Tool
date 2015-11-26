@@ -1,0 +1,137 @@
+2015-11-25 13:56:05,269 p=3392 u=root |   [WARNING]: The version of gmp you have installed has a known issue regarding
+timing vulnerabilities when used with pycrypto. If possible, you should update
+it (i.e. yum update gmp).
+
+2015-11-25 13:56:05,615 p=3392 u=root |   
+2015-11-25 13:56:05,616 p=3392 u=root |  /usr/bin/ansible-playbook data_full_restore.yml -i ../../inventory/hosts
+2015-11-25 13:56:05,616 p=3392 u=root |   
+2015-11-25 13:56:05,920 p=3392 u=root |  PLAY [restore qcow2 files for each VM] **************************************** 
+2015-11-25 13:56:05,921 p=3392 u=root |  TASK: [vnf_delete_vms | destroy virtual machine] ****************************** 
+2015-11-25 13:56:05,943 p=3392 u=root |  skipping: [135.251.236.98]
+2015-11-25 13:56:05,944 p=3392 u=root |  TASK: [vnf_delete_vms | destroy virtual machine] ****************************** 
+2015-11-25 13:56:05,957 p=3392 u=root |  skipping: [135.251.236.98]
+2015-11-25 13:56:05,957 p=3392 u=root |  TASK: [vnf_delete_vms | destroy virtual machine] ****************************** 
+2015-11-25 13:56:05,970 p=3392 u=root |  skipping: [135.251.236.98]
+2015-11-25 13:56:05,971 p=3392 u=root |  TASK: [vnf_delete_vms | destroy virtual machine] ****************************** 
+2015-11-25 13:56:10,302 p=3392 u=root |  changed: [135.251.236.98]
+2015-11-25 13:56:10,306 p=3392 u=root |  TASK: [vnf_delete_vms | debug msg="All VMs have been destroyed."] ************* 
+2015-11-25 13:56:10,327 p=3392 u=root |  ok: [135.251.236.98] => {
+    "msg": "All VMs have been destroyed."
+}
+2015-11-25 13:56:10,328 p=3392 u=root |  TASK: [vnf_delete_vms | undefine virtual machine] ***************************** 
+2015-11-25 13:56:10,357 p=3392 u=root |  skipping: [135.251.236.98]
+2015-11-25 13:56:10,358 p=3392 u=root |  TASK: [vnf_delete_vms | query virtual machine status] ************************* 
+2015-11-25 13:56:10,386 p=3392 u=root |  skipping: [135.251.236.98]
+2015-11-25 13:56:10,387 p=3392 u=root |  TASK: [vnf_delete_vms | make sure undefine virtual machine] ******************* 
+2015-11-25 13:56:10,415 p=3392 u=root |  skipping: [135.251.236.98]
+2015-11-25 13:56:10,417 p=3392 u=root |  TASK: [vnf_delete_vms | undefine virtual machine] ***************************** 
+2015-11-25 13:56:10,444 p=3392 u=root |  skipping: [135.251.236.98]
+2015-11-25 13:56:10,445 p=3392 u=root |  TASK: [vnf_delete_vms | query virtual machine status] ************************* 
+2015-11-25 13:56:10,471 p=3392 u=root |  skipping: [135.251.236.98]
+2015-11-25 13:56:10,473 p=3392 u=root |  TASK: [vnf_delete_vms | make sure undefine virtual machine] ******************* 
+2015-11-25 13:56:10,499 p=3392 u=root |  skipping: [135.251.236.98]
+2015-11-25 13:56:10,500 p=3392 u=root |  TASK: [vnf_delete_vms | undefine virtual machine] ***************************** 
+2015-11-25 13:56:10,524 p=3392 u=root |  skipping: [135.251.236.98]
+2015-11-25 13:56:10,524 p=3392 u=root |  TASK: [vnf_delete_vms | query virtual machine status] ************************* 
+2015-11-25 13:56:10,537 p=3392 u=root |  skipping: [135.251.236.98]
+2015-11-25 13:56:10,538 p=3392 u=root |  TASK: [vnf_delete_vms | make sure undefine virtual machine] ******************* 
+2015-11-25 13:56:10,551 p=3392 u=root |  skipping: [135.251.236.98]
+2015-11-25 13:56:10,551 p=3392 u=root |  TASK: [vnf_delete_vms | undefine virtual machine] ***************************** 
+2015-11-25 13:56:10,960 p=3392 u=root |  ok: [135.251.236.98]
+2015-11-25 13:56:10,962 p=3392 u=root |  TASK: [vnf_delete_vms | query virtual machine status] ************************* 
+2015-11-25 13:56:12,448 p=3392 u=root |  failed: [135.251.236.98] => {"failed": true}
+2015-11-25 13:56:12,449 p=3392 u=root |  msg: virtual machine EricQosacTestM001QOSAC01 not found
+2015-11-25 13:56:12,449 p=3392 u=root |  ...ignoring
+2015-11-25 13:56:12,450 p=3392 u=root |  TASK: [vnf_delete_vms | make sure undefine virtual machine] ******************* 
+2015-11-25 13:56:12,489 p=3392 u=root |  ok: [135.251.236.98]
+2015-11-25 13:56:12,490 p=3392 u=root |  TASK: [vnf_delete_vms | debug msg="All VMs have been deleted."] *************** 
+2015-11-25 13:56:12,509 p=3392 u=root |  ok: [135.251.236.98] => {
+    "msg": "All VMs have been deleted."
+}
+2015-11-25 13:56:12,510 p=3392 u=root |  TASK: [vnf_full_restore | create directory on host server for full restore] *** 
+2015-11-25 13:56:12,840 p=3392 u=root |  ok: [135.251.236.98]
+2015-11-25 13:56:12,842 p=3392 u=root |  TASK: [vnf_full_restore | mount nfs directory] ******************************** 
+2015-11-25 13:56:12,872 p=3392 u=root |  skipping: [135.251.236.98]
+2015-11-25 13:56:12,874 p=3392 u=root |  TASK: [vnf_full_restore | mkdir to copy snapshot for VM] ********************** 
+2015-11-25 13:56:12,904 p=3392 u=root |  skipping: [135.251.236.98]
+2015-11-25 13:56:12,906 p=3392 u=root |  TASK: [vnf_full_restore | copy root qcow2 disk image] ************************* 
+2015-11-25 13:56:12,939 p=3392 u=root |  skipping: [135.251.236.98]
+2015-11-25 13:56:12,941 p=3392 u=root |  TASK: [vnf_full_restore | copy data qcow2 disk image] ************************* 
+2015-11-25 13:56:12,970 p=3392 u=root |  skipping: [135.251.236.98]
+2015-11-25 13:56:12,972 p=3392 u=root |  TASK: [vnf_full_restore | copy iso image] ************************************* 
+2015-11-25 13:56:13,000 p=3392 u=root |  skipping: [135.251.236.98]
+2015-11-25 13:56:13,002 p=3392 u=root |  TASK: [vnf_full_restore | copy domain xml file] ******************************* 
+2015-11-25 13:56:13,031 p=3392 u=root |  skipping: [135.251.236.98]
+2015-11-25 13:56:13,032 p=3392 u=root |  TASK: [vnf_full_restore | create virtual machine instance] ******************** 
+2015-11-25 13:56:13,060 p=3392 u=root |  skipping: [135.251.236.98]
+2015-11-25 13:56:13,062 p=3392 u=root |  TASK: [vnf_full_restore | mkdir to copy snapshot for VM] ********************** 
+2015-11-25 13:56:13,091 p=3392 u=root |  skipping: [135.251.236.98]
+2015-11-25 13:56:13,092 p=3392 u=root |  TASK: [vnf_full_restore | copy root qcow2 disk image] ************************* 
+2015-11-25 13:56:13,121 p=3392 u=root |  skipping: [135.251.236.98]
+2015-11-25 13:56:13,122 p=3392 u=root |  TASK: [vnf_full_restore | copy data qcow2 disk image] ************************* 
+2015-11-25 13:56:13,147 p=3392 u=root |  skipping: [135.251.236.98]
+2015-11-25 13:56:13,148 p=3392 u=root |  TASK: [vnf_full_restore | copy iso image] ************************************* 
+2015-11-25 13:56:13,162 p=3392 u=root |  skipping: [135.251.236.98]
+2015-11-25 13:56:13,163 p=3392 u=root |  TASK: [vnf_full_restore | copy domain xml file] ******************************* 
+2015-11-25 13:56:13,176 p=3392 u=root |  skipping: [135.251.236.98]
+2015-11-25 13:56:13,177 p=3392 u=root |  TASK: [vnf_full_restore | create virtual machine instance] ******************** 
+2015-11-25 13:56:13,191 p=3392 u=root |  skipping: [135.251.236.98]
+2015-11-25 13:56:13,191 p=3392 u=root |  TASK: [vnf_full_restore | mkdir to copy snapshot for VM] ********************** 
+2015-11-25 13:56:13,206 p=3392 u=root |  skipping: [135.251.236.98]
+2015-11-25 13:56:13,207 p=3392 u=root |  TASK: [vnf_full_restore | copy root qcow2 disk image] ************************* 
+2015-11-25 13:56:13,221 p=3392 u=root |  skipping: [135.251.236.98]
+2015-11-25 13:56:13,222 p=3392 u=root |  TASK: [vnf_full_restore | copy data qcow2 disk image] ************************* 
+2015-11-25 13:56:13,236 p=3392 u=root |  skipping: [135.251.236.98]
+2015-11-25 13:56:13,237 p=3392 u=root |  TASK: [vnf_full_restore | copy iso image] ************************************* 
+2015-11-25 13:56:13,252 p=3392 u=root |  skipping: [135.251.236.98]
+2015-11-25 13:56:13,252 p=3392 u=root |  TASK: [vnf_full_restore | copy domain xml file] ******************************* 
+2015-11-25 13:56:13,266 p=3392 u=root |  skipping: [135.251.236.98]
+2015-11-25 13:56:13,267 p=3392 u=root |  TASK: [vnf_full_restore | create virtual machine instance] ******************** 
+2015-11-25 13:56:13,283 p=3392 u=root |  skipping: [135.251.236.98]
+2015-11-25 13:56:13,283 p=3392 u=root |  TASK: [vnf_full_restore | mkdir to copy snapshot for VM] ********************** 
+2015-11-25 13:56:13,608 p=3392 u=root |  ok: [135.251.236.98]
+2015-11-25 13:56:13,610 p=3392 u=root |  TASK: [vnf_full_restore | copy root qcow2 disk image] ************************* 
+2015-11-25 13:56:45,510 p=3392 u=root |  changed: [135.251.236.98]
+2015-11-25 13:56:45,512 p=3392 u=root |  TASK: [vnf_full_restore | copy data qcow2 disk image] ************************* 
+2015-11-25 13:56:47,431 p=3392 u=root |  changed: [135.251.236.98]
+2015-11-25 13:56:47,433 p=3392 u=root |  TASK: [vnf_full_restore | copy iso image] ************************************* 
+2015-11-25 13:56:47,843 p=3392 u=root |  changed: [135.251.236.98]
+2015-11-25 13:56:47,844 p=3392 u=root |  TASK: [vnf_full_restore | copy domain xml file] ******************************* 
+2015-11-25 13:56:48,244 p=3392 u=root |  changed: [135.251.236.98]
+2015-11-25 13:56:48,246 p=3392 u=root |  TASK: [vnf_full_restore | create virtual machine instance] ******************** 
+2015-11-25 13:56:48,696 p=3392 u=root |  changed: [135.251.236.98]
+2015-11-25 13:56:48,697 p=3392 u=root |  TASK: [vnf_full_restore | fetch comstack.json file if it exists] ************** 
+2015-11-25 13:56:48,875 p=3392 u=root |  changed: [135.251.236.98]
+2015-11-25 13:56:48,877 p=3392 u=root |  TASK: [vnf_full_restore | restore /opt/PlexView/ELCM/datasource/comstack.json] *** 
+2015-11-25 13:56:49,018 p=3392 u=root |  changed: [135.251.236.98 -> localhost]
+2015-11-25 13:56:49,020 p=3392 u=root |  TASK: [vnf_start_vms | start virtual machine] ********************************* 
+2015-11-25 13:56:49,048 p=3392 u=root |  skipping: [135.251.236.98]
+2015-11-25 13:56:49,049 p=3392 u=root |  TASK: [vnf_start_vms | start virtual machine] ********************************* 
+2015-11-25 13:56:49,075 p=3392 u=root |  skipping: [135.251.236.98]
+2015-11-25 13:56:49,077 p=3392 u=root |  TASK: [vnf_start_vms | start virtual machine] ********************************* 
+2015-11-25 13:56:49,105 p=3392 u=root |  skipping: [135.251.236.98]
+2015-11-25 13:56:49,107 p=3392 u=root |  TASK: [vnf_start_vms | start virtual machine] ********************************* 
+2015-11-25 13:56:51,694 p=3392 u=root |  changed: [135.251.236.98]
+2015-11-25 13:56:51,696 p=3392 u=root |  TASK: [vnf_start_vms | start virtual machine] ********************************* 
+2015-11-25 13:56:51,726 p=3392 u=root |  skipping: [135.251.236.98]
+2015-11-25 13:56:51,727 p=3392 u=root |  TASK: [vnf_wait_for_alive | wait for server to alive] ************************* 
+2015-11-25 13:56:51,742 p=3392 u=root |  skipping: [135.251.236.98]
+2015-11-25 13:56:51,743 p=3392 u=root |  TASK: [vnf_wait_for_alive | wait for server to alive] ************************* 
+2015-11-25 13:56:51,756 p=3392 u=root |  skipping: [135.251.236.98]
+2015-11-25 13:56:51,757 p=3392 u=root |  TASK: [vnf_wait_for_alive | wait for server to alive] ************************* 
+2015-11-25 13:56:51,771 p=3392 u=root |  skipping: [135.251.236.98]
+2015-11-25 13:56:51,772 p=3392 u=root |  TASK: [vnf_wait_for_alive | wait for server to alive] ************************* 
+2015-11-25 13:57:52,101 p=3392 u=root |  ok: [135.251.236.98 -> 127.0.0.1]
+2015-11-25 13:57:52,103 p=3392 u=root |  PLAY [remove cloud-user account] ********************************************** 
+2015-11-25 13:57:52,105 p=3392 u=root |  TASK: [remove_cloud_user | remove cloud-user] ********************************* 
+2015-11-25 13:57:53,775 p=3392 u=root |  failed: [10.223.0.236] => {"changed": true, "cmd": ["userdel", "-r", "-f", "cloud-user"], "delta": "0:00:00.024324", "end": "2015-11-25 13:57:53.787801", "rc": 6, "start": "2015-11-25 13:57:53.763477", "warnings": []}
+2015-11-25 13:57:53,776 p=3392 u=root |  stderr: userdel: user 'cloud-user' does not exist
+2015-11-25 13:57:53,776 p=3392 u=root |  ...ignoring
+2015-11-25 13:57:53,778 p=3392 u=root |  PLAY [start com application] ************************************************** 
+2015-11-25 13:57:53,780 p=3392 u=root |  skipping: no hosts matched
+2015-11-25 13:57:53,780 p=3392 u=root |  PLAY [start com application] ************************************************** 
+2015-11-25 13:57:53,782 p=3392 u=root |  TASK: [start_com | start com application] ************************************* 
+2015-11-25 13:58:00,695 p=3392 u=root |  changed: [10.223.0.236]
+2015-11-25 13:58:00,698 p=3392 u=root |  PLAY RECAP ******************************************************************** 
+2015-11-25 13:58:00,698 p=3392 u=root |  10.223.0.236               : ok=2    changed=2    unreachable=0    failed=0   
+2015-11-25 13:58:00,699 p=3392 u=root |  135.251.236.98             : ok=17   changed=9    unreachable=0    failed=0   

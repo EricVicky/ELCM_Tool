@@ -1,0 +1,110 @@
+2015-11-23 17:07:48,943 p=6880 u=root |   [WARNING]: The version of gmp you have installed has a known issue regarding
+timing vulnerabilities when used with pycrypto. If possible, you should update
+it (i.e. yum update gmp).
+
+2015-11-23 17:07:49,063 p=6880 u=root |   
+2015-11-23 17:07:49,063 p=6880 u=root |  /usr/bin/ansible-playbook atc_full_backup.yml -i ../../inventory/hosts
+2015-11-23 17:07:49,063 p=6880 u=root |   
+2015-11-23 17:07:49,190 p=6880 u=root |  PLAY [stop ATC] *************************************************************** 
+2015-11-23 17:07:49,190 p=6880 u=root |  TASK: [stop_atc | stop Stats.sh] ********************************************** 
+2015-11-23 17:07:52,985 p=6880 u=root |  changed: [10.223.0.233]
+2015-11-23 17:07:52,987 p=6880 u=root |  TASK: [stop_atc | wait for atc processes to stop] ***************************** 
+2015-11-23 17:08:03,888 p=6880 u=root |  changed: [10.223.0.233]
+2015-11-23 17:08:03,889 p=6880 u=root |  PLAY [check previous task result] ********************************************* 
+2015-11-23 17:08:03,890 p=6880 u=root |  TASK: [command true] ********************************************************** 
+2015-11-23 17:08:04,249 p=6880 u=root |  changed: [10.223.0.233]
+2015-11-23 17:08:04,250 p=6880 u=root |  PLAY [shutdown VM and prepare data for each VM in data full backup] *********** 
+2015-11-23 17:08:04,253 p=6880 u=root |  TASK: [vnf_shutdown_vms | shutdown oam virtual machine] *********************** 
+2015-11-23 17:08:04,280 p=6880 u=root |  skipping: [135.251.236.98]
+2015-11-23 17:08:04,281 p=6880 u=root |  TASK: [vnf_shutdown_vms | shutdown cm virtual machine] ************************ 
+2015-11-23 17:08:04,305 p=6880 u=root |  skipping: [135.251.236.98]
+2015-11-23 17:08:04,307 p=6880 u=root |  TASK: [vnf_shutdown_vms | shutdown db virtual machine] ************************ 
+2015-11-23 17:08:04,331 p=6880 u=root |  skipping: [135.251.236.98]
+2015-11-23 17:08:04,332 p=6880 u=root |  TASK: [vnf_shutdown_vms | shutdown qosac virtual machine] ********************* 
+2015-11-23 17:08:04,355 p=6880 u=root |  skipping: [135.251.236.98]
+2015-11-23 17:08:04,357 p=6880 u=root |  TASK: [vnf_shutdown_vms | shutdown atc virtual machine] *********************** 
+2015-11-23 17:08:06,940 p=6880 u=root |  changed: [135.251.236.98]
+2015-11-23 17:08:06,941 p=6880 u=root |  TASK: [vnf_shutdown_vms | wait for oam virtual machine to shutdown] *********** 
+2015-11-23 17:08:06,969 p=6880 u=root |  skipping: [135.251.236.98]
+2015-11-23 17:08:06,971 p=6880 u=root |  TASK: [vnf_shutdown_vms | wait for cm vritual machine to shutdown] ************ 
+2015-11-23 17:08:06,996 p=6880 u=root |  skipping: [135.251.236.98]
+2015-11-23 17:08:06,999 p=6880 u=root |  TASK: [vnf_shutdown_vms | wait for db virtual machine to shutdown] ************ 
+2015-11-23 17:08:07,027 p=6880 u=root |  skipping: [135.251.236.98]
+2015-11-23 17:08:07,029 p=6880 u=root |  TASK: [vnf_shutdown_vms | wait for qosac virtual machine to shutdown] ********* 
+2015-11-23 17:08:07,055 p=6880 u=root |  skipping: [135.251.236.98]
+2015-11-23 17:08:07,057 p=6880 u=root |  TASK: [vnf_shutdown_vms | wait for atc virtual machine to shutdown] *********** 
+2015-11-23 17:08:30,276 p=6880 u=root |  ok: [135.251.236.98]
+2015-11-23 17:08:30,277 p=6880 u=root |  TASK: [vnf_full_backup | create directory on host server for full backup] ***** 
+2015-11-23 17:08:30,605 p=6880 u=root |  ok: [135.251.236.98]
+2015-11-23 17:08:30,607 p=6880 u=root |  TASK: [vnf_full_backup | mount nfs directory] ********************************* 
+2015-11-23 17:08:30,632 p=6880 u=root |  skipping: [135.251.236.98]
+2015-11-23 17:08:30,634 p=6880 u=root |  TASK: [vnf_full_backup | mkdir to save snapshot for VM] *********************** 
+2015-11-23 17:08:30,661 p=6880 u=root |  skipping: [135.251.236.98]
+2015-11-23 17:08:30,662 p=6880 u=root |  TASK: [vnf_full_backup | save root disk snapshot for VM] ********************** 
+2015-11-23 17:08:30,689 p=6880 u=root |  skipping: [135.251.236.98]
+2015-11-23 17:08:30,690 p=6880 u=root |  TASK: [vnf_full_backup | save data disk snapshot for VM] ********************** 
+2015-11-23 17:08:30,717 p=6880 u=root |  skipping: [135.251.236.98]
+2015-11-23 17:08:30,719 p=6880 u=root |  TASK: [vnf_full_backup | save config drive iso snapshot for VM] *************** 
+2015-11-23 17:08:30,747 p=6880 u=root |  skipping: [135.251.236.98]
+2015-11-23 17:08:30,749 p=6880 u=root |  TASK: [vnf_full_backup | save vm domain xml for VM] *************************** 
+2015-11-23 17:08:30,776 p=6880 u=root |  skipping: [135.251.236.98]
+2015-11-23 17:08:30,777 p=6880 u=root |  TASK: [vnf_full_backup | mkdir to save snapshot for VM] *********************** 
+2015-11-23 17:08:30,803 p=6880 u=root |  skipping: [135.251.236.98]
+2015-11-23 17:08:30,804 p=6880 u=root |  TASK: [vnf_full_backup | save root disk snapshot for VM] ********************** 
+2015-11-23 17:08:30,830 p=6880 u=root |  skipping: [135.251.236.98]
+2015-11-23 17:08:30,831 p=6880 u=root |  TASK: [vnf_full_backup | save data disk snapshot for VM] ********************** 
+2015-11-23 17:08:30,853 p=6880 u=root |  skipping: [135.251.236.98]
+2015-11-23 17:08:30,853 p=6880 u=root |  TASK: [vnf_full_backup | save config drive iso snapshot for VM] *************** 
+2015-11-23 17:08:30,865 p=6880 u=root |  skipping: [135.251.236.98]
+2015-11-23 17:08:30,866 p=6880 u=root |  TASK: [vnf_full_backup | save vm domain xml for VM] *************************** 
+2015-11-23 17:08:30,878 p=6880 u=root |  skipping: [135.251.236.98]
+2015-11-23 17:08:30,879 p=6880 u=root |  TASK: [vnf_full_backup | mkdir to save snapshot for VM] *********************** 
+2015-11-23 17:08:30,893 p=6880 u=root |  skipping: [135.251.236.98]
+2015-11-23 17:08:30,893 p=6880 u=root |  TASK: [vnf_full_backup | save root disk snapshot for VM] ********************** 
+2015-11-23 17:08:30,906 p=6880 u=root |  skipping: [135.251.236.98]
+2015-11-23 17:08:30,907 p=6880 u=root |  TASK: [vnf_full_backup | save data disk snapshot for VM] ********************** 
+2015-11-23 17:08:30,919 p=6880 u=root |  skipping: [135.251.236.98]
+2015-11-23 17:08:30,920 p=6880 u=root |  TASK: [vnf_full_backup | save config drive iso snapshot for VM] *************** 
+2015-11-23 17:08:30,933 p=6880 u=root |  skipping: [135.251.236.98]
+2015-11-23 17:08:30,933 p=6880 u=root |  TASK: [vnf_full_backup | save vm domain xml for VM] *************************** 
+2015-11-23 17:08:30,946 p=6880 u=root |  skipping: [135.251.236.98]
+2015-11-23 17:08:30,946 p=6880 u=root |  TASK: [vnf_full_backup | mkdir to save snapshot for VM] *********************** 
+2015-11-23 17:08:31,259 p=6880 u=root |  ok: [135.251.236.98]
+2015-11-23 17:08:31,261 p=6880 u=root |  TASK: [vnf_full_backup | save root disk snapshot for VM] ********************** 
+2015-11-23 17:08:48,071 p=6880 u=root |  changed: [135.251.236.98]
+2015-11-23 17:08:48,072 p=6880 u=root |  TASK: [vnf_full_backup | save data disk snapshot for VM] ********************** 
+2015-11-23 17:09:16,636 p=6880 u=root |  changed: [135.251.236.98]
+2015-11-23 17:09:16,638 p=6880 u=root |  TASK: [vnf_full_backup | save config drive iso snapshot for VM] *************** 
+2015-11-23 17:09:16,992 p=6880 u=root |  changed: [135.251.236.98]
+2015-11-23 17:09:16,994 p=6880 u=root |  TASK: [vnf_full_backup | save vm domain xml for VM] *************************** 
+2015-11-23 17:09:17,422 p=6880 u=root |  changed: [135.251.236.98]
+2015-11-23 17:09:17,423 p=6880 u=root |  TASK: [vnf_full_backup | copy comstack.json file if it exists] **************** 
+2015-11-23 17:09:17,597 p=6880 u=root |  ok: [135.251.236.98 -> 127.0.0.1]
+2015-11-23 17:09:17,599 p=6880 u=root |  TASK: [vnf_full_backup | copy /opt/PlexView/ELCM/datasource/comstack.json] **** 
+2015-11-23 17:09:18,035 p=6880 u=root |  ok: [135.251.236.98]
+2015-11-23 17:09:18,037 p=6880 u=root |  TASK: [vnf_start_vms | start virtual machine] ********************************* 
+2015-11-23 17:09:18,069 p=6880 u=root |  skipping: [135.251.236.98]
+2015-11-23 17:09:18,071 p=6880 u=root |  TASK: [vnf_start_vms | start virtual machine] ********************************* 
+2015-11-23 17:09:18,101 p=6880 u=root |  skipping: [135.251.236.98]
+2015-11-23 17:09:18,102 p=6880 u=root |  TASK: [vnf_start_vms | start virtual machine] ********************************* 
+2015-11-23 17:09:18,135 p=6880 u=root |  skipping: [135.251.236.98]
+2015-11-23 17:09:18,136 p=6880 u=root |  TASK: [vnf_start_vms | start virtual machine] ********************************* 
+2015-11-23 17:09:18,165 p=6880 u=root |  skipping: [135.251.236.98]
+2015-11-23 17:09:18,167 p=6880 u=root |  TASK: [vnf_start_vms | start virtual machine] ********************************* 
+2015-11-23 17:09:19,442 p=6880 u=root |  changed: [135.251.236.98]
+2015-11-23 17:09:19,443 p=6880 u=root |  TASK: [vnf_wait_for_alive | wait for server to alive] ************************* 
+2015-11-23 17:09:19,460 p=6880 u=root |  skipping: [135.251.236.98]
+2015-11-23 17:09:19,462 p=6880 u=root |  TASK: [vnf_wait_for_alive | wait for server to alive] ************************* 
+2015-11-23 17:09:19,475 p=6880 u=root |  skipping: [135.251.236.98]
+2015-11-23 17:09:19,476 p=6880 u=root |  TASK: [vnf_wait_for_alive | wait for server to alive] ************************* 
+2015-11-23 17:09:19,490 p=6880 u=root |  skipping: [135.251.236.98]
+2015-11-23 17:09:19,491 p=6880 u=root |  TASK: [vnf_wait_for_alive | wait for server to alive] ************************* 
+2015-11-23 17:10:19,775 p=6880 u=root |  ok: [135.251.236.98 -> 127.0.0.1]
+2015-11-23 17:10:19,778 p=6880 u=root |  PLAY [start ATC] ************************************************************** 
+2015-11-23 17:10:19,779 p=6880 u=root |  TASK: [start_atc | start Stats.sh] ******************************************** 
+2015-11-23 17:10:26,074 p=6880 u=root |  changed: [10.223.0.233]
+2015-11-23 17:10:26,076 p=6880 u=root |  TASK: [start_atc | wait for atc processes to start] *************************** 
+2015-11-23 17:10:26,529 p=6880 u=root |  changed: [10.223.0.233]
+2015-11-23 17:10:26,531 p=6880 u=root |  PLAY RECAP ******************************************************************** 
+2015-11-23 17:10:26,532 p=6880 u=root |  10.223.0.233               : ok=5    changed=5    unreachable=0    failed=0   
+2015-11-23 17:10:26,532 p=6880 u=root |  135.251.236.98             : ok=12   changed=6    unreachable=0    failed=0  

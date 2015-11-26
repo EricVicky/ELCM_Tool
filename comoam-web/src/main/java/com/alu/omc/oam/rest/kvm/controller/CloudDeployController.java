@@ -286,6 +286,46 @@ public class CloudDeployController
         ansibleDelegator.addAnsibleTask(Action.FULLRESTORE, fullrestoreconfig );
     }
     
+    @RequestMapping(value="/kvm/atc/fullbackup", method=RequestMethod.POST)
+    public void kvmatcfullbackup(@RequestBody FullBackupConfig<AtcCOMConfig> fullbackupconfig) throws Exception
+    {
+    	fullbackupconfig.setConfig(getKVMATCCOMConfig(fullbackupconfig.getStackName()));
+        ansibleDelegator.addAnsibleTask(Action.FULLBACKUP, fullbackupconfig );
+    }
+    @RequestMapping(value="/kvm/atc/fullrestore", method=RequestMethod.POST)
+    public void kvmatcfullrestore(@RequestBody FullBackupConfig<AtcCOMConfig> fullrestoreconfig) throws Exception
+    {
+    	fullrestoreconfig.setConfig(getKVMATCCOMConfig(fullrestoreconfig.getStackName()));
+        ansibleDelegator.addAnsibleTask(Action.FULLRESTORE, fullrestoreconfig );
+    }
+    
+    @RequestMapping(value="/kvm/qosac/fullbackup", method=RequestMethod.POST)
+    public void kvmqosacfullbackup(@RequestBody FullBackupConfig<QosacCOMConfig> fullbackupconfig) throws Exception
+    {
+    	fullbackupconfig.setConfig(getKVMQOSACCOMConfig(fullbackupconfig.getStackName()));
+        ansibleDelegator.addAnsibleTask(Action.FULLBACKUP, fullbackupconfig );
+    }
+    @RequestMapping(value="/kvm/qosac/fullrestore", method=RequestMethod.POST)
+    public void kvmqosacfullrestore(@RequestBody FullBackupConfig<QosacCOMConfig> fullrestoreconfig) throws Exception
+    {
+    	fullrestoreconfig.setConfig(getKVMQOSACCOMConfig(fullrestoreconfig.getStackName()));
+        ansibleDelegator.addAnsibleTask(Action.FULLRESTORE, fullrestoreconfig );
+    }
+    
+    private QosacCOMConfig getKVMQOSACCOMConfig(String stackName){
+        COMStack comStack = cOMStackService.get(stackName); 
+         @SuppressWarnings("unchecked") 
+         QosacCOMConfig config = new Json2Object<QosacCOMConfig>(){}.toMap(comStack.getComConfig());
+         return config;
+    }
+    
+    private AtcCOMConfig getKVMATCCOMConfig(String stackName){
+        COMStack comStack = cOMStackService.get(stackName); 
+         @SuppressWarnings("unchecked") 
+         AtcCOMConfig config = new Json2Object<AtcCOMConfig>(){}.toMap(comStack.getComConfig());
+         return config;
+    }
+    
     private KVMCOMConfig getKVMCOMConfig(String stackName){
         COMStack comStack = cOMStackService.get(stackName); 
          @SuppressWarnings("unchecked") 

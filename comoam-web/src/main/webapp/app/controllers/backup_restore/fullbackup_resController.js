@@ -37,21 +37,12 @@ angular.module('fullbackup_restore', ['ui.router',
                                 	    		   break;
                                 	    		}
                                 	        }
-                                	        if($scope.installConfig.environment == 'KVM'){
-                                	        	if($scope.installConfig.comType!='QOSAC'){	
-                                	        		$scope.oamRowspan = $scope.installConfig.vm_config.oam.nic.length * 2 + 2;
-                                	        		$scope.dbRowspan = $scope.installConfig.vm_config.db.nic.length * 2 + 2;
-                                	        		if($scope.installConfig.comType != "OAM"){
-                                	        			$scope.cmRowspan = $scope.installConfig.vm_config.cm.nic.length * 2 + 2;
-                                	        		}       	
-                                	        	}
-                                	        }
                                 	    };                                	  
           
                                 	    fullBackup_ResService.getComInstance().then( function(data) {
                                 	    	var comInstance = [];
                                 			for(var index in data){
-                                				if(data[index].comType=='FCAPS'||data[index].comType=='OAM'||data[index].comType=='CM'){
+                                				if(data[index].comType=='FCAPS'||data[index].comType=='OAM'||data[index].comType=='CM'||data[index].comType=='ATC'||data[index].comType=='QOSAC'){
                                 					if(JSON3.parse(data[index].comConfig).environment == 'KVM'){
                                 						comInstance.push(data[index]);			
                                 					}
@@ -71,10 +62,22 @@ angular.module('fullbackup_restore', ['ui.router',
                             	    		}
                                 	    	$scope.fullbackupConfig.stackName = $scope.installConfig.environment == 'KVM'?$scope.installConfig.deployment_prefix:$scope.installConfig.stackName;
                                 	    	if($scope.installConfig.environment=='KVM'){
-                                	    		fullBackup_ResService.kvmfullbackup($scope.fullbackupConfig).then( function(){
-                                	    			monitorService.monitorKVMfullBackup($scope.installConfig.deployment_prefix, $scope.installConfig.comType);
-                                	             	$state.go("dashboard.monitor");
-                                	    		});
+                                	    		if($scope.installConfig.comType == 'ATC'){
+                                	    			fullBackup_ResService.kvmatcfullbackup($scope.fullbackupConfig).then( function(){
+                                	    				monitorService.monitorKVMfullBackup($scope.installConfig.deployment_prefix, $scope.installConfig.comType);
+                                	    				$state.go("dashboard.monitor");
+                                	    			}); 
+                                	    		}else if($scope.installConfig.comType == 'QOSAC'){
+                                	    			fullBackup_ResService.kvmqosacfullbackup($scope.fullbackupConfig).then( function(){
+                                	    				monitorService.monitorKVMfullBackup($scope.installConfig.deployment_prefix, $scope.installConfig.comType);
+                                	    				$state.go("dashboard.monitor");
+                                	    			}); 
+                                	    		}else{
+                                	    			fullBackup_ResService.kvmfullbackup($scope.fullbackupConfig).then( function(){
+                                	    				monitorService.monitorKVMfullBackup($scope.installConfig.deployment_prefix, $scope.installConfig.comType);
+                                	    				$state.go("dashboard.monitor");
+                                	    			});  	    			
+                                	    		}
                                 	    	}//else
                                 	    };
                                 	    
@@ -88,10 +91,22 @@ angular.module('fullbackup_restore', ['ui.router',
                             	    		}
                                 	    	$scope.fullbackupConfig.stackName = $scope.installConfig.environment == 'KVM'?$scope.installConfig.deployment_prefix:$scope.installConfig.stackName;
                                 	    	if($scope.installConfig.environment=='KVM'){
-                                	    		fullBackup_ResService.kvmfullrestore($scope.fullbackupConfig).then( function(){
-                                	    			monitorService.monitorKVMfullRestore($scope.installConfig.deployment_prefix, $scope.installConfig.comType);
-                                	             	$state.go("dashboard.monitor");
-                                	    		});
+                                	    		if($scope.installConfig.comType == 'ATC'){
+                                	    			fullBackup_ResService.kvmatcfullrestore($scope.fullbackupConfig).then( function(){
+                                	    				monitorService.monitorKVMfullRestore($scope.installConfig.deployment_prefix, $scope.installConfig.comType);
+                                	    				$state.go("dashboard.monitor");
+                                	    			});  
+                                	    		}else if($scope.installConfig.comType == 'QOSAC'){
+                                	    			fullBackup_ResService.kvmqosacfullrestore($scope.fullbackupConfig).then( function(){
+                                	    				monitorService.monitorKVMfullRestore($scope.installConfig.deployment_prefix, $scope.installConfig.comType);
+                                	    				$state.go("dashboard.monitor");
+                                	    			});  
+                                	    		}else{
+                                	    			fullBackup_ResService.kvmfullrestore($scope.fullbackupConfig).then( function(){
+                                	    				monitorService.monitorKVMfullRestore($scope.installConfig.deployment_prefix, $scope.installConfig.comType);
+                                	    				$state.go("dashboard.monitor");
+                                	    			});   	    			
+                                	    		}
                                 	    	}//else
                                 	    };
   

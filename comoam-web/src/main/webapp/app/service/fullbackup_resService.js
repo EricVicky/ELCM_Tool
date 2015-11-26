@@ -17,6 +17,22 @@ angular.module('fullbackup_restore').factory('fullBackup_ResService', function($
 			var fullrestoreRes = $resource(restUrl + "rest/kvm/fullrestore");
 			return fullrestoreRes.save(fullrestoreConfig).$promise;
 		},
+		kvmatcfullbackup:function(fullbackupConfig){
+			var fullbackupRes = $resource(restUrl + "rest/kvm/atc/fullbackup");
+			return fullbackupRes.save(fullbackupConfig).$promise;
+		},
+		kvmatcfullrestore:function(fullrestoreConfig){
+			var fullrestoreRes = $resource(restUrl + "rest/kvm/atc/fullrestore");
+			return fullrestoreRes.save(fullrestoreConfig).$promise;
+		},
+		kvmqosacfullbackup:function(fullbackupConfig){
+			var fullbackupRes = $resource(restUrl + "rest/kvm/qosac/fullbackup");
+			return fullbackupRes.save(fullbackupConfig).$promise;
+		},
+		kvmqosacfullrestore:function(fullrestoreConfig){
+			var fullrestoreRes = $resource(restUrl + "rest/kvm/qosac/fullrestore");
+			return fullrestoreRes.save(fullrestoreConfig).$promise;
+		},
 //		osfullbackup:function(config){
 //			var backupRes = $resource(restUrl + "rest/kvm/backup");
 //			return backupRes.save(config).$promise;
