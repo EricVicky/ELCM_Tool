@@ -71,7 +71,7 @@ public class LogParserFactory
     private ILogParser kvmfullqosacBackupParser() {
     	Map<String, String> dict = new LinkedHashMap<String, String>();
     	dict.put("PLAY\\sRECAP", "Finished");
-        dict.put("TASK\\:\\s\\[vnf\\_full\\_backup\\s\\|\\smkdir\\sto\\scopy\\ssnapshot\\sfor\\sVM\\]", "Full Backup");
+        dict.put("TASK\\:\\s\\[vnf\\_full\\_backup\\s\\|\\smkdir\\sto\\ssave\\ssnapshot\\sfor\\sVM\\]", "Full Backup");
         dict.put("ansible-playbook", "Start");
         return new LogParser(dict);
 	}
@@ -86,7 +86,7 @@ public class LogParserFactory
     private ILogParser kvmfullatcBackupParser() {
     	Map<String, String> dict = new LinkedHashMap<String, String>();
     	dict.put("PLAY\\sRECAP", "Finished");
-        dict.put("TASK\\:\\s\\[vnf\\_full\\_backup\\s\\|\\smkdir\\sto\\scopy\\ssnapshot\\sfor\\sVM\\]", "Full Backup");
+        dict.put("TASK\\:\\s\\[vnf\\_full\\_backup\\s\\|\\smkdir\\sto\\ssave\\ssnapshot\\sfor\\sVM\\]", "Full Backup");
         dict.put("ansible-playbook", "Start");
         return new LogParser(dict);
 	}
