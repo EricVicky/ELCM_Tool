@@ -10,13 +10,16 @@
 										Info&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
 							</a></li>
 							<li><a href="#tab2" data-toggle="tab"> <span
-									class="badge">2</span> <span translate="BACKUP_DATA">Backup Data&nbsp;&nbsp;</span>
+									class="badge">2</span> Backup Configuration&nbsp;&nbsp;
+							</a></li>
+							<li><a href="#tab3" data-toggle="tab"> <span
+									class="badge">3</span> Check Message&nbsp;&nbsp;
 							</a></li>
 						</ul>
 						<div class="modal-body col-md-12">
 							<div class="tab-content">
 								<form class="tab-pane active ng-pristine ng-valid" id="tab1"
-									name="tab1" rc-submit="initDir()" rc-step>
+									name="tab1" rc-submit rc-step>
 									<div class="panel panel-default">
 										<div class="panel-heading">
 											<label class="control-label" translate="COM_INSTANCE">COM Instance</label> <select
@@ -176,7 +179,7 @@
 										</div>
 									</div>
 								</form>
-								<form class="tab-pane" id="tab2" name="tab2" rc-submit rc-step>
+								<form class="tab-pane" id="tab2" name="tab2" rc-submit="preCheck()" rc-step>
 									<fieldset>
 									    <div class="form-group" col-md-4>
 										    <label class="control-label" translate="REMOTE_SERVER">Remote Server</label>
@@ -199,8 +202,7 @@
 											<label class="control-label" translate="LOCAL_DIRECTORY">Local Directory</label> <input
 												name="local_directory" class="form-control" type="text" 
 												ng-model="backupConfig.backupLocation.local_backup_dir" 
-												title="directory" validation="required|remote:preCheck"/>
-												<span class="validation text-danger" ng-show="tab2.local_directory.$error.succeed">The target $directory has NOT enough disk space!</span>
+												title="directory" validation="required" ng-init="backupConfig.backupLocation.local_backup_dir='/localbackup'"/>
 										</div>
 										<div class="form-group">
 											<label class="control-label" translate="FILE_NAME">Version</label> <input
@@ -209,6 +211,16 @@
 												title="file name" validation="required" />
 										</div>
 									</fieldset>
+								</form>
+								<form class="tab-pane" id="tab3" name="tab3" rc-submit rc-step>
+									<div ng-if="message==''">
+										<h4>Checking existence/write access/available space of destination directories before data backup launching, Please wait......</h4>
+									</div>
+									<div ng-if="message!=''">
+										<h4>OAM VM --- <span>{{message_oam}}</span></h4>
+										<h4>DB VM --- <span>{{message_db}}</span></h4>
+										<h4>CM VM --- <span>{{message_cm}}</span></h4>
+									</div>
 								</form>
 							</div>
 						</div>
@@ -221,7 +233,7 @@
 									<a class="btn btn-primary"
 										ng-click="rc.backupWizard.forward()"
 										ng-show="rc.backupWizard.currentIndex < rc.backupWizard.navigationLength" translate="CONTINUE">Continue</a>
-									<a class="btn btn-primary" ng-click="backup()" ng-disabled="tab2.$invalid"
+									<a class="btn btn-primary" ng-click="backup()" ng-disabled="valid!=true"
 										ng-show="rc.backupWizard.currentIndex == rc.backupWizard.navigationLength" translate="BACKUP">Backup</a>
 								</div>
 							</div>

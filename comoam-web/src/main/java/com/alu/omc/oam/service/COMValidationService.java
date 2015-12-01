@@ -13,9 +13,9 @@ import com.jcraft.jsch.Session;
 @Service
 public class COMValidationService {
 	
-	private String username = "axadmin";
+	private String username = "plx";
 	private String ip ;
-	private String password = "newsys";
+	private String password = "plx";
 	
 	private Session getSession(String username, String ip, String password){
         JSch shell = new JSch();
@@ -24,7 +24,7 @@ public class COMValidationService {
 			session = shell.getSession(username, ip, 22);
 	        session.setPassword(password);
 	        session.setConfig("StrictHostKeyChecking", "no");
-	        session.connect(30000);
+	        session.connect(3000);
 	        System.out.println("The session to COM server " + ip + " is created");
 		} catch (JSchException e) {
 			// TODO Auto-generated catch block

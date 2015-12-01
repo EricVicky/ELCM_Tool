@@ -72,13 +72,13 @@ public class CheckController
     	StringBuffer message = new StringBuffer();
     	cOMValidationService.setoamip(oamip);
     	String oam_checkRes = cOMValidationService.preCheckBeforeBackup(dir);
-    	message.append("OAM vm --- " + oam_checkRes + '\n');
+    	message.append(oam_checkRes + "\r\n");
     	cOMValidationService.setoamip(dbip);
     	String db_checkRes = cOMValidationService.preCheckBeforeBackup(dir);
-    	message.append("DB vm --- " + db_checkRes + '\n');
+    	message.append(db_checkRes + "\r\n");
     	cOMValidationService.setoamip(cmip);
     	String cm_checkRes = cOMValidationService.preCheckBeforeBackup(dir);
-    	message.append("CM vm --- " + cm_checkRes + '\n');
+    	message.append(cm_checkRes + "\r\n");
         res.setMessage(message.toString());
         if((message.toString()).contains("Error")){
         	res.setSucceed(false);
