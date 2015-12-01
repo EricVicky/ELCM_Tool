@@ -217,9 +217,12 @@
 										<h4>Checking existence/write access/available space of destination directories before data backup launching, Please wait......</h4>
 									</div>
 									<div ng-if="message!=''">
-										<h4>OAM VM --- <span>{{message_oam}}</span></h4>
-										<h4>DB VM --- <span>{{message_db}}</span></h4>
-										<h4>CM VM --- <span>{{message_cm}}</span></h4>
+										<h4>OAM VM ---<span style="color:red"><span ng-if="message_oam=='Success.'" style="color:green">{{message_oam}}</span></span></h4>
+										<h4>DB VM --- <span style="color:red"><span ng-if="message_db=='Success.'" style="color:green">{{message_db}}</span></span></h4>
+										<h4 ng-if="installConfig.comType!='OAM'">CM VM --- <span style="color:red"><span ng-if="message_cm=='Success.'" style="color:green">{{message_cm}}</span></span></h4>
+										<p>
+										<span ng-if="installConfig.comType!='OAM' && message_oam=='Success.' && message_db=='Success.' && message_cm=='Success.'">All VMs are ready to lauching backup!</span>
+										<span ng-if="installConfig.comType=='OAM' && message_oam=='Success.' && message_db=='Success.'">All VMs are ready to lauching backup!</span>
 									</div>
 								</form>
 							</div>

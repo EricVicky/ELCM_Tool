@@ -13,9 +13,9 @@ import com.jcraft.jsch.Session;
 @Service
 public class COMValidationService {
 	
-	private String username = "plx";
+	private String username = "axadmin";
 	private String ip ;
-	private String password = "plx";
+	private String password = "newsys";
 	
 	private Session getSession(String username, String ip, String password){
         JSch shell = new JSch();

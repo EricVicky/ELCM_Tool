@@ -63,7 +63,11 @@ angular.module('backup_restore', ['ui.router',
     	$scope.message = "";
     	oamip = $scope.installConfig.vm_config.oam.nic[0].ip_v4.ipaddress;
 		dbip = $scope.installConfig.vm_config.db.nic[0].ip_v4.ipaddress;
-		cmip = $scope.installConfig.vm_config.cm.nic[0].ip_v4.ipaddress;
+		if($scope.installConfig.comType!='OAM'){
+			cmip = $scope.installConfig.vm_config.cm.nic[0].ip_v4.ipaddress;			
+		}else{
+			cmip = null;
+		}
     	validationService.backupPrecheck($scope.backupConfig.backupLocation.local_backup_dir,oamip,dbip,cmip).then( function(data) {
     		$scope.valid = data.isValid;
     		$scope.message = data.message; 
