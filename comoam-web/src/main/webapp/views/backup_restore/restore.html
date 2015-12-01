@@ -179,7 +179,7 @@
 									<fieldset>
 									    <div class="form-group" col-md-4>
 										    <label class="control-label" translate="REMOTE_SERVER">Remote Server</label>
-											<input name="remote_server" type="checkbox" ng-model="remote_server" 
+											<input name="remote_server" type="checkbox" ng-init="remote_server=false" ng-model="remote_server" 
 											title="Remote Server" />
 										</div>
 										<div class="form-group" ng-if="remote_server==true">
@@ -194,7 +194,7 @@
 												ng-model="$parent.backupConfig.backupLocation.remote_server_dir" 
 												title="serverip" validation="required"/>
 										</div>
-										<div class="form-group">
+										<div class="form-group" ng-show="remote_server==false">
 											<label class="control-label" translate="LOCAL_DIRECTORY">Local Directory</label> <input
 												name="local_directory" class="form-control" type="text"
 												ng-model="backupConfig.backupLocation.local_backup_dir" 
