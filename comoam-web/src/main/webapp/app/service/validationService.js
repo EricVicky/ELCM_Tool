@@ -11,6 +11,13 @@ angular.module('validation',[]).factory('validationService', function($location,
 		    });
 		    return deferred.promise;
 		},
+		backupPrecheck: function(dir,oamip,dbip,cmip) {
+			var deferred = $q.defer();
+		    $http.get(restUrl + "check/backupPrecheck", {"params": {"dir": dir,"oamip": oamip,"dbip": dbip,"cmip": cmip}}).success(function(res) {
+		        deferred.resolve({ isValid: res.succeed, message: res.message });
+		    });
+		    return deferred.promise;
+		},
 	};
 });
 

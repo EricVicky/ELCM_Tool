@@ -14,18 +14,18 @@ import com.jcraft.jsch.Session;
 public class COMValidationService {
 	
 	private String username = "axadmin";
-	private String oamip ;
+	private String ip ;
 	private String password = "newsys";
 	
-	private Session getSession(String username, String oamip, String password){
+	private Session getSession(String username, String ip, String password){
         JSch shell = new JSch();
         Session session = null;
         try {
-			session = shell.getSession(username, oamip, 22);
+			session = shell.getSession(username, ip, 22);
 	        session.setPassword(password);
 	        session.setConfig("StrictHostKeyChecking", "no");
 	        session.connect(30000);
-	        System.out.println("The session to COM server " + oamip + " is created");
+	        System.out.println("The session to COM server " + ip + " is created");
 		} catch (JSchException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -69,9 +69,9 @@ public class COMValidationService {
     public String excuteShell(String command){
         Session session = null;
         if(SystemUtils.IS_OS_WINDOWS){
-            session = getSession(this.username, this.oamip, this.password);
+            session = getSession(this.username, this.ip, this.password);
         }else{
-            session = getSession(command);
+            session = getSession(this.ip);
         }
     	Channel channel = getChannel(session);
 		String finalCommand = command + " \n";
@@ -114,7 +114,7 @@ public class COMValidationService {
     }
     
     public void setoamip( String oamip ){
-    	this.oamip = oamip;
+    	this.ip = oamip;
     }
     
     public void setpassword( String password ){
@@ -129,6 +129,21 @@ public class COMValidationService {
     		return true;
     	} else {
     		return false;
+    	}
+    }
+    
+    public String preCheckBeforeBackup(String dir){
+    	String preCheckResult = excuteShell("/alcatel/omc1/OMC_OSM/backup_scripts/pre_check_for_fd_backup.sh "+ dir);
+    	if(preCheckResult.contains("the backup target name is required in arguments") ){
+    		return "Error: the backup target name is required in arguments.";
+    	} else if(preCheckResult.contains("NOT existing")){
+    		return "Error: The target is NOT existing.";
+    	} else if(preCheckResult.contains("NOT writeable")){
+    		return "Error: The target is NOT writeable.";
+    	} else if(preCheckResult.contains("NOT enough disk space")){
+    		return "Error: The target has NOT enough disk space.";
+    	} else {
+    		return "Success.";
     	}
     }
     

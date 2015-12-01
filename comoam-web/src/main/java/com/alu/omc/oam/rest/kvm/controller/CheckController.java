@@ -65,6 +65,29 @@ public class CheckController
        return res;
     }
     
+    @RequestMapping(value="/check/backupPrecheck", method=RequestMethod.GET)
+    public ValidationResult preCheck(@ModelAttribute("dir") String dir,@ModelAttribute("oamip") String oamip,
+    		                         @ModelAttribute("dbip") String dbip,@ModelAttribute("cmip") String cmip){
+    	ValidationResult res = new ValidationResult();
+    	StringBuffer message = new StringBuffer();
+    	cOMValidationService.setoamip(oamip);
+    	String oam_checkRes = cOMValidationService.preCheckBeforeBackup(dir);
+    	message.append("OAM vm --- " + oam_checkRes + '\n');
+    	cOMValidationService.setoamip(dbip);
+    	String db_checkRes = cOMValidationService.preCheckBeforeBackup(dir);
+    	message.append("DB vm --- " + db_checkRes + '\n');
+    	cOMValidationService.setoamip(cmip);
+    	String cm_checkRes = cOMValidationService.preCheckBeforeBackup(dir);
+    	message.append("CM vm --- " + cm_checkRes + '\n');
+        res.setMessage(message.toString());
+        if((message.toString()).contains("Error")){
+        	res.setSucceed(false);
+        }else{
+        	res.setSucceed(true);
+        }
+        return res;
+    }
+    
     @RequestMapping(value="/gr/kvm/checkinstalled", method=RequestMethod.GET)
     public ValidationResult GRCheck(@ModelAttribute("name") String name){
        List<COMStack> stacks =  cOMStackService.list();

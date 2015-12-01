@@ -6,7 +6,7 @@ angular.module('backup_restore', ['ui.router',
                                   'ghiscoding.validation',
                                   'monitor',
                                   'ngResource']).controller('backup_resctr', function($scope,  $log, KVMService
-		, Backup_ResService, monitorService,DashboardService, $dialogs, $state,$translate) {
+		, Backup_ResService, monitorService,DashboardService, $dialogs, $state,$translate,validationService) {
     $scope.reloadimglist = function(){
     	if($scope.com_instance != null){
         	 $scope.installConfig = JSON3.parse($scope.com_instance.comConfig);
@@ -47,6 +47,19 @@ angular.module('backup_restore', ['ui.router',
         }
     }
     
+    $scope.initDir = function(){
+    	$scope.backupConfig = {
+        		"backupLocation": { "local_backup_dir": "/localbackup"}
+        };
+    }
+    
+    $scope.preCheck = function(dir){
+    	oamip = $scope.installConfig.vm_config.oam.nic[0].ip_v4.ipaddress;
+    	dbip = $scope.installConfig.vm_config.db.nic[0].ip_v4.ipaddress;
+    	cmip = $scope.installConfig.vm_config.cm.nic[0].ip_v4.ipaddress;
+    	return validationService.backupPrecheck(dir,oamip,dbip,cmip);
+    }
+    
     Backup_ResService.getComInstance().then( function(data) {
     	var comInstance = new Array();
 		for(var index in data){
@@ -59,6 +72,9 @@ angular.module('backup_restore', ['ui.router',
     });
 
     $scope.backup = function(){
+    	
+    	
+    	
     	$scope.backupConfig.config = $scope.installConfig;
     	if($scope.backupConfig.config.environment=='KVM'){
     		Backup_ResService.kvmbackup($scope.backupConfig).then( function(){
