@@ -13,9 +13,9 @@ import com.jcraft.jsch.Session;
 @Service
 public class COMValidationService {
 	
-	private String username = "axadmin";
+	private String username = "plx";
 	private String ip ;
-	private String password = "newsys";
+	private String password = "plx";
 	
 	private Session getSession(String username, String ip, String password){
         JSch shell = new JSch();
@@ -24,7 +24,7 @@ public class COMValidationService {
 			session = shell.getSession(username, ip, 22);
 	        session.setPassword(password);
 	        session.setConfig("StrictHostKeyChecking", "no");
-	        session.connect(3000);
+	        session.connect(1000);
 	        System.out.println("The session to COM server " + ip + " is created");
 		} catch (JSchException e) {
 			// TODO Auto-generated catch block
@@ -58,7 +58,7 @@ public class COMValidationService {
 		try {
 			channel = session.openChannel("shell");
 			System.out.println("The channel is created");
-			channel.connect(3*1000);
+			channel.connect(1*1000);
 		} catch (JSchException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -81,10 +81,11 @@ public class COMValidationService {
     		InputStream in=channel.getInputStream();
 			outstream.write(finalCommand.getBytes());
 			outstream.flush();
-			try{Thread.sleep(5000);}catch(Exception ee){}
+			try{Thread.sleep(1000);}catch(Exception ee){}
 			System.out.println("The command " + command + " is excuted");
 			byte[] tmp=new byte[1024];
-//            while(true){
+
+            //while(true){
                 while(in.available()>0){
                   int i=in.read(tmp, 0, 1024);
                   if(i<0)break;
