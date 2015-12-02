@@ -45,6 +45,8 @@ public class COMValidationService {
             ssh.addIdentity(privateKey);
             Session session = ssh.getSession("root", ip, 22);
             System.out.println("The session to COM server " + ip + " is created");
+            session.setConfig("StrictHostKeyChecking", "no");
+            session.connect(3000);
             return session;
         }
         catch (JSchException e)
