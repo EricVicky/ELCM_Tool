@@ -233,7 +233,7 @@
 									<a class="btn btn-primary"
 										ng-click="rc.backupWizard.forward()"
 										ng-show="rc.backupWizard.currentIndex < rc.backupWizard.navigationLength" translate="CONTINUE">Continue</a>
-									<a class="btn btn-primary" ng-click="backup()" ng-disabled="valid!=true"
+									<a class="btn btn-primary" ng-click="backup()" ng-disabled="valid!=true || tab2.$valid==false"
 										ng-show="rc.backupWizard.currentIndex == rc.backupWizard.navigationLength" translate="BACKUP">Backup</a>
 								</div>
 							</div>
