@@ -70,13 +70,13 @@ public class CheckController
     		                         @ModelAttribute("dbip") String dbip,@ModelAttribute("cmip") String cmip){
     	ValidationResult res = new ValidationResult();
     	StringBuffer message = new StringBuffer();
-    	cOMValidationService.setoamip("10.223.0.231");
+    	cOMValidationService.setoamip(oamip);
     	String oam_checkRes = cOMValidationService.preCheckBeforeBackup(dir);
     	message.append(oam_checkRes + "\r\n");
-    	cOMValidationService.setoamip("10.223.0.231");
+    	cOMValidationService.setoamip(dbip);
     	String db_checkRes = cOMValidationService.preCheckBeforeBackup(dir);
     	message.append(db_checkRes + "\r\n");
-    	cOMValidationService.setoamip("10.223.0.231");
+    	cOMValidationService.setoamip(cmip);
     	String cm_checkRes = cOMValidationService.preCheckBeforeBackup(dir);
     	message.append(cm_checkRes + "\r\n");
         res.setMessage(message.toString());
