@@ -44,6 +44,7 @@ public class COMValidationService {
         {
             ssh.addIdentity(privateKey);
             Session session = ssh.getSession("root", ip, 22);
+            System.out.println("The session to COM server " + ip + " is created");
             return session;
         }
         catch (JSchException e)
@@ -143,6 +144,8 @@ public class COMValidationService {
     		return "Error: The target is NOT writeable.";
     	} else if(preCheckResult.contains("NOT enough disk space")){
     		return "Error: The target has NOT enough disk space.";
+    	} else if(preCheckResult.contains("No such file or directory")){
+    		return "Error: No such file or directory.";
     	} else {
     		return "Success.";
     	}
