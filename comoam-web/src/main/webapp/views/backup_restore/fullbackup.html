@@ -200,6 +200,9 @@
 												ng-model="fullbackupConfig.full_backup_dir" 
 												title="directory" validation="required" ng-init="fullbackupConfig.full_backup_dir='/fullbackup'"/>
 										</div>
+										<div ng-if="remote_server!=true">
+											<h4>The local full backup directory is : <span style="color:green">{{installConfig.vm_img_dir}}/{{installConfig.deployment_prefix}}</span></h4>
+										</div>
 									</fieldset>
 								</form>
 							</div>
