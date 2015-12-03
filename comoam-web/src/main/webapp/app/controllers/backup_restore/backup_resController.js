@@ -61,22 +61,30 @@ angular.module('backup_restore', ['ui.router',
     $scope.preCheck = function(){
     	$scope.valid = false;
     	$scope.message = "";
+    	dbip = null;
+    	cmip = null;
     	if($scope.installConfig.environment == 'KVM'){
-    		oamip = $scope.installConfig.vm_config.oam.nic[0].ip_v4.ipaddress;
-    		dbip = $scope.installConfig.vm_config.db.nic[0].ip_v4.ipaddress;
-    		if($scope.installConfig.comType!='OAM'){
-    			cmip = $scope.installConfig.vm_config.cm.nic[0].ip_v4.ipaddress;			
-    		}else{
-    			cmip = null;
+    		if($scope.installConfig.comType == 'QOSAC'){
+    			oamip = $scope.installConfig.vm_config.ovm.ip_address;
+    		}else if($scope.installConfig.comType == 'FCAPS'||$scope.installConfig.comType == 'CM'){
+    			oamip = $scope.installConfig.vm_config.oam.nic[0].ip_v4.ipaddress;
+    			dbip = $scope.installConfig.vm_config.db.nic[0].ip_v4.ipaddress;
+    			cmip = $scope.installConfig.vm_config.cm.nic[0].ip_v4.ipaddress;
+    		}else if($scope.installConfig.comType == 'OAM'){
+    			oamip = $scope.installConfig.vm_config.oam.nic[0].ip_v4.ipaddress;
+    			dbip = $scope.installConfig.vm_config.db.nic[0].ip_v4.ipaddress;
     		}
     	}else{
-    		oamip = $scope.installConfig.vm_config.oam.provider_ip_address;
-    	    dbip = $scope.installConfig.vm_config.db.provider_ip_address;
-            if($scope.installConfig.comType!='OAM'){
-        		cmip = $scope.installConfig.vm_config.cm.provider_ip_address;			
-        	}else{
-        		cmip = null;
-        	}  
+    		if($scope.installConfig.comType == 'QOSAC'){
+    			oamip = $scope.installConfig.vm_config.ovm.ip_address;
+    		}else if($scope.installConfig.comType == 'FCAPS'||$scope.installConfig.comType == 'CM'){
+    			oamip = $scope.installConfig.vm_config.oam.provider_ip_address;
+    			dbip = $scope.installConfig.vm_config.db.provider_ip_address;
+    			cmip = $scope.installConfig.vm_config.cm.provider_ip_address;
+    		}else if($scope.installConfig.comType == 'OAM'){
+    			oamip = $scope.installConfig.vm_config.oam.provider_ip_address;
+    			dbip = $scope.installConfig.vm_config.db.provider_ip_address;
+    		}
     	}
     	
     	validationService.backupPrecheck($scope.backupConfig.backupLocation.local_backup_dir,oamip,dbip,cmip).then( function(data) {
