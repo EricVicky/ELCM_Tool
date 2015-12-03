@@ -83,15 +83,8 @@ public class COMValidationService {
     	return channel;
     }
     
-    public String excuteShell(String command){
-        Session session = null;
-        if(SystemUtils.IS_OS_WINDOWS){
-            session = getSession(this.username, this.ip, this.password);
-        }else{
-            session = getSession(this.ip);
-        }
-        
-        Channel cf_channel = cf_getChannel(session);
+    public void copyFile(Session session){
+    	Channel cf_channel = cf_getChannel(session);
         ChannelSftp c = null;
         try {
         	c = (ChannelSftp) cf_channel;
@@ -101,11 +94,14 @@ public class COMValidationService {
             c.chmod(744, "/alcatel/omc1/OMC_OSM/backup_scripts/pre_check_for_fd_backup.sh");
             //c.get(fdest, "/tmp/testfile.bin");
             c.disconnect();
-        } catch (Exception e) {	e.printStackTrace();	}
-        
+        } catch (Exception e) {	
+        	e.printStackTrace();	
+        }
+    }
+    
+    public void executeResult(Session session, String command,String output){
     	Channel channel = getChannel(session);
 		String finalCommand = command + " \n";
-		String string = null;
     	try {
     		OutputStream outstream = channel.getOutputStream();
     		InputStream in=channel.getInputStream();
@@ -114,30 +110,33 @@ public class COMValidationService {
 			try{Thread.sleep(1000);}catch(Exception ee){}
 			System.out.println("The command " + command + " is excuted");
 			byte[] tmp=new byte[1024];
-
-            //while(true){
-                while(in.available()>0){
-                  int i=in.read(tmp, 0, 1024);
-                  if(i<0)break;
-                  string = new String(tmp, 0, i);
-                  System.out.print(string);
-                }
-//                if(channel.isClosed()){
-//                  System.out.println("exit-status: "+channel.getExitStatus());
-//                  break;
-//                }
-//                try{Thread.sleep(1000);}catch(Exception ee){}
-//              }
+            while(in.available()>0){
+              int i=in.read(tmp, 0, 1024);
+              if(i<0)break;
+              output = new String(tmp, 0, i);
+              System.out.print(output);
+            }
             outstream.close();
             in.close();
             channel.disconnect();
-            session.disconnect();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-    	
-    	return string;
+    }
+    
+    public String excuteShell(String command){
+        Session session = null;
+        String output = null;
+        if(SystemUtils.IS_OS_WINDOWS){
+            session = getSession(this.username, this.ip, this.password);
+        }else{
+            session = getSession(this.ip);
+        }
+        copyFile(session);
+        executeResult(session,command,output);
+    	session.disconnect();
+    	return output;
     }
     
     public void setUserName( String username ){
