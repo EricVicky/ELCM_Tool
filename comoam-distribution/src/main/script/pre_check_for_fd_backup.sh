@@ -61,4 +61,5 @@ check_disk_writable $dir
 
 check_disk_space $dir $size
 
+echo "Success"
 exit 0
