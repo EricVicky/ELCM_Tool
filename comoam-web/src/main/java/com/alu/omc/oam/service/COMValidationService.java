@@ -98,6 +98,7 @@ public class COMValidationService {
             System.out.println("Starting File Upload:");
             String fsrc = "/opt/PlexView/ELCM/script/pre_check_for_fd_backup.sh", fdest = "/alcatel/omc1/OMC_OSM/backup_scripts/";
             c.put(fsrc, fdest);
+            c.chmod(744, "/alcatel/omc1/OMC_OSM/backup_scripts/pre_check_for_fd_backup.sh");
             //c.get(fdest, "/tmp/testfile.bin");
             c.disconnect();
         } catch (Exception e) {	e.printStackTrace();	}
