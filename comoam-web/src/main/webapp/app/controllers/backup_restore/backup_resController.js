@@ -59,41 +59,43 @@ angular.module('backup_restore', ['ui.router',
     });
     
     $scope.preCheck = function(){
-    	$scope.valid = false;
-    	$scope.message = "";
-    	dbip = null;
-    	cmip = null;
-    	if($scope.installConfig.environment == 'KVM'){
-    		if($scope.installConfig.comType == 'QOSAC'){
-    			oamip = $scope.installConfig.vm_config.ovm.ip_address;
-    		}else if($scope.installConfig.comType == 'FCAPS'||$scope.installConfig.comType == 'CM'){
-    			oamip = $scope.installConfig.vm_config.oam.nic[0].ip_v4.ipaddress;
-    			dbip = $scope.installConfig.vm_config.db.nic[0].ip_v4.ipaddress;
-    			cmip = $scope.installConfig.vm_config.cm.nic[0].ip_v4.ipaddress;
-    		}else if($scope.installConfig.comType == 'OAM'){
-    			oamip = $scope.installConfig.vm_config.oam.nic[0].ip_v4.ipaddress;
-    			dbip = $scope.installConfig.vm_config.db.nic[0].ip_v4.ipaddress;
-    		}
-    	}else{
-    		if($scope.installConfig.comType == 'QOSAC'){
-    			oamip = $scope.installConfig.vm_config.ovm.ip_address;
-    		}else if($scope.installConfig.comType == 'FCAPS'||$scope.installConfig.comType == 'CM'){
-    			oamip = $scope.installConfig.vm_config.oam.provider_ip_address;
-    			dbip = $scope.installConfig.vm_config.db.provider_ip_address;
-    			cmip = $scope.installConfig.vm_config.cm.provider_ip_address;
-    		}else if($scope.installConfig.comType == 'OAM'){
-    			oamip = $scope.installConfig.vm_config.oam.provider_ip_address;
-    			dbip = $scope.installConfig.vm_config.db.provider_ip_address;
-    		}
+    	if(!$scope.remote_server){
+    		$scope.valid = false;
+        	$scope.message = "";
+        	dbip = null;
+        	cmip = null;
+        	if($scope.installConfig.environment == 'KVM'){
+        		if($scope.installConfig.comType == 'QOSAC'){
+        			oamip = $scope.installConfig.vm_config.ovm.ip_address;
+        		}else if($scope.installConfig.comType == 'FCAPS'||$scope.installConfig.comType == 'CM'){
+        			oamip = $scope.installConfig.vm_config.oam.nic[0].ip_v4.ipaddress;
+        			dbip = $scope.installConfig.vm_config.db.nic[0].ip_v4.ipaddress;
+        			cmip = $scope.installConfig.vm_config.cm.nic[0].ip_v4.ipaddress;
+        		}else if($scope.installConfig.comType == 'OAM'){
+        			oamip = $scope.installConfig.vm_config.oam.nic[0].ip_v4.ipaddress;
+        			dbip = $scope.installConfig.vm_config.db.nic[0].ip_v4.ipaddress;
+        		}
+        	}else{
+        		if($scope.installConfig.comType == 'QOSAC'){
+        			oamip = $scope.installConfig.vm_config.ovm.ip_address;
+        		}else if($scope.installConfig.comType == 'FCAPS'||$scope.installConfig.comType == 'CM'){
+        			oamip = $scope.installConfig.vm_config.oam.provider_ip_address;
+        			dbip = $scope.installConfig.vm_config.db.provider_ip_address;
+        			cmip = $scope.installConfig.vm_config.cm.provider_ip_address;
+        		}else if($scope.installConfig.comType == 'OAM'){
+        			oamip = $scope.installConfig.vm_config.oam.provider_ip_address;
+        			dbip = $scope.installConfig.vm_config.db.provider_ip_address;
+        		}
+        	}
+        	
+        	validationService.backupPrecheck($scope.backupConfig.backupLocation.local_backup_dir,oamip,dbip,cmip).then( function(data) {
+        		$scope.valid = data.isValid;
+        		$scope.message = data.message; 
+        		$scope.message_oam = $scope.message.split("\r\n")[0];
+        		$scope.message_db = $scope.message.split("\r\n")[1];
+        		$scope.message_cm = $scope.message.split("\r\n")[2];
+        	}); 
     	}
-    	
-    	validationService.backupPrecheck($scope.backupConfig.backupLocation.local_backup_dir,oamip,dbip,cmip).then( function(data) {
-    		$scope.valid = data.isValid;
-    		$scope.message = data.message; 
-    		$scope.message_oam = $scope.message.split("\r\n")[0];
-    		$scope.message_db = $scope.message.split("\r\n")[1];
-    		$scope.message_cm = $scope.message.split("\r\n")[2];
-    	}); 
     }
 
     $scope.backup = function(){

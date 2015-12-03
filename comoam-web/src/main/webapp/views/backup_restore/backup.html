@@ -202,6 +202,7 @@
 												title="directory" validation="required" ng-init="backupConfig.backupLocation.local_backup_dir='/localbackup'"/>
 										</div>
 										
+										<div ng-if="remote_server!=true">
 										<div ng-if="message==''">
 										<h4>Checking existence/write access/available space of destination directories before data backup launching, Please wait......</h4>
 									</div>
@@ -213,7 +214,7 @@
 										<span ng-if="installConfig.comType!='OAM' && message_oam=='Success.' && message_db=='Success.' && message_cm=='Success.'">All VMs are ready to backup!</span>
 										<span ng-if="installConfig.comType=='OAM' && message_oam=='Success.' && message_db=='Success.'">All VMs are ready to backup!</span>
 									</div>
-										
+										</div>
 										<div class="form-group">
 											<label class="control-label" translate="FILE_NAME">Version</label> <input
 												name="version" class="form-control" type="text"
