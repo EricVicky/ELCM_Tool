@@ -7,6 +7,7 @@ import org.apache.commons.lang3.SystemUtils;
 import org.springframework.stereotype.Service;
 
 import com.jcraft.jsch.Channel;
+import com.jcraft.jsch.ChannelSftp;
 import com.jcraft.jsch.JSch;
 import com.jcraft.jsch.JSchException;
 import com.jcraft.jsch.Session;
@@ -60,8 +61,21 @@ public class COMValidationService {
     	Channel channel = null;
 		try {
 			channel = session.openChannel("shell");
-			System.out.println("The channel is created");
-			channel.connect(1*1000);
+			System.out.println("The shell channel is created");
+			channel.connect();
+		} catch (JSchException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    	return channel;
+    }
+    
+    private Channel cf_getChannel(Session session){
+    	Channel channel = null;
+		try {
+			channel = session.openChannel("sftp");
+			System.out.println("The sftp channel is created");
+			channel.connect();
 		} catch (JSchException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -76,6 +90,18 @@ public class COMValidationService {
         }else{
             session = getSession(this.ip);
         }
+        
+        Channel cf_channel = cf_getChannel(session);
+        ChannelSftp c = null;
+        try {
+        	c = (ChannelSftp) cf_channel;
+            System.out.println("Starting File Upload:");
+            String fsrc = "/opt/PlexView/ELCM/script/pre_check_for_fd_backup.sh", fdest = "/alcatel/omc1/OMC_OSM/backup_scripts/";
+            c.put(fsrc, fdest);
+            //c.get(fdest, "/tmp/testfile.bin");
+            c.disconnect();
+        } catch (Exception e) {	e.printStackTrace();	}
+        
     	Channel channel = getChannel(session);
 		String finalCommand = command + " \n";
 		String string = null;
@@ -147,7 +173,7 @@ public class COMValidationService {
     	} else if(preCheckResult.contains("NOT enough disk space")){
     		return "Error: The target has NOT enough disk space.";
     	} else if(preCheckResult.contains("No such file or directory")){
-    		return "Error: No such file or directory.";
+    		return "Error: Scripts not exit.";
     	} else {
     		return "Success.";
     	}
