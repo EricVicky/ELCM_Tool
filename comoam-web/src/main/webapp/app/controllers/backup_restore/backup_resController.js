@@ -99,14 +99,16 @@ angular.module('backup_restore', ['ui.router',
     		
     	}
     }
-
-    $scope.backup = function(){
-    	
+    
+    $scope.checkname = function(){
     	var filename = $scope.backupConfig.backupLocation.local_backup_file;
     	if(filename.indexOf(".tgz") < 0){
     		filename = filename + ".tgz";
     	}
     	$scope.backupConfig.backupLocation.local_backup_file = filename;
+    }
+
+    $scope.backup = function(){
 
     	$scope.backupConfig.config = $scope.installConfig;
     	if($scope.backupConfig.config.environment=='KVM'){
@@ -122,12 +124,6 @@ angular.module('backup_restore', ['ui.router',
     	}
     }
     $scope.restore = function(){
-    	
-    	var filename = $scope.backupConfig.backupLocation.local_backup_file;
-    	if(filename.indexOf(".tgz") < 0){
-    		filename = filename + ".tgz";
-    	}
-    	$scope.backupConfig.backupLocation.local_backup_file = filename;
     	
     	$scope.backupConfig.config = $scope.installConfig;
     	if($scope.backupConfig.config.environment=='KVM'){

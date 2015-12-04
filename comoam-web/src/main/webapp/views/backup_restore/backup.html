@@ -203,23 +203,23 @@
 										</div>
 										
 										<div ng-if="remote_server!=true">
-										<div ng-if="message==''">
-										<h4>Checking existence/write access/available space of destination directories before data backup launching, Please wait......</h4>
-									</div>
-									<div ng-if="message!=''">
-										<h5>OAM VM --- <span ng-if="message_oam=='Success.'" style="color:green">{{message_oam}}</span><span ng-if="message_oam!='Success.'" style="color:red">{{message_oam}}</span></h5>
-										<h5>DB VM --- <span ng-if="message_db=='Success.'" style="color:green">{{message_db}}</span><span ng-if="message_db!='Success.'" style="color:red">{{message_db}}</span></h5>
-										<h5 ng-if="installConfig.comType!='OAM'">CM VM --- <span ng-if="message_cm=='Success.'" style="color:green">{{message_cm}}</span><span ng-if="message_cm!='Success.'" style="color:red">{{message_cm}}</span></h5>
-										<p>
-										<span ng-if="installConfig.comType!='OAM' && message_oam=='Success.' && message_db=='Success.' && message_cm=='Success.'">All VMs are ready to backup!</span>
-										<span ng-if="installConfig.comType=='OAM' && message_oam=='Success.' && message_db=='Success.'">All VMs are ready to backup!</span>
-									</div>
+											<div ng-if="message==''">
+												<h4>Checking existence/write access/available space of destination directories before data backup launching, Please wait......</h4>
+											</div>
+											<div ng-if="message!=''">
+												<h5>OAM VM --- <span ng-if="message_oam=='Success.'" style="color:green">{{message_oam}}</span><span ng-if="message_oam!='Success.'" style="color:red">{{message_oam}}</span></h5>
+												<h5>DB VM --- <span ng-if="message_db=='Success.'" style="color:green">{{message_db}}</span><span ng-if="message_db!='Success.'" style="color:red">{{message_db}}</span></h5>
+												<h5 ng-if="installConfig.comType!='OAM'">CM VM --- <span ng-if="message_cm=='Success.'" style="color:green">{{message_cm}}</span><span ng-if="message_cm!='Success.'" style="color:red">{{message_cm}}</span></h5>
+												<p>
+												<span ng-if="installConfig.comType!='OAM' && message_oam=='Success.' && message_db=='Success.' && message_cm=='Success.'">All VMs are ready to backup!</span>
+												<span ng-if="installConfig.comType=='OAM' && message_oam=='Success.' && message_db=='Success.'">All VMs are ready to backup!</span>
+											</div>
 										</div>
 										<div class="form-group">
 											<label class="control-label" translate="FILE_NAME">Version</label> <input
 												name="version" class="form-control" type="text"
 												ng-model="backupConfig.backupLocation.local_backup_file"
-												title="file name" validation="required" placeholder="*** or ***.tgz"/>
+												title="file name" validation="required" ng-blur="checkname()"/>
 										</div>
 									</fieldset>									
 								</form>
