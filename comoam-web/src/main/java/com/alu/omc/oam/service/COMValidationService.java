@@ -114,20 +114,12 @@ public class COMValidationService {
 			try{Thread.sleep(1000);}catch(Exception ee){}
 			System.out.println("The command " + command + " is excuted");
 			byte[] tmp=new byte[1024];
-
-            //while(true){
-                while(in.available()>0){
-                  int i=in.read(tmp, 0, 1024);
-                  if(i<0)break;
-                  string = new String(tmp, 0, i);
-                  System.out.print(string);
-                }
-//                if(channel.isClosed()){
-//                  System.out.println("exit-status: "+channel.getExitStatus());
-//                  break;
-//                }
-//                try{Thread.sleep(1000);}catch(Exception ee){}
-//              }
+            while(in.available()>0){
+              int i=in.read(tmp, 0, 1024);
+              if(i<0)break;
+              string = new String(tmp, 0, i);
+              System.out.print(string);
+            }
             outstream.close();
             in.close();
             channel.disconnect();

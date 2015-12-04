@@ -95,6 +95,8 @@ angular.module('backup_restore', ['ui.router',
         		$scope.message_db = $scope.message.split("\r\n")[1];
         		$scope.message_cm = $scope.message.split("\r\n")[2];
         	}); 
+    	}else{
+    		
     	}
     }
 
