@@ -18,6 +18,13 @@ angular.module('validation',[]).factory('validationService', function($location,
 		    });
 		    return deferred.promise;
 		},
+		backupNfsPrecheck: function(dir,nfsip,oamip) {
+			var deferred = $q.defer();
+		    $http.get(restUrl + "check/backupNfsPrecheck", {"params": {"dir": dir,"nfsip": nfsip,"oamip": oamip}}).success(function(res) {
+		        deferred.resolve({ isValid: res.succeed, message: res.message });
+		    });
+		    return deferred.promise;
+		},
 	};
 });
 

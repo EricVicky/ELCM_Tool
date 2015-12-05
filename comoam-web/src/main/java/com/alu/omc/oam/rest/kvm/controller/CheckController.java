@@ -88,6 +88,24 @@ public class CheckController
         return res;
     }
     
+    @RequestMapping(value="/check/backupNfsPrecheck", method=RequestMethod.GET)
+    public ValidationResult preNfsCheck(@ModelAttribute("dir") String dir,@ModelAttribute("nfsip") String nfsip,
+    		                         @ModelAttribute("oamip") String oamip){
+    	ValidationResult res = new ValidationResult();
+    	cOMValidationService.setoamip(oamip);
+    	String mntResult = cOMValidationService.mountNfsServer("/localbackup",dir,oamip,nfsip,"mount");
+    	if((mntResult.split("\r\n")).length>4){
+    		res.setSucceed(false);
+    		res.setMessage(mntResult);
+    	}else{
+    		String vnf_checkRes = cOMValidationService.preCheckBeforeBackup("/localbackup 30000");
+    		res.setSucceed(true);
+    		res.setMessage(vnf_checkRes);
+    		cOMValidationService.mountNfsServer("/localbackup",dir,oamip,nfsip,"umount");
+    	}
+        return res;
+    }
+    
     @RequestMapping(value="/gr/kvm/checkinstalled", method=RequestMethod.GET)
     public ValidationResult GRCheck(@ModelAttribute("name") String name){
        List<COMStack> stacks =  cOMStackService.list();

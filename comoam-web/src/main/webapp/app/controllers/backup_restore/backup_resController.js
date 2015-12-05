@@ -58,6 +58,35 @@ angular.module('backup_restore', ['ui.router',
 		$scope.setDefaultInstace();
     });
     
+    $scope.preNFSCheck = function(){
+    	if($scope.remote_server){
+    		$scope.valid_nfs = false;
+        	$scope.message_nfs = "";
+        	nfsip = $scope.backupConfig.backupLocation.remote_server_ip;
+        	if($scope.installConfig.environment == 'KVM'){
+        		if($scope.installConfig.comType == 'QOSAC'){
+        			oamip = $scope.installConfig.vm_config.ovm.ip_address;
+        		}else{
+        			oamip = $scope.installConfig.vm_config.oam.nic[0].ip_v4.ipaddress;
+        		}
+        	}else{
+        		if($scope.installConfig.comType == 'QOSAC'){
+        			oamip = $scope.installConfig.vm_config.ovm.ip_address;
+        		}else{
+        			oamip = $scope.installConfig.vm_config.oam.provider_ip_address;
+        		}
+        	}
+        	validationService.backupNfsPrecheck($scope.backupConfig.backupLocation.remote_server_dir,nfsip,oamip).then( function(data) {
+        		$scope.valid_nfs = data.isValid;
+        		if($scope.valid_nfs!=true){
+        			$scope.message_nfs = data.message.split("mount.nfs:")[1].split("\r\n")[0]; 			
+        		}else{
+        			$scope.message_nfs = data.message;
+        		}
+        	}); 
+    	}
+    };
+    
     $scope.preCheck = function(){
     	if(!$scope.remote_server){
     		$scope.valid = false;

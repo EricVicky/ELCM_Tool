@@ -14,9 +14,9 @@ import com.jcraft.jsch.Session;
 @Service
 public class COMValidationService {
 	
-	private String username = "plx";
+	private String username = "root";
 	private String ip ;
-	private String password = "plx";
+	private String password = "newsys";
 	
 	private Session getSession(String username, String ip, String password){
         JSch shell = new JSch();
@@ -132,6 +132,46 @@ public class COMValidationService {
     	return string;
     }
     
+    public String mountServer(String mountDir, String nfsDir, String ip, String nfsIp, String command){
+   	    Session session = null;
+   	    String mntCommand = "";
+        if(SystemUtils.IS_OS_WINDOWS){
+            session = getSession(this.username, this.ip, this.password);
+        }else{
+            session = getSession(this.ip);
+        }
+        Channel mntChannel = getChannel(session);
+        if("mount".equals(command)){
+        	mntCommand = "mount -o nolock -t nfs "+nfsIp+":"+nfsDir+" "+mountDir+" \n";       	
+        }else{
+        	mntCommand = "umount "+mountDir+" \n";
+        }
+        String mntResult = null;
+        try {
+    		OutputStream outstream = mntChannel.getOutputStream();
+    		InputStream in=mntChannel.getInputStream();
+			outstream.write(mntCommand.getBytes());
+			outstream.flush();
+			try{Thread.sleep(1000);}catch(Exception ee){}
+			System.out.println("The command " + mntCommand + " is excuted");
+			byte[] tmp=new byte[1024];
+           while(in.available()>0){
+              int i=in.read(tmp, 0, 1024);
+              if(i<0)break;
+              mntResult = new String(tmp, 0, i);
+              System.out.print(mntResult);
+           }
+           outstream.close();
+           in.close();
+           mntChannel.disconnect();
+           session.disconnect();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} 	
+    	return mntResult;
+   }
+    
     public void setUserName( String username ){
     	this.username = username;
     }
@@ -166,12 +206,18 @@ public class COMValidationService {
     	} else if(preCheckResult.contains("NOT enough disk space")){
     		return "Error: The target has NOT enough disk space.";
     	} else if(preCheckResult.contains("No such file or directory")){
-    		return "Error: Scripts not exit.";
+    		return "Error: Scripts not exist.";
     	} else if(preCheckResult.contains("Success")){
     		return "Success.";
     	} else{
     		return "Other errors.";
     	}
+    }
+    
+    public String mountNfsServer(String dir, String nfsDir, String ip, String nfsip, String command){
+    	String mntResult = mountServer("/localbackup",nfsDir,ip,nfsip,command);
+    	return mntResult;
+
     }
     
 /*	public static void main(String[] args) {

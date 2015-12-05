@@ -193,8 +193,20 @@
 											<label class="control-label" translate="BACKUP_SERVER_DIRECTORY">Backup Server Directory</label> <input
 												name="backup_server_directory" class="form-control" type="text"
 												ng-model="$parent.backupConfig.backupLocation.remote_server_dir" 
-												title="serverip" validation="required"/>
+												title="serverip" validation="required" ng-blur="preNFSCheck()"/>
 										</div>
+										
+										<div ng-if="remote_server==true">
+											<div ng-if="message_nfs==''">
+												<h4>Checking existence/write access/available space of destination directories before data backup launching, Please wait......</h4>
+											</div>
+											<div ng-if="message_nfs!=''">
+												<h5>Remote Server --- <span ng-if="message_nfs=='Success.'" style="color:green">{{message_nfs}}</span><span ng-if="message_nfs!='Success.'" style="color:red">{{message_nfs}}</span></h5>
+											</div>
+										</div>
+										
+										
+										
 										<div class="form-group" ng-show="remote_server==false">
 											<label class="control-label" translate="LOCAL_DIRECTORY">Local Directory</label> <input
 												name="local_directory" class="form-control" type="text" ng-change="preCheck()"
@@ -235,7 +247,9 @@
 										ng-click="rc.backupWizard.forward()"
 										ng-show="rc.backupWizard.currentIndex < rc.backupWizard.navigationLength" translate="CONTINUE">Continue</a>
 									<a class="btn btn-primary" ng-click="backup()" ng-disabled="valid!=true || tab2.$valid==false"
-										ng-show="rc.backupWizard.currentIndex == rc.backupWizard.navigationLength" translate="BACKUP">Backup</a>
+										ng-show="rc.backupWizard.currentIndex == rc.backupWizard.navigationLength && remote_server!=true">Local Backup</a>
+									<a class="btn btn-primary" ng-click="backup()" ng-disabled="message_nfs!='Success.' || valid_nfs!=true || tab2.$valid==false"
+										ng-show="rc.backupWizard.currentIndex == rc.backupWizard.navigationLength && remote_server==true">Remote Backup</a>
 								</div>
 							</div>
 						</div>
