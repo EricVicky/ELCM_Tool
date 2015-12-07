@@ -79,8 +79,8 @@ angular.module('backup_restore', ['ui.router',
         	validationService.backupNfsPrecheck($scope.backupConfig.backupLocation.remote_server_dir,nfsip,oamip).then( function(data) {
         		$scope.valid_nfs = data.isValid;
         		if($scope.valid_nfs!=true){
-        			//$scope.message_nfs = data.message.split("mount.nfs:")[1].split("\r\n")[0];
-        			$scope.message_nfs = data.message.split("\r\n")[3]; 
+        			$scope.message_nfs = data.message.split("mount.nfs:")[1].split("\r\n")[0];
+        			//$scope.message_nfs = data.message.split("\r\n")[3]; 
         		}else{
         			$scope.message_nfs = data.message;
         		}
