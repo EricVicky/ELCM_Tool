@@ -135,6 +135,7 @@ public class COMValidationService {
     public String mountServer(String mountDir, String nfsDir, String ip, String nfsIp, String command){
    	    Session session = null;
    	    String mntCommand = "";
+   	    String fwCommand = "";
         if(SystemUtils.IS_OS_WINDOWS){
             session = getSession(this.username, this.ip, this.password);
         }else{
@@ -142,15 +143,17 @@ public class COMValidationService {
         }
         Channel mntChannel = getChannel(session);
         if("mount".equals(command)){
+        	fwCommand = "service iptables stop"+" \n";
         	mntCommand = "mount -o nolock -t nfs "+nfsIp+":"+nfsDir+" "+mountDir+" \n";       	
         }else{
         	mntCommand = "umount "+mountDir+" \n";
+        	fwCommand = "service iptables start"+" \n";
         }
         String mntResult = null;
         try {
     		OutputStream outstream = mntChannel.getOutputStream();
     		InputStream in=mntChannel.getInputStream();
-			outstream.write(mntCommand.getBytes());
+			outstream.write((fwCommand+mntCommand).getBytes());
 			outstream.flush();
 			try{Thread.sleep(1000);}catch(Exception ee){}
 			System.out.println("The command " + mntCommand + " is excuted");
