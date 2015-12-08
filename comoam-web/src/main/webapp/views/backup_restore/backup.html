@@ -201,7 +201,7 @@
 												<h4>Checking existence/write access/available space of destination directories before data backup launching, Please wait......</h4>
 											</div>
 											<div ng-if="message_nfs!=''">
-												<h5><span ng-if="message_nfs=='Success.'" style="color:green">Remote Server --- {{message_nfs}}</span><span ng-if="message_nfs!='Success.'" style="color:red">Remote Server --- {{message_nfs}}</span></h5>
+												<h5>Remote VM --- <span ng-if="message_nfs=='Success.'" style="color:green">{{message_nfs}}</span><span ng-if="message_nfs!='Success.'" style="color:red">{{message_nfs}}</span></h5>
 											</div>
 										</div>
 										
