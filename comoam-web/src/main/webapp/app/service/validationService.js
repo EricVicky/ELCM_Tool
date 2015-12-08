@@ -27,7 +27,7 @@ angular.module('validation',[]).factory('validationService', function($location,
 		},
 		fullbackupPrecheck: function(hostip,deployment_prefix,vm_img_dir,hostname) {
 			var deferred = $q.defer();
-		    $http.get(restUrl + "check/backupNfsPrecheck", {"params": {"dir": dir,"nfsip": nfsip,"oamip": oamip}}).success(function(res) {
+		    $http.get(restUrl + "check/fullbackupPrecheck", {"params": {"hostip": hostip,"deployment_prefix": deployment_prefix,"vm_img_dir": vm_img_dir,"hostname":hostname}}).success(function(res) {
 		        deferred.resolve({ isValid: res.succeed, message: res.message });
 		    });
 		    return deferred.promise;
