@@ -58,6 +58,12 @@ angular.module('backup_restore', ['ui.router',
 		$scope.setDefaultInstace();
     });
     
+    $scope.IPNFSCheck = function(){
+    	if($scope.backupConfig.backupLocation.remote_server_dir){
+    		$scope.preNFSCheck();
+    	}
+    };
+    
     $scope.preNFSCheck = function(){
     	if($scope.remote_server){
     		$scope.valid_nfs = false;
@@ -79,8 +85,11 @@ angular.module('backup_restore', ['ui.router',
         	validationService.backupNfsPrecheck($scope.backupConfig.backupLocation.remote_server_dir,nfsip,oamip).then( function(data) {
         		$scope.valid_nfs = data.isValid;
         		if($scope.valid_nfs!=true){
-        			$scope.message_nfs = data.message.split("mount.nfs:")[1].split("\r\n")[0];
-        			//$scope.message_nfs = data.message.split("\r\n")[3]; 
+        			if(data.message.indexOf("mount.nfs:")!=-1){
+        				$scope.message_nfs = data.message.split("mount.nfs:")[1].split("\r\n")[0];		
+        			}else{
+        				$scope.message_nfs = "Time out while mounting server.";
+        			}
         		}else{
         			$scope.message_nfs = data.message;
         		}

@@ -187,7 +187,7 @@
 											<label class="control-label" translate="BACKUP_SERVER_IP">Backup Server IP</label> <input
 												name="backup_server_ip" class="form-control" type="text"
 												ng-model="$parent.backupConfig.backupLocation.remote_server_ip" 
-												title="serverip" validation="required|ipv4"/>
+												title="serverip" validation="required|ipv4" ng-blur="IPNFSCheck()"/>
 										</div>
 										<div class="form-group" ng-if="remote_server==true">
 											<label class="control-label" translate="BACKUP_SERVER_DIRECTORY">Backup Server Directory</label> <input
