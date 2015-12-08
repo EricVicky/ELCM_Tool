@@ -112,7 +112,7 @@ public class COMValidationService {
     		InputStream in=channel.getInputStream();
 			outstream.write(finalCommand.getBytes());
 			outstream.flush();
-			try{Thread.sleep(1000);}catch(Exception ee){}
+			try{Thread.sleep(3000);}catch(Exception ee){}
 			System.out.println("The command " + command + " is excuted");
 			byte[] tmp=new byte[1024];
 				while(in.available()>0){
