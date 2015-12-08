@@ -91,17 +91,17 @@ public class COMValidationService {
             session = getSession(this.ip);
         }
         
-//        Channel cf_channel = cf_getChannel(session);
-//        ChannelSftp c = null;
-//        try {
-//        	c = (ChannelSftp) cf_channel;
-//            System.out.println("Starting File Upload:");
-//            String fsrc = "/opt/PlexView/ELCM/script/pre_check_for_fd_backup.sh", fdest = "/alcatel/omc1/OMC_OSM/backup_scripts/";
-//            c.put(fsrc, fdest);
-//            c.chmod(744, "/alcatel/omc1/OMC_OSM/backup_scripts/pre_check_for_fd_backup.sh");
-//            //c.get(fdest, "/tmp/testfile.bin");
-//            c.disconnect();
-//        } catch (Exception e) {	e.printStackTrace();	}
+        Channel cf_channel = cf_getChannel(session);
+        ChannelSftp c = null;
+        try {
+        	c = (ChannelSftp) cf_channel;
+            System.out.println("Starting File Upload:");
+            String fsrc = "/opt/PlexView/ELCM/script/pre_check_for_fd_backup.sh", fdest = "/alcatel/omc1/OMC_OSM/backup_scripts/";
+            c.put(fsrc, fdest);
+            c.chmod(744, "/alcatel/omc1/OMC_OSM/backup_scripts/pre_check_for_fd_backup.sh");
+            //c.get(fdest, "/tmp/testfile.bin");
+            c.disconnect();
+        } catch (Exception e) {	e.printStackTrace();	}
         
     	Channel channel = getChannel(session);
 		String finalCommand = command+"\n";
