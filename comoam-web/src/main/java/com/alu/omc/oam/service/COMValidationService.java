@@ -120,7 +120,8 @@ public class COMValidationService {
 		              if(i<0)break;
 		              string = new String(tmp, 0, i);
 		              System.out.print(string);
-		            }    
+		            }   
+			try{Thread.sleep(2000);}catch(Exception ee){}
             outstream.close();
             in.close();
             channel.disconnect();
