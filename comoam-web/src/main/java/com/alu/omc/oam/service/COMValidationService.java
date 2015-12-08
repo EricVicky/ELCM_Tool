@@ -25,7 +25,7 @@ public class COMValidationService {
 			session = shell.getSession(username, ip, 22);
 	        session.setPassword(password);
 	        session.setConfig("StrictHostKeyChecking", "no");
-	        session.connect(1000);
+	        session.connect();
 	        System.out.println("The session to COM server " + ip + " is created");
 		} catch (JSchException e) {
 			// TODO Auto-generated catch block
@@ -47,7 +47,7 @@ public class COMValidationService {
             Session session = ssh.getSession("root", ip, 22);
             System.out.println("The session to COM server " + ip + " is created");
             session.setConfig("StrictHostKeyChecking", "no");
-            session.connect(3000);
+            session.connect();
             return session;
         }
         catch (JSchException e)
@@ -114,9 +114,9 @@ public class COMValidationService {
 			outstream.flush();
 			try{Thread.sleep(1000);}catch(Exception ee){}
 			System.out.println("The command " + command + " is excuted");
-			byte[] tmp=new byte[2048];
+			byte[] tmp=new byte[1024];
 				while(in.available()>0){
-		              int i=in.read(tmp, 0, 2048);
+		              int i=in.read(tmp, 0, 1024);
 		              if(i<0)break;
 		              string = new String(tmp, 0, i);
 		              System.out.print(string);
@@ -166,6 +166,7 @@ public class COMValidationService {
               mntResult = new String(tmp, 0, i);
               System.out.print(mntResult);
            }
+           try{Thread.sleep(1000);}catch(Exception ee){}
            outstream.close();
            in.close();
            mntChannel.disconnect();
