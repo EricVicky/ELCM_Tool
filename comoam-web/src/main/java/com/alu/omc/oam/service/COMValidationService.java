@@ -91,20 +91,21 @@ public class COMValidationService {
             session = getSession(this.ip);
         }
         
-        Channel cf_channel = cf_getChannel(session);
-        ChannelSftp c = null;
-        try {
-        	c = (ChannelSftp) cf_channel;
-            System.out.println("Starting File Upload:");
-            String fsrc = "/opt/PlexView/ELCM/script/pre_check_for_fd_backup.sh", fdest = "/alcatel/omc1/OMC_OSM/backup_scripts/";
-            c.put(fsrc, fdest);
-            c.chmod(744, "/alcatel/omc1/OMC_OSM/backup_scripts/pre_check_for_fd_backup.sh");
-            //c.get(fdest, "/tmp/testfile.bin");
-            c.disconnect();
-        } catch (Exception e) {	e.printStackTrace();	}
+//        Channel cf_channel = cf_getChannel(session);
+//        ChannelSftp c = null;
+//        try {
+//        	c = (ChannelSftp) cf_channel;
+//            System.out.println("Starting File Upload:");
+//            String fsrc = "/opt/PlexView/ELCM/script/pre_check_for_fd_backup.sh", fdest = "/alcatel/omc1/OMC_OSM/backup_scripts/";
+//            c.put(fsrc, fdest);
+//            c.chmod(744, "/alcatel/omc1/OMC_OSM/backup_scripts/pre_check_for_fd_backup.sh");
+//            //c.get(fdest, "/tmp/testfile.bin");
+//            c.disconnect();
+//        } catch (Exception e) {	e.printStackTrace();	}
         
     	Channel channel = getChannel(session);
 		String finalCommand = command+"\n";
+		//String finalCommand = "service iptables stop"+" \n"+"mount -o nolock -t nfs 135.252.138.136:/var/images/EricTestDaB /localbackup/"+"\n";
 		String string = null;
     	try {
     		OutputStream outstream = channel.getOutputStream();
@@ -114,19 +115,12 @@ public class COMValidationService {
 			try{Thread.sleep(1000);}catch(Exception ee){}
 			System.out.println("The command " + command + " is excuted");
 			byte[] tmp=new byte[1024];
-			while(true){
 				while(in.available()>0){
 		              int i=in.read(tmp, 0, 1024);
 		              if(i<0)break;
 		              string = new String(tmp, 0, i);
 		              System.out.print(string);
-		            }
-				if(channel.isClosed()){
-			          System.out.println("exit-status: "+channel.getExitStatus());
-			          break;
-			        }
-			        try{Thread.sleep(1000);}catch(Exception ee) {ee.printStackTrace();}
-			}         
+		            }    
             outstream.close();
             in.close();
             channel.disconnect();
@@ -265,6 +259,7 @@ public class COMValidationService {
     	} else{
     		return "Other errors.";
     	}
+    	//return preCheckResult;
     }
     
     public String mountNfsServer(String dir, String nfsDir, String ip, String nfsip, String command){

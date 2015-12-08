@@ -94,7 +94,7 @@ public class CheckController
     	ValidationResult res = new ValidationResult();
     	cOMValidationService.setoamip(oamip);
     	String mntResult = cOMValidationService.mountNfsServer("/localbackup",dir,oamip,nfsip,"mount");
-    	if((mntResult.contains("mount.nfs:"))){
+    	if((mntResult.contains("mount.nfs:"))||mntResult.endsWith("\r\n")){
     		res.setSucceed(false);
     		res.setMessage(mntResult);
     	}else{
