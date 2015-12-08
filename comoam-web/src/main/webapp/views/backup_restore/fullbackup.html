@@ -15,7 +15,7 @@
 						</ul>
 						<div class="modal-body col-md-12">
 							<div class="tab-content">
-								<form class="tab-pane active ng-pristine ng-valid" id="tab1" name="tab1" rc-submit="" rc-step>
+								<form class="tab-pane active ng-pristine ng-valid" id="tab1" name="tab1" rc-submit="preCheck()" rc-step>
 									<div class="panel panel-default">
 										<div class="panel-heading">
 											<label class="control-label" translate="COM_INSTANCE">COM Instance</label> <select
@@ -202,6 +202,11 @@
 										</div>
 										<div ng-if="remote_server!=true">
 											<h4>The local full backup directory is : <span style="color:green">{{installConfig.vm_img_dir}}/{{installConfig.deployment_prefix}}</span></h4>
+										</div>
+										<div ng-if="remote_server!=true">
+											<div>
+												<h4></h4>
+											</div>
 										</div>
 									</fieldset>
 								</form>

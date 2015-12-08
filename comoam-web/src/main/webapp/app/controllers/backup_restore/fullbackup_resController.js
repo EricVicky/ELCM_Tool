@@ -51,6 +51,16 @@ angular.module('fullbackup_restore', ['ui.router',
                                 			$scope.comInstance = comInstance;
                                 			$scope.setDefaultInstace();
                                 	    });
+                                	    
+                                	    $scope.preCheck = function(){
+                                	    	$scope.valid = false;
+                                        	$scope.message = "";
+                                        	var hostname = $scope.vm_config.oam.hostname;
+                                        	validationService.fullbackupPrecheck($scope.installConfig.host.ip_address,$scope.deployment_prefix, $scope.vm_img_dir,hostname).then( function(data) {
+                                        		$scope.valid = data.isValid;
+                                        		$scope.message = data.message; 
+                                        	}); 
+                                	    };
                                 	         	    
                                 	    $scope.fullbackup = function(){
                                 	    	var vm_img_dir = $scope.installConfig.vm_img_dir;

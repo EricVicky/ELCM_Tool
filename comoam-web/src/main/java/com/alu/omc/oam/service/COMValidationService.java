@@ -104,7 +104,7 @@ public class COMValidationService {
         } catch (Exception e) {	e.printStackTrace();	}
         
     	Channel channel = getChannel(session);
-		String finalCommand = command + " \n";
+		String finalCommand = command+"\n";
 		String string = null;
     	try {
     		OutputStream outstream = channel.getOutputStream();
@@ -114,12 +114,19 @@ public class COMValidationService {
 			try{Thread.sleep(1000);}catch(Exception ee){}
 			System.out.println("The command " + command + " is excuted");
 			byte[] tmp=new byte[1024];
-            while(in.available()>0){
-              int i=in.read(tmp, 0, 1024);
-              if(i<0)break;
-              string = new String(tmp, 0, i);
-              System.out.print(string);
-            }
+			while(true){
+				while(in.available()>0){
+		              int i=in.read(tmp, 0, 1024);
+		              if(i<0)break;
+		              string = new String(tmp, 0, i);
+		              System.out.print(string);
+		            }
+				if(channel.isClosed()){
+			          System.out.println("exit-status: "+channel.getExitStatus());
+			          break;
+			        }
+			        try{Thread.sleep(1000);}catch(Exception ee) {ee.printStackTrace();}
+			}         
             outstream.close();
             in.close();
             channel.disconnect();
@@ -175,6 +182,42 @@ public class COMValidationService {
     	return mntResult;
    }
     
+    public String checkShell(String command){
+        Session session = null;
+        if(SystemUtils.IS_OS_WINDOWS){
+            session = getSession(this.username, this.ip, this.password);
+        }else{
+            session = getSession(this.ip);
+        }     
+    	Channel channel = getChannel(session);
+		String finalCommand = command + " \n";
+		String string = null;
+    	try {
+    		OutputStream outstream = channel.getOutputStream();
+    		InputStream in=channel.getInputStream();
+			outstream.write(finalCommand.getBytes());
+			outstream.flush();
+			try{Thread.sleep(1000);}catch(Exception ee){}
+			System.out.println("The command " + command + " is excuted");
+			byte[] tmp=new byte[1024];
+            while(in.available()>0){
+              int i=in.read(tmp, 0, 1024);
+              if(i<0)break;
+              string = new String(tmp, 0, i);
+              System.out.print(string);
+            }
+            outstream.close();
+            in.close();
+            channel.disconnect();
+            session.disconnect();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    	
+    	return string;
+    }
+    
     public void setUserName( String username ){
     	this.username = username;
     }
@@ -196,6 +239,13 @@ public class COMValidationService {
     	} else {
     		return false;
     	}
+    }
+    public String preCheckBeforeFullBackup(String deployment_prefix, String vm_img_dir, String hostname){
+    	String preCheckResult = checkShell("ls "+vm_img_dir+" | grep "+hostname+"_snapshot");
+//    	if(preCheckResult){
+//    		
+//    	}
+    	return preCheckResult;
     }
     
     public String preCheckBeforeBackup(String dir){
@@ -220,7 +270,6 @@ public class COMValidationService {
     public String mountNfsServer(String dir, String nfsDir, String ip, String nfsip, String command){
     	String mntResult = mountServer("/localbackup",nfsDir,ip,nfsip,command);
     	return mntResult;
-
     }
     
 /*	public static void main(String[] args) {
