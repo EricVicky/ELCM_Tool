@@ -256,10 +256,8 @@ public class COMValidationService {
     		return "Error: The target has NOT enough disk space.";
     	} else if(preCheckResult.contains("No such file or directory")){
     		return "Error: Scripts not exist.";
-    	} else if(preCheckResult.contains("Success")){
+    	} else {
     		return "Success.";
-    	} else{
-    		return "Other errors.";
     	}
     	//return preCheckResult;
     }
