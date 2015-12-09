@@ -53,7 +53,7 @@ angular.module('fullbackup_restore', ['ui.router',
                                 	    });
                                 	    
                                 	    $scope.IPNFSCheck = function(){
-                                	    	if($scope.backupConfig.backupLocation.remote_server_dir){
+                                	    	if($scope.fullbackupConfig.remote_server_dir){
                                 	    		$scope.preNFSCheck();
                                 	    	}
                                 	    };
