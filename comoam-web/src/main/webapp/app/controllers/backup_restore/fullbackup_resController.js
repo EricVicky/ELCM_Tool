@@ -75,7 +75,7 @@ angular.module('fullbackup_restore', ['ui.router',
                                             				$scope.message_nfs = "Time out while mounting server.";
                                             			}
                                             		}else{
-                                            			$scope.message_nfs = data.message;
+                                            			$scope.message_nfs = "Success.";
                                             		}
                                             	}); 
                                 	        	

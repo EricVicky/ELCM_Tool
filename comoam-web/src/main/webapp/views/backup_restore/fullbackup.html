@@ -240,7 +240,7 @@
 										ng-show="rc.backupWizard.currentIndex < rc.backupWizard.navigationLength" translate="CONTINUE">Continue</a>
 									<a class="btn btn-primary" ng-click="fullbackup()" ng-disabled="tab2.$invalid || chemessage==false"
 										ng-show="rc.backupWizard.currentIndex == rc.backupWizard.navigationLength && remote_server!=true">Local Full Backup</a>
-									<a class="btn btn-primary" ng-click="fullbackup()" ng-disabled="tab2.$invalid || valid_nfs==false"
+									<a class="btn btn-primary" ng-click="fullbackup()" ng-disabled="tab2.$invalid || valid_nfs==false || chemessage_nfs!=true"
 										ng-show="rc.backupWizard.currentIndex == rc.backupWizard.navigationLength && remote_server==true">Remote Full Backup</a>
 								</div>
 							</div>
