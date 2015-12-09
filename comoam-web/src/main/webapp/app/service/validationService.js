@@ -32,7 +32,13 @@ angular.module('validation',[]).factory('validationService', function($location,
 		    });
 		    return deferred.promise;
 		},
-			
+		fullbackupNfsPrecheck: function(vm_img_dir,deployment_prefix,hostip,nfsip,nfsdir) {
+			var deferred = $q.defer();
+		    $http.get(restUrl + "check/fullbackupNfsPrecheck", {"params": {"vm_img_dir": vm_img_dir,"deployment_prefix": deployment_prefix,"hostip": hostip,"nfsip": nfsip,"nfsdir": nfsdir}}).success(function(res) {
+		        deferred.resolve({ isValid: res.succeed, message: res.message });
+		    });
+		    return deferred.promise;
+		},
 	};
 });
 

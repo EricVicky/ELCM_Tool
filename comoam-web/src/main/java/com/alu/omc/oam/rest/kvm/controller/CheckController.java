@@ -111,12 +111,29 @@ public class CheckController
     		                         @ModelAttribute("vm_img_dir") String vm_img_dir,@ModelAttribute("hostname") String hostname){
     	ValidationResult res = new ValidationResult();
     	cOMValidationService.setoamip(hostip);
-    	String dupCheckRes= cOMValidationService.fullbackupDuplateCheck(deployment_prefix,vm_img_dir,hostname);
+    	String dupCheckRes= cOMValidationService.fullbackupDuplicateCheck(deployment_prefix,vm_img_dir,hostname);
     	if(dupCheckRes.split("grep "+hostname+"_snapshot")[dupCheckRes.split("grep "+hostname+"_snapshot").length-1].contains(hostname+"_snapshot")){
     		res.setSucceed(false);
     	}else{
     		res.setSucceed(true);
     	}	
+    	return res;
+    }
+    
+    @RequestMapping(value="/check/fullbackupNfsPrecheck", method=RequestMethod.GET)
+    public ValidationResult fullbackupNfsPrecheck(@ModelAttribute("nfsip") String nfsip,@ModelAttribute("nfsdir") String nfsdir,@ModelAttribute("deployment_prefix") String deployment_prefix,
+    		                          @ModelAttribute("vm_img_dir") String vm_img_dir, @ModelAttribute("hostip") String hostip){
+    	ValidationResult res = new ValidationResult();
+    	cOMValidationService.setoamip(hostip);
+    	String preCheckRes= cOMValidationService.mountNfsServer(vm_img_dir+"/"+deployment_prefix,nfsdir,hostip,nfsip,"mount");
+    	if((preCheckRes.contains("mount.nfs:"))||preCheckRes.endsWith("\r\n")){
+    		res.setSucceed(false);
+    		res.setMessage(preCheckRes);
+    	}else{
+    		res.setSucceed(true);
+    		res.setMessage(preCheckRes);
+            cOMValidationService.mountNfsServer(vm_img_dir+"/"+deployment_prefix,nfsdir,hostip,nfsip,"umount");
+    	}
     	return res;
     }
     

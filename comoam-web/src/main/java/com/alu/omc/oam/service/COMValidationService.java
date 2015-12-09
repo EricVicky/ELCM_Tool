@@ -145,11 +145,11 @@ public class COMValidationService {
         }
         Channel mntChannel = getChannel(session);
         if("mount".equals(command)){
-        	fwCommand = "service iptables stop"+" \n";
+        	//fwCommand = "service iptables stop"+" \n";
         	mntCommand = "mount -o nolock -t nfs "+nfsIp+":"+nfsDir+" "+mountDir+" \n";       	
         }else{
         	mntCommand = "umount "+mountDir+" \n";
-        	fwCommand = "service iptables start"+" \n";
+        	//fwCommand = "service iptables start"+" \n";
         }
         String mntResult = null;
         try {
@@ -157,7 +157,7 @@ public class COMValidationService {
     		InputStream in=mntChannel.getInputStream();
 			outstream.write((fwCommand+mntCommand).getBytes());
 			outstream.flush();
-			try{Thread.sleep(1000);}catch(Exception ee){}
+			try{Thread.sleep(2000);}catch(Exception ee){}
 			System.out.println("The command " + mntCommand + " is excuted");
 			byte[] tmp=new byte[1024];
            while(in.available()>0){
@@ -256,14 +256,15 @@ public class COMValidationService {
     }
     
     public String mountNfsServer(String dir, String nfsDir, String ip, String nfsip, String command){
-    	String mntResult = mountServer("/localbackup",nfsDir,ip,nfsip,command);
+    	String mntResult = mountServer(dir,nfsDir,ip,nfsip,command);
     	return mntResult;
     }
     
-    public String fullbackupDuplateCheck(String deployment_prefix,String vm_img_dir,String hostname){
+    public String fullbackupDuplicateCheck(String deployment_prefix,String vm_img_dir,String hostname){
     	String DuplateCheckRes = checkShell("ls "+vm_img_dir+"/"+deployment_prefix+" | grep "+hostname+"_snapshot");
     	return DuplateCheckRes;
     }
+    
     
 /*	public static void main(String[] args) {
 		// TODO Auto-generated method stub

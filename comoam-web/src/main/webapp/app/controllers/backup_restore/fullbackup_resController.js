@@ -52,11 +52,45 @@ angular.module('fullbackup_restore', ['ui.router',
                                 			$scope.setDefaultInstace();
                                 	    });
                                 	    
+                                	    $scope.IPNFSCheck = function(){
+                                	    	if($scope.backupConfig.backupLocation.remote_server_dir){
+                                	    		$scope.preNFSCheck();
+                                	    	}
+                                	    };
+                                	    
+                                	    $scope.preNFSCheck = function(){
+                                	    	if($scope.remote_server){
+                                	    		$scope.valid_nfs = false;
+                                	        	$scope.message_nfs = "";
+                                	        	$scope.chemessage_nfs = false;        	
+                                	        	validationService.fullbackupNfsPrecheck($scope.installConfig.vm_img_dir,$scope.installConfig.deployment_prefix,
+                                	        			                                $scope.installConfig.host.ip_address,$scope.fullbackupConfig.remote_server_ip,
+                                	        			                                $scope.fullbackupConfig.remote_server_dir).then( function(data) {
+                                            		$scope.valid_nfs = data.isValid;
+                                            		$scope.chemessage_nfs = true;
+                                            		if($scope.valid_nfs!=true){
+                                            			if(data.message.indexOf("mount.nfs:")!=-1){
+                                            				$scope.message_nfs = data.message.split("mount.nfs:")[1].split("\r\n")[0];		
+                                            			}else{
+                                            				$scope.message_nfs = "Time out while mounting server.";
+                                            			}
+                                            		}else{
+                                            			$scope.message_nfs = data.message;
+                                            		}
+                                            	}); 
+                                	        	
+                                	    	}
+                                	    };                             	    	    
+                                	    
                                 	    $scope.preCheck = function(){
                                 	    	$scope.valid = false;
                                 	    	$scope.chemessage = false;
                                         	//$scope.message = "";
-                                        	var hostname = $scope.installConfig.vm_config.oam.hostname;
+                                	    	if($scope.installConfig.comType=="FCAPS"||$scope.installConfig.comType=="OAM"||$scope.installConfig.comType=="CM"){
+                                	    		var hostname = $scope.installConfig.vm_config.oam.hostname; 	    		
+                                	    	}else{
+                                	    		var hostname = $scope.installConfig.vm_config.ovm.hostname; 
+                                	    	}
                                         	validationService.fullbackupDupcheck($scope.installConfig.host.ip_address,$scope.installConfig.deployment_prefix, $scope.installConfig.vm_img_dir,hostname).then( function(data) {
                                         		$scope.valid = data.isValid;
                                         		//$scope.message = data.message;

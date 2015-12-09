@@ -186,14 +186,24 @@
 											<label class="control-label">Full Backup Server IP</label> <input
 												name="backup_server_ip" class="form-control" type="text"
 												ng-model="$parent.fullbackupConfig.remote_server_ip" 
-												title="serverip" validation="required|ipv4"/>
+												title="serverip" validation="required|ipv4" ng-blur="IPNFSCheck()"/>
 										</div>
 										<div class="form-group" ng-if="remote_server==true">
 											<label class="control-label">Full Backup Server Directory</label> <input
 												name="backup_server_directory" class="form-control" type="text"
 												ng-model="$parent.fullbackupConfig.remote_server_dir" 
-												title="directory" validation="required"/>
+												title="directory" validation="required" ng-blur="preNFSCheck()"/>
 										</div>
+										
+										<div ng-if="remote_server==true">
+											<div ng-if="message_nfs=='' && chemessage_nfs==false">
+												<h4>Checking Remote Server directory enabled/exist before Full Backup launching, Please wait......</h4>
+											</div>
+											<div ng-if="message_nfs!='' && chemessage_nfs==true">
+												<h5>Remote Server --- <span ng-if="message_nfs=='Success.'" style="color:green">{{message_nfs}}</span><span ng-if="message_nfs!='Success.'" style="color:red">{{message_nfs}}</span></h5>
+											</div>
+										</div>
+										
 										<div class="form-group" ng-show="">
 											<label class="control-label">Full Backup Directory</label> <input
 												name="local_directory" class="form-control" type="text"
@@ -229,7 +239,9 @@
 										ng-click="rc.backupWizard.forward()"
 										ng-show="rc.backupWizard.currentIndex < rc.backupWizard.navigationLength" translate="CONTINUE">Continue</a>
 									<a class="btn btn-primary" ng-click="fullbackup()" ng-disabled="tab2.$invalid || chemessage==false"
-										ng-show="rc.backupWizard.currentIndex == rc.backupWizard.navigationLength">Full Backup</a>
+										ng-show="rc.backupWizard.currentIndex == rc.backupWizard.navigationLength && remote_server!=true">Local Full Backup</a>
+									<a class="btn btn-primary" ng-click="fullbackup()" ng-disabled="tab2.$invalid || valid_nfs==false"
+										ng-show="rc.backupWizard.currentIndex == rc.backupWizard.navigationLength && remote_server==true">Remote Full Backup</a>
 								</div>
 							</div>
 						</div>
