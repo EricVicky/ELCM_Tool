@@ -6,7 +6,7 @@ angular.module('fullbackup_restore', ['ui.router',
                                   'ghiscoding.validation',
                                   'monitor',
                                   'ngResource']).controller('fullbackup_resctr', function($scope,  $log, KVMService
-		, fullBackup_ResService, monitorService,DashboardService, $dialogs, $state,$translate) {
+		, fullBackup_ResService, monitorService,DashboardService, $dialogs, $state,$translate,validationService) {
                                 	
                                 	  $scope.reloadimglist = function(){
                                 	    	if($scope.com_instance != null){
@@ -54,11 +54,13 @@ angular.module('fullbackup_restore', ['ui.router',
                                 	    
                                 	    $scope.preCheck = function(){
                                 	    	$scope.valid = false;
-                                        	$scope.message = "";
-                                        	var hostname = $scope.vm_config.oam.hostname;
-                                        	validationService.fullbackupPrecheck($scope.installConfig.host.ip_address,$scope.deployment_prefix, $scope.vm_img_dir,hostname).then( function(data) {
+                                	    	$scope.chemessage = false;
+                                        	//$scope.message = "";
+                                        	var hostname = $scope.installConfig.vm_config.oam.hostname;
+                                        	validationService.fullbackupDupcheck($scope.installConfig.host.ip_address,$scope.installConfig.deployment_prefix, $scope.installConfig.vm_img_dir,hostname).then( function(data) {
                                         		$scope.valid = data.isValid;
-                                        		$scope.message = data.message; 
+                                        		//$scope.message = data.message;
+                                        		$scope.chemessage = true;
                                         	}); 
                                 	    };
                                 	         	    

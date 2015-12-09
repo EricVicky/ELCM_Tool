@@ -15,7 +15,7 @@
 						</ul>
 						<div class="modal-body col-md-12">
 							<div class="tab-content">
-								<form class="tab-pane active ng-pristine ng-valid" id="tab1" name="tab1" rc-submit="" rc-step>
+								<form class="tab-pane active ng-pristine ng-valid" id="tab1" name="tab1" rc-submit="preCheck()" rc-step>
 									<div class="panel panel-default">
 										<div class="panel-heading">
 											<label class="control-label" translate="COM_INSTANCE">COM Instance</label> <select
@@ -192,7 +192,7 @@
 											<label class="control-label">Full Backup Server Directory</label> <input
 												name="backup_server_directory" class="form-control" type="text"
 												ng-model="$parent.fullbackupConfig.remote_server_dir" 
-												title="serverip" validation="required"/>
+												title="directory" validation="required"/>
 										</div>
 										<div class="form-group" ng-show="">
 											<label class="control-label">Full Backup Directory</label> <input
@@ -201,11 +201,18 @@
 												title="directory" validation="required" ng-init="fullbackupConfig.full_backup_dir='/fullbackup'"/>
 										</div>
 										<div ng-if="remote_server!=true">
-											<h4>The local full backup directory is : <span style="color:green">{{installConfig.vm_img_dir}}/{{installConfig.deployment_prefix}}</span></h4>
+											<h4>Directory : <span style="color:green">{{installConfig.vm_img_dir}}/{{installConfig.deployment_prefix}}</span></h4>
 										</div>
+										<br>
 										<div ng-if="remote_server!=true">
-											<div>
-												<h4></h4>
+											<div ng-if="chemessage==false">
+												<h4>Checking whether initial full backup files exist before full backup launching, Please wait......</h4>
+											</div>
+											<div ng-if="chemessage!=false && valid==true" style="color:green">
+												<h4>OK,no initial files in the directory.</h4>
+											</div>
+											<div ng-if="chemessage!=false && valid==false" style="color:red">
+												<h4>Initial files will be erased by the new Full Backup!</h4>
 											</div>
 										</div>
 									</fieldset>
@@ -221,7 +228,7 @@
 									<a class="btn btn-primary"
 										ng-click="rc.backupWizard.forward()"
 										ng-show="rc.backupWizard.currentIndex < rc.backupWizard.navigationLength" translate="CONTINUE">Continue</a>
-									<a class="btn btn-primary" ng-click="fullbackup()" ng-disabled="tab2.$invalid"
+									<a class="btn btn-primary" ng-click="fullbackup()" ng-disabled="tab2.$invalid || chemessage==false"
 										ng-show="rc.backupWizard.currentIndex == rc.backupWizard.navigationLength">Full Backup</a>
 								</div>
 							</div>

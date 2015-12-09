@@ -25,9 +25,9 @@ angular.module('validation',[]).factory('validationService', function($location,
 		    });
 		    return deferred.promise;
 		},
-		fullbackupPrecheck: function(hostip,deployment_prefix,vm_img_dir,hostname) {
+		fullbackupDupcheck: function(hostip,deployment_prefix,vm_img_dir,hostname) {
 			var deferred = $q.defer();
-		    $http.get(restUrl + "check/fullbackupPrecheck", {"params": {"hostip": hostip,"deployment_prefix": deployment_prefix,"vm_img_dir": vm_img_dir,"hostname":hostname}}).success(function(res) {
+		    $http.get(restUrl + "check/fullbackupDupcheck", {"params": {"hostip": hostip,"deployment_prefix": deployment_prefix,"vm_img_dir": vm_img_dir,"hostname":hostname}}).success(function(res) {
 		        deferred.resolve({ isValid: res.succeed, message: res.message });
 		    });
 		    return deferred.promise;

@@ -16,7 +16,7 @@ public class COMValidationService {
 	
 	private String username = "root";
 	private String ip ;
-	private String password = "newsys";
+	private String password = "EMS_qd_n2";
 	
 	private Session getSession(String username, String ip, String password){
         JSch shell = new JSch();
@@ -193,7 +193,7 @@ public class COMValidationService {
     		InputStream in=channel.getInputStream();
 			outstream.write(finalCommand.getBytes());
 			outstream.flush();
-			try{Thread.sleep(1000);}catch(Exception ee){}
+			try{Thread.sleep(2000);}catch(Exception ee){}
 			System.out.println("The command " + command + " is excuted");
 			byte[] tmp=new byte[1024];
             while(in.available()>0){
@@ -236,13 +236,6 @@ public class COMValidationService {
     		return false;
     	}
     }
-    public String preCheckBeforeFullBackup(String deployment_prefix, String vm_img_dir, String hostname){
-    	String preCheckResult = checkShell("ls "+vm_img_dir+" | grep "+hostname+"_snapshot");
-//    	if(preCheckResult){
-//    		
-//    	}
-    	return preCheckResult;
-    }
     
     public String preCheckBeforeBackup(String dir){
     	String preCheckResult = excuteShell("/alcatel/omc1/OMC_OSM/backup_scripts/pre_check_for_fd_backup.sh "+ dir);
@@ -265,6 +258,11 @@ public class COMValidationService {
     public String mountNfsServer(String dir, String nfsDir, String ip, String nfsip, String command){
     	String mntResult = mountServer("/localbackup",nfsDir,ip,nfsip,command);
     	return mntResult;
+    }
+    
+    public String fullbackupDuplateCheck(String deployment_prefix,String vm_img_dir,String hostname){
+    	String DuplateCheckRes = checkShell("ls "+vm_img_dir+"/"+deployment_prefix+" | grep "+hostname+"_snapshot");
+    	return DuplateCheckRes;
     }
     
 /*	public static void main(String[] args) {

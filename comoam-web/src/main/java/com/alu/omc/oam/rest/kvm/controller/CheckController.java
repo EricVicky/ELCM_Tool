@@ -106,6 +106,20 @@ public class CheckController
         return res;
     }
     
+    @RequestMapping(value="/check/fullbackupDupcheck", method=RequestMethod.GET)
+    public ValidationResult fullbackupDupcheck(@ModelAttribute("hostip") String hostip,@ModelAttribute("deployment_prefix") String deployment_prefix,
+    		                         @ModelAttribute("vm_img_dir") String vm_img_dir,@ModelAttribute("hostname") String hostname){
+    	ValidationResult res = new ValidationResult();
+    	cOMValidationService.setoamip(hostip);
+    	String dupCheckRes= cOMValidationService.fullbackupDuplateCheck(deployment_prefix,vm_img_dir,hostname);
+    	if(dupCheckRes.split("grep "+hostname+"_snapshot")[dupCheckRes.split("grep "+hostname+"_snapshot").length-1].contains(hostname+"_snapshot")){
+    		res.setSucceed(false);
+    	}else{
+    		res.setSucceed(true);
+    	}	
+    	return res;
+    }
+    
     @RequestMapping(value="/gr/kvm/checkinstalled", method=RequestMethod.GET)
     public ValidationResult GRCheck(@ModelAttribute("name") String name){
        List<COMStack> stacks =  cOMStackService.list();
