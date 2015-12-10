@@ -17,7 +17,7 @@ public class COMValidationService {
 	private String username = "root";
 	private String ip ;
 	private String password = "EMS_qd_n2";
-	
+	//windows OS
 	private Session getSession(String username, String ip, String password){
         JSch shell = new JSch();
         Session session = null;
@@ -33,7 +33,7 @@ public class COMValidationService {
 		}  
         return session;
 	}
-	
+	//Linux OS
 	private Session getSession(String ip){
         String privateKey = "/root/.ssh/id_rsa";
         
@@ -56,56 +56,53 @@ public class COMValidationService {
         }
         return null;
 	}
+	//Get channel
+	private Channel getChannel(Session session,String protocol){
+		Channel channel = null;
+		try {
+			channel = session.openChannel(protocol);
+			System.out.println("The "+protocol+"channel is created");
+			channel.connect();
+		} catch (JSchException e) {
+			e.printStackTrace();
+		}
+    	return channel;
+	}
 	
-    private Channel getChannel(Session session){
-    	Channel channel = null;
-		try {
-			channel = session.openChannel("shell");
-			System.out.println("The shell channel is created");
-			channel.connect();
-		} catch (JSchException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-    	return channel;
-    }
-    
-    private Channel cf_getChannel(Session session){
-    	Channel channel = null;
-		try {
-			channel = session.openChannel("sftp");
-			System.out.println("The sftp channel is created");
-			channel.connect();
-		} catch (JSchException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-    	return channel;
-    }
-    
-    public String excuteShell(String command){
-        Session session = null;
+	public void cyFiles2Server(){
+		Session session = null;
         if(SystemUtils.IS_OS_WINDOWS){
             session = getSession(this.username, this.ip, this.password);
         }else{
             session = getSession(this.ip);
-        }
-        
-        Channel cf_channel = cf_getChannel(session);
+        } 
+		Channel channel = getChannel(session,"sftp");
         ChannelSftp c = null;
         try {
-        	c = (ChannelSftp) cf_channel;
+        	c = (ChannelSftp) channel;
             System.out.println("Starting File Upload:");
             String fsrc = "/opt/PlexView/ELCM/script/pre_check_for_fd_backup.sh", fdest = "/alcatel/omc1/OMC_OSM/backup_scripts/";
             c.put(fsrc, fdest);
             c.chmod(744, "/alcatel/omc1/OMC_OSM/backup_scripts/pre_check_for_fd_backup.sh");
             //c.get(fdest, "/tmp/testfile.bin");
             c.disconnect();
-        } catch (Exception e) {	e.printStackTrace();	}
-        
-    	Channel channel = getChannel(session);
+        } catch (Exception e) {	
+        	e.printStackTrace();	
+        } finally {
+        	channel.disconnect();
+            session.disconnect();
+        }
+	}
+	
+	public String excuteShell(String command){
+		Session session = null;
+        if(SystemUtils.IS_OS_WINDOWS){
+            session = getSession(this.username, this.ip, this.password);
+        }else{
+            session = getSession(this.ip);
+        } 
+        Channel channel = getChannel(session,"shell");
 		String finalCommand = command+"\n";
-		//String finalCommand = "service iptables stop"+" \n"+"mount -o nolock -t nfs 135.252.138.136:/var/images/EricTestDaB /localbackup/"+"\n";
 		String string = null;
     	try {
     		OutputStream outstream = channel.getOutputStream();
@@ -115,103 +112,50 @@ public class COMValidationService {
 			try{Thread.sleep(1000);}catch(Exception ee){}
 			System.out.println("The command " + command + " is excuted");
 			byte[] tmp=new byte[1024];
-				while(in.available()>0){
-		              int i=in.read(tmp, 0, 1024);
-		              if(i<0)break;
-		              string = new String(tmp, 0, i);
-		              System.out.print(string);
-		            }   
+			while(in.available()>0){
+				int i=in.read(tmp, 0, 1024);
+				if(i<0)break;
+				string = new String(tmp, 0, i);
+				System.out.print(string);
+		    }   
 			try{Thread.sleep(1000);}catch(Exception ee){}
             outstream.close();
             in.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		} finally {
             channel.disconnect();
             session.disconnect();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-    	
+		}    	
     	return string;
+	}
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	//Above are defined function. Below are detail function
+	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    public String backupPreCheck(String dir){
+    	COMValidationService service = new COMValidationService();
+    	service.cyFiles2Server();
+    	String command = "/alcatel/omc1/OMC_OSM/backup_scripts/pre_check_for_fd_backup.sh "+ dir;
+    	String checkRes = service.excuteShell(command);
+    	return checkRes;
     }
     
     public String mountServer(String mountDir, String nfsDir, String ip, String nfsIp, String command){
-   	    Session session = null;
-   	    String mntCommand = "";
-   	    String fwCommand = "";
-        if(SystemUtils.IS_OS_WINDOWS){
-            session = getSession(this.username, this.ip, this.password);
-        }else{
-            session = getSession(this.ip);
-        }
-        Channel mntChannel = getChannel(session);
+    	COMValidationService service = new COMValidationService();
+    	String mntCommand = "";
         if("mount".equals(command)){
-        	//fwCommand = "service iptables stop"+" \n";
         	mntCommand = "mount -o nolock -t nfs "+nfsIp+":"+nfsDir+" "+mountDir+" \n";       	
         }else{
         	mntCommand = "umount "+mountDir+" \n";
-        	//fwCommand = "service iptables start"+" \n";
         }
-        String mntResult = null;
-        try {
-    		OutputStream outstream = mntChannel.getOutputStream();
-    		InputStream in=mntChannel.getInputStream();
-			outstream.write((fwCommand+mntCommand).getBytes());
-			outstream.flush();
-			try{Thread.sleep(2000);}catch(Exception ee){}
-			System.out.println("The command " + mntCommand + " is excuted");
-			byte[] tmp=new byte[1024];
-           while(in.available()>0){
-              int i=in.read(tmp, 0, 1024);
-              if(i<0)break;
-              mntResult = new String(tmp, 0, i);
-              System.out.print(mntResult);
-           }
-           try{Thread.sleep(1000);}catch(Exception ee){}
-           outstream.close();
-           in.close();
-           mntChannel.disconnect();
-           session.disconnect();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} 	
-    	return mntResult;
+        String mountRes = service.excuteShell(mntCommand);
+    	return mountRes;
    }
     
-    public String checkShell(String command){
-        Session session = null;
-        if(SystemUtils.IS_OS_WINDOWS){
-            session = getSession(this.username, this.ip, this.password);
-        }else{
-            session = getSession(this.ip);
-        }     
-    	Channel channel = getChannel(session);
-		String finalCommand = command + " \n";
-		String string = null;
-    	try {
-    		OutputStream outstream = channel.getOutputStream();
-    		InputStream in=channel.getInputStream();
-			outstream.write(finalCommand.getBytes());
-			outstream.flush();
-			try{Thread.sleep(2000);}catch(Exception ee){}
-			System.out.println("The command " + command + " is excuted");
-			byte[] tmp=new byte[1024];
-            while(in.available()>0){
-              int i=in.read(tmp, 0, 1024);
-              if(i<0)break;
-              string = new String(tmp, 0, i);
-              System.out.print(string);
-            }
-            outstream.close();
-            in.close();
-            channel.disconnect();
-            session.disconnect();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-    	
-    	return string;
+    public String duplicateCheck(String vm_img_dir,String deployment_prefix,String hostname){
+    	COMValidationService service = new COMValidationService();
+    	String dupCommand = "ls "+vm_img_dir+"/"+deployment_prefix+" | grep "+hostname+"_snapshot";
+    	return dupCommand;
     }
     
     public void setUserName( String username ){
@@ -238,7 +182,7 @@ public class COMValidationService {
     }
     
     public String preCheckBeforeBackup(String dir){
-    	String preCheckResult = excuteShell("/alcatel/omc1/OMC_OSM/backup_scripts/pre_check_for_fd_backup.sh "+ dir);
+    	String preCheckResult = backupPreCheck(dir);
     	if(preCheckResult.contains("the backup target name is required in arguments") ){
     		return "Error: the backup target name is required in arguments.";
     	} else if(preCheckResult.contains("NOT existing")){
@@ -252,7 +196,6 @@ public class COMValidationService {
     	} else {
     		return "Success.";
     	}
-    	//return preCheckResult;
     }
     
     public String mountNfsServer(String dir, String nfsDir, String ip, String nfsip, String command){
@@ -261,7 +204,7 @@ public class COMValidationService {
     }
     
     public String fullbackupDuplicateCheck(String deployment_prefix,String vm_img_dir,String hostname){
-    	String DuplateCheckRes = checkShell("ls "+vm_img_dir+"/"+deployment_prefix+" | grep "+hostname+"_snapshot");
+    	String DuplateCheckRes = duplicateCheck(vm_img_dir,deployment_prefix,hostname);
     	return DuplateCheckRes;
     }
     

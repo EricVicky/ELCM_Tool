@@ -127,6 +127,11 @@ angular.module('fullbackup_restore', ['ui.router',
                                 	    	}//else
                                 	    };
                                 	    
+                                	    $scope.preRestoreCheck = function(){
+                                	    	
+                                	    };
+                                	    
+                                	    
                                 	    $scope.fullrestore = function(){
                                 	    	var vm_img_dir = $scope.installConfig.vm_img_dir;
                 	    					var deployment_prefix = $scope.installConfig.deployment_prefix;
