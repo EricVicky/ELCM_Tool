@@ -124,7 +124,7 @@ public class CheckController
     public ValidationResult fullbackupNfsPrecheck(@ModelAttribute("nfsip") String nfsip,@ModelAttribute("nfsdir") String nfsdir,@ModelAttribute("deployment_prefix") String deployment_prefix,
     		                          @ModelAttribute("vm_img_dir") String vm_img_dir, @ModelAttribute("hostip") String hostip){
     	ValidationResult res = new ValidationResult();
-    	cOMValidationService.setoamip(hostip);
+    	cOMValidationService.setoamip("135.251.236.98");
     	String preCheckRes= cOMValidationService.mountNfsServer(vm_img_dir+"/"+deployment_prefix,nfsdir,hostip,nfsip,"mount");
     	if((preCheckRes.contains("mount.nfs:"))||preCheckRes.endsWith("\r\n")){
     		res.setSucceed(false);

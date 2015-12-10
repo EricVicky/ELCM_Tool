@@ -1,7 +1,10 @@
 package com.alu.omc.oam.service;
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.OutputStream;
+import java.io.PipedInputStream;
 
 import org.apache.commons.lang3.SystemUtils;
 import org.springframework.stereotype.Service;
@@ -10,6 +13,7 @@ import com.jcraft.jsch.Channel;
 import com.jcraft.jsch.ChannelSftp;
 import com.jcraft.jsch.JSch;
 import com.jcraft.jsch.JSchException;
+import com.jcraft.jsch.ChannelExec;  
 import com.jcraft.jsch.Session;
 @Service
 public class COMValidationService {
@@ -61,7 +65,7 @@ public class COMValidationService {
 		Channel channel = null;
 		try {
 			channel = session.openChannel(protocol);
-			System.out.println("The "+protocol+"channel is created");
+			System.out.println("The "+protocol+" channel is created");
 			channel.connect();
 		} catch (JSchException e) {
 			e.printStackTrace();
@@ -69,7 +73,7 @@ public class COMValidationService {
     	return channel;
 	}
 	
-	public void cyFiles2Server(){
+	public void cyFiles2Server(String src, String dest, String file){
 		Session session = null;
         if(SystemUtils.IS_OS_WINDOWS){
             session = getSession(this.username, this.ip, this.password);
@@ -81,9 +85,9 @@ public class COMValidationService {
         try {
         	c = (ChannelSftp) channel;
             System.out.println("Starting File Upload:");
-            String fsrc = "/opt/PlexView/ELCM/script/pre_check_for_fd_backup.sh", fdest = "/alcatel/omc1/OMC_OSM/backup_scripts/";
+            String fsrc = src, fdest = dest;
             c.put(fsrc, fdest);
-            c.chmod(744, "/alcatel/omc1/OMC_OSM/backup_scripts/pre_check_for_fd_backup.sh");
+            c.chmod(744, fdest+file);
             //c.get(fdest, "/tmp/testfile.bin");
             c.disconnect();
         } catch (Exception e) {	
@@ -133,7 +137,7 @@ public class COMValidationService {
 	//Above are defined function. Below are detail function
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     public String backupPreCheck(String dir){
-    	cyFiles2Server();
+    	cyFiles2Server("/opt/PlexView/ELCM/script/pre_check_for_fd_backup.sh","/alcatel/omc1/OMC_OSM/backup_scripts/","pre_check_for_fd_backup.sh");
     	String command = "/alcatel/omc1/OMC_OSM/backup_scripts/pre_check_for_fd_backup.sh "+ dir;
     	String checkRes = excuteShell(command);
     	return checkRes;

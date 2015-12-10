@@ -200,6 +200,17 @@
 												ng-model="fullbackupConfig.full_backup_dir" 
 												title="directory" validation="required" ng-init="fullbackupConfig.full_backup_dir='/fullbackup'"/>
 										</div>
+										<div ng-if="remote_server!=true">
+											<div ng-if="chemessage==false">
+												<h4>Checking whether initial full backup files exist before full restore launching, Please wait......</h4>
+											</div>
+											<div ng-if="valid==false && chemessage!=false" style="color:red">
+												<h4>Error:There is no initial full backup files, full restore can't be launched.</h4>
+											</div>
+											<div ng-if="valid==true && chemessage!=false" style="color:green">
+												<h4>OK, please continue to lauch full restore.</h4>
+											</div>
+										</div>
 									</fieldset>
 								</form>
 							</div>
@@ -213,8 +224,8 @@
 									<a class="btn btn-primary"
 										ng-click="rc.backupWizard.forward()"
 										ng-show="rc.backupWizard.currentIndex < rc.backupWizard.navigationLength" translate="CONTINUE">Continue</a>
-									<a class="btn btn-primary" ng-click="fullrestore()" ng-disabled="tab2.$invalid"
-										ng-show="rc.backupWizard.currentIndex == rc.backupWizard.navigationLength">Full Restore</a>
+									<a class="btn btn-primary" ng-click="fullrestore()" ng-disabled="tab2.$invalid && valid==false"
+										ng-show="rc.backupWizard.currentIndex == rc.backupWizard.navigationLength">Local Full Restore</a>
 								</div>
 							</div>
 						</div>

@@ -128,7 +128,17 @@ angular.module('fullbackup_restore', ['ui.router',
                                 	    };
                                 	    
                                 	    $scope.preRestoreCheck = function(){
-                                	    	
+                                	    	$scope.valid = false;
+                                	    	$scope.chemessage = false;
+                                	    	if($scope.installConfig.comType=="FCAPS"||$scope.installConfig.comType=="OAM"||$scope.installConfig.comType=="CM"){
+                                	    		var hostname = $scope.installConfig.vm_config.oam.hostname; 	    		
+                                	    	}else{
+                                	    		var hostname = $scope.installConfig.vm_config.ovm.hostname; 
+                                	    	}
+                                	    	validationService.fullbackupDupcheck($scope.installConfig.host.ip_address,$scope.installConfig.deployment_prefix, $scope.installConfig.vm_img_dir,hostname).then( function(data) {
+                                        		$scope.valid = data.isValid;
+                                        		$scope.chemessage = true;
+                                        	});    	
                                 	    };
                                 	    
                                 	    
