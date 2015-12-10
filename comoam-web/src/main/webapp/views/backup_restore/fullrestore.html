@@ -224,7 +224,7 @@
 									<a class="btn btn-primary"
 										ng-click="rc.backupWizard.forward()"
 										ng-show="rc.backupWizard.currentIndex < rc.backupWizard.navigationLength" translate="CONTINUE">Continue</a>
-									<a class="btn btn-primary" ng-click="fullrestore()" ng-disabled="tab2.$invalid || valid==true"
+									<a class="btn btn-primary" ng-click="fullrestore()" ng-disabled="tab2.$invalid || valid==true ||chemessage==false"
 										ng-show="rc.backupWizard.currentIndex == rc.backupWizard.navigationLength">Local Full Restore</a>
 								</div>
 							</div>
