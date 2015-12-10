@@ -133,29 +133,27 @@ public class COMValidationService {
 	//Above are defined function. Below are detail function
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     public String backupPreCheck(String dir){
-    	COMValidationService service = new COMValidationService();
-    	service.cyFiles2Server();
+    	cyFiles2Server();
     	String command = "/alcatel/omc1/OMC_OSM/backup_scripts/pre_check_for_fd_backup.sh "+ dir;
-    	String checkRes = service.excuteShell(command);
+    	String checkRes = excuteShell(command);
     	return checkRes;
     }
     
     public String mountServer(String mountDir, String nfsDir, String ip, String nfsIp, String command){
-    	COMValidationService service = new COMValidationService();
     	String mntCommand = "";
         if("mount".equals(command)){
         	mntCommand = "mount -o nolock -t nfs "+nfsIp+":"+nfsDir+" "+mountDir+" \n";       	
         }else{
         	mntCommand = "umount "+mountDir+" \n";
         }
-        String mountRes = service.excuteShell(mntCommand);
+        String mountRes = excuteShell(mntCommand);
     	return mountRes;
    }
     
     public String duplicateCheck(String vm_img_dir,String deployment_prefix,String hostname){
-    	COMValidationService service = new COMValidationService();
     	String dupCommand = "ls "+vm_img_dir+"/"+deployment_prefix+" | grep "+hostname+"_snapshot";
-    	return dupCommand;
+    	String dupRes = excuteShell(dupCommand);
+    	return dupRes;
     }
     
     public void setUserName( String username ){
