@@ -154,7 +154,7 @@ public class COMValidationService {
     	return mountRes;
    }
     
-    public String duplicateCheck(String vm_img_dir,String deployment_prefix,String hostname){
+    public String ExistCheck(String vm_img_dir,String deployment_prefix,String hostname){
     	String dupCommand = "ls "+vm_img_dir+"/"+deployment_prefix+" | grep "+hostname+"_snapshot";
     	String dupRes = excuteShell(dupCommand);
     	return dupRes;
@@ -205,9 +205,9 @@ public class COMValidationService {
     	return mntResult;
     }
     
-    public String fullbackupDuplicateCheck(String deployment_prefix,String vm_img_dir,String hostname){
-    	String DuplateCheckRes = duplicateCheck(vm_img_dir,deployment_prefix,hostname);
-    	return DuplateCheckRes;
+    public String backupExistCheck(String deployment_prefix,String vm_img_dir,String hostname){
+    	String CheckRes = ExistCheck(vm_img_dir,deployment_prefix,hostname);
+    	return CheckRes;
     }
     
     

@@ -25,9 +25,9 @@ angular.module('validation',[]).factory('validationService', function($location,
 		    });
 		    return deferred.promise;
 		},
-		fullbackupDupcheck: function(hostip,deployment_prefix,vm_img_dir,hostname) {
+		fullbackupExistCheck: function(hostip,deployment_prefix,vm_img_dir,hostname) {
 			var deferred = $q.defer();
-		    $http.get(restUrl + "check/fullbackupDupcheck", {"params": {"hostip": hostip,"deployment_prefix": deployment_prefix,"vm_img_dir": vm_img_dir,"hostname":hostname}}).success(function(res) {
+		    $http.get(restUrl + "check/fullbackupExistCheck", {"params": {"hostip": hostip,"deployment_prefix": deployment_prefix,"vm_img_dir": vm_img_dir,"hostname":hostname}}).success(function(res) {
 		        deferred.resolve({ isValid: res.succeed, message: res.message });
 		    });
 		    return deferred.promise;
@@ -35,6 +35,13 @@ angular.module('validation',[]).factory('validationService', function($location,
 		fullbackupNfsPrecheck: function(vm_img_dir,deployment_prefix,hostip,nfsip,nfsdir) {
 			var deferred = $q.defer();
 		    $http.get(restUrl + "check/fullbackupNfsPrecheck", {"params": {"vm_img_dir": vm_img_dir,"deployment_prefix": deployment_prefix,"hostip": hostip,"nfsip": nfsip,"nfsdir": nfsdir}}).success(function(res) {
+		        deferred.resolve({ isValid: res.succeed, message: res.message });
+		    });
+		    return deferred.promise;
+		},
+		fullrestoreNfsPrecheck: function(vm_img_dir,deployment_prefix,hostip,nfsip,nfsdir) {
+			var deferred = $q.defer();
+		    $http.get(restUrl + "check/fullrestoreNfsPrecheck", {"params": {"vm_img_dir": vm_img_dir,"deployment_prefix": deployment_prefix,"hostip": hostip,"nfsip": nfsip,"nfsdir": nfsdir}}).success(function(res) {
 		        deferred.resolve({ isValid: res.succeed, message: res.message });
 		    });
 		    return deferred.promise;

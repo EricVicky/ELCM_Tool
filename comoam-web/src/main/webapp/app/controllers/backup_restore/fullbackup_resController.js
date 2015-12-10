@@ -91,12 +91,41 @@ angular.module('fullbackup_restore', ['ui.router',
                                 	    	}else{
                                 	    		var hostname = $scope.installConfig.vm_config.ovm.hostname; 
                                 	    	}
-                                        	validationService.fullbackupDupcheck($scope.installConfig.host.ip_address,$scope.installConfig.deployment_prefix, $scope.installConfig.vm_img_dir,hostname).then( function(data) {
+                                        	validationService.fullbackupExistCheck($scope.installConfig.host.ip_address,$scope.installConfig.deployment_prefix, $scope.installConfig.vm_img_dir,hostname).then( function(data) {
                                         		$scope.valid = data.isValid;
-                                        		//$scope.message = data.message;
                                         		$scope.chemessage = true;
                                         	}); 
                                 	    };
+                                	    
+                                	    $scope.IPResNFSCheck = function(){
+                                	    	if($scope.fullbackupConfig.remote_server_dir){
+                                	    		$scope.preResNFSCheck();
+                                	    	}
+                                	    };
+                                	    
+                                	    $scope.preResNFSCheck = function(){
+                                	    	if($scope.remote_server){
+                                	    		$scope.validRes_nfs = false;
+                                	        	$scope.messageRes_nfs = "";
+                                	        	$scope.chemessageRes_nfs = false;        	
+                                	        	validationService.fullrestoreNfsPrecheck($scope.installConfig.vm_img_dir,$scope.installConfig.deployment_prefix,
+                                	        			                                $scope.installConfig.host.ip_address,$scope.fullbackupConfig.remote_server_ip,
+                                	        			                                $scope.fullbackupConfig.remote_server_dir).then( function(data) {
+                                            		$scope.validRes_nfs = data.isValid;
+                                            		$scope.chemessageRes_nfs = true;
+                                            		if($scope.validRes_nfs!=true){
+                                            			if(data.message.indexOf("mount.nfs:")!=-1){
+                                            				$scope.messageRes_nfs = data.message.split("mount.nfs:")[1].split("\r\n")[0];		
+                                            			}else{
+                                            				$scope.messageRes_nfs = "Time out while mounting server.";
+                                            			}
+                                            		}else{
+                                            			
+                                            		}
+                                            	}); 
+                                	        	
+                                	    	}
+                                	    };   
                                 	         	    
                                 	    $scope.fullbackup = function(){
                                 	    	var vm_img_dir = $scope.installConfig.vm_img_dir;
@@ -126,22 +155,7 @@ angular.module('fullbackup_restore', ['ui.router',
                                 	    		}
                                 	    	}//else
                                 	    };
-                                	    
-                                	    $scope.preRestoreCheck = function(){
-                                	    	$scope.valid = false;
-                                	    	$scope.chemessage = false;
-                                	    	if($scope.installConfig.comType=="FCAPS"||$scope.installConfig.comType=="OAM"||$scope.installConfig.comType=="CM"){
-                                	    		var hostname = $scope.installConfig.vm_config.oam.hostname; 	    		
-                                	    	}else{
-                                	    		var hostname = $scope.installConfig.vm_config.ovm.hostname; 
-                                	    	}
-                                	    	validationService.fullbackupDupcheck($scope.installConfig.host.ip_address,$scope.installConfig.deployment_prefix, $scope.installConfig.vm_img_dir,hostname).then( function(data) {
-                                        		$scope.valid = data.isValid;
-                                        		$scope.chemessage = true;
-                                        	});    	
-                                	    };
-                                	    
-                                	    
+                                	                                  	    
                                 	    $scope.fullrestore = function(){
                                 	    	var vm_img_dir = $scope.installConfig.vm_img_dir;
                 	    					var deployment_prefix = $scope.installConfig.deployment_prefix;
