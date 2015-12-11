@@ -107,10 +107,16 @@ angular.module('fullbackup_restore', ['ui.router',
                                 	    	if($scope.remote_server){
                                 	    		$scope.validRes_nfs = false;
                                 	        	$scope.messageRes_nfs = "";
-                                	        	$scope.chemessageRes_nfs = false;        	
+                                	        	$scope.chemessageRes_nfs = false; 
+                                	        	$scope.existRes_nfs = false;
+                                	        	if($scope.installConfig.comType=="FCAPS"||$scope.installConfig.comType=="OAM"||$scope.installConfig.comType=="CM"){
+                                    	    		var hostname = $scope.installConfig.vm_config.oam.hostname; 	    		
+                                    	    	}else{
+                                    	    		var hostname = $scope.installConfig.vm_config.ovm.hostname; 
+                                    	    	}
                                 	        	validationService.fullrestoreNfsPrecheck($scope.installConfig.vm_img_dir,$scope.installConfig.deployment_prefix,
                                 	        			                                $scope.installConfig.host.ip_address,$scope.fullbackupConfig.remote_server_ip,
-                                	        			                                $scope.fullbackupConfig.remote_server_dir).then( function(data) {
+                                	        			                                $scope.fullbackupConfig.remote_server_dir,hostname).then( function(data) {
                                             		$scope.validRes_nfs = data.isValid;
                                             		$scope.chemessageRes_nfs = true;
                                             		if($scope.validRes_nfs!=true){
@@ -120,7 +126,12 @@ angular.module('fullbackup_restore', ['ui.router',
                                             				$scope.messageRes_nfs = "Time out while mounting server.";
                                             			}
                                             		}else{
-                                            			
+                                            			$scope.existRes_nfs = data.isExist;
+                                            			if($scope.existRes_nfs){
+                                            				$scope.messageRes_nfs = "OK, please continue to lauch full restore.";
+                                            			}else{
+                                            				$scope.messageRes_nfs = "Error:There is no initial full backup files, full restore can't be launched.";
+                                            			}
                                             		}
                                             	}); 
                                 	        	
