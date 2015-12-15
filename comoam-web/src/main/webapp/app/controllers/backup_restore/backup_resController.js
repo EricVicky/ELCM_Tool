@@ -252,13 +252,13 @@ angular.module('backup_restore', ['ui.router',
     		}
     	}
     	if($scope.installConfig.comType != "QOSAC"){
-    		$scope.message_oam = VMmessage[0];
-    		$scope.message_db = VMmessage[1];
+    		$scope.message_oam = VMmessage[0]== null?"Timeout when mounting server.":VMmessage[0];
+    		$scope.message_db = VMmessage[1]== null?"Timeout when mounting server.":VMmessage[1];
     		if($scope.installConfig.comType != "OAM"){
-    			$scope.message_cm = VMmessage[2];			
+    			$scope.message_cm = VMmessage[2]== null?"Timeout when mounting server.":VMmessage[2];			
     		}
     	}else{
-    		$scope.message_ovm = VMmessage[0];
+    		$scope.message_ovm = VMmessage[0]== null?"Timeout when mounting server.":VMmessage[0];
     	}	
 		$scope.cancel = function () {
 			$modalInstance.dismiss('cancel');
