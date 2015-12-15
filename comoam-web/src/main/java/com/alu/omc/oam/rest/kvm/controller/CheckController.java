@@ -191,6 +191,11 @@ public class CheckController
     	String[] oam_message = Arrays.copyOfRange(oam_checkRes.split("\r\n"), start_point, oam_checkRes.split("\r\n").length-1);
     	cOMValidationService.setIp(dbip);
     	String db_checkRes = cOMValidationService.databackupPreCheck(localdir,filename,remoteip,remotedir);
+    	if(db_checkRes.split("\r\n").length<4){
+    		start_point = 2;
+    	}else{
+    		start_point = 3;
+    	}
     	String[] db_message = Arrays.copyOfRange(db_checkRes.split("\r\n"), start_point, db_checkRes.split("\r\n").length-1);
     	oam_message = Arrays.copyOf(oam_message, oam_message.length + db_message.length);
     	System.arraycopy(db_message, 0, oam_message, oam_message.length-db_message.length, db_message.length);
@@ -199,6 +204,11 @@ public class CheckController
     	}else{
     		cOMValidationService.setIp(cmip);
     		String cm_checkRes = cOMValidationService.databackupPreCheck(localdir,filename,remoteip,remotedir);
+    		if(cm_checkRes.split("\r\n").length<4){
+        		start_point = 2;
+        	}else{
+        		start_point = 3;
+        	}
     		String[] cm_message = Arrays.copyOfRange(cm_checkRes.split("\r\n"), start_point, cm_checkRes.split("\r\n").length-1);
     		oam_message = Arrays.copyOf(oam_message, oam_message.length + cm_message.length);
     		System.arraycopy(cm_message, 0, oam_message, oam_message.length-cm_message.length, cm_message.length);
@@ -231,6 +241,11 @@ public class CheckController
     	String[] oam_message = Arrays.copyOfRange(oam_checkRes.split("\r\n"), start_point, oam_checkRes.split("\r\n").length-1);
     	cOMValidationService.setIp(dbip);
     	String db_checkRes = cOMValidationService.datarestorePreCheck(localdir,filename,remoteip,remotedir);
+    	if(db_checkRes.split("\r\n").length<4){
+    		start_point = 2;
+    	}else{
+    		start_point = 3;
+    	}
     	String[] db_message = Arrays.copyOfRange(db_checkRes.split("\r\n"), start_point, db_checkRes.split("\r\n").length-1);
     	oam_message = Arrays.copyOf(oam_message, oam_message.length + db_message.length);
     	System.arraycopy(db_message, 0, oam_message, oam_message.length-db_message.length, db_message.length);
@@ -239,6 +254,11 @@ public class CheckController
     	}else{
     		cOMValidationService.setIp(cmip);
     		String cm_checkRes = cOMValidationService.datarestorePreCheck(localdir,filename,remoteip,remotedir);
+    		if(cm_checkRes.split("\r\n").length<4){
+        		start_point = 2;
+        	}else{
+        		start_point = 3;
+        	}
     		String[] cm_message = Arrays.copyOfRange(cm_checkRes.split("\r\n"), start_point, cm_checkRes.split("\r\n").length-1);
     		oam_message = Arrays.copyOf(oam_message, oam_message.length + cm_message.length);
     		System.arraycopy(cm_message, 0, oam_message, oam_message.length-cm_message.length, cm_message.length);
