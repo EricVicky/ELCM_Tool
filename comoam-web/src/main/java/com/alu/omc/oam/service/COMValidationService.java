@@ -18,9 +18,9 @@ import com.jcraft.jsch.Session;
 @Service
 public class COMValidationService {
 	
-	private String username = "plx";
+	private String username = "root";
 	private String ip ;
-	private String password = "plx";
+	private String password = "EMS_qd_n2";
 	
     public void setUserName( String username ){
     	this.username = username;
@@ -125,7 +125,7 @@ public class COMValidationService {
     		InputStream in=channel.getInputStream();
 			outstream.write(finalCommand.getBytes());
 			outstream.flush();
-			try{Thread.sleep(1000);}catch(Exception ee){}
+			try{Thread.sleep(2000);}catch(Exception ee){}
 			System.out.println("The command " + command + " is excuted");
 			byte[] tmp=new byte[2048];
 			while(in.available()>0){

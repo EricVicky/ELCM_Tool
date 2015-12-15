@@ -179,13 +179,19 @@ public class CheckController
     public ValidationResult databackupCheckResult(@ModelAttribute("localdir") String localdir,@ModelAttribute("filename") String filename,
     		                                      @ModelAttribute("remoteip") String remoteip,@ModelAttribute("remotedir") String remotedir,
     		                                      @ModelAttribute("oamip") String oamip,@ModelAttribute("dbip") String dbip,@ModelAttribute("cmip") String cmip){
+    	int start_point;
     	ValidationResult res = new ValidationResult();
     	cOMValidationService.setIp(oamip);
     	String oam_checkRes = cOMValidationService.databackupPreCheck(localdir,filename,remoteip,remotedir);
-    	String[] oam_message = Arrays.copyOfRange(oam_checkRes.split("\r\n"), 3, oam_checkRes.split("\r\n").length-1);
+    	if(oam_checkRes.split("\r\n").length<4){
+    		start_point = 2;
+    	}else{
+    		start_point = 3;
+    	}
+    	String[] oam_message = Arrays.copyOfRange(oam_checkRes.split("\r\n"), start_point, oam_checkRes.split("\r\n").length-1);
     	cOMValidationService.setIp(dbip);
-    	String db_checkRes = cOMValidationService.databackupPreCheck(localdir,remoteip,filename,remotedir);
-    	String[] db_message = Arrays.copyOfRange(db_checkRes.split("\r\n"), 3, db_checkRes.split("\r\n").length-1);
+    	String db_checkRes = cOMValidationService.databackupPreCheck(localdir,filename,remoteip,remotedir);
+    	String[] db_message = Arrays.copyOfRange(db_checkRes.split("\r\n"), start_point, db_checkRes.split("\r\n").length-1);
     	oam_message = Arrays.copyOf(oam_message, oam_message.length + db_message.length);
     	System.arraycopy(db_message, 0, oam_message, oam_message.length-db_message.length, db_message.length);
     	if(cmip == ""){
@@ -193,7 +199,7 @@ public class CheckController
     	}else{
     		cOMValidationService.setIp(cmip);
     		String cm_checkRes = cOMValidationService.databackupPreCheck(localdir,filename,remoteip,remotedir);
-    		String[] cm_message = Arrays.copyOfRange(cm_checkRes.split("\r\n"), 3, cm_checkRes.split("\r\n").length-1);
+    		String[] cm_message = Arrays.copyOfRange(cm_checkRes.split("\r\n"), start_point, cm_checkRes.split("\r\n").length-1);
     		oam_message = Arrays.copyOf(oam_message, oam_message.length + cm_message.length);
     		System.arraycopy(cm_message, 0, oam_message, oam_message.length-cm_message.length, cm_message.length);
     		res.setMutiMessage(oam_message);
@@ -201,6 +207,7 @@ public class CheckController
     	for(int index=0;index<res.getMutiMessage().length;index++){
     		if(res.getMutiMessage()[index].contains("Success")){
     			res.setSucceed(true);
+    			break;
     		}else{
     			res.setSucceed(false);
     		}	
@@ -212,13 +219,19 @@ public class CheckController
     public ValidationResult datarestoreCheckResult(@ModelAttribute("localdir") String localdir,@ModelAttribute("filename") String filename,
     		                                      @ModelAttribute("remoteip") String remoteip,@ModelAttribute("remotedir") String remotedir,
     		                                      @ModelAttribute("oamip") String oamip,@ModelAttribute("dbip") String dbip,@ModelAttribute("cmip") String cmip){
+    	int start_point;
     	ValidationResult res = new ValidationResult();
     	cOMValidationService.setIp(oamip);
     	String oam_checkRes = cOMValidationService.datarestorePreCheck(localdir,filename,remoteip,remotedir);
-    	String[] oam_message = Arrays.copyOfRange(oam_checkRes.split("\r\n"), 3, oam_checkRes.split("\r\n").length-1);
+    	if(oam_checkRes.split("\r\n").length<4){
+    		start_point = 2;
+    	}else{
+    		start_point = 3;
+    	}
+    	String[] oam_message = Arrays.copyOfRange(oam_checkRes.split("\r\n"), start_point, oam_checkRes.split("\r\n").length-1);
     	cOMValidationService.setIp(dbip);
-    	String db_checkRes = cOMValidationService.datarestorePreCheck(localdir,remoteip,filename,remotedir);
-    	String[] db_message = Arrays.copyOfRange(db_checkRes.split("\r\n"), 3, db_checkRes.split("\r\n").length-1);
+    	String db_checkRes = cOMValidationService.datarestorePreCheck(localdir,filename,remoteip,remotedir);
+    	String[] db_message = Arrays.copyOfRange(db_checkRes.split("\r\n"), start_point, db_checkRes.split("\r\n").length-1);
     	oam_message = Arrays.copyOf(oam_message, oam_message.length + db_message.length);
     	System.arraycopy(db_message, 0, oam_message, oam_message.length-db_message.length, db_message.length);
     	if(cmip == ""){
@@ -226,7 +239,7 @@ public class CheckController
     	}else{
     		cOMValidationService.setIp(cmip);
     		String cm_checkRes = cOMValidationService.datarestorePreCheck(localdir,filename,remoteip,remotedir);
-    		String[] cm_message = Arrays.copyOfRange(cm_checkRes.split("\r\n"), 3, cm_checkRes.split("\r\n").length-1);
+    		String[] cm_message = Arrays.copyOfRange(cm_checkRes.split("\r\n"), start_point, cm_checkRes.split("\r\n").length-1);
     		oam_message = Arrays.copyOf(oam_message, oam_message.length + cm_message.length);
     		System.arraycopy(cm_message, 0, oam_message, oam_message.length-cm_message.length, cm_message.length);
     		res.setMutiMessage(oam_message);
@@ -234,6 +247,7 @@ public class CheckController
     	for(int index=0;index<res.getMutiMessage().length;index++){
     		if(res.getMutiMessage()[index].contains("Success")){
     			res.setSucceed(true);
+    			break;
     		}else{
     			res.setSucceed(false);
     		}	
