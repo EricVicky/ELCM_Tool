@@ -20,7 +20,7 @@
 									<div class="panel panel-default">
 										<div class="panel-heading">
 											<label class="control-label" translate="COM_INSTANCE">COM Instance</label> <select
-												ng-change="reloadimglist()" name="com_instance"
+												ng-change="reloadimglist();init()" name="com_instance"
 												ng-model="com_instance" class="form-control"
 												ng-options="  inst.name for inst in comInstance"
 												title="COM Instance" validation="required">
@@ -181,57 +181,43 @@
 									    <div class="form-group" col-md-4>
 										    <label class="control-label" translate="REMOTE_SERVER">Remote Server</label>
 											<input name="remote_server" type="checkbox" ng-init="remote_server=false" ng-model="remote_server" 
-											title="Remote Server" />
+											title="Remote Server" ng-click="init()"/>
 										</div>
 										<div class="form-group" ng-if="remote_server==true">
 											<label class="control-label" translate="BACKUP_SERVER_IP">Backup Server IP</label> <input
 												name="backup_server_ip" class="form-control" type="text"
 												ng-model="$parent.backupConfig.backupLocation.remote_server_ip" 
-												title="Backup Server IP" validation="required|ipv4" ng-blur="IPNFSCheck()"/>
+												title="Backup Server IP" validation="required|ipv4" ng-blur="init()"/>
 										</div>
 										<div class="form-group" ng-if="remote_server==true">
 											<label class="control-label" translate="BACKUP_SERVER_DIRECTORY">Backup Server Directory</label> <input
 												name="backup_server_directory" class="form-control" type="text"
 												ng-model="$parent.backupConfig.backupLocation.remote_server_dir" 
-												title="Backup Server Directory" validation="required" ng-blur="preNFSCheck()"/>
+												title="Backup Server Directory" validation="required" ng-blur="init()"/>
 										</div>
-										
-										<div ng-if="remote_server==true">
-											<div ng-if="message_nfs==''">
-												<h4>Checking existence/write access/available space of destination directories before data backup launching, Please wait......</h4>
-											</div>
-											<div ng-if="message_nfs!=''">
-												<h5>Remote Server --- <span ng-if="message_nfs=='Success.'" style="color:green">{{message_nfs}}</span><span ng-if="message_nfs!='Success.'" style="color:red">{{message_nfs}}</span></h5>
-											</div>
-										</div>
-										
-										
-										
 										<div class="form-group" ng-show="remote_server==false">
 											<label class="control-label" translate="LOCAL_DIRECTORY">Local Directory</label> <input
-												name="local_directory" class="form-control" type="text" ng-change="preCheck()"
+												name="local_directory" class="form-control" type="text" ng-blur="init()"
 												ng-model="backupConfig.backupLocation.local_backup_dir" 
 												title="directory" validation="required" ng-init="backupConfig.backupLocation.local_backup_dir='/localbackup'"/>
-										</div>
-										
-										<div ng-if="remote_server!=true">
-											<div ng-if="message==''">
-												<h4>Checking existence/write access/available space of destination directories before data backup launching, Please wait......</h4>
-											</div>
-											<div ng-if="message!=''">
-												<h5>OAM VM --- <span ng-if="message_oam=='Success.'" style="color:green">{{message_oam}}</span><span ng-if="message_oam!='Success.'" style="color:red">{{message_oam}}</span></h5>
-												<h5>DB VM --- <span ng-if="message_db=='Success.'" style="color:green">{{message_db}}</span><span ng-if="message_db!='Success.'" style="color:red">{{message_db}}</span></h5>
-												<h5 ng-if="installConfig.comType!='OAM'">CM VM --- <span ng-if="message_cm=='Success.'" style="color:green">{{message_cm}}</span><span ng-if="message_cm!='Success.'" style="color:red">{{message_cm}}</span></h5>
-												<p>
-												<span ng-if="installConfig.comType!='OAM' && message_oam=='Success.' && message_db=='Success.' && message_cm=='Success.'">All VMs are ready to backup!</span>
-												<span ng-if="installConfig.comType=='OAM' && message_oam=='Success.' && message_db=='Success.'">All VMs are ready to backup!</span>
-											</div>
 										</div>
 										<div class="form-group">
 											<label class="control-label" translate="FILE_NAME">Version</label> <input
 												name="version" class="form-control" type="text"
 												ng-model="backupConfig.backupLocation.local_backup_file"
-												title="file name" validation="required" ng-blur="checkname()"/>
+												title="file name" validation="required" ng-blur="checkname();init()"/>
+										</div>
+										
+										<div ng-show="checkmessage == true">
+											<h4>Checking whether initial backup files exist before data backup launching, Please wait......</h4>
+										</div>
+										<div ng-if="installConfig.comType!='QOSAC'" ng-show="showmessage == true && valid == false" style="color:red">
+											<h4>OAM VM --- {{message_oam}}</h4>
+											<h4>DB VM --- {{message_db}}</h4>
+											<h4 ng-if="installConfig.comType!='OAM'">CM VM --- {{message_cm}}</h4>
+										</div>
+										<div ng-if="installConfig.comType=='QOSAC'" ng-show="showmessage == true && valid == false" style="color:red">
+											<h4>OVM VM --- {{message_ovm}}</h4>
 										</div>
 									</fieldset>									
 								</form>
@@ -246,10 +232,8 @@
 									<a class="btn btn-primary"
 										ng-click="rc.backupWizard.forward()"
 										ng-show="rc.backupWizard.currentIndex < rc.backupWizard.navigationLength" translate="CONTINUE">Continue</a>
-									<a class="btn btn-primary" ng-click="backup()" ng-disabled="valid!=true || tab2.$valid==false"
-										ng-show="rc.backupWizard.currentIndex == rc.backupWizard.navigationLength && remote_server!=true">Local Backup</a>
-									<a class="btn btn-primary" ng-click="backup()" ng-disabled="message_nfs!='Success.' || valid_nfs!=true || tab2.$valid==false"
-										ng-show="rc.backupWizard.currentIndex == rc.backupWizard.navigationLength && remote_server==true">Remote Backup</a>
+									<a class="btn btn-primary" ng-click="backup()" ng-disabled="tab2.$invalid || valid == false || checkmessage==true"
+										ng-show="rc.backupWizard.currentIndex == rc.backupWizard.navigationLength">Data Backup</a>
 								</div>
 							</div>
 						</div>

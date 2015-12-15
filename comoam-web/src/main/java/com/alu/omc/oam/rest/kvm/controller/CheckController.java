@@ -1,6 +1,9 @@
 package com.alu.omc.oam.rest.kvm.controller;
 
+import java.util.Arrays;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Resource;
 
@@ -63,99 +66,6 @@ public class CheckController
             }
         }
        return res;
-    }
-    
-    @RequestMapping(value="/check/backupPrecheck", method=RequestMethod.GET)
-    public ValidationResult preCheck(@ModelAttribute("dir") String dir,@ModelAttribute("oamip") String oamip,
-    		                         @ModelAttribute("dbip") String dbip,@ModelAttribute("cmip") String cmip){
-    	ValidationResult res = new ValidationResult();
-    	StringBuffer message = new StringBuffer();
-    	cOMValidationService.setoamip(oamip);
-    	String oam_checkRes = cOMValidationService.preCheckBeforeBackup(dir);
-    	message.append(oam_checkRes + "\r\n");
-    	cOMValidationService.setoamip(dbip);
-    	String db_checkRes = cOMValidationService.preCheckBeforeBackup(dir);
-    	message.append(db_checkRes + "\r\n");
-    	cOMValidationService.setoamip(cmip);
-    	String cm_checkRes = cOMValidationService.preCheckBeforeBackup(dir);
-    	message.append(cm_checkRes + "\r\n");
-        res.setMessage(message.toString());
-        if((message.toString()).contains("Error")){
-        	res.setSucceed(false);
-        }else{
-        	res.setSucceed(true);
-        }
-        return res;
-    }
-    
-    @RequestMapping(value="/check/backupNfsPrecheck", method=RequestMethod.GET)
-    public ValidationResult preNfsCheck(@ModelAttribute("dir") String dir,@ModelAttribute("nfsip") String nfsip,
-    		                         @ModelAttribute("oamip") String oamip){
-    	ValidationResult res = new ValidationResult();
-    	cOMValidationService.setoamip(oamip);
-    	String mntResult = cOMValidationService.mountNfsServer("/localbackup",dir,oamip,nfsip,"mount");
-    	if((mntResult.contains("mount.nfs:"))||mntResult.endsWith("\r\n")){
-    		res.setSucceed(false);
-    		res.setMessage(mntResult);
-    	}else{
-    		String vnf_checkRes = cOMValidationService.preCheckBeforeBackup("/localbackup 30000");
-    		res.setSucceed(true);
-    		res.setMessage(vnf_checkRes);
-    		cOMValidationService.mountNfsServer("/localbackup",dir,oamip,nfsip,"umount");
-    	}
-        return res;
-    }
-    
-    @RequestMapping(value="/check/fullbackupExistCheck", method=RequestMethod.GET)
-    public ValidationResult fullbackupExistCheck(@ModelAttribute("hostip") String hostip,@ModelAttribute("deployment_prefix") String deployment_prefix,
-    		                         @ModelAttribute("vm_img_dir") String vm_img_dir,@ModelAttribute("hostname") String hostname){
-    	ValidationResult res = new ValidationResult();
-    	cOMValidationService.setoamip(hostip);
-    	String dupCheckRes= cOMValidationService.backupExistCheck(deployment_prefix,vm_img_dir,hostname);
-    	if(dupCheckRes.split("grep "+hostname+"_snapshot")[dupCheckRes.split("grep "+hostname+"_snapshot").length-1].contains(hostname+"_snapshot")){
-    		res.setSucceed(false);
-    	}else{
-    		res.setSucceed(true);
-    	}	
-    	return res;
-    }
-    
-    @RequestMapping(value="/check/fullbackupNfsPrecheck", method=RequestMethod.GET)
-    public ValidationResult fullbackupNfsPrecheck(@ModelAttribute("nfsip") String nfsip,@ModelAttribute("nfsdir") String nfsdir,@ModelAttribute("deployment_prefix") String deployment_prefix,
-    		                          @ModelAttribute("vm_img_dir") String vm_img_dir, @ModelAttribute("hostip") String hostip){
-    	ValidationResult res = new ValidationResult();
-    	cOMValidationService.setoamip(hostip);
-    	String preCheckRes= cOMValidationService.mountNfsServer(vm_img_dir+"/"+deployment_prefix,nfsdir,hostip,nfsip,"mount");
-    	if((preCheckRes.contains("mount.nfs:"))||preCheckRes.endsWith("\r\n")){
-    		res.setSucceed(false);
-    		res.setMessage(preCheckRes);
-    	}else{
-    		res.setSucceed(true);
-    		res.setMessage(preCheckRes);
-            cOMValidationService.mountNfsServer(vm_img_dir+"/"+deployment_prefix,nfsdir,hostip,nfsip,"umount");
-    	}
-    	return res;
-    }
-    
-    @RequestMapping(value="/check/fullrestoreNfsPrecheck", method=RequestMethod.GET)
-    public ValidationResult fullrestoreNfsPrecheck(@ModelAttribute("nfsip") String nfsip,@ModelAttribute("nfsdir") String nfsdir,@ModelAttribute("deployment_prefix") String deployment_prefix,
-    		                          @ModelAttribute("vm_img_dir") String vm_img_dir, @ModelAttribute("hostip") String hostip,@ModelAttribute("hostname") String hostname){
-    	ValidationResult res = new ValidationResult();
-    	cOMValidationService.setoamip(hostip);
-    	String preCheckRes= cOMValidationService.mountNfsServer(vm_img_dir+"/"+deployment_prefix,nfsdir,hostip,nfsip,"mount");
-    	if((preCheckRes.contains("mount.nfs:"))||preCheckRes.endsWith("\r\n")){
-    		res.setSucceed(false);
-    		res.setMessage(preCheckRes);
-    	}else{
-    		String dupCheckRes= cOMValidationService.backupExistCheck(deployment_prefix,vm_img_dir,hostname);
-    		if(dupCheckRes.split("grep "+hostname+"_snapshot")[dupCheckRes.split("grep "+hostname+"_snapshot").length-1].contains(hostname+"_snapshot")){
-        		res.setExist(true);
-        	}else{
-        		res.setExist(false);
-        	}
-            cOMValidationService.mountNfsServer(vm_img_dir+"/"+deployment_prefix,nfsdir,hostip,nfsip,"umount");
-    	}
-    	return res;
     }
     
     @RequestMapping(value="/gr/kvm/checkinstalled", method=RequestMethod.GET)
@@ -234,6 +144,101 @@ public class CheckController
         }
         return rs;
     }
-
+    
+    @RequestMapping(value="/check/fullbackupPreCheck", method=RequestMethod.GET)
+    public ValidationResult fullbackupCheckResult(@ModelAttribute("deployment_prefix") String deployment_prefix,@ModelAttribute("vm_img_dir") String vm_img_dir,
+    		                                @ModelAttribute("remoteip") String remoteip,@ModelAttribute("remotedir") String remotedir,@ModelAttribute("hostip") String hostip){
+    	ValidationResult res = new ValidationResult();
+    	cOMValidationService.setIp(hostip);
+    	String checkRes= cOMValidationService.fullbackupPreCheck(deployment_prefix,vm_img_dir,remoteip,remotedir);
+    	if(checkRes.contains("Success")){
+    		res.setSucceed(true);
+    	}else{
+    		res.setSucceed(false);
+    	}
+    	res.setMessage(checkRes);
+    	return res;
+    }
+    
+    @RequestMapping(value="/check/fullrestorePreCheck", method=RequestMethod.GET)
+    public ValidationResult fullrestoreCheckResult(@ModelAttribute("deployment_prefix") String deployment_prefix,@ModelAttribute("vm_img_dir") String vm_img_dir,
+    		                                @ModelAttribute("remoteip") String remoteip,@ModelAttribute("remotedir") String remotedir,@ModelAttribute("hostip") String hostip){
+    	ValidationResult res = new ValidationResult();
+    	cOMValidationService.setIp(hostip);
+    	String checkRes= cOMValidationService.fullbackupPreCheck(deployment_prefix,vm_img_dir,remoteip,remotedir);	
+    	if(checkRes.contains("Success")){
+    		res.setSucceed(true);
+    	}else{
+    		res.setSucceed(false);
+    	}
+    	res.setMessage(checkRes);
+    	return res;
+    }
+    
+    @RequestMapping(value="/check/databackupPreCheck", method=RequestMethod.GET)
+    public ValidationResult databackupCheckResult(@ModelAttribute("localdir") String localdir,@ModelAttribute("filename") String filename,
+    		                                      @ModelAttribute("remoteip") String remoteip,@ModelAttribute("remotedir") String remotedir,
+    		                                      @ModelAttribute("oamip") String oamip,@ModelAttribute("dbip") String dbip,@ModelAttribute("cmip") String cmip){
+    	ValidationResult res = new ValidationResult();
+    	cOMValidationService.setIp(oamip);
+    	String oam_checkRes = cOMValidationService.databackupPreCheck(localdir,filename,remoteip,remotedir);
+    	String[] oam_message = Arrays.copyOfRange(oam_checkRes.split("\r\n"), 3, oam_checkRes.split("\r\n").length-1);
+    	cOMValidationService.setIp(dbip);
+    	String db_checkRes = cOMValidationService.databackupPreCheck(localdir,remoteip,filename,remotedir);
+    	String[] db_message = Arrays.copyOfRange(db_checkRes.split("\r\n"), 3, db_checkRes.split("\r\n").length-1);
+    	oam_message = Arrays.copyOf(oam_message, oam_message.length + db_message.length);
+    	System.arraycopy(db_message, 0, oam_message, oam_message.length-db_message.length, db_message.length);
+    	if(cmip == ""){
+    		res.setMutiMessage(oam_message);	
+    	}else{
+    		cOMValidationService.setIp(cmip);
+    		String cm_checkRes = cOMValidationService.databackupPreCheck(localdir,filename,remoteip,remotedir);
+    		String[] cm_message = Arrays.copyOfRange(cm_checkRes.split("\r\n"), 3, cm_checkRes.split("\r\n").length-1);
+    		oam_message = Arrays.copyOf(oam_message, oam_message.length + cm_message.length);
+    		System.arraycopy(cm_message, 0, oam_message, oam_message.length-cm_message.length, cm_message.length);
+    		res.setMutiMessage(oam_message);
+    	}
+    	for(int index=0;index<res.getMutiMessage().length;index++){
+    		if(res.getMutiMessage()[index].contains("Success")){
+    			res.setSucceed(true);
+    		}else{
+    			res.setSucceed(false);
+    		}	
+    	}
+        return res;
+    }
+    
+    @RequestMapping(value="/check/datarestorePreCheck", method=RequestMethod.GET)
+    public ValidationResult datarestoreCheckResult(@ModelAttribute("localdir") String localdir,@ModelAttribute("filename") String filename,
+    		                                      @ModelAttribute("remoteip") String remoteip,@ModelAttribute("remotedir") String remotedir,
+    		                                      @ModelAttribute("oamip") String oamip,@ModelAttribute("dbip") String dbip,@ModelAttribute("cmip") String cmip){
+    	ValidationResult res = new ValidationResult();
+    	cOMValidationService.setIp(oamip);
+    	String oam_checkRes = cOMValidationService.datarestorePreCheck(localdir,filename,remoteip,remotedir);
+    	String[] oam_message = Arrays.copyOfRange(oam_checkRes.split("\r\n"), 3, oam_checkRes.split("\r\n").length-1);
+    	cOMValidationService.setIp(dbip);
+    	String db_checkRes = cOMValidationService.datarestorePreCheck(localdir,remoteip,filename,remotedir);
+    	String[] db_message = Arrays.copyOfRange(db_checkRes.split("\r\n"), 3, db_checkRes.split("\r\n").length-1);
+    	oam_message = Arrays.copyOf(oam_message, oam_message.length + db_message.length);
+    	System.arraycopy(db_message, 0, oam_message, oam_message.length-db_message.length, db_message.length);
+    	if(cmip == ""){
+    		res.setMutiMessage(oam_message);	
+    	}else{
+    		cOMValidationService.setIp(cmip);
+    		String cm_checkRes = cOMValidationService.datarestorePreCheck(localdir,filename,remoteip,remotedir);
+    		String[] cm_message = Arrays.copyOfRange(cm_checkRes.split("\r\n"), 3, cm_checkRes.split("\r\n").length-1);
+    		oam_message = Arrays.copyOf(oam_message, oam_message.length + cm_message.length);
+    		System.arraycopy(cm_message, 0, oam_message, oam_message.length-cm_message.length, cm_message.length);
+    		res.setMutiMessage(oam_message);
+    	}
+    	for(int index=0;index<res.getMutiMessage().length;index++){
+    		if(res.getMutiMessage()[index].contains("Success")){
+    			res.setSucceed(true);
+    		}else{
+    			res.setSucceed(false);
+    		}	
+    	}
+        return res;
+    }
 
 }

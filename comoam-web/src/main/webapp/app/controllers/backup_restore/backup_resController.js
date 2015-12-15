@@ -6,7 +6,7 @@ angular.module('backup_restore', ['ui.router',
                                   'ghiscoding.validation',
                                   'monitor',
                                   'ngResource']).controller('backup_resctr', function($scope,  $log, KVMService
-		, Backup_ResService, monitorService,DashboardService, $dialogs, $state,$translate,validationService) {
+		, Backup_ResService, monitorService,DashboardService, $dialogs,$modal, $state,$translate,validationService) {
     $scope.reloadimglist = function(){
     	if($scope.com_instance != null){
         	 $scope.installConfig = JSON3.parse($scope.com_instance.comConfig);
@@ -57,97 +57,159 @@ angular.module('backup_restore', ['ui.router',
 		$scope.comInstance = comInstance;
 		$scope.setDefaultInstace();
     });
-    
-    $scope.IPNFSCheck = function(){
-    	if($scope.backupConfig.backupLocation.remote_server_dir){
-    		$scope.preNFSCheck();
-    	}
-    };
-    
-    $scope.preNFSCheck = function(){
-    	if($scope.remote_server){
-    		$scope.valid_nfs = false;
-        	$scope.message_nfs = "";
-        	nfsip = $scope.backupConfig.backupLocation.remote_server_ip;
-        	if($scope.installConfig.environment == 'KVM'){
-        		if($scope.installConfig.comType == 'QOSAC'){
-        			oamip = $scope.installConfig.vm_config.ovm.ip_address;
-        		}else{
-        			oamip = $scope.installConfig.vm_config.oam.nic[0].ip_v4.ipaddress;
-        		}
-        	}else{
-        		if($scope.installConfig.comType == 'QOSAC'){
-        			oamip = $scope.installConfig.vm_config.ovm.ip_address;
-        		}else{
-        			oamip = $scope.installConfig.vm_config.oam.provider_ip_address;
-        		}
-        	}
-        	validationService.backupNfsPrecheck($scope.backupConfig.backupLocation.remote_server_dir,nfsip,oamip).then( function(data) {
-        		$scope.valid_nfs = data.isValid;
-        		if($scope.valid_nfs!=true){
-        			if(data.message.indexOf("mount.nfs:")!=-1){
-        				$scope.message_nfs = data.message.split("mount.nfs:")[1].split("\r\n")[0];		
-        			}else{
-        				$scope.message_nfs = "Time out while mounting server.";
-        			}
-        		}else{
-        			$scope.message_nfs = data.message;
-        		}
-        	}); 
-    	}
-    };
-    
-    $scope.preCheck = function(){
-    	if(!$scope.remote_server){
-    		$scope.valid = false;
-        	$scope.message = "";
-        	dbip = null;
-        	cmip = null;
-        	if($scope.installConfig.environment == 'KVM'){
-        		if($scope.installConfig.comType == 'QOSAC'){
-        			oamip = $scope.installConfig.vm_config.ovm.ip_address;
-        		}else if($scope.installConfig.comType == 'FCAPS'||$scope.installConfig.comType == 'CM'){
-        			oamip = $scope.installConfig.vm_config.oam.nic[0].ip_v4.ipaddress;
-        			dbip = $scope.installConfig.vm_config.db.nic[0].ip_v4.ipaddress;
-        			cmip = $scope.installConfig.vm_config.cm.nic[0].ip_v4.ipaddress;
-        		}else if($scope.installConfig.comType == 'OAM'){
-        			oamip = $scope.installConfig.vm_config.oam.nic[0].ip_v4.ipaddress;
-        			dbip = $scope.installConfig.vm_config.db.nic[0].ip_v4.ipaddress;
-        		}
-        	}else{
-        		if($scope.installConfig.comType == 'QOSAC'){
-        			oamip = $scope.installConfig.vm_config.ovm.ip_address;
-        		}else if($scope.installConfig.comType == 'FCAPS'||$scope.installConfig.comType == 'CM'){
-        			oamip = $scope.installConfig.vm_config.oam.provider_ip_address;
-        			dbip = $scope.installConfig.vm_config.db.provider_ip_address;
-        			cmip = $scope.installConfig.vm_config.cm.provider_ip_address;
-        		}else if($scope.installConfig.comType == 'OAM'){
-        			oamip = $scope.installConfig.vm_config.oam.provider_ip_address;
-        			dbip = $scope.installConfig.vm_config.db.provider_ip_address;
-        		}
-        	}
-        	
-        	validationService.backupPrecheck($scope.backupConfig.backupLocation.local_backup_dir,oamip,dbip,cmip).then( function(data) {
-        		$scope.valid = data.isValid;
-        		$scope.message = data.message; 
-        		$scope.message_oam = $scope.message.split("\r\n")[0];
-        		$scope.message_db = $scope.message.split("\r\n")[1];
-        		$scope.message_cm = $scope.message.split("\r\n")[2];
-        	}); 
-    	}else{
-    		
-    	}
-    }
-    
+
     $scope.checkname = function(){
     	var filename = $scope.backupConfig.backupLocation.local_backup_file;
     	if(filename.indexOf(".tgz") < 0){
     		filename = filename + ".tgz";
     	}
     	$scope.backupConfig.backupLocation.local_backup_file = filename;
-    }
-
+    };
+    
+    $scope.init = function(){
+    	$scope.checkmessage = false;
+    	$scope.showmessage = false;
+    	$scope.valid = true;
+    };
+    
     $scope.backup = function(){
+    	$scope.showmessage = false;
+    	$scope.checkmessage = true;
+    	if($scope.remote_server==true){
+    		var remoteip = $scope.backupConfig.backupLocation.remote_server_ip + ":";
+    		var remotedir = $scope.backupConfig.backupLocation.remote_server_dir;
+    	}else{
+    		var remoteip = "";
+    	    var remotedir = "";
+    	}
+    	if($scope.installConfig.environment=='KVM'){
+    		oamip = $scope.installConfig.vm_config.oam.nic[0].ip_v4.ipaddress;
+    		dbip = $scope.installConfig.vm_config.db.nic[0].ip_v4.ipaddress;
+    		if($scope.installConfig.comType == "OAM"){
+        		cmip = "";
+        	}else{
+        		cmip = $scope.installConfig.vm_config.cm.nic[0].ip_v4.ipaddress;
+        	}
+    	}else{
+    		oamip = $scope.installConfig.vm_config.oam.provider_ip_address;
+    		dbip = $scope.installConfig.vm_config.db.provider_ip_address;
+    		if($scope.installConfig.comType == "OAM"){
+        		cmip = "";
+        	}else{
+        		cmip = $scope.installConfig.vm_config.cm.provider_ip_address;
+        	}
+    	}
+    	validationService.databackupPreCheck(oamip,dbip,cmip,$scope.backupConfig.backupLocation.local_backup_dir,
+    			             $scope.backupConfig.backupLocation.local_backup_file,remoteip,remotedir).then( function(data){
+            $scope.showmessage = true;
+            $scope.checkmessage = false;
+            $scope.valid = data.isValid;
+            $scope.message = data.message;
+            if($scope.valid == true){
+            	if($scope.message[0].indexOf("Warning") != -1){
+					$scope.showmessage = false;
+					var modalInstance = $modal.open({
+						animation: true,
+						backdrop:'static',
+						templateUrl: 'views/backup_restore/databackup_message.html',
+						controller: 'datamessage_ctrl',
+						resolve: {
+							msg: function() {
+								return $scope.message;
+							},
+							config: function() {
+								return $scope.installConfig;
+							}
+						},   
+					});	
+					modalInstance.result.then(function (res) {
+					    $scope.result = res;
+					    if($scope.result == true){
+    						$scope.doBackup();
+    					}
+					}, function () {
+					});
+				}else{
+					$scope.doBackup();    					
+				}
+            }else{
+            	var VMmessage = new Array();
+            	for(var index in $scope.message){
+            		if($scope.message[index].indexOf("Warning")!=-1){
+            			continue;
+            		}
+            		VMmessage.push($scope.message[index]);
+            	}
+            	if($scope.installConfig.comType != "QOSAC"){
+            		$scope.message_oam = VMmessage[0];
+            		$scope.message_db = VMmessage[1];
+            		if($scope.installConfig.comType != "OAM"){
+            			$scope.message_cm = VMmessage[2];			
+            		}
+            	}else{
+            		$scope.message_ovm = VMmessage[0];
+            	}
+            }      	
+        });
+    };
+    
+    $scope.restore = function(){
+    	$scope.showmessage = false;
+    	$scope.checkmessage = true;
+    	if($scope.remote_server==true){
+    		var remoteip = $scope.backupConfig.backupLocation.remote_server_ip + ":";
+    		var remotedir = $scope.backupConfig.backupLocation.remote_server_dir;
+    	}else{
+    		var remoteip = "";
+    	    var remotedir = "";
+    	}
+    	if($scope.installConfig.environment=='KVM'){
+    		oamip = $scope.installConfig.vm_config.oam.nic[0].ip_v4.ipaddress;
+    		dbip = $scope.installConfig.vm_config.db.nic[0].ip_v4.ipaddress;
+    		if($scope.installConfig.comType == "OAM"){
+        		cmip = "";
+        	}else{
+        		cmip = $scope.installConfig.vm_config.cm.nic[0].ip_v4.ipaddress;
+        	}
+    	}else{
+    		oamip = $scope.installConfig.vm_config.oam.provider_ip_address;
+    		dbip = $scope.installConfig.vm_config.db.provider_ip_address;
+    		if($scope.installConfig.comType == "OAM"){
+        		cmip = "";
+        	}else{
+        		cmip = $scope.installConfig.vm_config.cm.provider_ip_address;
+        	}
+    	}
+    	validationService.datarestorePreCheck(oamip,dbip,cmip,$scope.backupConfig.backupLocation.local_backup_dir,
+    			                             $scope.backupConfig.backupLocation.local_backup_file, remoteip,remotedir).then( function(data){
+               $scope.showmessage = true;
+               $scope.checkmessage = false;
+               $scope.valid = data.isValid;
+               $scope.message = data.message;
+               if($scope.valid == true){
+            	   $scope.doRestore();
+               }else{
+            	   var VMmessage = new Array();
+               	   for(var index in $scope.message){
+               	       if($scope.message[index].indexOf("Warning")!=-1){
+            			  continue;
+            		  }
+            		  VMmessage.push($scope.message[index]);
+               	   }
+               	   if($scope.installConfig.comType != "QOSAC"){
+               		   $scope.message_oam = VMmessage[0];
+               		   $scope.message_db = VMmessage[1];
+               		   if($scope.installConfig.comType != "OAM"){
+               			   $scope.message_cm = VMmessage[2];			
+               		   }
+               	   }else{
+               		   $scope.message_ovm = VMmessage[0];
+               	   }
+               }                                   	 
+        });
+    };
+
+    $scope.doBackup = function(){
 
     	$scope.backupConfig.config = $scope.installConfig;
     	if($scope.backupConfig.config.environment=='KVM'){
@@ -162,7 +224,7 @@ angular.module('backup_restore', ['ui.router',
     		});
     	}
     }
-    $scope.restore = function(){
+    $scope.doRestore = function(){
     	
     	$scope.backupConfig.config = $scope.installConfig;
     	if($scope.backupConfig.config.environment=='KVM'){
@@ -176,7 +238,31 @@ angular.module('backup_restore', ['ui.router',
      			$state.go("dashboard.monitor");
     		});
     	}
-    }
-} );
+    };
+} ).controller('datamessage_ctrl', function($scope, $modalInstance,$state,msg,config){
+		$scope.ok = function(){
+				$modalInstance.close(true);
+		};
+		$scope.message = msg;
+		$scope.installConfig = config;
+		var VMmessage = new Array();
+    	for(var index in $scope.message){
+    		if($scope.message[index].indexOf("Warning")!=-1){
+    			VMmessage.push($scope.message[index]);
+    		}
+    	}
+    	if($scope.installConfig.comType != "QOSAC"){
+    		$scope.message_oam = VMmessage[0];
+    		$scope.message_db = VMmessage[1];
+    		if($scope.installConfig.comType != "OAM"){
+    			$scope.message_cm = VMmessage[2];			
+    		}
+    	}else{
+    		$scope.message_ovm = VMmessage[0];
+    	}	
+		$scope.cancel = function () {
+			$modalInstance.dismiss('cancel');
+		};
+	});
 
 

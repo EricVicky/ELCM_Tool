@@ -19,7 +19,7 @@
 									<div class="panel panel-default">
 										<div class="panel-heading">
 											<label class="control-label" translate="COM_INSTANCE">COM Instance</label> <select
-												ng-change="reloadimglist()" name="com_instance"
+												ng-change="reloadimglist();init()" name="com_instance"
 												ng-model="com_instance" class="form-control"
 												ng-options="inst.name for inst in comInstance"
 												title="COM Instance" validation="required">
@@ -180,35 +180,19 @@
 									    <div class="form-group" col-md-4>
 										    <label class="control-label" translate="REMOTE_SERVER">Remote Server</label>
 											<input name="remote_server" type="checkbox" ng-model="remote_server" 
-											title="Remote Server" />
+											title="Remote Server" ng-click="init()"/>
 										</div>
 										<div class="form-group" ng-if="remote_server==true">
 											<label class="control-label">Full Restore Server IP</label> <input
 												name="backup_server_ip" class="form-control" type="text"
 												ng-model="$parent.fullbackupConfig.remote_server_ip" 
-												title="serverip" validation="required|ipv4" ng-blur="IPResNFSCheck()"/>
+												title="serverip" validation="required|ipv4" ng-blur="init()"/>
 										</div>
 										<div class="form-group" ng-if="remote_server==true">
 											<label class="control-label">Full Restore Server Directory</label> <input
 												name="backup_server_directory" class="form-control" type="text"
 												ng-model="$parent.fullbackupConfig.remote_server_dir" 
-												title="serverip" validation="required" ng-blur="preResNFSCheck()"/>
-										</div>
-										<div ng-if="remote_server==true">
-											<div ng-if="chemessageRes_nfs==false">
-												<h4>Checking whether initial full backup files exist before remote full restore launching, Please wait......</h4>
-											</div>
-											<div ng-if="validRes_nfs==false && chemessageRes_nfs!=false" style="color:red">
-												<h4>{{messageRes_nfs}}</h4>
-											</div>
-											<div ng-if="validRes_nfs==true && chemessageRes_nfs!=false">
-												<div ng-if="existRes_nfs==false" style="color:red">
-													<h4>{{messageRes_nfs}}</h4>
-												</div>
-												<div ng-if="existRes_nfs==true" style="color:green">
-													<h4>{{messageRes_nfs}}</h4>
-												</div>
-											</div>
+												title="serverip" validation="required" ng-blur="init()"/>
 										</div>
 										<div class="form-group" ng-show="">
 											<label class="control-label">Full Restore Directory</label> <input
@@ -217,15 +201,14 @@
 												title="directory" validation="required" ng-init="fullbackupConfig.full_backup_dir='/fullbackup'"/>
 										</div>
 										<div ng-if="remote_server!=true">
-											<div ng-if="chemessage==false">
-												<h4>Checking whether initial full backup files exist before full restore launching, Please wait......</h4>
-											</div>
-											<div ng-if="valid==true && chemessage!=false" style="color:red">
-												<h4>Error:There is no initial full backup files, full restore can't be launched.</h4>
-											</div>
-											<div ng-if="valid==false && chemessage!=false" style="color:green">
-												<h4>OK, please continue to lauch full restore.</h4>
-											</div>
+											<h4>Directory : <span style="color:green">{{installConfig.vm_img_dir}}/{{installConfig.deployment_prefix}}</span></h4>
+										</div>
+										<br>
+										<div ng-show="checkmessage == true">
+											<h4>Checking whether initial full backup files exist before full restore launching, Please wait......</h4>
+										</div>
+										<div ng-show="showmessage == true && valid == false" style="color:red">
+											<h4>{{message}}</h4>
 										</div>
 									</fieldset>
 								</form>
@@ -240,10 +223,8 @@
 									<a class="btn btn-primary"
 										ng-click="rc.backupWizard.forward()"
 										ng-show="rc.backupWizard.currentIndex < rc.backupWizard.navigationLength" translate="CONTINUE">Continue</a>
-									<a class="btn btn-primary" ng-click="fullrestore()" ng-disabled="tab2.$invalid || valid==true ||chemessage==false"
-										ng-show="rc.backupWizard.currentIndex == rc.backupWizard.navigationLength && remote_server!=true">Local Full Restore</a>
-									<a class="btn btn-primary" ng-click="fullrestore()" ng-disabled="tab2.$invalid || validRes_nfs==false || chemessageRes_nfs==false || existRes_nfs==false"
-										ng-show="rc.backupWizard.currentIndex == rc.backupWizard.navigationLength && remote_server==true">Remote Full Restore</a>
+									<a class="btn btn-primary" ng-click="fullrestore()" ng-disabled="tab2.$invalid || valid == false || checkmessage==true"
+										ng-show="rc.backupWizard.currentIndex == rc.backupWizard.navigationLength">Full Restore</a>
 								</div>
 							</div>
 						</div>

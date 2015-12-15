@@ -18,9 +18,21 @@ import com.jcraft.jsch.Session;
 @Service
 public class COMValidationService {
 	
-	private String username = "root";
+	private String username = "plx";
 	private String ip ;
-	private String password = "EMS_qd_n2";
+	private String password = "plx";
+	
+    public void setUserName( String username ){
+    	this.username = username;
+    }
+    
+    public void setIp( String ip ){
+    	this.ip = ip;
+    }
+    
+    public void setpassword( String password ){
+    	this.password = password;
+    }
 	//windows OS
 	private Session getSession(String username, String ip, String password){
         JSch shell = new JSch();
@@ -86,7 +98,7 @@ public class COMValidationService {
         	c = (ChannelSftp) channel;
             System.out.println("Starting File Upload:");
             String fsrc = src, fdest = dest;
-            c.put(fsrc, fdest);
+            c.put(fsrc+file, fdest);
             c.chmod(744, fdest+file);
             //c.get(fdest, "/tmp/testfile.bin");
             c.disconnect();
@@ -115,9 +127,9 @@ public class COMValidationService {
 			outstream.flush();
 			try{Thread.sleep(1000);}catch(Exception ee){}
 			System.out.println("The command " + command + " is excuted");
-			byte[] tmp=new byte[1024];
+			byte[] tmp=new byte[2048];
 			while(in.available()>0){
-				int i=in.read(tmp, 0, 1024);
+				int i=in.read(tmp, 0, 2048);
 				if(i<0)break;
 				string = new String(tmp, 0, i);
 				System.out.print(string);
@@ -135,42 +147,7 @@ public class COMValidationService {
 	}
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	//Above are defined function. Below are detail function
-	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    public String backupPreCheck(String dir){
-    	cyFiles2Server("/opt/PlexView/ELCM/script/pre_check_for_fd_backup.sh","/alcatel/omc1/OMC_OSM/backup_scripts/","pre_check_for_fd_backup.sh");
-    	String command = "/alcatel/omc1/OMC_OSM/backup_scripts/pre_check_for_fd_backup.sh "+ dir;
-    	String checkRes = excuteShell(command);
-    	return checkRes;
-    }
-    
-    public String mountServer(String mountDir, String nfsDir, String ip, String nfsIp, String command){
-    	String mntCommand = "";
-        if("mount".equals(command)){
-        	mntCommand = "mount -o nolock -t nfs "+nfsIp+":"+nfsDir+" "+mountDir+" \n";       	
-        }else{
-        	mntCommand = "umount "+mountDir+" \n";
-        }
-        String mountRes = excuteShell(mntCommand);
-    	return mountRes;
-   }
-    
-    public String ExistCheck(String vm_img_dir,String deployment_prefix,String hostname){
-    	String dupCommand = "ls "+vm_img_dir+"/"+deployment_prefix+" | grep "+hostname+"_snapshot";
-    	String dupRes = excuteShell(dupCommand);
-    	return dupRes;
-    }
-    
-    public void setUserName( String username ){
-    	this.username = username;
-    }
-    
-    public void setoamip( String oamip ){
-    	this.ip = oamip;
-    }
-    
-    public void setpassword( String password ){
-    	this.password = password;
-    }
+	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////    
     
     public boolean checkIfCOMProcessUp(String ip){
     	String resutlCheckCOM = excuteShell("CheckCOM");
@@ -181,36 +158,51 @@ public class COMValidationService {
     	} else {
     		return false;
     	}
+    }   
+    
+    public String fullbackupPreCheck(String deployment_prefix,String vm_img_dir,String remoteip,String remotedir){
+    	String source = "/opt/PlexView/ELCM/script/";
+    	String destination = "/tmp/";   	
+    	cyFiles2Server(source,destination,"fullbackup_precheck.sh");
+    	String script = destination+"fullbackup_precheck.sh";
+    	String local_backup_dir = vm_img_dir + "/" +deployment_prefix;
+    	String remote_backup_dir = remoteip + remotedir;
+    	String checkRes = excuteShell(script+" "+local_backup_dir+" "+remote_backup_dir);
+    	return checkRes;
     }
     
-    public String preCheckBeforeBackup(String dir){
-    	String preCheckResult = backupPreCheck(dir);
-    	if(preCheckResult.contains("the backup target name is required in arguments") ){
-    		return "Error: the backup target name is required in arguments.";
-    	} else if(preCheckResult.contains("NOT existing")){
-    		return "Error: The target is NOT existing.";
-    	} else if(preCheckResult.contains("NOT writeable")){
-    		return "Error: The target is NOT writeable.";
-    	} else if(preCheckResult.contains("NOT enough disk space")){
-    		return "Error: The target has NOT enough disk space.";
-    	} else if(preCheckResult.contains("No such file or directory")){
-    		return "Error: Scripts not exist.";
-    	} else {
-    		return "Success.";
-    	}
+    public String fullrestorePreCheck(String deployment_prefix,String vm_img_dir,String remoteip,String remotedir){
+    	String source = "/opt/PlexView/ELCM/script/";
+    	String destination = "/tmp/";   	
+    	cyFiles2Server(source,destination,"fullrestore_precheck.sh");
+    	String script = destination+"fullrestore_precheck.sh";
+    	String local_restore_dir = vm_img_dir + "/" +deployment_prefix;
+    	String remote_restore_dir = remoteip + remotedir;
+    	String checkRes = excuteShell(script+" "+local_restore_dir+" "+remote_restore_dir);
+    	return checkRes;
     }
     
-    public String mountNfsServer(String dir, String nfsDir, String ip, String nfsip, String command){
-    	String mntResult = mountServer(dir,nfsDir,ip,nfsip,command);
-    	return mntResult;
+    public String databackupPreCheck(String localdir,String filename,String remoteip,String remotedir){
+    	String source = "/opt/PlexView/ELCM/script/";
+    	String destination = "/tmp/";   	
+    	cyFiles2Server(source,destination,"databackup_precheck.sh");
+    	String script = destination+"databackup_precheck.sh";
+    	String local_backup_dir = localdir;
+    	String remote_backup_dir = remoteip + remotedir;
+    	String checkRes = excuteShell(script+" "+local_backup_dir+" "+filename+" "+remote_backup_dir);
+    	return checkRes;
     }
     
-    public String backupExistCheck(String deployment_prefix,String vm_img_dir,String hostname){
-    	String CheckRes = ExistCheck(vm_img_dir,deployment_prefix,hostname);
-    	return CheckRes;
+    public String datarestorePreCheck(String localdir,String filename,String remoteip,String remotedir){
+    	String source = "/opt/PlexView/ELCM/script/";
+    	String destination = "/tmp/";   	
+    	cyFiles2Server(source,destination,"datarestore_precheck.sh");
+    	String script = destination+"datarestore_precheck.sh";
+    	String local_backup_dir = localdir;
+    	String remote_backup_dir = remoteip + remotedir;
+    	String checkRes = excuteShell(script+" "+local_backup_dir+" "+filename+" "+remote_backup_dir);
+    	return checkRes;
     }
-    
-    
     
 /*	public static void main(String[] args) {
 		// TODO Auto-generated method stub

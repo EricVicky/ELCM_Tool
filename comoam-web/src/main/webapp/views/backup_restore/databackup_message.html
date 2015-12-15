@@ -1,0 +1,20 @@
+
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title" style="color:red">Warning!</h4>
+      </div>
+      <div class="modal-body">
+      	<div ng-if="installConfig.comType!='QOSAC'">
+	  		<h4>OAM VM --- {{message_oam}}</h4>
+			<h4>DB VM --- {{message_db}}</h4>
+			<h4 ng-if="installConfig.comType!='OAM'">CM VM --- {{message_cm}}</h4>
+		</div>
+		<div ng-if="installConfig.comType=='QOSAC'">
+			<h4>OVM VM --- {{message_ovm}}</h4>
+		</div>
+      </div>
+      <div class="modal-footer">
+      	<button type="button" class="btn btn-default" ng-click="ok()">Continue</button>
+        <button type="button" class="btn btn-default" ng-click="cancel()">Cancel</button>
+      </div>
+    </div>

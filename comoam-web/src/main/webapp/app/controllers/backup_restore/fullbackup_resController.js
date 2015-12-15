@@ -6,7 +6,7 @@ angular.module('fullbackup_restore', ['ui.router',
                                   'ghiscoding.validation',
                                   'monitor',
                                   'ngResource']).controller('fullbackup_resctr', function($scope,  $log, KVMService
-		, fullBackup_ResService, monitorService,DashboardService, $dialogs, $state,$translate,validationService) {
+		, fullBackup_ResService, monitorService,DashboardService, $dialogs, $modal,$state,$translate,validationService) {
                                 	
                                 	  $scope.reloadimglist = function(){
                                 	    	if($scope.com_instance != null){
@@ -50,95 +50,89 @@ angular.module('fullbackup_restore', ['ui.router',
                                 			}
                                 			$scope.comInstance = comInstance;
                                 			$scope.setDefaultInstace();
-                                	    });
-                                	    
-                                	    $scope.IPNFSCheck = function(){
-                                	    	if($scope.fullbackupConfig.remote_server_dir){
-                                	    		$scope.preNFSCheck();
-                                	    	}
+                                	    });                        	    
+
+                                	    $scope.init = function(){
+                                	    	$scope.checkmessage = false;
+                                	    	$scope.showmessage = false;
+                                	    	$scope.valid = true;
                                 	    };
                                 	    
-                                	    $scope.preNFSCheck = function(){
-                                	    	if($scope.remote_server){
-                                	    		$scope.valid_nfs = false;
-                                	        	$scope.message_nfs = "";
-                                	        	$scope.chemessage_nfs = false;        	
-                                	        	validationService.fullbackupNfsPrecheck($scope.installConfig.vm_img_dir,$scope.installConfig.deployment_prefix,
-                                	        			                                $scope.installConfig.host.ip_address,$scope.fullbackupConfig.remote_server_ip,
-                                	        			                                $scope.fullbackupConfig.remote_server_dir).then( function(data) {
-                                            		$scope.valid_nfs = data.isValid;
-                                            		$scope.chemessage_nfs = true;
-                                            		if($scope.valid_nfs!=true){
-                                            			if(data.message.indexOf("mount.nfs:")!=-1){
-                                            				$scope.message_nfs = data.message.split("mount.nfs:")[1].split("\r\n")[0];		
-                                            			}else{
-                                            				$scope.message_nfs = "Time out while mounting server.";
-                                            			}
-                                            		}else{
-                                            			$scope.message_nfs = "Success.";
-                                            		}
-                                            	}); 
-                                	        	
-                                	    	}
-                                	    };                             	    	    
-                                	    
-                                	    $scope.preCheck = function(){
-                                	    	$scope.valid = false;
-                                	    	$scope.chemessage = false;
-                                        	//$scope.message = "";
-                                	    	if($scope.installConfig.comType=="FCAPS"||$scope.installConfig.comType=="OAM"||$scope.installConfig.comType=="CM"){
-                                	    		var hostname = $scope.installConfig.vm_config.oam.hostname; 	    		
+                                	    $scope.fullbackup = function(){	
+                                	    	$scope.showmessage = false;
+                                	    	$scope.checkmessage = true;
+                                	    	if($scope.remote_server==true){
+                                	    		var remoteip = $scope.fullbackupConfig.remote_server_ip + ":";
+                                	    		var remotedir = $scope.fullbackupConfig.remote_server_dir;
                                 	    	}else{
-                                	    		var hostname = $scope.installConfig.vm_config.ovm.hostname; 
+                                	    		var remoteip = "";
+                                	    	    var remotedir = "";
                                 	    	}
-                                        	validationService.fullbackupExistCheck($scope.installConfig.host.ip_address,$scope.installConfig.deployment_prefix, $scope.installConfig.vm_img_dir,hostname).then( function(data) {
-                                        		$scope.valid = data.isValid;
-                                        		$scope.chemessage = true;
-                                        	}); 
+                                	    	validationService.fullbackupPreCheck($scope.installConfig.host.ip_address,$scope.installConfig.deployment_prefix,$scope.installConfig.vm_img_dir,
+                                	    			                             remoteip,remotedir).then( function(data){
+                                	                $scope.showmessage = true;
+                                	                $scope.checkmessage = false;
+                                	    			$scope.valid = data.isValid;
+                                	    			$scope.message = data.message.split("\r\n")[3];
+                                	    			if($scope.valid == true){
+                                	    				if($scope.message.indexOf("Warning") != -1){
+                                	    					$scope.showmessage = false;
+                                	    					var modalInstance = $modal.open({
+                                	    						animation: true,
+                                	    						backdrop:'static',
+                                	    						templateUrl: 'views/backup_restore/fullbackup_message.html',
+                                	    						controller: 'fullmessage_ctrl',
+                                	    						resolve: {
+                                	    							msg: function() {
+                                	    								return $scope.message;
+                                	    							}
+                                	    						},   
+                                	    					});	
+                                	    					modalInstance.result.then(function (res) {
+                                	    					    $scope.result = res;
+                                	    					    if($scope.result == true){
+                                    	    						$scope.dofullbackup();
+                                    	    					}
+                                	    					}, function () {
+                                	    					});
+                                	    				}else{
+                                	    					$scope.dofullbackup();    					
+                                	    				}
+                                        	    	}else{
+                                        	    		if($scope.message == ""){
+                                        	    			$scope.message = "Time out while mounting server.";
+                                        	    		}
+                                        	    	}
+                                	    	});
                                 	    };
                                 	    
-                                	    $scope.IPResNFSCheck = function(){
-                                	    	if($scope.fullbackupConfig.remote_server_dir){
-                                	    		$scope.preResNFSCheck();
+                                	    $scope.fullrestore = function(){	
+                                	    	$scope.showmessage = false;
+                                	    	$scope.checkmessage = true;
+                                	    	if($scope.remote_server==true){
+                                	    		var remoteip = $scope.fullbackupConfig.remote_server_ip + ":";
+                                	    		var remotedir = $scope.fullbackupConfig.remote_server_dir;
+                                	    	}else{
+                                	    		var remoteip = "";
+                                	    	    var remotedir = "";
                                 	    	}
+                                	    	validationService.fullrestorePreCheck($scope.installConfig.host.ip_address,$scope.installConfig.deployment_prefix,$scope.installConfig.vm_img_dir,
+   	    			                                                              remoteip,remotedir).then( function(data){
+   	    			                            	$scope.showmessage = true;
+                                	                $scope.checkmessage = false;
+                                	    			$scope.valid = data.isValid;
+                                	    			$scope.message = data.message.split("\r\n")[3];
+                                	    			if($scope.valid == true){
+                                	    				$scope.dofullrestore(); 
+                                	    			}else{
+                                	    				if($scope.message == ""){
+                                        	    			$scope.message = "Time out while mounting server.";
+                                        	    		}
+                                	    			} 
+   	    			                        });
                                 	    };
-                                	    
-                                	    $scope.preResNFSCheck = function(){
-                                	    	if($scope.remote_server){
-                                	    		$scope.validRes_nfs = false;
-                                	        	$scope.messageRes_nfs = "";
-                                	        	$scope.chemessageRes_nfs = false; 
-                                	        	$scope.existRes_nfs = false;
-                                	        	if($scope.installConfig.comType=="FCAPS"||$scope.installConfig.comType=="OAM"||$scope.installConfig.comType=="CM"){
-                                    	    		var hostname = $scope.installConfig.vm_config.oam.hostname; 	    		
-                                    	    	}else{
-                                    	    		var hostname = $scope.installConfig.vm_config.ovm.hostname; 
-                                    	    	}
-                                	        	validationService.fullrestoreNfsPrecheck($scope.installConfig.vm_img_dir,$scope.installConfig.deployment_prefix,
-                                	        			                                $scope.installConfig.host.ip_address,$scope.fullbackupConfig.remote_server_ip,
-                                	        			                                $scope.fullbackupConfig.remote_server_dir,hostname).then( function(data) {
-                                            		$scope.validRes_nfs = data.isValid;
-                                            		$scope.chemessageRes_nfs = true;
-                                            		if($scope.validRes_nfs!=true){
-                                            			if(data.message.indexOf("mount.nfs:")!=-1){
-                                            				$scope.messageRes_nfs = data.message.split("mount.nfs:")[1].split("\r\n")[0];		
-                                            			}else{
-                                            				$scope.messageRes_nfs = "Time out while mounting server.";
-                                            			}
-                                            		}else{
-                                            			$scope.existRes_nfs = data.isExist;
-                                            			if($scope.existRes_nfs){
-                                            				$scope.messageRes_nfs = "OK, please continue to lauch full restore.";
-                                            			}else{
-                                            				$scope.messageRes_nfs = "Error:There is no initial full backup files, full restore can't be launched.";
-                                            			}
-                                            		}
-                                            	}); 
-                                	        	
-                                	    	}
-                                	    };   
                                 	         	    
-                                	    $scope.fullbackup = function(){
+                                	    $scope.dofullbackup = function(){
                                 	    	var vm_img_dir = $scope.installConfig.vm_img_dir;
                 	    					var deployment_prefix = $scope.installConfig.deployment_prefix;
                                 	    	if($scope.remote_server == null||$scope.remote_server == false){
@@ -167,7 +161,7 @@ angular.module('fullbackup_restore', ['ui.router',
                                 	    	}//else
                                 	    };
                                 	                                  	    
-                                	    $scope.fullrestore = function(){
+                                	    $scope.dofullrestore = function(){
                                 	    	var vm_img_dir = $scope.installConfig.vm_img_dir;
                 	    					var deployment_prefix = $scope.installConfig.deployment_prefix;
                                 	    	if($scope.remote_server == null||$scope.remote_server == false){
@@ -195,7 +189,14 @@ angular.module('fullbackup_restore', ['ui.router',
                                 	    		}
                                 	    	}//else
                                 	    };
-  
-} );
+                                  		} ).controller('fullmessage_ctrl', function($scope, $modalInstance,$state,msg){
+                                  				$scope.ok = function(){
+                                  					$modalInstance.close(true);
+                                  				};
+                                  				$scope.message = msg;
+                                  				$scope.cancel = function () {
+                                  					$modalInstance.dismiss('cancel');
+                                  				};
+                                  		});
 
 

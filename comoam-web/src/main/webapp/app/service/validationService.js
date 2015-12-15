@@ -11,41 +11,36 @@ angular.module('validation',[]).factory('validationService', function($location,
 		    });
 		    return deferred.promise;
 		},
-		backupPrecheck: function(dir,oamip,dbip,cmip) {
+		fullbackupPreCheck: function(hostip,deployment_prefix,vm_img_dir,remoteip,remotedir) {
 			var deferred = $q.defer();
-		    $http.get(restUrl + "check/backupPrecheck", {"params": {"dir": dir,"oamip": oamip,"dbip": dbip,"cmip": cmip}}).success(function(res) {
+		    $http.get(restUrl + "check/fullbackupPreCheck", {"params": {"hostip": hostip,"deployment_prefix": deployment_prefix,"vm_img_dir": vm_img_dir,"remoteip":remoteip,"remotedir":remotedir}}).success(function(res) {
 		        deferred.resolve({ isValid: res.succeed, message: res.message });
 		    });
 		    return deferred.promise;
 		},
-		backupNfsPrecheck: function(dir,nfsip,oamip) {
+		fullrestorePreCheck: function(hostip,deployment_prefix,vm_img_dir,remoteip,remotedir) {
 			var deferred = $q.defer();
-		    $http.get(restUrl + "check/backupNfsPrecheck", {"params": {"dir": dir,"nfsip": nfsip,"oamip": oamip}}).success(function(res) {
+		    $http.get(restUrl + "check/fullrestorePreCheck", {"params": {"hostip": hostip,"deployment_prefix": deployment_prefix,"vm_img_dir": vm_img_dir,"remoteip":remoteip,"remotedir":remotedir}}).success(function(res) {
 		        deferred.resolve({ isValid: res.succeed, message: res.message });
 		    });
 		    return deferred.promise;
 		},
-		fullbackupExistCheck: function(hostip,deployment_prefix,vm_img_dir,hostname) {
+		databackupPreCheck: function(oamip,dbip,cmip,localdir,filename,remoteip,remotedir) {
 			var deferred = $q.defer();
-		    $http.get(restUrl + "check/fullbackupExistCheck", {"params": {"hostip": hostip,"deployment_prefix": deployment_prefix,"vm_img_dir": vm_img_dir,"hostname":hostname}}).success(function(res) {
-		        deferred.resolve({ isValid: res.succeed, message: res.message });
+		    $http.get(restUrl + "check/databackupPreCheck", {"params": {"oamip": oamip,"dbip": dbip,"cmip": cmip,"localdir": localdir,"filename": filename,"remoteip":remoteip,"remotedir":remotedir}}).success(function(res) {
+		        deferred.resolve({ isValid: res.succeed, message: res.mutiMessage });
 		    });
 		    return deferred.promise;
 		},
-		fullbackupNfsPrecheck: function(vm_img_dir,deployment_prefix,hostip,nfsip,nfsdir) {
+		datarestorePreCheck: function(oamip,dbip,cmip,localdir,filename,remoteip,remotedir) {
 			var deferred = $q.defer();
-		    $http.get(restUrl + "check/fullbackupNfsPrecheck", {"params": {"vm_img_dir": vm_img_dir,"deployment_prefix": deployment_prefix,"hostip": hostip,"nfsip": nfsip,"nfsdir": nfsdir}}).success(function(res) {
-		        deferred.resolve({ isValid: res.succeed, message: res.message });
+		    $http.get(restUrl + "check/datarestorePreCheck", {"params": {"oamip": oamip,"dbip": dbip,"cmip": cmip,"localdir": localdir,"filename": filename,"remoteip":remoteip,"remotedir":remotedir}}).success(function(res) {
+		        deferred.resolve({ isValid: res.succeed, message: res.mutiMessage });
 		    });
 		    return deferred.promise;
 		},
-		fullrestoreNfsPrecheck: function(vm_img_dir,deployment_prefix,hostip,nfsip,nfsdir,hostname) {
-			var deferred = $q.defer();
-		    $http.get(restUrl + "check/fullrestoreNfsPrecheck", {"params": {"vm_img_dir": "/lvvm03/stTest","deployment_prefix": "EricTest","hostip": "135.251.236.98","nfsip": "135.252.138.135","nfsdir": "/var/images/EricTest","hostname": "EricTestM001OAM01"}}).success(function(res) {
-		        deferred.resolve({ isValid: res.succeed,isExist: res.exist, message: res.message });
-		    });
-		    return deferred.promise;
-		},
+		
+
 	};
 });
 
