@@ -162,7 +162,7 @@ public class COMValidationService {
     
     public String fullbackupPreCheck(String deployment_prefix,String vm_img_dir,String remoteip,String remotedir){
     	String source = "/opt/PlexView/ELCM/script/";
-    	String destination = "/tmp/";   	
+    	String destination = "/tmp/"; 
     	cyFiles2Server(source,destination,"fullbackup_precheck.sh");
     	String script = destination+"fullbackup_precheck.sh";
     	String local_backup_dir = vm_img_dir + "/" +deployment_prefix;
@@ -173,7 +173,7 @@ public class COMValidationService {
     
     public String fullrestorePreCheck(String deployment_prefix,String vm_img_dir,String remoteip,String remotedir){
     	String source = "/opt/PlexView/ELCM/script/";
-    	String destination = "/tmp/";   	
+    	String destination = "/tmp/";  
     	cyFiles2Server(source,destination,"fullrestore_precheck.sh");
     	String script = destination+"fullrestore_precheck.sh";
     	String local_restore_dir = vm_img_dir + "/" +deployment_prefix;
@@ -184,7 +184,7 @@ public class COMValidationService {
     
     public String databackupPreCheck(String localdir,String filename,String remoteip,String remotedir){
     	String source = "/opt/PlexView/ELCM/script/";
-    	String destination = "/tmp/";   	
+    	String destination = "/tmp/";   
     	cyFiles2Server(source,destination,"databackup_precheck.sh");
     	String script = destination+"databackup_precheck.sh";
     	String local_backup_dir = localdir;

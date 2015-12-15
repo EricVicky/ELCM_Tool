@@ -78,12 +78,12 @@ backup_precheck() {
     if [ $? -eq 0 ];then
         check_disk_space ${local_backup_dir} ${size}
         if [ $? -eq 0 ];then
-            exit 0
+            echo "Success"
         else
-            exit 1
+            return 1
         fi
     else
-        exit 1
+        return 1
     fi
 }
 #######################################################################

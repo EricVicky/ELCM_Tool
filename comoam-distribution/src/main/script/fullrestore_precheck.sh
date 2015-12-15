@@ -44,7 +44,7 @@ umount_2_server() {
 restore_precheck() {
     fullrestore_file_exist ${local_restore_dir}
     if [ $? -eq 0 ];then
-        echo "Success: Ready to full restore."
+        echo "Success"
     else
         echo "Error: No full backup files exist, full restore is prohibited."
     fi

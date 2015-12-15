@@ -46,7 +46,7 @@ umount_2_server() {
 restore_precheck() {
     datarestore_file_exist ${local_restore_dir} ${filename}
     if [ $? -eq 0 ];then
-        echo "Success: Ready to data restore."
+        return "Success"
     else
         echo "Error: No data backup files exist, data restore is prohibited."
     fi

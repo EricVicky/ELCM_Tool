@@ -75,10 +75,10 @@ backup_precheck() {
         if [ $? -eq 0 ];then
             echo "Success"
         else
-            echo "Failed"
+            return 1
         fi
     else
-        echo "Failed"
+        return 1
     fi
 }
 #######################################################################
