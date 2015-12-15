@@ -8,7 +8,7 @@ public class ValidationResult implements Serializable{
 	 * 
 	 */
 private static final long serialVersionUID = -743014706041617274L;
-boolean succeed = false;
+boolean succeed = true;
 boolean exist = true;
 String message;
 String[] mutiMessage;

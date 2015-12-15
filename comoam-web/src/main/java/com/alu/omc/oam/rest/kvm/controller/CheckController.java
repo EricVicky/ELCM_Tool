@@ -148,7 +148,7 @@ public class CheckController
     @RequestMapping(value="/check/fullbackupPreCheck", method=RequestMethod.GET)
     public ValidationResult fullbackupCheckResult(@ModelAttribute("deployment_prefix") String deployment_prefix,@ModelAttribute("vm_img_dir") String vm_img_dir,
     		                                @ModelAttribute("remoteip") String remoteip,@ModelAttribute("remotedir") String remotedir,@ModelAttribute("hostip") String hostip){
-    	ValidationResult res = new ValidationResult();
+    	ValidationResult res = new ValidationResult();res.setSucceed(false);
     	cOMValidationService.setIp(hostip);
     	String checkRes= cOMValidationService.fullbackupPreCheck(deployment_prefix,vm_img_dir,remoteip,remotedir);
     	if(checkRes.contains("Success")){
@@ -163,7 +163,7 @@ public class CheckController
     @RequestMapping(value="/check/fullrestorePreCheck", method=RequestMethod.GET)
     public ValidationResult fullrestoreCheckResult(@ModelAttribute("deployment_prefix") String deployment_prefix,@ModelAttribute("vm_img_dir") String vm_img_dir,
     		                                @ModelAttribute("remoteip") String remoteip,@ModelAttribute("remotedir") String remotedir,@ModelAttribute("hostip") String hostip){
-    	ValidationResult res = new ValidationResult();
+    	ValidationResult res = new ValidationResult();res.setSucceed(false);
     	cOMValidationService.setIp(hostip);
     	String checkRes= cOMValidationService.fullrestorePreCheck(deployment_prefix,vm_img_dir,remoteip,remotedir);
     	if(checkRes.contains("Success")){
@@ -180,7 +180,7 @@ public class CheckController
     		                                      @ModelAttribute("remoteip") String remoteip,@ModelAttribute("remotedir") String remotedir,
     		                                      @ModelAttribute("oamip") String oamip,@ModelAttribute("dbip") String dbip,@ModelAttribute("cmip") String cmip){
     	int start_point;
-    	ValidationResult res = new ValidationResult();
+    	ValidationResult res = new ValidationResult();res.setSucceed(false);
     	cOMValidationService.setIp(oamip);
     	String oam_checkRes = cOMValidationService.databackupPreCheck(localdir,filename,remoteip,remotedir);
     	if(oam_checkRes.split("\r\n").length<4){
@@ -230,7 +230,7 @@ public class CheckController
     		                                      @ModelAttribute("remoteip") String remoteip,@ModelAttribute("remotedir") String remotedir,
     		                                      @ModelAttribute("oamip") String oamip,@ModelAttribute("dbip") String dbip,@ModelAttribute("cmip") String cmip){
     	int start_point;
-    	ValidationResult res = new ValidationResult();
+    	ValidationResult res = new ValidationResult();res.setSucceed(false);
     	cOMValidationService.setIp(oamip);
     	String oam_checkRes = cOMValidationService.datarestorePreCheck(localdir,filename,remoteip,remotedir);
     	if(oam_checkRes.split("\r\n").length<4){
