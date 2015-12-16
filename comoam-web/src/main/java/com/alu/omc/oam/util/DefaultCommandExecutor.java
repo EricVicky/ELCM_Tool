@@ -9,6 +9,8 @@ import org.apache.commons.exec.CommandLine;
 import org.apache.commons.exec.DefaultExecutor;
 import org.apache.commons.exec.ExecuteException;
 import org.apache.commons.exec.ExecuteResultHandler;
+import org.apache.commons.exec.PumpStreamHandler;
+import org.apache.commons.io.output.ByteArrayOutputStream;
 
 public class DefaultCommandExecutor  implements ICommandExec 
 {
@@ -43,8 +45,15 @@ public class DefaultCommandExecutor  implements ICommandExec
     public CommandResult execute() throws IOException, InterruptedException
     {
         CommandLine cmdLine = CommandLine.parse(this.commandLine);
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        DefaultExecutor exec = new DefaultExecutor();
+        PumpStreamHandler streamHandler = new PumpStreamHandler(outputStream);
+        exec.setStreamHandler(streamHandler);
         DefaultExecutor executor = new DefaultExecutor();
         int res = executor.execute(cmdLine);
-        CommandResult commandResult = new CommandResult(res, null);
+        CommandResult commandResult = new CommandResult(res, outputStream.toString());
         return commandResult;
-    }}
+    }
+    
+
+}
