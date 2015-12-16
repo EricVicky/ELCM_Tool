@@ -170,10 +170,12 @@ public class COMValidationService {
     		String shSource="/opt/PlexView/ELCM/script/fullbackup_precheck.sh";
     		String local_backup_dir = vm_img_dir + "/" +deployment_prefix;
     		String remote_backup_dir = remoteip + remotedir;
+    		System.out.println("Command is:"+shSource+" "+local_backup_dir+" "+remote_backup_dir);
     		Process process = null;  
    	        List<String> processList = new ArrayList<String>();  
    	        try {  
-   	            process = Runtime.getRuntime().exec(shSource+" "+local_backup_dir+" "+remote_backup_dir);  
+   	            process = Runtime.getRuntime().exec(shSource+" "+local_backup_dir+" "+remote_backup_dir);
+   	            System.out.println("Command is executed.");
    	            BufferedReader input = new BufferedReader(new InputStreamReader(process.getInputStream()));  
    	            String line = "";  
    	            while ((line = input.readLine()) != null) {  
@@ -183,7 +185,8 @@ public class COMValidationService {
    	        } catch (IOException e) {  
    	            e.printStackTrace();  
    	        }   
-   	        System.out.println(processList.toString());  
+   	        System.out.println(processList.toString());
+   	        checkRes = processList.toString();
     	}else{
     		String source = "/opt/PlexView/ELCM/script/";
     		String destination = "/tmp/"; 
