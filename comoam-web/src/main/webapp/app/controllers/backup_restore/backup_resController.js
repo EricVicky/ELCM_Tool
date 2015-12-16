@@ -133,22 +133,15 @@ angular.module('backup_restore', ['ui.router',
 					$scope.doBackup();    					
 				}
             }else{
-            	var VMmessage = new Array();
-            	for(var index in $scope.message){
-            		if($scope.message[index].indexOf("Warning")!=-1){
-            			continue;
-            		}
-            		VMmessage.push($scope.message[index]);
-            	}
             	if($scope.installConfig.comType != "QOSAC"){
-            		$scope.message_oam = VMmessage[0] == null?"Timeout when mounting server.":VMmessage[0];
-            		$scope.message_db = VMmessage[1] == null?"Timeout when mounting server.":VMmessage[1];
-            		if($scope.installConfig.comType != "OAM"){
-            			$scope.message_cm = VMmessage[2] == null?"Timeout when mounting server.":VMmessage[2];			
-            		}
-            	}else{
-            		$scope.message_ovm = VMmessage[0] == null?"Timeout when mounting server.":VMmessage[0];
-            	}
+           		   $scope.message_oam = $scope.message[0]==""?"Timeout when mounting server.":$scope.message[0];
+            	       $scope.message_db = $scope.message[1]==""?"Timeout when mounting server.":$scope.message[1];
+           		   if($scope.installConfig.comType != "OAM"){
+           		       $scope.message_cm = $scope.message[2]==""?"Timeout when mounting server.":$scope.message[2];			
+           		   }
+           	   }else{
+           		  $scope.message_ovm = $scope.message[0]==""?"Timeout when mounting server.":$scope.message[0];
+           	   }
             }      	
         });
     };
@@ -189,21 +182,14 @@ angular.module('backup_restore', ['ui.router',
                if($scope.valid == true){
             	   $scope.doRestore();
                }else{
-            	   var VMmessage = new Array();
-               	   for(var index in $scope.message){
-               	       if($scope.message[index].indexOf("Warning")!=-1){
-            			  continue;
-            		  }
-            		  VMmessage.push($scope.message[index]);
-               	   }
-               	   if($scope.installConfig.comType != "QOSAC"){
-               		   $scope.message_oam = VMmessage[0] == null?"Timeout when mounting server.":VMmessage[0];
-               		   $scope.message_db = VMmessage[1] == null?"Timeout when mounting server.":VMmessage[1];
+            	   if($scope.installConfig.comType != "QOSAC"){
+               		   $scope.message_oam = $scope.message[0]==""?"Timeout when mounting server.":$scope.message[0];
+                	       $scope.message_db = $scope.message[1]==""?"Timeout when mounting server.":$scope.message[1];
                		   if($scope.installConfig.comType != "OAM"){
-               			   $scope.message_cm = VMmessage[2] == null?"Timeout when mounting server.":VMmessage[2];			
+               		       $scope.message_cm = $scope.message[2]==""?"Timeout when mounting server.":$scope.message[2];			
                		   }
                	   }else{
-               		   $scope.message_ovm = VMmessage[0] == null?"Timeout when mounting server.":VMmessage[0];
+               		  $scope.message_ovm = $scope.message[0]==""?"Timeout when mounting server.":$scope.message[0];
                	   }
                }                                   	 
         });
@@ -248,7 +234,7 @@ angular.module('backup_restore', ['ui.router',
 		var VMmessage = new Array();
     	for(var index in $scope.message){
     		if($scope.message[index].indexOf("Warning")!=-1){
-    			VMmessage.push($scope.message[index]);
+    			VMmessage.push($scope.message[index].substring(0,$scope.message[index].indexOf("Success")));
     		}
     	}
     	if($scope.installConfig.comType != "QOSAC"){

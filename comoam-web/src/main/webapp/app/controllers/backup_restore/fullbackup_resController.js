@@ -73,7 +73,7 @@ angular.module('fullbackup_restore', ['ui.router',
                                 	                $scope.showmessage = true;
                                 	                $scope.checkmessage = false;
                                 	    			$scope.valid = data.isValid;
-                                	    			$scope.message = data.message.split("\r\n")[3];
+                                	    			$scope.message = data.message;				
                                 	    			if($scope.valid == true){
                                 	    				if($scope.message.indexOf("Warning") != -1){
                                 	    					$scope.showmessage = false;
@@ -84,7 +84,7 @@ angular.module('fullbackup_restore', ['ui.router',
                                 	    						controller: 'fullmessage_ctrl',
                                 	    						resolve: {
                                 	    							msg: function() {
-                                	    								return $scope.message;
+                                	    								return $scope.message.substring(0,$scope.message.indexOf("Success"));
                                 	    							}
                                 	    						},   
                                 	    					});	
@@ -121,7 +121,7 @@ angular.module('fullbackup_restore', ['ui.router',
    	    			                            	$scope.showmessage = true;
                                 	                $scope.checkmessage = false;
                                 	    			$scope.valid = data.isValid;
-                                	    			$scope.message = data.message.split("\r\n")[3];
+                                	    			$scope.message = data.message;
                                 	    			if($scope.valid == true){
                                 	    				$scope.dofullrestore(); 
                                 	    			}else{

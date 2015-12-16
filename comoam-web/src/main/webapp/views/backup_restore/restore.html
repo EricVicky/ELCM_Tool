@@ -211,12 +211,12 @@
 											<h4>Checking whether initial backup files exist before data restore launching, Please wait......</h4>
 										</div>
 										<div ng-if="installConfig.comType!='QOSAC'" ng-show="showmessage == true && valid == false" style="color:red">
-											<h4>OAM VM --- {{message_oam}}</h4>
-											<h4>DB VM --- {{message_db}}</h4>
-											<h4 ng-if="installConfig.comType!='OAM'">CM VM --- {{message_cm}}</h4>
+											<h5>OAM VM --- {{message_oam}}</h5>
+											<h5>DB VM --- {{message_db}}</h5>
+											<h5 ng-if="installConfig.comType!='OAM'">CM VM --- {{message_cm}}</h5>
 										</div>
 										<div ng-if="installConfig.comType=='QOSAC'" ng-show="showmessage == true && valid == false" style="color:red">
-											<h4>OVM VM --- {{message_ovm}}</h4>
+											<h5>OVM VM --- {{message_ovm}}</h5>
 										</div>
 									</fieldset>
 								</form>

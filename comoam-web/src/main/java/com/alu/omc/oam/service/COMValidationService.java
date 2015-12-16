@@ -147,7 +147,28 @@ public class COMValidationService {
             channel.disconnect();
             session.disconnect();
 		}    	
-    	return string;
+    	return trim(string);
+	}
+	
+	private String trim(String stdout){
+		final int FIX_PROMOTE_LINES = 3; 
+		StringBuffer res = new StringBuffer();
+		if(stdout!=null && stdout.length() > 0){
+			String[] lines = stdout.split("\r\n");
+			if(lines.length >= FIX_PROMOTE_LINES){
+				for(int i=FIX_PROMOTE_LINES; i< lines.length; i++){
+					if(lines[i].endsWith("# "))
+						break;
+					res.append(lines[i]);
+					if(i<lines.length-2){
+						res.append("\n");	
+					}
+				}
+			}else{
+				System.out.print("abnormal output");
+			}
+		}
+		return res.toString();
 	}
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	//Above are defined function. Below are detail function
@@ -165,41 +186,17 @@ public class COMValidationService {
     }   
     
     public String fullbackupPreCheck(String hostip,String deployment_prefix,String vm_img_dir,String remoteip,String remotedir){
-    	String checkRes = "";
-    	if (Host.isLocalHost(hostip)){
-    		String shSource="/opt/PlexView/ELCM/script/fullbackup_precheck.sh";
-    		String local_backup_dir = vm_img_dir + "/" +deployment_prefix;
-    		String remote_backup_dir = remoteip + remotedir;
-    		System.out.println("Command is:"+shSource+" "+local_backup_dir+" "+remote_backup_dir);
-    		Process process = null;  
-   	        List<String> processList = new ArrayList<String>();  
-   	        try {  
-   	            process = Runtime.getRuntime().exec(shSource+" "+local_backup_dir+" "+remote_backup_dir);
-   	            System.out.println("Command is executed.");
-   	            BufferedReader input = new BufferedReader(new InputStreamReader(process.getInputStream()));  
-   	            String line = "";  
-   	            while ((line = input.readLine()) != null) {  
-   	                processList.add(line);  
-   	            }  
-   	            input.close();  
-   	        } catch (IOException e) {  
-   	            e.printStackTrace();  
-   	        }   
-   	        System.out.println(processList.toString());
-   	        checkRes = processList.toString();
-    	}else{
-    		String source = "/opt/PlexView/ELCM/script/";
-    		String destination = "/tmp/"; 
-    		cyFiles2Server(source,destination,"fullbackup_precheck.sh");
-    		String script = destination+"fullbackup_precheck.sh";
-    		String local_backup_dir = vm_img_dir + "/" +deployment_prefix;
-    		String remote_backup_dir = remoteip + remotedir;
-    		checkRes = excuteShell(script+" "+local_backup_dir+" "+remote_backup_dir);
-    	}
+    	String source = "/opt/PlexView/ELCM/script/";
+    	String destination = "/tmp/"; 
+    	cyFiles2Server(source,destination,"fullbackup_precheck.sh");
+   		String script = destination+"fullbackup_precheck.sh";
+   		String local_backup_dir = vm_img_dir + "/" +deployment_prefix;
+   		String remote_backup_dir = remoteip + remotedir;
+   		String checkRes = excuteShell(script+" "+local_backup_dir+" "+remote_backup_dir);
     	return checkRes;
     }
     
-    public String fullrestorePreCheck(String deployment_prefix,String vm_img_dir,String remoteip,String remotedir){
+    public String fullrestorePreCheck(String hostip,String deployment_prefix,String vm_img_dir,String remoteip,String remotedir){
     	String source = "/opt/PlexView/ELCM/script/";
     	String destination = "/tmp/";  
     	cyFiles2Server(source,destination,"fullrestore_precheck.sh");
