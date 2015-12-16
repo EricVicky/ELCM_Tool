@@ -8,7 +8,12 @@ import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.annotation.Resource;
+
 import com.alu.omc.oam.kvm.model.Host;
+import com.alu.omc.oam.util.CommandProtype;
+import com.alu.omc.oam.util.CommandResult;
+import com.alu.omc.oam.util.ICommandExec;
 
 import org.apache.commons.lang3.SystemUtils;
 import org.springframework.stereotype.Service;
@@ -22,6 +27,8 @@ import com.jcraft.jsch.Session;
 @Service
 public class COMValidationService {
 	
+	@Resource
+    private  CommandProtype commandProtype;
 	private String username = "root";
 	private String ip ;
 	private String password = "EMS_qd_n2";
@@ -186,13 +193,26 @@ public class COMValidationService {
     }   
     
     public String fullbackupPreCheck(String hostip,String deployment_prefix,String vm_img_dir,String remoteip,String remotedir){
+    	String checkRes = "";
     	String source = "/opt/PlexView/ELCM/script/";
     	String destination = "/tmp/"; 
-    	cyFiles2Server(source,destination,"fullbackup_precheck.sh");
-   		String script = destination+"fullbackup_precheck.sh";
-   		String local_backup_dir = vm_img_dir + "/" +deployment_prefix;
-   		String remote_backup_dir = remoteip + remotedir;
-   		String checkRes = excuteShell(script+" "+local_backup_dir+" "+remote_backup_dir);
+    	String local_backup_dir = vm_img_dir + "/" +deployment_prefix;
+		String remote_backup_dir = remoteip + remotedir;
+    	if(Host.isLocalHost(hostip)){
+    		String script = source+"fullbackup_precheck.sh";
+    		ICommandExec comamnda = commandProtype.create(script+" "+local_backup_dir+" "+remote_backup_dir);    
+    	    try{
+    	        CommandResult res = comamnda.execute();
+    	        checkRes = res.getOutputString();
+    	        System.out.print(checkRes);
+            }catch(Exception e){
+            	e.printStackTrace();
+            }
+    	}else{
+    		cyFiles2Server(source,destination,"fullbackup_precheck.sh");
+    		String script = destination+"fullbackup_precheck.sh";
+    		checkRes = excuteShell(script+" "+local_backup_dir+" "+remote_backup_dir);	
+    	}
     	return checkRes;
     }
     
