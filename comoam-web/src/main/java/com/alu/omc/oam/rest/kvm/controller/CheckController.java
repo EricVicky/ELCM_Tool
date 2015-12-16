@@ -151,6 +151,7 @@ public class CheckController
     	ValidationResult res = new ValidationResult();res.setSucceed(false);
     	cOMValidationService.setIp(hostip);
     	String checkRes= cOMValidationService.fullbackupPreCheck(hostip,deployment_prefix,vm_img_dir,remoteip,remotedir);
+    	System.out.println("2"+checkRes);
     	if(checkRes.contains("Success")){
     		res.setSucceed(true);
     	}else{
