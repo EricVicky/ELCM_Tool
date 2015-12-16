@@ -1,10 +1,14 @@
 package com.alu.omc.oam.service;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
-import java.io.PipedInputStream;
+import java.util.ArrayList;
+import java.util.List;
+
+import com.alu.omc.oam.kvm.model.Host;
 
 import org.apache.commons.lang3.SystemUtils;
 import org.springframework.stereotype.Service;
@@ -160,14 +164,35 @@ public class COMValidationService {
     	}
     }   
     
-    public String fullbackupPreCheck(String deployment_prefix,String vm_img_dir,String remoteip,String remotedir){
-    	String source = "/opt/PlexView/ELCM/script/";
-    	String destination = "/tmp/"; 
-    	cyFiles2Server(source,destination,"fullbackup_precheck.sh");
-    	String script = destination+"fullbackup_precheck.sh";
-    	String local_backup_dir = vm_img_dir + "/" +deployment_prefix;
-    	String remote_backup_dir = remoteip + remotedir;
-    	String checkRes = excuteShell(script+" "+local_backup_dir+" "+remote_backup_dir);
+    public String fullbackupPreCheck(String hostip,String deployment_prefix,String vm_img_dir,String remoteip,String remotedir){
+    	String checkRes = "";
+    	if (Host.isLocalHost(hostip)){
+    		String shSource="/opt/PlexView/ELCM/script/fullbackup_precheck.sh";
+    		String local_backup_dir = vm_img_dir + "/" +deployment_prefix;
+    		String remote_backup_dir = remoteip + remotedir;
+    		Process process = null;  
+   	        List<String> processList = new ArrayList<String>();  
+   	        try {  
+   	            process = Runtime.getRuntime().exec(shSource+" "+local_backup_dir+" "+remote_backup_dir);  
+   	            BufferedReader input = new BufferedReader(new InputStreamReader(process.getInputStream()));  
+   	            String line = "";  
+   	            while ((line = input.readLine()) != null) {  
+   	                processList.add(line);  
+   	            }  
+   	            input.close();  
+   	        } catch (IOException e) {  
+   	            e.printStackTrace();  
+   	        }   
+   	        System.out.println(processList.toString());  
+    	}else{
+    		String source = "/opt/PlexView/ELCM/script/";
+    		String destination = "/tmp/"; 
+    		cyFiles2Server(source,destination,"fullbackup_precheck.sh");
+    		String script = destination+"fullbackup_precheck.sh";
+    		String local_backup_dir = vm_img_dir + "/" +deployment_prefix;
+    		String remote_backup_dir = remoteip + remotedir;
+    		checkRes = excuteShell(script+" "+local_backup_dir+" "+remote_backup_dir);
+    	}
     	return checkRes;
     }
     

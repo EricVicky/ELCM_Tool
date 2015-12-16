@@ -150,7 +150,7 @@ public class CheckController
     		                                @ModelAttribute("remoteip") String remoteip,@ModelAttribute("remotedir") String remotedir,@ModelAttribute("hostip") String hostip){
     	ValidationResult res = new ValidationResult();res.setSucceed(false);
     	cOMValidationService.setIp(hostip);
-    	String checkRes= cOMValidationService.fullbackupPreCheck(deployment_prefix,vm_img_dir,remoteip,remotedir);
+    	String checkRes= cOMValidationService.fullbackupPreCheck(hostip,deployment_prefix,vm_img_dir,remoteip,remotedir);
     	if(checkRes.contains("Success")){
     		res.setSucceed(true);
     	}else{
