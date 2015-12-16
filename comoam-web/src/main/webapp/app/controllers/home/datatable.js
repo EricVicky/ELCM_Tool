@@ -19,19 +19,19 @@ angular.module('datatable',['ui.grid', 'ui.grid.resizeColumns']).controller('dat
 			             {displayName: 'COM Name',  name: 'name',
 			            	 //enableFiltering: false,
                         	 //enableColumnMenu: false,
-			            	 width:150
+			            	 width:100
 			             },
 			             {displayName: 'VNF Type',  name: 'comType',
 			            	 //enableFiltering: false,
                         	 enableColumnMenu: false,
-			            	 width:100
+			            	 width:90
 			             },
-                         {displayName: 'Environment',  name: 'Environment',
-			            	 cellTemplate: 'views/dashboard/component/environment.html',
-                        	 enableFiltering: false,
-                        	 enableColumnMenu: false,
-                        	 width:110
-                         },
+//                         {displayName: 'Environment',  name: 'Environment',
+//			            	 cellTemplate: 'views/dashboard/component/environment.html',
+//                        	 enableFiltering: false,
+//                        	 enableColumnMenu: false,
+//                        	 width:100
+//                         },
                          {displayName: 'Host Server',  name: 'comConfig.active_host_ip',
                         	 enableFiltering: false,
                         	 enableColumnMenu: false,
@@ -46,7 +46,25 @@ angular.module('datatable',['ui.grid', 'ui.grid.resizeColumns']).controller('dat
                         	 cellTemplate: 'views/dashboard/component/status.html',
                         	 enableFiltering: false,
                         	 enableColumnMenu: false,
-                        	 width:200
+                        	 width:160
+                         },
+                         {displayName: 'GR Status',  name: 'GR Status',
+                        	 cellTemplate: 'views/dashboard/component/grstatus.html',
+                        	 enableFiltering: false,
+                        	 enableColumnMenu: false,
+                        	 width:110
+                         },
+                         {displayName: 'GR Role',  name: 'GR Role',
+                        	 cellTemplate: 'views/dashboard/component/grrole.html',
+                        	 enableFiltering: false,
+                        	 enableColumnMenu: false,
+                        	 width:80
+                         },
+                         {displayName: 'GR Mate',  name: 'GR Mate',
+                        	 cellTemplate: 'views/dashboard/component/grmate.html',
+                        	 enableFiltering: false,
+                        	 enableColumnMenu: false,
+                        	 width:80
                          },
                          {displayName: 'Operation', name: 'Operation', 
                         	 //cellTemplate: 'views/dashboard/operatebutton.html',

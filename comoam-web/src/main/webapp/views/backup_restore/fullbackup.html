@@ -10,16 +10,16 @@
 										Info&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
 							</a></li>
 							<li><a href="#tab2" data-toggle="tab"> <span
-									class="badge">2</span> <span translate="BACKUP_DATA">Full Backup&nbsp;&nbsp;</span>
+									class="badge">2</span> Full Backup&nbsp;&nbsp;
 							</a></li>
 						</ul>
 						<div class="modal-body col-md-12">
 							<div class="tab-content">
-								<form class="tab-pane active ng-pristine ng-valid" id="tab1" name="tab1" rc-submit="" rc-step>
+								<form class="tab-pane active ng-pristine ng-valid" id="tab1" name="tab1" rc-submit rc-step>
 									<div class="panel panel-default">
 										<div class="panel-heading">
 											<label class="control-label" translate="COM_INSTANCE">COM Instance</label> <select
-												ng-change="reloadimglist()" name="com_instance"
+												ng-change="reloadimglist();init()" name="com_instance"
 												ng-model="com_instance" class="form-control"
 												ng-options="inst.name for inst in comInstance"
 												title="COM Instance" validation="required">
@@ -180,25 +180,35 @@
 									    <div class="form-group" col-md-4>
 										    <label class="control-label" translate="REMOTE_SERVER">Remote Server</label>
 											<input name="remote_server" type="checkbox" ng-model="remote_server" 
-											title="Remote Server" />
+											title="Remote Server" ng-click="init()"/>
 										</div>
 										<div class="form-group" ng-if="remote_server==true">
 											<label class="control-label">Full Backup Server IP</label> <input
 												name="backup_server_ip" class="form-control" type="text"
 												ng-model="$parent.fullbackupConfig.remote_server_ip" 
-												title="serverip" validation="required|ipv4"/>
+												title="serverip" validation="required|ipv4" ng-blur="init()"/>
 										</div>
 										<div class="form-group" ng-if="remote_server==true">
 											<label class="control-label">Full Backup Server Directory</label> <input
 												name="backup_server_directory" class="form-control" type="text"
 												ng-model="$parent.fullbackupConfig.remote_server_dir" 
-												title="serverip" validation="required"/>
-										</div>
+												title="directory" validation="required" ng-blur="init()"/>
+										</div>						
 										<div class="form-group" ng-show="">
 											<label class="control-label">Full Backup Directory</label> <input
 												name="local_directory" class="form-control" type="text"
 												ng-model="fullbackupConfig.full_backup_dir" 
 												title="directory" validation="required" ng-init="fullbackupConfig.full_backup_dir='/fullbackup'"/>
+										</div>
+										<div ng-if="remote_server!=true">
+											<h4>Directory : <span style="color:green">{{installConfig.vm_img_dir}}/{{installConfig.deployment_prefix}}</span></h4>
+										</div>
+										<br>
+										<div ng-show="checkmessage == true">
+											<h4>Checking whether initial full backup files exist before full backup launching, Please wait......</h4>
+										</div>
+										<div ng-show="showmessage == true && valid == false" style="color:red">
+											<h4>{{message}}</h4>
 										</div>
 									</fieldset>
 								</form>
@@ -213,7 +223,7 @@
 									<a class="btn btn-primary"
 										ng-click="rc.backupWizard.forward()"
 										ng-show="rc.backupWizard.currentIndex < rc.backupWizard.navigationLength" translate="CONTINUE">Continue</a>
-									<a class="btn btn-primary" ng-click="fullbackup()" ng-disabled="tab2.$invalid"
+									<a class="btn btn-primary" ng-click="fullbackup()" ng-disabled="tab2.$invalid || valid == false || checkmessage==true"
 										ng-show="rc.backupWizard.currentIndex == rc.backupWizard.navigationLength">Full Backup</a>
 								</div>
 							</div>

@@ -4,23 +4,23 @@
 			<div rc-wizard="backupWizard" class="modal-body">
 				<section id="wizard">
 					<div id="rootwizard">
-						<ul class="nav rc-nav-wizard" style="margin-left: 250px">
+						<ul class="nav rc-nav-wizard" style="margin-left: 200px">
 							<li class="active"><a class="active" href="#tab1"
 								data-toggle="tab"> <span class="badge">1</span> <span translate="COM_INFO">COM
 										Info&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
 							</a></li>
 							<li><a href="#tab2" data-toggle="tab"> <span
-									class="badge">2</span> <span translate="BACKUP_DATA">Backup Data&nbsp;&nbsp;</span>
+									class="badge">2</span> Data Backup&nbsp;&nbsp;
 							</a></li>
 						</ul>
 						<div class="modal-body col-md-12">
 							<div class="tab-content">
 								<form class="tab-pane active ng-pristine ng-valid" id="tab1"
-									name="tab1" rc-submit="" rc-step>
+									name="tab1" rc-submit="preCheck()"  rc-step>
 									<div class="panel panel-default">
 										<div class="panel-heading">
 											<label class="control-label" translate="COM_INSTANCE">COM Instance</label> <select
-												ng-change="reloadimglist()" name="com_instance"
+												ng-change="reloadimglist();init()" name="com_instance"
 												ng-model="com_instance" class="form-control"
 												ng-options="  inst.name for inst in comInstance"
 												title="COM Instance" validation="required">
@@ -181,33 +181,45 @@
 									    <div class="form-group" col-md-4>
 										    <label class="control-label" translate="REMOTE_SERVER">Remote Server</label>
 											<input name="remote_server" type="checkbox" ng-init="remote_server=false" ng-model="remote_server" 
-											title="Remote Server" />
+											title="Remote Server" ng-click="init()"/>
 										</div>
 										<div class="form-group" ng-if="remote_server==true">
 											<label class="control-label" translate="BACKUP_SERVER_IP">Backup Server IP</label> <input
 												name="backup_server_ip" class="form-control" type="text"
 												ng-model="$parent.backupConfig.backupLocation.remote_server_ip" 
-												title="serverip" validation="required|ipv4"/>
+												title="Backup Server IP" validation="required|ipv4" ng-blur="init()"/>
 										</div>
 										<div class="form-group" ng-if="remote_server==true">
 											<label class="control-label" translate="BACKUP_SERVER_DIRECTORY">Backup Server Directory</label> <input
 												name="backup_server_directory" class="form-control" type="text"
 												ng-model="$parent.backupConfig.backupLocation.remote_server_dir" 
-												title="serverip" validation="required"/>
+												title="Backup Server Directory" validation="required" ng-blur="init()"/>
 										</div>
 										<div class="form-group" ng-show="remote_server==false">
 											<label class="control-label" translate="LOCAL_DIRECTORY">Local Directory</label> <input
-												name="local_directory" class="form-control" type="text"
+												name="local_directory" class="form-control" type="text" ng-blur="init()"
 												ng-model="backupConfig.backupLocation.local_backup_dir" 
-												title="directory" validation="required" ng-init="backupConfig.backupLocation.local_backup_dir='/tmp/localbackup'"/>
+												title="directory" validation="required" ng-init="backupConfig.backupLocation.local_backup_dir='/localbackup'"/>
 										</div>
 										<div class="form-group">
 											<label class="control-label" translate="FILE_NAME">Version</label> <input
-												name="version" class="form-control" type="text"
+												name="version" class="form-control" type="text" validation="pattern=/^[0-9a-zA-Z_]+.tgz$/:alt=Invalid Filename|required"
 												ng-model="backupConfig.backupLocation.local_backup_file"
-												title="file name" validation="required" />
+												title="file name" ng-blur="checkname();init()"/>
 										</div>
-									</fieldset>
+										
+										<div ng-show="checkmessage == true">
+											<h4>Checking whether initial backup files exist before data backup launching, Please wait......</h4>
+										</div>
+										<div ng-if="installConfig.comType!='QOSAC'" ng-show="showmessage == true && valid == false" style="color:red">
+											<h4>OAM VM --- {{message_oam}}</h4>
+											<h4>DB VM --- {{message_db}}</h4>
+											<h4 ng-if="installConfig.comType!='OAM'">CM VM --- {{message_cm}}</h4>
+										</div>
+										<div ng-if="installConfig.comType=='QOSAC'" ng-show="showmessage == true && valid == false" style="color:red">
+											<h4>OVM VM --- {{message_ovm}}</h4>
+										</div>
+									</fieldset>									
 								</form>
 							</div>
 						</div>
@@ -220,8 +232,8 @@
 									<a class="btn btn-primary"
 										ng-click="rc.backupWizard.forward()"
 										ng-show="rc.backupWizard.currentIndex < rc.backupWizard.navigationLength" translate="CONTINUE">Continue</a>
-									<a class="btn btn-primary" ng-click="backup()" ng-disabled="tab2.$invalid"
-										ng-show="rc.backupWizard.currentIndex == rc.backupWizard.navigationLength" translate="BACKUP">Backup</a>
+									<a class="btn btn-primary" ng-click="backup()" ng-disabled="tab2.$invalid || valid == false || checkmessage==true"
+										ng-show="rc.backupWizard.currentIndex == rc.backupWizard.navigationLength">Data Backup</a>
 								</div>
 							</div>
 						</div>
