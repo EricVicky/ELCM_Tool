@@ -235,6 +235,8 @@ angular.module('backup_restore', ['ui.router',
     	for(var index in $scope.message){
     		if($scope.message[index].indexOf("Warning")!=-1){
     			VMmessage.push($scope.message[index].substring(0,$scope.message[index].indexOf("Success")));
+    		}else{
+    			VMmessage.push($scope.message[index]);
     		}
     	}
     	if($scope.installConfig.comType != "QOSAC"){
