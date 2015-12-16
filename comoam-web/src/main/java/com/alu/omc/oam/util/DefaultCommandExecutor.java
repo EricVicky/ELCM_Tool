@@ -49,8 +49,7 @@ public class DefaultCommandExecutor  implements ICommandExec
         DefaultExecutor exec = new DefaultExecutor();
         PumpStreamHandler streamHandler = new PumpStreamHandler(outputStream);
         exec.setStreamHandler(streamHandler);
-        DefaultExecutor executor = new DefaultExecutor();
-        int res = executor.execute(cmdLine);
+        int res = exec.execute(cmdLine);
         CommandResult commandResult = new CommandResult(res, outputStream.toString());
         return commandResult;
     }
