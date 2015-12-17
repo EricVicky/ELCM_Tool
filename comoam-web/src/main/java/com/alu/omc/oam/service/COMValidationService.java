@@ -200,9 +200,11 @@ public class COMValidationService {
     	if(Host.isLocalHost(hostip)){
     		String script = source+"fullbackup_precheck.sh";
     		ICommandExec comamnda = commandProtype.create(script+" "+local_backup_dir+" "+remote_backup_dir);
+    		System.out.println("ExecuteCommand is:"+script+" "+local_backup_dir+" "+remote_backup_dir);
     	    try{
     	        CommandResult res = comamnda.execute();
-    	        checkRes = res.getOutputString(); 
+    	        checkRes = res.getOutputString();
+    	        System.out.println("ExecuteResult is:"+checkRes);
             }catch(Exception e){
             	e.printStackTrace();
             }
