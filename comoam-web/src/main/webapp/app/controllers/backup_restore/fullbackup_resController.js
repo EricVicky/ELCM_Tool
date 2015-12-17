@@ -50,7 +50,7 @@ angular.module('fullbackup_restore', ['ui.router',
                                 			}
                                 			$scope.comInstance = comInstance;
                                 			$scope.setDefaultInstace();
-                                	    });                        	    
+                                	    });
 
                                 	    $scope.init = function(){
                                 	    	$scope.checkmessage = false;
@@ -61,18 +61,11 @@ angular.module('fullbackup_restore', ['ui.router',
                                 	    $scope.fullbackup = function(){	
                                 	    	$scope.showmessage = false;
                                 	    	$scope.checkmessage = true;
-                                	    	if($scope.remote_server==true){
-                                	    		var remoteip = $scope.fullbackupConfig.remote_server_ip + ":";
-                                	    		var remotedir = $scope.fullbackupConfig.remote_server_dir;
-                                	    	}else{
-                                	    		var remoteip = "";
-                                	    	    var remotedir = "";
-                                	    	}
-                                	    	validationService.fullbackupPreCheck($scope.installConfig.host.ip_address,$scope.installConfig.deployment_prefix,$scope.installConfig.vm_img_dir,
-                                	    			                             remoteip,remotedir).then( function(data){
+                                	    	$scope.fullbackupConfig.stackName = $scope.installConfig.deployment_prefix;
+                                	    	validationService.fullbackupPreCheck($scope.fullbackupConfig).then( function(data){
                                 	                $scope.showmessage = true;
                                 	                $scope.checkmessage = false;
-                                	    			$scope.valid = data.isValid;
+                                	    			$scope.valid = data.succeed;
                                 	    			$scope.message = data.message;				
                                 	    			if($scope.valid == true){
                                 	    				if($scope.message.indexOf("Warning") != -1){
@@ -109,18 +102,11 @@ angular.module('fullbackup_restore', ['ui.router',
                                 	    $scope.fullrestore = function(){	
                                 	    	$scope.showmessage = false;
                                 	    	$scope.checkmessage = true;
-                                	    	if($scope.remote_server==true){
-                                	    		var remoteip = $scope.fullbackupConfig.remote_server_ip + ":";
-                                	    		var remotedir = $scope.fullbackupConfig.remote_server_dir;
-                                	    	}else{
-                                	    		var remoteip = "";
-                                	    	    var remotedir = "";
-                                	    	}
-                                	    	validationService.fullrestorePreCheck($scope.installConfig.host.ip_address,$scope.installConfig.deployment_prefix,$scope.installConfig.vm_img_dir,
-   	    			                                                              remoteip,remotedir).then( function(data){
+                                	    	$scope.fullbackupConfig.stackName = $scope.installConfig.deployment_prefix;
+                                	    	validationService.fullrestorePreCheck($scope.fullbackupConfig).then( function(data){
    	    			                            	$scope.showmessage = true;
                                 	                $scope.checkmessage = false;
-                                	    			$scope.valid = data.isValid;
+                                	    			$scope.valid = data.succeed;
                                 	    			$scope.message = data.message;
                                 	    			if($scope.valid == true){
                                 	    				$scope.dofullrestore(); 

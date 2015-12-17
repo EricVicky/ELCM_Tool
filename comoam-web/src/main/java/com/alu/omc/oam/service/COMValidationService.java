@@ -192,20 +192,17 @@ public class COMValidationService {
     	}
     }   
     
-    public String fullbackupPreCheck(String hostip,String deployment_prefix,String vm_img_dir,String remoteip,String remotedir){
+    public String fullbackupPreCheck(String hostip,String local_backup_dir,String remoteip,String remotedir){
     	String checkRes = "";
     	String source = "/opt/PlexView/ELCM/script/";
     	String destination = "/tmp/"; 
-    	String local_backup_dir = vm_img_dir + "/" +deployment_prefix;
-		String remote_backup_dir = remoteip + remotedir;
+		String remote_backup_dir = remoteip == ""?"":remoteip + ":" + remotedir;
     	if(Host.isLocalHost(hostip)){
     		String script = source+"fullbackup_precheck.sh";
     		ICommandExec comamnda = commandProtype.create(script+" "+local_backup_dir+" "+remote_backup_dir);
-    		System.out.println("Command is :"+script+" "+local_backup_dir+" "+remote_backup_dir);
     	    try{
     	        CommandResult res = comamnda.execute();
     	        checkRes = res.getOutputString(); 
-    	        System.out.println("Result:"+checkRes);
             }catch(Exception e){
             	e.printStackTrace();
             }
@@ -214,18 +211,28 @@ public class COMValidationService {
     		String script = destination+"fullbackup_precheck.sh";
     		checkRes = excuteShell(script+" "+local_backup_dir+" "+remote_backup_dir);	
     	}
-    	System.out.println("1"+checkRes);
     	return checkRes;
     }
     
-    public String fullrestorePreCheck(String hostip,String deployment_prefix,String vm_img_dir,String remoteip,String remotedir){
+    public String fullrestorePreCheck(String hostip,String local_backup_dir,String remoteip,String remotedir){
+    	String checkRes = "";
     	String source = "/opt/PlexView/ELCM/script/";
-    	String destination = "/tmp/";  
-    	cyFiles2Server(source,destination,"fullrestore_precheck.sh");
-    	String script = destination+"fullrestore_precheck.sh";
-    	String local_restore_dir = vm_img_dir + "/" +deployment_prefix;
-    	String remote_restore_dir = remoteip + remotedir;
-    	String checkRes = excuteShell(script+" "+local_restore_dir+" "+remote_restore_dir);
+    	String destination = "/tmp/"; 
+    	String remote_backup_dir = remoteip == ""?"":remoteip + ":" + remotedir;
+		if(Host.isLocalHost(hostip)){
+    		String script = source+"fullrestore_precheck.sh";
+    		ICommandExec comamnda = commandProtype.create(script+" "+local_backup_dir+" "+remote_backup_dir);
+    	    try{
+    	        CommandResult res = comamnda.execute();
+    	        checkRes = res.getOutputString(); 
+            }catch(Exception e){
+            	e.printStackTrace();
+            }
+    	}else{
+    		cyFiles2Server(source,destination,"fullrestore_precheck.sh");
+    		String script = destination+"fullrestore_precheck.sh";
+    		checkRes = excuteShell(script+" "+local_backup_dir+" "+remote_backup_dir);	
+    	}
     	return checkRes;
     }
     
@@ -235,7 +242,7 @@ public class COMValidationService {
     	cyFiles2Server(source,destination,"databackup_precheck.sh");
     	String script = destination+"databackup_precheck.sh";
     	String local_backup_dir = localdir;
-    	String remote_backup_dir = remoteip + remotedir;
+    	String remote_backup_dir = remoteip == ""?"":remoteip + ":" + remotedir;
     	String checkRes = excuteShell(script+" "+local_backup_dir+" "+filename+" "+remote_backup_dir);
     	return checkRes;
     }
@@ -246,7 +253,7 @@ public class COMValidationService {
     	cyFiles2Server(source,destination,"datarestore_precheck.sh");
     	String script = destination+"datarestore_precheck.sh";
     	String local_backup_dir = localdir;
-    	String remote_backup_dir = remoteip + remotedir;
+    	String remote_backup_dir = remoteip == ""?"":remoteip + ":" + remotedir;
     	String checkRes = excuteShell(script+" "+local_backup_dir+" "+filename+" "+remote_backup_dir);
     	return checkRes;
     }

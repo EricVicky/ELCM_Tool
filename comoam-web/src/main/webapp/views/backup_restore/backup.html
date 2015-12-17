@@ -211,13 +211,8 @@
 										<div ng-show="checkmessage == true">
 											<h4>Checking whether initial backup files exist before data backup launching, Please wait......</h4>
 										</div>
-										<div ng-if="installConfig.comType!='QOSAC'" ng-show="showmessage == true && valid == false" style="color:red">
-											<h5>OAM VM --- {{message_oam}}</h5>
-											<h5>DB VM --- {{message_db}}</h5>
-											<h5 ng-if="installConfig.comType!='OAM'">CM VM --- {{message_cm}}</h5>
-										</div>
-										<div ng-if="installConfig.comType=='QOSAC'" ng-show="showmessage == true && valid == false" style="color:red">
-											<h5>OVM VM --- {{message_ovm}}</h5>
+										<div ng-show="showmessage == true && valid == false" style="color:red">
+											<h5>{{message}}</h5>
 										</div>
 									</fieldset>									
 								</form>
