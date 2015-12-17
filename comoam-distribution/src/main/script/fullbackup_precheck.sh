@@ -94,7 +94,7 @@ else
         backup_precheck        
         umount_2_server ${local_backup_dir}
     else
-        exit 1
+        exit 0
     fi
 fi
 

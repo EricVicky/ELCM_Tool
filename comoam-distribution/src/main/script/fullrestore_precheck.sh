@@ -61,7 +61,7 @@ else
         restore_precheck        
         umount_2_server ${local_restore_dir}
     else
-        exit 1
+        exit 0
     fi
 fi
 
