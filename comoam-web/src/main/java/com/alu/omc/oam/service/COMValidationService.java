@@ -190,7 +190,29 @@ public class COMValidationService {
     	} else {
     		return false;
     	}
-    }   
+    } 
+    
+//    public String backup_restorePrecheck(String action,String hostip,String local_backup_dir,String filename,String remoteip,String remotedir){
+//    	String checkRes = "";
+//    	String source = "/opt/PlexView/ELCM/script/";
+//    	String destination = "/tmp/";
+//    	String remote_backup_dir = remoteip == ""?"":remoteip + ":" + remotedir;
+//    	if(hostip != "" && Host.isLocalHost(hostip)){
+//    		String script = source+action+"_precheck.sh";
+//    		ICommandExec comamnda = commandProtype.create(script+" "+local_backup_dir+" "+remote_backup_dir);
+//    		try{
+//    	        CommandResult res = comamnda.execute();
+//    	        checkRes = res.getOutputString();
+//            }catch(Exception e){
+//            	e.printStackTrace();
+//            }
+//    	}else{
+//    		String script = destination+action+"_precheck.sh";
+//    		cyFiles2Server(source,destination,action+"_precheck.sh");
+//    		checkRes = excuteShell(script+" "+local_backup_dir+" "+filename+" "+remote_backup_dir);
+//    	}	
+//    	return checkRes;
+//    }
     
     public String fullbackupPreCheck(String hostip,String local_backup_dir,String remoteip,String remotedir){
     	String checkRes = "";

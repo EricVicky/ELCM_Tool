@@ -73,6 +73,9 @@ angular.module('backup_restore', ['ui.router',
     };
     
     $scope.backup = function(){
+    	if($scope.installConfig.comType=="QOSAC"||$scope.installConfig.comType=="ATC"){
+    		$scope.doBackup();  
+    	}
     	$scope.showmessage = false;
     	$scope.checkmessage = true;
     	$scope.backupConfig.config = $scope.installConfig;
@@ -115,6 +118,9 @@ angular.module('backup_restore', ['ui.router',
     };
     
     $scope.restore = function(){
+    	if($scope.installConfig.comType=="QOSAC"||$scope.installConfig.comType=="ATC"){
+    		$scope.doRestore();  
+    	}
     	$scope.showmessage = false;
     	$scope.checkmessage = true;
     	$scope.backupConfig.config = $scope.installConfig;

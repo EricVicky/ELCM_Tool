@@ -58,7 +58,10 @@ angular.module('fullbackup_restore', ['ui.router',
                                 	    	$scope.valid = true;
                                 	    };
                                 	    
-                                	    $scope.fullbackup = function(){	
+                                	    $scope.fullbackup = function(){
+                                	    	if($scope.installConfig.comType=="QOSAC"||$scope.installConfig.comType=="ATC"){
+                                	    		$scope.dofullbackup();  
+                                	    	}
                                 	    	$scope.showmessage = false;
                                 	    	$scope.checkmessage = true;
                                 	    	$scope.fullbackupConfig.stackName = $scope.installConfig.deployment_prefix;
@@ -99,7 +102,10 @@ angular.module('fullbackup_restore', ['ui.router',
                                 	    	});
                                 	    };
                                 	    
-                                	    $scope.fullrestore = function(){	
+                                	    $scope.fullrestore = function(){
+                                	    	if($scope.installConfig.comType=="QOSAC"||$scope.installConfig.comType=="ATC"){
+                                	    		$scope.dofullrestore();  
+                                	    	}
                                 	    	$scope.showmessage = false;
                                 	    	$scope.checkmessage = true;
                                 	    	$scope.fullbackupConfig.stackName = $scope.installConfig.deployment_prefix;
