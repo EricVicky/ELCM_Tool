@@ -238,14 +238,15 @@ public class COMValidationService {
     	return checkRes;
     }
     
-    public String fullrestorePreCheck(String hostip,String local_backup_dir,String remoteip,String remotedir){
+    public String fullrestorePreCheck(String hostip,String local_backup_dir,String hostname_oam,String hostname_db,String hostname_cm,String remoteip,String remotedir){
     	String checkRes = "";
     	String source = "/opt/PlexView/ELCM/script/";
     	String destination = "/tmp/"; 
     	String remote_backup_dir = remoteip == ""?"":remoteip + ":" + remotedir;
+    	String hostname = hostname_oam+" "+hostname_db+" "+hostname_cm;
 		if(Host.isLocalHost(hostip)){
     		String script = source+"fullrestore_precheck.sh";
-    		ICommandExec comamnda = commandProtype.create(script+" "+local_backup_dir+" "+remote_backup_dir);
+    		ICommandExec comamnda = commandProtype.create(script+" "+local_backup_dir+" "+hostname+" "+remote_backup_dir);
     	    try{
     	        CommandResult res = comamnda.execute();
     	        checkRes = res.getOutputString(); 

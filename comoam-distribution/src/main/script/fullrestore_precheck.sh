@@ -12,16 +12,33 @@
 ################################################################################
 
 local_restore_dir=$1
-remote_restore_dir=$2
+hostname_oam=$2
+hostname_db=$3
+hostname_cm=$4
+remote_restore_dir=$5
 
 ################################################################################
 # Check Function
 ################################################################################
 fullrestore_file_exist() {
     Restore_File_Dir=$1
-    ls ${Restore_File_Dir} | grep ***_snapshot > /dev/null
+    ls ${Restore_File_Dir} | grep ${hostname_oam}_snapshot > /dev/null
     if [ $? -eq 0 ]; then
-        return 0
+        ls ${Restore_File_Dir} | grep ${hostname_db}_snapshot > /dev/null
+        if [ $? -eq 0 ]; then
+            if [ ! "${hostname_cm}" = "" ]; then
+                ls ${Restore_File_Dir} | grep ${hostname_cm}_snapshot > /dev/null
+                if [ $? -eq 0 ]; then
+                    return 0
+                else
+                    return 1
+                fi
+            else
+                return 0 
+            fi   
+        else
+            return 1
+        fi
     else
         return 1
     fi

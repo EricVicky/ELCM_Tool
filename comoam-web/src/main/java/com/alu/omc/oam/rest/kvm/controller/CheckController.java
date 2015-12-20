@@ -190,9 +190,13 @@ public class CheckController
     	ValidationResult res = new ValidationResult();
     	res.setSucceed(true);
     	String hostip = fullbackupconfig.getConfig().getHost().getIp_address();
+    	String hostname_oam = fullbackupconfig.getConfig().getVm_config().get("oam").getHostname();
+    	String hostname_db = fullbackupconfig.getConfig().getVm_config().get("db").getHostname();
+    	String hostname_cm = fullbackupconfig.getConfig().getVm_config().get("cm") == null?"":fullbackupconfig.getConfig().getVm_config().get("cm").getHostname();
     	cOMValidationService.setIp(hostip);
-    	String checkRes= cOMValidationService.fullrestorePreCheck(hostip,fullbackupconfig.getConfig().getVm_img_dir()+"/"+fullbackupconfig.getConfig().getDeployment_prefix()
-    			                 ,fullbackupconfig.getRemote_server_ip(),fullbackupconfig.getRemote_server_dir());
+    	String checkRes= cOMValidationService.fullrestorePreCheck(hostip,fullbackupconfig.getConfig().getVm_img_dir()+"/"+fullbackupconfig.getConfig().getDeployment_prefix(),
+    			         hostname_oam,hostname_db,hostname_cm
+    			         ,fullbackupconfig.getRemote_server_ip(),fullbackupconfig.getRemote_server_dir());
     	if(!isSucceed(checkRes)){
     		res.setMessage(checkRes);
 			res.setSucceed(false);
