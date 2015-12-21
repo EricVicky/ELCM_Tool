@@ -51,6 +51,7 @@ public class DefaultCommandExecutor  implements ICommandExec
         exec.setWatchdog(watchdog);
         //int res = exec.execute(cmdLine);
         exec.execute(cmdLine, new DefaultExecuteResultHandler());
+        try{Thread.sleep(2000);}catch(Exception ee){}
         CommandResult commandResult = new CommandResult(0, outputStream.toString());
         return commandResult;
     }
