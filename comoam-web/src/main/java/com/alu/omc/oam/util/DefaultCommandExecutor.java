@@ -47,36 +47,12 @@ public class DefaultCommandExecutor  implements ICommandExec
         DefaultExecutor exec = new DefaultExecutor();
         PumpStreamHandler streamHandler = new PumpStreamHandler(outputStream);
         exec.setStreamHandler(streamHandler);
-        exec.setExitValue(1);
         ExecuteWatchdog watchdog = new ExecuteWatchdog(2000);
         exec.setWatchdog(watchdog);
         int res = exec.execute(cmdLine);
         CommandResult commandResult = new CommandResult(res, outputStream.toString());
         return commandResult;
     }
-    
-//
-//    private CommandResult runAsync(String command) {
-//
-//    	   CommandLine commandLine = CommandLine.parse(command);
-//    	   DefaultExecutor exec = new DefaultExecutor();
-//    	   ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-//    	   PumpStreamHandler streamHandler = new PumpStreamHandler(outputStream);
-//           exec.setStreamHandler(streamHandler);
-//    	   DefaultExecuteResultHandler resultHandler = new DefaultExecuteResultHandler();
-//    	   try {
-//    		   exec.execute(commandLine, resultHandler);
-//    	   }
-//    	   catch (ExecuteException e) {
-//    	     System.out.println("Failed to execute " + command);
-//    	   }
-//    	   catch (IOException e) {
-//    	     System.out.println("IO Exception running " + command);
-//    	   }
-//    	   System.out.println("Succeed to execute " + command);
-//    	   CommandResult commandResult = new CommandResult(0, outputStream.toString());
-//    	   return commandResult;
-//    }
-    
+
 
 }
