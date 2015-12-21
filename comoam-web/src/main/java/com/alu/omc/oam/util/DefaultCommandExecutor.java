@@ -45,11 +45,11 @@ public class DefaultCommandExecutor  implements ICommandExec
         CommandLine cmdLine = CommandLine.parse(this.commandLine);
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         DefaultExecutor exec = new DefaultExecutor();
+        PumpStreamHandler streamHandler = new PumpStreamHandler(outputStream);
+        exec.setStreamHandler(streamHandler);
         exec.setExitValue(1);
         ExecuteWatchdog watchdog = new ExecuteWatchdog(2000);
         exec.setWatchdog(watchdog);
-        PumpStreamHandler streamHandler = new PumpStreamHandler(outputStream);
-        exec.setStreamHandler(streamHandler);
         int res = exec.execute(cmdLine);
         CommandResult commandResult = new CommandResult(res, outputStream.toString());
         return commandResult;
