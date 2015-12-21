@@ -6,9 +6,11 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.commons.exec.CommandLine;
+import org.apache.commons.exec.DefaultExecuteResultHandler;
 import org.apache.commons.exec.DefaultExecutor;
 import org.apache.commons.exec.ExecuteException;
 import org.apache.commons.exec.ExecuteResultHandler;
+import org.apache.commons.exec.ExecuteWatchdog;
 import org.apache.commons.exec.PumpStreamHandler;
 import org.apache.commons.io.output.ByteArrayOutputStream;
 
@@ -36,10 +38,6 @@ public class DefaultCommandExecutor  implements ICommandExec
        this.envs = envs;
        this.workingDir = workingDir;
     }
-    
- 
-
-
 
     @Override
     public CommandResult execute() throws IOException, InterruptedException
@@ -47,12 +45,37 @@ public class DefaultCommandExecutor  implements ICommandExec
         CommandLine cmdLine = CommandLine.parse(this.commandLine);
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         DefaultExecutor exec = new DefaultExecutor();
+        ExecuteWatchdog watchdog = new ExecuteWatchdog(2000);
+        exec.setWatchdog(watchdog);
         PumpStreamHandler streamHandler = new PumpStreamHandler(outputStream);
         exec.setStreamHandler(streamHandler);
         int res = exec.execute(cmdLine);
         CommandResult commandResult = new CommandResult(res, outputStream.toString());
         return commandResult;
     }
+    
+//
+//    private CommandResult runAsync(String command) {
+//
+//    	   CommandLine commandLine = CommandLine.parse(command);
+//    	   DefaultExecutor exec = new DefaultExecutor();
+//    	   ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+//    	   PumpStreamHandler streamHandler = new PumpStreamHandler(outputStream);
+//           exec.setStreamHandler(streamHandler);
+//    	   DefaultExecuteResultHandler resultHandler = new DefaultExecuteResultHandler();
+//    	   try {
+//    		   exec.execute(commandLine, resultHandler);
+//    	   }
+//    	   catch (ExecuteException e) {
+//    	     System.out.println("Failed to execute " + command);
+//    	   }
+//    	   catch (IOException e) {
+//    	     System.out.println("IO Exception running " + command);
+//    	   }
+//    	   System.out.println("Succeed to execute " + command);
+//    	   CommandResult commandResult = new CommandResult(0, outputStream.toString());
+//    	   return commandResult;
+//    }
     
 
 }

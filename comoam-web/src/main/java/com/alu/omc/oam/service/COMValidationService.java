@@ -10,11 +10,14 @@ import java.util.List;
 
 import javax.annotation.Resource;
 
+import com.alu.omc.oam.ansible.exception.AnsibleException;
 import com.alu.omc.oam.kvm.model.Host;
 import com.alu.omc.oam.util.CommandProtype;
 import com.alu.omc.oam.util.CommandResult;
 import com.alu.omc.oam.util.ICommandExec;
 
+import org.apache.commons.exec.ExecuteException;
+import org.apache.commons.exec.ExecuteResultHandler;
 import org.apache.commons.lang3.SystemUtils;
 import org.springframework.stereotype.Service;
 
