@@ -22,7 +22,7 @@ datarestore_file_exist() {
     Restore_File_Dir=$1
     File_name=$2
     
-    ls ${Restore_File_Dir} | grep ***${File_name} > /dev/null
+    ls ${Restore_File_Dir} | grep ${File_name}*** > /dev/null
     if [ $? -eq 0 ]; then
     	return 0
     else 

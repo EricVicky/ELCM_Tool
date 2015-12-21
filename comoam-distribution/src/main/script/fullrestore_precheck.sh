@@ -12,37 +12,34 @@
 ################################################################################
 
 local_restore_dir=$1
-hostname_oam=$2
-hostname_db=$3
-hostname_cm=$4
-remote_restore_dir=$5
+hostname=$2
+remote_restore_dir=$3
 
 ################################################################################
 # Check Function
 ################################################################################
 fullrestore_file_exist() {
     Restore_File_Dir=$1
-    ls ${Restore_File_Dir} | grep ${hostname_oam}_snapshot > /dev/null
-    if [ $? -eq 0 ]; then
-        ls ${Restore_File_Dir} | grep ${hostname_db}_snapshot > /dev/null
-        if [ $? -eq 0 ]; then
-            if [ ! "${hostname_cm}" = "" ]; then
-                ls ${Restore_File_Dir} | grep ${hostname_cm}_snapshot > /dev/null
-                if [ $? -eq 0 ]; then
-                    return 0
-                else
-                    return 1
-                fi
-            else
-                return 0 
-            fi   
-        else
+	arr=(${hostname//:/ })
+    for vm_name in ${arr[@]}
+    do
+        ls ${Restore_File_Dir}/${vm_name}_snapshot | grep configdrive.iso > /dev/null
+		if [ ! $? -eq 0 ]; then
             return 1
         fi
-    else
-        return 1
-    fi
-    
+		ls ${Restore_File_Dir}/${vm_name}_snapshot | grep datadisk.qcow2 > /dev/null
+		if [ ! $? -eq 0 ]; then
+            return 1
+        fi
+		ls ${Restore_File_Dir}/${vm_name}_snapshot | grep rhel.qcow2 > /dev/null
+		if [ ! $? -eq 0 ]; then
+            return 1
+        fi
+		ls ${Restore_File_Dir}/${vm_name}_snapshot | grep vmdomain.xml > /dev/null
+		if [ ! $? -eq 0 ]; then
+            return 1
+        fi
+    done 
 }
 
 mount_2_server() {
@@ -60,10 +57,10 @@ umount_2_server() {
 ######################################################################
 restore_precheck() {
     fullrestore_file_exist ${local_restore_dir}
-    if [ $? -eq 0 ];then
-        echo "Success"
-    else
+    if [ $? -eq 1 ];then
         echo "Error: No full backup files exist, full restore is prohibited."
+    else
+        echo "Success"
     fi
 }
 #######################################################################
