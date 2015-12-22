@@ -137,6 +137,7 @@ public class COMValidationService {
     		OutputStream outstream = channel.getOutputStream();
 			outstream.write(finalCommand.getBytes());
 			outstream.flush();
+			try{Thread.sleep(2000);}catch(Exception ee){}
 			System.out.println("The firewall command " + command + " is excuted");
             outstream.close();
 		} catch (IOException e) {
