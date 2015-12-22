@@ -171,6 +171,7 @@ public class COMValidationService {
 				string = new String(tmp, 0, i);
 				System.out.print(string);
 		    }
+			try{Thread.sleep(1000);}catch(Exception ee){}
             outstream.close();
             in.close();
 		} catch (IOException e) {
