@@ -137,7 +137,6 @@ public class COMValidationService {
     		OutputStream outstream = channel.getOutputStream();
 			outstream.write(finalCommand.getBytes());
 			outstream.flush();
-			try{Thread.sleep(2000);}catch(Exception ee){}
 			System.out.println("The firewall command " + command + " is excuted");
             outstream.close();
 		} catch (IOException e) {
@@ -163,7 +162,7 @@ public class COMValidationService {
     		InputStream in=channel.getInputStream();
 			outstream.write(finalCommand.getBytes());
 			outstream.flush();
-			try{Thread.sleep(3000);}catch(Exception ee){}
+			try{Thread.sleep(4000);}catch(Exception ee){}
 			System.out.println("The command " + command + " is excuted");
 			byte[] tmp=new byte[2048];
 			while(in.available()>0){
@@ -172,7 +171,7 @@ public class COMValidationService {
 				string = new String(tmp, 0, i);
 				System.out.print(string);
 		    }
-			try{Thread.sleep(2000);}catch(Exception ee){}
+			try{Thread.sleep(3000);}catch(Exception ee){}
             outstream.close();
             in.close();
 		} catch (IOException e) {
