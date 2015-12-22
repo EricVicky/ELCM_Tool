@@ -161,6 +161,7 @@ public class COMValidationService {
     		OutputStream outstream = channel.getOutputStream();
     		InputStream in=channel.getInputStream();
 			outstream.write(finalCommand.getBytes());
+			try{Thread.sleep(3000);}catch(Exception ee){}
 			outstream.flush();
 			System.out.println("The command " + command + " is excuted");
 			byte[] tmp=new byte[2048];
@@ -170,7 +171,7 @@ public class COMValidationService {
 				string = new String(tmp, 0, i);
 				System.out.print(string);
 		    }
-			try{Thread.sleep(3000);}catch(Exception ee){}
+			try{Thread.sleep(1000);}catch(Exception ee){}
             outstream.close();
             in.close();
 		} catch (IOException e) {
