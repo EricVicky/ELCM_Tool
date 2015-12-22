@@ -18,29 +18,42 @@ remote_restore_dir=$3
 ################################################################################
 # Check Function
 ################################################################################
+fullrestore_dir_exist() {
+    Restore_File_Dir=$1
+    arr=(${hostname//:/ })
+    for vm_name in ${arr[@]}
+    do
+        ls ${Restore_File_Dir} | grep ${vm_name}_snapshot > /dev/null
+        if [ ! $? -eq 0 ]; then
+            return 1
+        fi
+    done
+}
+
 fullrestore_file_exist() {
     Restore_File_Dir=$1
-	arr=(${hostname//:/ })
+    arr=(${hostname//:/ })
     for vm_name in ${arr[@]}
     do
         ls ${Restore_File_Dir}/${vm_name}_snapshot | grep configdrive.iso > /dev/null
-		if [ ! $? -eq 0 ]; then
+        if [ ! $? -eq 0 ]; then
             return 1
         fi
-		ls ${Restore_File_Dir}/${vm_name}_snapshot | grep datadisk.qcow2 > /dev/null
-		if [ ! $? -eq 0 ]; then
+        ls ${Restore_File_Dir}/${vm_name}_snapshot | grep datadisk.qcow2 > /dev/null
+        if [ ! $? -eq 0 ]; then
             return 1
         fi
-		ls ${Restore_File_Dir}/${vm_name}_snapshot | grep rhel.qcow2 > /dev/null
-		if [ ! $? -eq 0 ]; then
+        ls ${Restore_File_Dir}/${vm_name}_snapshot | grep rhel.qcow2 > /dev/null
+        if [ ! $? -eq 0 ]; then
             return 1
         fi
-		ls ${Restore_File_Dir}/${vm_name}_snapshot | grep vmdomain.xml > /dev/null
-		if [ ! $? -eq 0 ]; then
+        ls ${Restore_File_Dir}/${vm_name}_snapshot | grep vmdomain.xml > /dev/null
+        if [ ! $? -eq 0 ]; then
             return 1
         fi
-    done 
+    done
 }
+
 
 mount_2_server() {
     Remote_IP_DIR=$1
@@ -55,14 +68,21 @@ umount_2_server() {
 ######################################################################
 # Main Function
 ######################################################################
+
 restore_precheck() {
-    fullrestore_file_exist ${local_restore_dir}
+    fullrestore_dir_exist ${local_restore_dir}
     if [ $? -eq 1 ];then
         echo "Error: No full backup files exist, full restore is prohibited."
     else
-        echo "Success"
+        fullrestore_file_exist ${local_restore_dir}
+        if [ $? -eq 1 ];then
+            echo "Error: No full backup files exist, full restore is prohibited."
+        else
+            echo "Success"
+        fi
     fi
 }
+
 #######################################################################
 # Program Start
 #######################################################################
