@@ -57,6 +57,20 @@ public class CheckController
     	return res;    			
     }
     
+    @RequestMapping(value="/check/cpuVTCheck", method=RequestMethod.GET)
+    public ValidationResult  VTcheck(@ModelAttribute("hostip") String hostip) 
+    {
+    	ValidationResult res = new ValidationResult();
+    	cOMValidationService.setIp("135.251.236.98");
+    	String checkRes = cOMValidationService.cpuVTCheck(hostip);
+    	if(isSucceed(checkRes)){
+		    res.setSucceed(true);
+    	}else{
+    		res.setSucceed(false);
+    	}	
+    	return res; 
+    }
+    
     @RequestMapping(value="/kvm/check/unique", method=RequestMethod.GET)
     public ValidationResult uniqueCOM(@ModelAttribute("name") String name){
        List<COMStack> stacks =  cOMStackService.list();

@@ -7,7 +7,7 @@ angular.module('kvm', [ 'ui.router',
                         'dashboard',
                         'validation',
                         'sysconst']).controller('kvmctr', function($scope,  $log, KVMService,
-           $state,  $dialogs, monitorService, timezoneService, $modal) {
+           $state,  $dialogs, monitorService, timezoneService, $modal,validationService) {
                         	
 			$scope.submitComtype = function(){
 				$scope.reloadimglist();
@@ -232,10 +232,19 @@ angular.module('kvm', [ 'ui.router',
             			});
             
             $scope.check_VT = function(){
-//            	KVMService.checkVT().then(function(data){
-//            		
-//            	});
-            }
+            	if($scope.installConfig.active_host_ip){
+            		validationService.checkVT($scope.installConfig.active_host_ip).then(function(data){
+            			if(data.isValid == false){
+            				var modalInstance = $modal.open({
+            					animation: true,
+            					backdrop:'static',
+            					templateUrl: 'views/kvm/VT_message.html',
+            					controller: 'VT_ctrl',  
+            				});	
+            			}
+            		});	
+            	}
+            };
 
       $scope.$watch("installConfig.comType", function(){
     	        if($scope.installConfig.comType == 'CM'){
@@ -310,7 +319,12 @@ angular.module('kvm', [ 'ui.router',
     };
     $scope.ping = function(ip){
     	return validationService.ping(ip);
-    }
+    };
+}).controller('VT_ctrl', function($scope,$state, $modalInstance){
+	$scope.ok = function(){
+		$state.go('dashboard.kvminstall', {}, {reload: true});
+		$modalInstance.dismiss('cancel');
+	};
 });
 
 
