@@ -19,7 +19,7 @@ websocket.factory('websocketService', function($log) {
 			try {
 				$log.info("start to init socket with endPoint " + endPoint
 						+ "...");
-				socket.client = new SockJS(url);
+				socket.client = new SockJS(url,{}, { transports: ['xhr-polling'] });
 				socket.stomp = Stomp.over(socket.client);
 				socket.stomp.connect({}, function(frame) {
 					$log.info("WebSocket Connected to " + endPoint + ": "

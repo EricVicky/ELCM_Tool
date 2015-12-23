@@ -28,6 +28,9 @@ angular.module('monitor').directive( 'ansiblelog', function($log, WizardHandler,
 														monitorService.runAnsibleTask();	
 												});
 									};
+									$scope.errorHandle = function(){
+										
+									};
 									$scope.showlog = function(data) {
 										var tasks = $('#tasks');
 										var task = $('#task');

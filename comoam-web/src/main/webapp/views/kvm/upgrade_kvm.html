@@ -119,6 +119,12 @@
 									<div ng-include="'views/common/upgrade_instoptions.html'"></div>
 								</form>
 								<form class="tab-pane" id="tab4" name="tab4" rc-submit rc-step>
+								   	<div class="form-group col-md-6">
+                                     	<label class="control-label" translate="DB_IMAGE">Full Backup</label>
+											<div class="input-group">
+        												<input type="checkbox" ng-model="enable_full_backup" class="btn btn-default " />
+											</div>
+									</div>
 									<div class="panel panel-default">
 										<div class="panel-heading">
 											<label class="control-label" translate="UPGRADE_SUMMARY">Upgrade Summary</label>

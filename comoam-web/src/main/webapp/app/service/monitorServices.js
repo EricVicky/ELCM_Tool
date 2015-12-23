@@ -104,7 +104,27 @@ angular.module('monitor').factory('monitorService', function($log, $location, $r
 				"succeed" : "Change Hostname completed!",
 				"failed": "Change Hostname failed"
 			}
-	}
+	};
+	var baseUrl = $location.absUrl().split("#", 1)[0];
+	var restUrl = baseUrl;
+	var errorHandlerMap = {
+		"KVM":{
+			"upgrade_fullbackup" : function(failPoint, config){
+				if(failPoint == "fullbackup"){
+					return function($state){
+						var healingRes = $resource(restUrl + "rest/kvm/healing");
+						healingRes.save(config).$promise.then(function(){
+							
+						});
+					}
+				}else if(failPoint == "upgrade"){
+					return function(){
+						
+					}
+				}
+			}
+		}
+	};
 	var environment;
 	var action;
 	var channel;
@@ -279,6 +299,9 @@ angular.module('monitor').factory('monitorService', function($log, $location, $r
 		},
 		getEndMsg: function(res){
 			return endMsg[action][res];
+		},
+		getErrorHandler: function(){
+			
 		}
 	};
 });
