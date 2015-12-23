@@ -35,19 +35,19 @@ fullrestore_file_exist() {
     arr=(${hostname//:/ })
     for vm_name in ${arr[@]}
     do
-        ls ${Restore_File_Dir}/${vm_name}_snapshot | grep configdrive.iso > /dev/null
+        ls ${Restore_File_Dir}/${vm_name}_snapshot | grep ^configdrive.iso$ > /dev/null
         if [ ! $? -eq 0 ]; then
             return 1
         fi
-        ls ${Restore_File_Dir}/${vm_name}_snapshot | grep datadisk.qcow2 > /dev/null
+        ls ${Restore_File_Dir}/${vm_name}_snapshot | grep ^datadisk.qcow2$ > /dev/null
         if [ ! $? -eq 0 ]; then
             return 1
         fi
-        ls ${Restore_File_Dir}/${vm_name}_snapshot | grep rhel.qcow2 > /dev/null
+        ls ${Restore_File_Dir}/${vm_name}_snapshot | grep ^rhel.qcow2$ > /dev/null
         if [ ! $? -eq 0 ]; then
             return 1
         fi
-        ls ${Restore_File_Dir}/${vm_name}_snapshot | grep vmdomain.xml > /dev/null
+        ls ${Restore_File_Dir}/${vm_name}_snapshot | grep ^vmdomain.xml$ > /dev/null
         if [ ! $? -eq 0 ]; then
             return 1
         fi

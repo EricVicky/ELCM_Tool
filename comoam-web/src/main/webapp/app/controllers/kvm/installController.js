@@ -225,8 +225,17 @@ angular.module('kvm', [ 'ui.router',
             		          });
             			});
             KVMService.hostips().then(function(data) {
+            	            for(var i=0;i<data.length;i++){
+            	            	data[i].name = data[i].name + "---" +data[i].ip_address;
+            	            }
             				$scope.hostIPs = data;
             			});
+            
+            $scope.check_VT = function(){
+//            	KVMService.checkVT().then(function(data){
+//            		
+//            	});
+            }
 
       $scope.$watch("installConfig.comType", function(){
     	        if($scope.installConfig.comType == 'CM'){
