@@ -61,7 +61,7 @@ public class CheckController
     public ValidationResult  VTcheck(@ModelAttribute("hostip") String hostip) 
     {
     	ValidationResult res = new ValidationResult();
-    	cOMValidationService.setIp("135.251.236.98");
+    	cOMValidationService.setIp(hostip);
     	String checkRes = cOMValidationService.cpuVTCheck(hostip);
     	if(isSucceed(checkRes)){
 		    res.setSucceed(true);
