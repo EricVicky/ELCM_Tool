@@ -33,27 +33,18 @@ fullrestore_dir_exist() {
 fullrestore_file_exist() {
     Restore_File_Dir=$1
     arr=(${hostname//:/ })
+    array=(configdrive.iso datadisk.qcow2 rhel.qcow2 vmdomain.xml)
     for vm_name in ${arr[@]}
     do
-        ls ${Restore_File_Dir}/${vm_name}_snapshot | grep ^configdrive.iso$ > /dev/null
-        if [ ! $? -eq 0 ]; then
-            return 1
-        fi
-        ls ${Restore_File_Dir}/${vm_name}_snapshot | grep ^datadisk.qcow2$ > /dev/null
-        if [ ! $? -eq 0 ]; then
-            return 1
-        fi
-        ls ${Restore_File_Dir}/${vm_name}_snapshot | grep ^rhel.qcow2$ > /dev/null
-        if [ ! $? -eq 0 ]; then
-            return 1
-        fi
-        ls ${Restore_File_Dir}/${vm_name}_snapshot | grep ^vmdomain.xml$ > /dev/null
-        if [ ! $? -eq 0 ]; then
-            return 1
-        fi
+        cd ${Restore_File_Dir}/${vm_name}_snapshot
+        for name in ${array[@]}
+        do
+            if [ ! -f ${name} ];then
+                return 1
+            fi
+        done
     done
 }
-
 
 mount_2_server() {
     Remote_IP_DIR=$1
