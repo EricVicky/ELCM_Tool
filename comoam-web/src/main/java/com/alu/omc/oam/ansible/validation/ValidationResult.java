@@ -11,7 +11,7 @@ private static final long serialVersionUID = -743014706041617274L;
 boolean succeed = true;
 boolean exist = true;
 String message;
-String[] mutiMessage;
+StringBuffer warningMes = new StringBuffer();
 public boolean isSucceed() {
 	return succeed;
 }
@@ -32,12 +32,14 @@ public void setExist(boolean exist) {
 	this.exist = exist;
 }
 
-
-public String[] getMutiMessage() {
-	return mutiMessage;
+public StringBuffer getWarningMes() {
+	return warningMes;
 }
-public void setMutiMessage(String[] mutiMessage) {
-	this.mutiMessage = mutiMessage;
+public void setWarningMes(StringBuffer warningMes) {
+	this.warningMes = warningMes;
+}
+public void addWarningMes(String string){
+	this.warningMes.append(string).append("\n");
 }
 public ValidationResult(){
 	

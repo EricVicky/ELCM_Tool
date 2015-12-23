@@ -8,13 +8,19 @@ import java.util.Map;
 import javax.annotation.Resource;
 
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.alu.omc.oam.ansible.RunningComstackLock;
 import com.alu.omc.oam.ansible.validation.ValidationResult;
+import com.alu.omc.oam.config.Action;
+import com.alu.omc.oam.config.AtcCOMConfig;
+import com.alu.omc.oam.config.BACKUPConfig;
+import com.alu.omc.oam.config.COMConfig;
 import com.alu.omc.oam.config.COMStack;
+import com.alu.omc.oam.config.FullBackupConfig;
 import com.alu.omc.oam.config.KVMCOMConfig;
 import com.alu.omc.oam.config.Status;
 import com.alu.omc.oam.config.VMConfig;
@@ -145,134 +151,113 @@ public class CheckController
         return rs;
     }
     
-    @RequestMapping(value="/check/fullbackupPreCheck", method=RequestMethod.GET)
-    public ValidationResult fullbackupCheckResult(@ModelAttribute("deployment_prefix") String deployment_prefix,@ModelAttribute("vm_img_dir") String vm_img_dir,
-    		                                @ModelAttribute("remoteip") String remoteip,@ModelAttribute("remotedir") String remotedir,@ModelAttribute("hostip") String hostip){
-    	ValidationResult res = new ValidationResult();res.setSucceed(false);
+    private boolean isSucceed(String res){
+    	return res.contains("Success");
+    }
+    
+    private boolean isWarning(String res){
+    	return res.contains("Warning");
+    }
+    
+    private KVMCOMConfig getKVMCOMConfig(String stackName){
+        COMStack comStack = cOMStackService.get(stackName); 
+         @SuppressWarnings("unchecked") 
+         KVMCOMConfig config = new Json2Object<KVMCOMConfig>(){}.toMap(comStack.getComConfig());
+         return config;
+    }
+    
+    @RequestMapping(value="/check/fullbackupPreCheck", method=RequestMethod.POST)
+    public ValidationResult fullbackupCheckResult(@RequestBody FullBackupConfig<KVMCOMConfig> fullbackupconfig) throws Exception{
+    	fullbackupconfig.setConfig(getKVMCOMConfig(fullbackupconfig.getStackName()));
+    	ValidationResult res = new ValidationResult();
+    	res.setSucceed(true);
+    	String hostip = fullbackupconfig.getConfig().getHost().getIp_address();
     	cOMValidationService.setIp(hostip);
-    	String checkRes= cOMValidationService.fullbackupPreCheck(hostip,deployment_prefix,vm_img_dir,remoteip,remotedir);
-    	if(checkRes.contains("Success")){
-    		res.setSucceed(true);
+    	String checkRes= cOMValidationService.fullbackupPreCheck(hostip,fullbackupconfig.getConfig().getVm_img_dir()+"/"+fullbackupconfig.getConfig().getDeployment_prefix()
+    			                 ,fullbackupconfig.getRemote_server_ip(),fullbackupconfig.getRemote_server_dir());
+    	if(!isSucceed(checkRes)){
+    		res.setMessage(checkRes);
+			res.setSucceed(false);
     	}else{
-    		res.setSucceed(false);
+    		res.setMessage(checkRes);
     	}
-    	res.setMessage(checkRes);
     	return res;
     }
     
-    @RequestMapping(value="/check/fullrestorePreCheck", method=RequestMethod.GET)
-    public ValidationResult fullrestoreCheckResult(@ModelAttribute("deployment_prefix") String deployment_prefix,@ModelAttribute("vm_img_dir") String vm_img_dir,
-    		                                @ModelAttribute("remoteip") String remoteip,@ModelAttribute("remotedir") String remotedir,@ModelAttribute("hostip") String hostip){
-    	ValidationResult res = new ValidationResult();res.setSucceed(false);
-    	cOMValidationService.setIp(hostip);
-    	String checkRes= cOMValidationService.fullrestorePreCheck(deployment_prefix,vm_img_dir,remoteip,remotedir);
-    	if(checkRes.contains("Success")){
-    		res.setSucceed(true);
-    	}else{
-    		res.setSucceed(false);
+    @RequestMapping(value="/check/fullrestorePreCheck", method=RequestMethod.POST)
+    public ValidationResult fullrestorePreCheck(@RequestBody FullBackupConfig<KVMCOMConfig> fullbackupconfig) throws Exception{
+    	fullbackupconfig.setConfig(getKVMCOMConfig(fullbackupconfig.getStackName()));
+    	ValidationResult res = new ValidationResult();
+    	StringBuffer hostname = new StringBuffer();
+    	res.setSucceed(true);
+    	String hostip = fullbackupconfig.getConfig().getHost().getIp_address();
+    	Map<String, VMConfig> vmconfigs = fullbackupconfig.getConfig().getVm_config();
+    	Iterator iterator = vmconfigs.keySet().iterator();
+    	while(iterator.hasNext()){
+    		String vnfc =(String)iterator.next();
+    		if(!hostname.toString().equals("")) hostname.append(":");
+    		hostname.append(vmconfigs.get(vnfc).getHostname());
     	}
-    	res.setMessage(checkRes);
+    	cOMValidationService.setIp(hostip);
+    	String checkRes= cOMValidationService.fullrestorePreCheck(hostip,fullbackupconfig.getConfig().getVm_img_dir()+"/"+fullbackupconfig.getConfig().getDeployment_prefix(),
+    			         hostname.toString(),fullbackupconfig.getRemote_server_ip(),fullbackupconfig.getRemote_server_dir());
+    	if(!isSucceed(checkRes)){
+    		res.setMessage(checkRes);
+			res.setSucceed(false);
+    	}else{
+    		res.setMessage(checkRes);
+    	}
     	return res;
     }
     
-    @RequestMapping(value="/check/databackupPreCheck", method=RequestMethod.GET)
-    public ValidationResult databackupCheckResult(@ModelAttribute("localdir") String localdir,@ModelAttribute("filename") String filename,
-    		                                      @ModelAttribute("remoteip") String remoteip,@ModelAttribute("remotedir") String remotedir,
-    		                                      @ModelAttribute("oamip") String oamip,@ModelAttribute("dbip") String dbip,@ModelAttribute("cmip") String cmip){
-    	int start_point;
-    	ValidationResult res = new ValidationResult();res.setSucceed(false);
-    	cOMValidationService.setIp(oamip);
-    	String oam_checkRes = cOMValidationService.databackupPreCheck(localdir,filename,remoteip,remotedir);
-    	if(oam_checkRes.split("\r\n").length<4){
-    		start_point = 2;
-    	}else{
-    		start_point = 3;
-    	}
-    	String[] oam_message = Arrays.copyOfRange(oam_checkRes.split("\r\n"), start_point, oam_checkRes.split("\r\n").length-1);
-    	cOMValidationService.setIp(dbip);
-    	String db_checkRes = cOMValidationService.databackupPreCheck(localdir,filename,remoteip,remotedir);
-    	if(db_checkRes.split("\r\n").length<4){
-    		start_point = 2;
-    	}else{
-    		start_point = 3;
-    	}
-    	String[] db_message = Arrays.copyOfRange(db_checkRes.split("\r\n"), start_point, db_checkRes.split("\r\n").length-1);
-    	oam_message = Arrays.copyOf(oam_message, oam_message.length + db_message.length);
-    	System.arraycopy(db_message, 0, oam_message, oam_message.length-db_message.length, db_message.length);
-    	if(cmip == ""){
-    		res.setMutiMessage(oam_message);	
-    	}else{
-    		cOMValidationService.setIp(cmip);
-    		String cm_checkRes = cOMValidationService.databackupPreCheck(localdir,filename,remoteip,remotedir);
-    		if(cm_checkRes.split("\r\n").length<4){
-        		start_point = 2;
-        	}else{
-        		start_point = 3;
-        	}
-    		String[] cm_message = Arrays.copyOfRange(cm_checkRes.split("\r\n"), start_point, cm_checkRes.split("\r\n").length-1);
-    		oam_message = Arrays.copyOf(oam_message, oam_message.length + cm_message.length);
-    		System.arraycopy(cm_message, 0, oam_message, oam_message.length-cm_message.length, cm_message.length);
-    		res.setMutiMessage(oam_message);
-    	}
-    	for(int index=0;index<res.getMutiMessage().length;index++){
-    		if(res.getMutiMessage()[index].contains("Success")){
-    			res.setSucceed(true);
-    			break;
-    		}else{
+    @RequestMapping(value="/check/databackupPreCheck", method=RequestMethod.POST)
+    public ValidationResult databackupCheckResult(@RequestBody BACKUPConfig<KVMCOMConfig> databackupconfig) throws Exception{
+    	databackupconfig.setConfig(getKVMCOMConfig(databackupconfig.getStackName()));
+    	ValidationResult res = new ValidationResult();
+    	res.setSucceed(true);
+    	Map<String, VMConfig> vmconfigs = databackupconfig.getConfig().getVm_config();
+    	Iterator iterator = vmconfigs.keySet().iterator();
+    	while(iterator.hasNext()){
+    		String vnfc =(String)iterator.next();
+    		VMConfig vmConfig = vmconfigs.get(vnfc);
+    		String vmIP = vmConfig.getNic().get(0).getIp_v4().getIpaddress();
+    		cOMValidationService.setIp(vmIP);
+    		String checkRes = cOMValidationService.databackupPreCheck(databackupconfig.getBackupLocation().getLocal_backup_dir(),databackupconfig.getBackupLocation().getLocal_backup_file(),
+    				                         databackupconfig.getBackupLocation().getRemote_server_ip(),databackupconfig.getBackupLocation().getRemote_server_dir());
+    		if(!isSucceed(checkRes)){
+    			res.setMessage(vnfc+" : "+checkRes);
     			res.setSucceed(false);
-    		}	
+    			break;
+    		}else if(isWarning(checkRes)){
+    			res.addWarningMes(checkRes);
+    		}
     	}
-        return res;
+    	return res;
     }
     
-    @RequestMapping(value="/check/datarestorePreCheck", method=RequestMethod.GET)
-    public ValidationResult datarestoreCheckResult(@ModelAttribute("localdir") String localdir,@ModelAttribute("filename") String filename,
-    		                                      @ModelAttribute("remoteip") String remoteip,@ModelAttribute("remotedir") String remotedir,
-    		                                      @ModelAttribute("oamip") String oamip,@ModelAttribute("dbip") String dbip,@ModelAttribute("cmip") String cmip){
-    	int start_point;
-    	ValidationResult res = new ValidationResult();res.setSucceed(false);
-    	cOMValidationService.setIp(oamip);
-    	String oam_checkRes = cOMValidationService.datarestorePreCheck(localdir,filename,remoteip,remotedir);
-    	if(oam_checkRes.split("\r\n").length<4){
-    		start_point = 2;
-    	}else{
-    		start_point = 3;
-    	}
-    	String[] oam_message = Arrays.copyOfRange(oam_checkRes.split("\r\n"), start_point, oam_checkRes.split("\r\n").length-1);
-    	cOMValidationService.setIp(dbip);
-    	String db_checkRes = cOMValidationService.datarestorePreCheck(localdir,filename,remoteip,remotedir);
-    	if(db_checkRes.split("\r\n").length<4){
-    		start_point = 2;
-    	}else{
-    		start_point = 3;
-    	}
-    	String[] db_message = Arrays.copyOfRange(db_checkRes.split("\r\n"), start_point, db_checkRes.split("\r\n").length-1);
-    	oam_message = Arrays.copyOf(oam_message, oam_message.length + db_message.length);
-    	System.arraycopy(db_message, 0, oam_message, oam_message.length-db_message.length, db_message.length);
-    	if(cmip == ""){
-    		res.setMutiMessage(oam_message);	
-    	}else{
-    		cOMValidationService.setIp(cmip);
-    		String cm_checkRes = cOMValidationService.datarestorePreCheck(localdir,filename,remoteip,remotedir);
-    		if(cm_checkRes.split("\r\n").length<4){
-        		start_point = 2;
-        	}else{
-        		start_point = 3;
-        	}
-    		String[] cm_message = Arrays.copyOfRange(cm_checkRes.split("\r\n"), start_point, cm_checkRes.split("\r\n").length-1);
-    		oam_message = Arrays.copyOf(oam_message, oam_message.length + cm_message.length);
-    		System.arraycopy(cm_message, 0, oam_message, oam_message.length-cm_message.length, cm_message.length);
-    		res.setMutiMessage(oam_message);
-    	}
-    	for(int index=0;index<res.getMutiMessage().length;index++){
-    		if(res.getMutiMessage()[index].contains("Success")){
-    			res.setSucceed(true);
-    			break;
-    		}else{
+    @RequestMapping(value="/check/datarestorePreCheck", method=RequestMethod.POST)
+    public ValidationResult datarestorePreCheck(@RequestBody BACKUPConfig<KVMCOMConfig> databackupconfig) throws Exception{
+    	databackupconfig.setConfig(getKVMCOMConfig(databackupconfig.getStackName()));
+    	ValidationResult res = new ValidationResult();
+    	res.setSucceed(true);
+    	Map<String, VMConfig> vmconfigs = databackupconfig.getConfig().getVm_config();
+    	Iterator iterator = vmconfigs.keySet().iterator();
+    	while(iterator.hasNext()){
+    		String vnfc =(String)iterator.next();
+    		VMConfig vmConfig = vmconfigs.get(vnfc);
+    		String vmIP = vmConfig.getNic().get(0).getIp_v4().getIpaddress();
+    		cOMValidationService.setIp(vmIP);
+    		String checkRes = cOMValidationService.datarestorePreCheck(databackupconfig.getBackupLocation().getLocal_backup_dir(),databackupconfig.getBackupLocation().getLocal_backup_file(),
+    				                         databackupconfig.getBackupLocation().getRemote_server_ip(),databackupconfig.getBackupLocation().getRemote_server_dir());
+    		if(!isSucceed(checkRes)){
+    			res.setMessage(vnfc+" : "+checkRes);
     			res.setSucceed(false);
-    		}	
+    			break;
+    		}else if(isWarning(checkRes)){
+    			res.addWarningMes(checkRes);
+    		}
     	}
-        return res;
+    	return res;
     }
 
 }

@@ -50,7 +50,7 @@ angular.module('fullbackup_restore', ['ui.router',
                                 			}
                                 			$scope.comInstance = comInstance;
                                 			$scope.setDefaultInstace();
-                                	    });                        	    
+                                	    });
 
                                 	    $scope.init = function(){
                                 	    	$scope.checkmessage = false;
@@ -58,22 +58,18 @@ angular.module('fullbackup_restore', ['ui.router',
                                 	    	$scope.valid = true;
                                 	    };
                                 	    
-                                	    $scope.fullbackup = function(){	
+                                	    $scope.fullbackup = function(){
+                                	    	if($scope.installConfig.comType=="QOSAC"||$scope.installConfig.comType=="ATC"){
+                                	    		$scope.dofullbackup();  
+                                	    	}
                                 	    	$scope.showmessage = false;
                                 	    	$scope.checkmessage = true;
-                                	    	if($scope.remote_server==true){
-                                	    		var remoteip = $scope.fullbackupConfig.remote_server_ip + ":";
-                                	    		var remotedir = $scope.fullbackupConfig.remote_server_dir;
-                                	    	}else{
-                                	    		var remoteip = "";
-                                	    	    var remotedir = "";
-                                	    	}
-                                	    	validationService.fullbackupPreCheck($scope.installConfig.host.ip_address,$scope.installConfig.deployment_prefix,$scope.installConfig.vm_img_dir,
-                                	    			                             remoteip,remotedir).then( function(data){
+                                	    	$scope.fullbackupConfig.stackName = $scope.installConfig.deployment_prefix;
+                                	    	validationService.fullbackupPreCheck($scope.fullbackupConfig).then( function(data){
                                 	                $scope.showmessage = true;
                                 	                $scope.checkmessage = false;
-                                	    			$scope.valid = data.isValid;
-                                	    			$scope.message = data.message.split("\r\n")[3];
+                                	    			$scope.valid = data.succeed;
+                                	    			$scope.message = data.message;				
                                 	    			if($scope.valid == true){
                                 	    				if($scope.message.indexOf("Warning") != -1){
                                 	    					$scope.showmessage = false;
@@ -84,7 +80,7 @@ angular.module('fullbackup_restore', ['ui.router',
                                 	    						controller: 'fullmessage_ctrl',
                                 	    						resolve: {
                                 	    							msg: function() {
-                                	    								return $scope.message;
+                                	    								return $scope.message.substring(0,$scope.message.indexOf("Success"));
                                 	    							}
                                 	    						},   
                                 	    					});	
@@ -106,22 +102,18 @@ angular.module('fullbackup_restore', ['ui.router',
                                 	    	});
                                 	    };
                                 	    
-                                	    $scope.fullrestore = function(){	
+                                	    $scope.fullrestore = function(){
+                                	    	if($scope.installConfig.comType=="QOSAC"||$scope.installConfig.comType=="ATC"){
+                                	    		$scope.dofullrestore();  
+                                	    	}
                                 	    	$scope.showmessage = false;
                                 	    	$scope.checkmessage = true;
-                                	    	if($scope.remote_server==true){
-                                	    		var remoteip = $scope.fullbackupConfig.remote_server_ip + ":";
-                                	    		var remotedir = $scope.fullbackupConfig.remote_server_dir;
-                                	    	}else{
-                                	    		var remoteip = "";
-                                	    	    var remotedir = "";
-                                	    	}
-                                	    	validationService.fullrestorePreCheck($scope.installConfig.host.ip_address,$scope.installConfig.deployment_prefix,$scope.installConfig.vm_img_dir,
-   	    			                                                              remoteip,remotedir).then( function(data){
+                                	    	$scope.fullbackupConfig.stackName = $scope.installConfig.deployment_prefix;
+                                	    	validationService.fullrestorePreCheck($scope.fullbackupConfig).then( function(data){
    	    			                            	$scope.showmessage = true;
                                 	                $scope.checkmessage = false;
-                                	    			$scope.valid = data.isValid;
-                                	    			$scope.message = data.message.split("\r\n")[3];
+                                	    			$scope.valid = data.succeed;
+                                	    			$scope.message = data.message;
                                 	    			if($scope.valid == true){
                                 	    				$scope.dofullrestore(); 
                                 	    			}else{

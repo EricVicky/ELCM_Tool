@@ -11,35 +11,23 @@ angular.module('validation',[]).factory('validationService', function($location,
 		    });
 		    return deferred.promise;
 		},
-		fullbackupPreCheck: function(hostip,deployment_prefix,vm_img_dir,remoteip,remotedir) {
-			var deferred = $q.defer();
-		    $http.get(restUrl + "check/fullbackupPreCheck", {"params": {"hostip": hostip,"deployment_prefix": deployment_prefix,"vm_img_dir": vm_img_dir,"remoteip":remoteip,"remotedir":remotedir}}).success(function(res) {
-		        deferred.resolve({ isValid: res.succeed, message: res.message });
-		    });
-		    return deferred.promise;
+
+		fullbackupPreCheck:function(fullbackupConfig){
+			var Res = $resource(restUrl + "check/fullbackupPreCheck");
+			return Res.save(fullbackupConfig).$promise;
 		},
-		fullrestorePreCheck: function(hostip,deployment_prefix,vm_img_dir,remoteip,remotedir) {
-			var deferred = $q.defer();
-		    $http.get(restUrl + "check/fullrestorePreCheck", {"params": {"hostip": hostip,"deployment_prefix": deployment_prefix,"vm_img_dir": vm_img_dir,"remoteip":remoteip,"remotedir":remotedir}}).success(function(res) {
-		        deferred.resolve({ isValid: res.succeed, message: res.message });
-		    });
-		    return deferred.promise;
+		fullrestorePreCheck:function(fullbackupConfig){
+			var Res = $resource(restUrl + "check/fullrestorePreCheck");
+			return Res.save(fullbackupConfig).$promise;
 		},
-		databackupPreCheck: function(oamip,dbip,cmip,localdir,filename,remoteip,remotedir) {
-			var deferred = $q.defer();
-		    $http.get(restUrl + "check/databackupPreCheck", {"params": {"oamip": oamip,"dbip": dbip,"cmip": cmip,"localdir": localdir,"filename": filename,"remoteip":remoteip,"remotedir":remotedir}}).success(function(res) {
-		        deferred.resolve({ isValid: res.succeed, message: res.mutiMessage });
-		    });
-		    return deferred.promise;
+		databackupPreCheck:function(databackupConfig){
+			var Res = $resource(restUrl + "check/databackupPreCheck");
+			return Res.save(databackupConfig).$promise;
 		},
-		datarestorePreCheck: function(oamip,dbip,cmip,localdir,filename,remoteip,remotedir) {
-			var deferred = $q.defer();
-		    $http.get(restUrl + "check/datarestorePreCheck", {"params": {"oamip": oamip,"dbip": dbip,"cmip": cmip,"localdir": localdir,"filename": filename,"remoteip":remoteip,"remotedir":remotedir}}).success(function(res) {
-		        deferred.resolve({ isValid: res.succeed, message: res.mutiMessage });
-		    });
-		    return deferred.promise;
-		},
-		
+		datarestorePreCheck:function(databackupConfig){
+			var Res = $resource(restUrl + "check/datarestorePreCheck");
+			return Res.save(databackupConfig).$promise;
+		},		
 
 	};
 });

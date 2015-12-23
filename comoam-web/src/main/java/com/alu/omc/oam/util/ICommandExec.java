@@ -8,5 +8,5 @@ import org.apache.commons.exec.ExecuteResultHandler;
 public interface ICommandExec
 {
     public CommandResult execute() throws IOException, InterruptedException; 
-    public void execute (ExecuteResultHandler handler)  throws ExecuteException, IOException;   
+    public void execute (ExecuteResultHandler handler)  throws ExecuteException, IOException;
 }

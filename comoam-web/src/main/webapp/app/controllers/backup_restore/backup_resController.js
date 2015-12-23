@@ -73,40 +73,19 @@ angular.module('backup_restore', ['ui.router',
     };
     
     $scope.backup = function(){
+    	if($scope.installConfig.comType=="QOSAC"||$scope.installConfig.comType=="ATC"){
+    		$scope.doBackup();  
+    	}
     	$scope.showmessage = false;
     	$scope.checkmessage = true;
-    	if($scope.remote_server==true){
-    		var remoteip = $scope.backupConfig.backupLocation.remote_server_ip + ":";
-    		var remotedir = $scope.backupConfig.backupLocation.remote_server_dir;
-    	}else{
-    		var remoteip = "";
-    	    var remotedir = "";
-    	}
-    	if($scope.installConfig.environment=='KVM'){
-    		oamip = $scope.installConfig.vm_config.oam.nic[0].ip_v4.ipaddress;
-    		dbip = $scope.installConfig.vm_config.db.nic[0].ip_v4.ipaddress;
-    		if($scope.installConfig.comType == "OAM"){
-        		cmip = "";
-        	}else{
-        		cmip = $scope.installConfig.vm_config.cm.nic[0].ip_v4.ipaddress;
-        	}
-    	}else{
-    		oamip = $scope.installConfig.vm_config.oam.provider_ip_address;
-    		dbip = $scope.installConfig.vm_config.db.provider_ip_address;
-    		if($scope.installConfig.comType == "OAM"){
-        		cmip = "";
-        	}else{
-        		cmip = $scope.installConfig.vm_config.cm.provider_ip_address;
-        	}
-    	}
-    	validationService.databackupPreCheck(oamip,dbip,cmip,$scope.backupConfig.backupLocation.local_backup_dir,
-    			             $scope.backupConfig.backupLocation.local_backup_file,remoteip,remotedir).then( function(data){
+    	$scope.backupConfig.config = $scope.installConfig;
+    	validationService.databackupPreCheck($scope.backupConfig).then( function(data){
             $scope.showmessage = true;
             $scope.checkmessage = false;
-            $scope.valid = data.isValid;
+            $scope.valid = data.succeed;
             $scope.message = data.message;
             if($scope.valid == true){
-            	if($scope.message[0].indexOf("Warning") != -1){
+            	if(data.warningMes.indexOf("Warning") != -1){
 					$scope.showmessage = false;
 					var modalInstance = $modal.open({
 						animation: true,
@@ -115,7 +94,7 @@ angular.module('backup_restore', ['ui.router',
 						controller: 'datamessage_ctrl',
 						resolve: {
 							msg: function() {
-								return $scope.message;
+								return data.warningMes.split("Success");
 							},
 							config: function() {
 								return $scope.installConfig;
@@ -133,78 +112,27 @@ angular.module('backup_restore', ['ui.router',
 					$scope.doBackup();    					
 				}
             }else{
-            	var VMmessage = new Array();
-            	for(var index in $scope.message){
-            		if($scope.message[index].indexOf("Warning")!=-1){
-            			continue;
-            		}
-            		VMmessage.push($scope.message[index]);
-            	}
-            	if($scope.installConfig.comType != "QOSAC"){
-            		$scope.message_oam = VMmessage[0] == null?"Timeout when mounting server.":VMmessage[0];
-            		$scope.message_db = VMmessage[1] == null?"Timeout when mounting server.":VMmessage[1];
-            		if($scope.installConfig.comType != "OAM"){
-            			$scope.message_cm = VMmessage[2] == null?"Timeout when mounting server.":VMmessage[2];			
-            		}
-            	}else{
-            		$scope.message_ovm = VMmessage[0] == null?"Timeout when mounting server.":VMmessage[0];
-            	}
+            	 $scope.message = $scope.message.split(":")[1]==" "?"Error: Timeout when mounting server.":$scope.message;
             }      	
         });
     };
     
     $scope.restore = function(){
+    	if($scope.installConfig.comType=="QOSAC"||$scope.installConfig.comType=="ATC"){
+    		$scope.doRestore();  
+    	}
     	$scope.showmessage = false;
     	$scope.checkmessage = true;
-    	if($scope.remote_server==true){
-    		var remoteip = $scope.backupConfig.backupLocation.remote_server_ip + ":";
-    		var remotedir = $scope.backupConfig.backupLocation.remote_server_dir;
-    	}else{
-    		var remoteip = "";
-    	    var remotedir = "";
-    	}
-    	if($scope.installConfig.environment=='KVM'){
-    		oamip = $scope.installConfig.vm_config.oam.nic[0].ip_v4.ipaddress;
-    		dbip = $scope.installConfig.vm_config.db.nic[0].ip_v4.ipaddress;
-    		if($scope.installConfig.comType == "OAM"){
-        		cmip = "";
-        	}else{
-        		cmip = $scope.installConfig.vm_config.cm.nic[0].ip_v4.ipaddress;
-        	}
-    	}else{
-    		oamip = $scope.installConfig.vm_config.oam.provider_ip_address;
-    		dbip = $scope.installConfig.vm_config.db.provider_ip_address;
-    		if($scope.installConfig.comType == "OAM"){
-        		cmip = "";
-        	}else{
-        		cmip = $scope.installConfig.vm_config.cm.provider_ip_address;
-        	}
-    	}
-    	validationService.datarestorePreCheck(oamip,dbip,cmip,$scope.backupConfig.backupLocation.local_backup_dir,
-    			                             $scope.backupConfig.backupLocation.local_backup_file, remoteip,remotedir).then( function(data){
+    	$scope.backupConfig.config = $scope.installConfig;
+    	validationService.datarestorePreCheck($scope.backupConfig).then( function(data){
                $scope.showmessage = true;
                $scope.checkmessage = false;
-               $scope.valid = data.isValid;
+               $scope.valid = data.succeed;
                $scope.message = data.message;
                if($scope.valid == true){
             	   $scope.doRestore();
                }else{
-            	   var VMmessage = new Array();
-               	   for(var index in $scope.message){
-               	       if($scope.message[index].indexOf("Warning")!=-1){
-            			  continue;
-            		  }
-            		  VMmessage.push($scope.message[index]);
-               	   }
-               	   if($scope.installConfig.comType != "QOSAC"){
-               		   $scope.message_oam = VMmessage[0] == null?"Timeout when mounting server.":VMmessage[0];
-               		   $scope.message_db = VMmessage[1] == null?"Timeout when mounting server.":VMmessage[1];
-               		   if($scope.installConfig.comType != "OAM"){
-               			   $scope.message_cm = VMmessage[2] == null?"Timeout when mounting server.":VMmessage[2];			
-               		   }
-               	   }else{
-               		   $scope.message_ovm = VMmessage[0] == null?"Timeout when mounting server.":VMmessage[0];
-               	   }
+            	   $scope.message = $scope.message.split(":")[1]==" "?"Error: Timeout when mounting server.":$scope.message;
                }                                   	 
         });
     };
@@ -245,20 +173,14 @@ angular.module('backup_restore', ['ui.router',
 		};
 		$scope.message = msg;
 		$scope.installConfig = config;
-		var VMmessage = new Array();
-    	for(var index in $scope.message){
-    		if($scope.message[index].indexOf("Warning")!=-1){
-    			VMmessage.push($scope.message[index]);
-    		}
-    	}
     	if($scope.installConfig.comType != "QOSAC"){
-    		$scope.message_oam = VMmessage[0]== null?"Timeout when mounting server.":VMmessage[0];
-    		$scope.message_db = VMmessage[1]== null?"Timeout when mounting server.":VMmessage[1];
+    		$scope.message_oam = $scope.message[0]==""?"Success":$scope.message[0];
+    		$scope.message_db = $scope.message[1]==""?"Success":$scope.message[1];
     		if($scope.installConfig.comType != "OAM"){
-    			$scope.message_cm = VMmessage[2]== null?"Timeout when mounting server.":VMmessage[2];			
+    			$scope.message_cm = $scope.message[2]==""?"Success":$scope.message[2];			
     		}
     	}else{
-    		$scope.message_ovm = VMmessage[0]== null?"Timeout when mounting server.":VMmessage[0];
+    		$scope.message_ovm = $scope.message[0]==""?"Success":$scope.message[0];
     	}	
 		$scope.cancel = function () {
 			$modalInstance.dismiss('cancel');

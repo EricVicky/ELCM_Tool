@@ -22,7 +22,7 @@ datarestore_file_exist() {
     Restore_File_Dir=$1
     File_name=$2
     
-    ls ${Restore_File_Dir} | grep ***${File_name}.tgz > /dev/null
+    ls ${Restore_File_Dir} | grep ^.*${File_name}$ > /dev/null
     if [ $? -eq 0 ]; then
     	return 0
     else 
@@ -46,7 +46,7 @@ umount_2_server() {
 restore_precheck() {
     datarestore_file_exist ${local_restore_dir} ${filename}
     if [ $? -eq 0 ];then
-        return "Success"
+        echo "Success"
     else
         echo "Error: No data backup files exist, data restore is prohibited."
     fi

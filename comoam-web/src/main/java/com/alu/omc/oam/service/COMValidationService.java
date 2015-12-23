@@ -8,8 +8,16 @@ import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.alu.omc.oam.kvm.model.Host;
+import javax.annotation.Resource;
 
+import com.alu.omc.oam.ansible.exception.AnsibleException;
+import com.alu.omc.oam.kvm.model.Host;
+import com.alu.omc.oam.util.CommandProtype;
+import com.alu.omc.oam.util.CommandResult;
+import com.alu.omc.oam.util.ICommandExec;
+
+import org.apache.commons.exec.ExecuteException;
+import org.apache.commons.exec.ExecuteResultHandler;
 import org.apache.commons.lang3.SystemUtils;
 import org.springframework.stereotype.Service;
 
@@ -22,6 +30,8 @@ import com.jcraft.jsch.Session;
 @Service
 public class COMValidationService {
 	
+	@Resource
+    private  CommandProtype commandProtype;
 	private String username = "root";
 	private String ip ;
 	private String password = "EMS_qd_n2";
@@ -114,6 +124,29 @@ public class COMValidationService {
         }
 	}
 	
+    public void opFirewall(String command){
+    	Session session = null;
+        if(SystemUtils.IS_OS_WINDOWS){
+            session = getSession(this.username, this.ip, this.password);
+        }else{
+            session = getSession(this.ip);
+        } 
+        Channel channel = getChannel(session,"exec");
+		String finalCommand = command+"\n";
+		try {
+    		OutputStream outstream = channel.getOutputStream();
+			outstream.write(finalCommand.getBytes());
+			outstream.flush();
+			System.out.println("The firewall command " + command + " is excuted");
+            outstream.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		} finally {
+            channel.disconnect();
+            session.disconnect();
+		} 
+    }
+    
 	public String excuteShell(String command){
 		Session session = null;
         if(SystemUtils.IS_OS_WINDOWS){
@@ -129,7 +162,7 @@ public class COMValidationService {
     		InputStream in=channel.getInputStream();
 			outstream.write(finalCommand.getBytes());
 			outstream.flush();
-			try{Thread.sleep(2000);}catch(Exception ee){}
+			try{Thread.sleep(5000);}catch(Exception ee){}
 			System.out.println("The command " + command + " is excuted");
 			byte[] tmp=new byte[2048];
 			while(in.available()>0){
@@ -137,7 +170,7 @@ public class COMValidationService {
 				if(i<0)break;
 				string = new String(tmp, 0, i);
 				System.out.print(string);
-		    }   
+		    }
 			try{Thread.sleep(1000);}catch(Exception ee){}
             outstream.close();
             in.close();
@@ -147,7 +180,28 @@ public class COMValidationService {
             channel.disconnect();
             session.disconnect();
 		}    	
-    	return string;
+    	return trim(string);
+	}
+	
+	private String trim(String stdout){
+		final int FIX_PROMOTE_LINES = 3; 
+		StringBuffer res = new StringBuffer();
+		if(stdout!=null && stdout.length() > 0){
+			String[] lines = stdout.split("\r\n");
+			if(lines.length >= FIX_PROMOTE_LINES){
+				for(int i=FIX_PROMOTE_LINES; i< lines.length; i++){
+					if(lines[i].endsWith("# "))
+						break;
+					res.append(lines[i]);
+					if(i<lines.length-2){
+						res.append("\n");	
+					}
+				}
+			}else{
+				System.out.print("abnormal output");
+			}
+		}
+		return res.toString();
 	}
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	//Above are defined function. Below are detail function
@@ -162,73 +216,87 @@ public class COMValidationService {
     	} else {
     		return false;
     	}
-    }   
+    } 
     
-    public String fullbackupPreCheck(String hostip,String deployment_prefix,String vm_img_dir,String remoteip,String remotedir){
+    public String fullbackupPreCheck(String hostip,String local_backup_dir,String remoteip,String remotedir){
     	String checkRes = "";
-    	if (Host.isLocalHost(hostip)){
-    		String shSource="/opt/PlexView/ELCM/script/fullbackup_precheck.sh";
-    		String local_backup_dir = vm_img_dir + "/" +deployment_prefix;
-    		String remote_backup_dir = remoteip + remotedir;
-    		System.out.println("Command is:"+shSource+" "+local_backup_dir+" "+remote_backup_dir);
-    		Process process = null;  
-   	        List<String> processList = new ArrayList<String>();  
-   	        try {  
-   	            process = Runtime.getRuntime().exec(shSource+" "+local_backup_dir+" "+remote_backup_dir);
-   	            System.out.println("Command is executed.");
-   	            BufferedReader input = new BufferedReader(new InputStreamReader(process.getInputStream()));  
-   	            String line = "";  
-   	            while ((line = input.readLine()) != null) {  
-   	                processList.add(line);  
-   	            }  
-   	            input.close();  
-   	        } catch (IOException e) {  
-   	            e.printStackTrace();  
-   	        }   
-   	        System.out.println(processList.toString());
-   	        checkRes = processList.toString();
+    	String source = "/opt/PlexView/ELCM/script/";
+    	String destination = "/tmp/"; 
+		String remote_backup_dir = remoteip == ""?"":remoteip + ":" + remotedir;
+    	if(Host.isLocalHost(hostip)){
+    		String script = source+"fullbackup_precheck.sh";
+    		ICommandExec comamnda = commandProtype.create(script+" "+local_backup_dir+" "+remote_backup_dir);
+    	    try{
+    	        CommandResult res = comamnda.execute();
+    	        checkRes = res.getOutputString();
+            }catch(Exception e){
+            	e.printStackTrace();
+            }
     	}else{
-    		String source = "/opt/PlexView/ELCM/script/";
-    		String destination = "/tmp/"; 
     		cyFiles2Server(source,destination,"fullbackup_precheck.sh");
     		String script = destination+"fullbackup_precheck.sh";
-    		String local_backup_dir = vm_img_dir + "/" +deployment_prefix;
-    		String remote_backup_dir = remoteip + remotedir;
-    		checkRes = excuteShell(script+" "+local_backup_dir+" "+remote_backup_dir);
+    		checkRes = excuteShell(script+" "+local_backup_dir+" "+remote_backup_dir);	
     	}
     	return checkRes;
     }
     
-    public String fullrestorePreCheck(String deployment_prefix,String vm_img_dir,String remoteip,String remotedir){
+    public String fullrestorePreCheck(String hostip,String local_backup_dir,String hostname,String remoteip,String remotedir){
+    	String checkRes = "";
     	String source = "/opt/PlexView/ELCM/script/";
-    	String destination = "/tmp/";  
-    	cyFiles2Server(source,destination,"fullrestore_precheck.sh");
-    	String script = destination+"fullrestore_precheck.sh";
-    	String local_restore_dir = vm_img_dir + "/" +deployment_prefix;
-    	String remote_restore_dir = remoteip + remotedir;
-    	String checkRes = excuteShell(script+" "+local_restore_dir+" "+remote_restore_dir);
+    	String destination = "/tmp/"; 
+    	String remote_backup_dir = remoteip == ""?"":remoteip + ":" + remotedir;
+		if(Host.isLocalHost(hostip)){
+    		String script = source+"fullrestore_precheck.sh";
+    		ICommandExec comamnda = commandProtype.create(script+" "+local_backup_dir+" "+hostname+" "+remote_backup_dir);
+    	    try{
+    	        CommandResult res = comamnda.execute();
+    	        checkRes = res.getOutputString(); 
+            }catch(Exception e){
+            	e.printStackTrace();
+            }
+    	}else{
+    		cyFiles2Server(source,destination,"fullrestore_precheck.sh");
+    		String script = destination+"fullrestore_precheck.sh";
+    		checkRes = excuteShell(script+" "+local_backup_dir+" "+remote_backup_dir);	
+    	}
     	return checkRes;
     }
     
     public String databackupPreCheck(String localdir,String filename,String remoteip,String remotedir){
+    	String checkRes = "";
     	String source = "/opt/PlexView/ELCM/script/";
     	String destination = "/tmp/";   
     	cyFiles2Server(source,destination,"databackup_precheck.sh");
     	String script = destination+"databackup_precheck.sh";
     	String local_backup_dir = localdir;
-    	String remote_backup_dir = remoteip + remotedir;
-    	String checkRes = excuteShell(script+" "+local_backup_dir+" "+filename+" "+remote_backup_dir);
+    	String remote_backup_dir = remoteip == ""?"":remoteip + ":" + remotedir;
+    	try {
+    		opFirewall("service iptables stop");
+    		checkRes = excuteShell(script+" "+local_backup_dir+" "+filename+" "+remote_backup_dir);
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			opFirewall("service iptables start");
+		}
     	return checkRes;
     }
     
     public String datarestorePreCheck(String localdir,String filename,String remoteip,String remotedir){
+    	String checkRes = "";
     	String source = "/opt/PlexView/ELCM/script/";
     	String destination = "/tmp/";   	
     	cyFiles2Server(source,destination,"datarestore_precheck.sh");
     	String script = destination+"datarestore_precheck.sh";
     	String local_backup_dir = localdir;
-    	String remote_backup_dir = remoteip + remotedir;
-    	String checkRes = excuteShell(script+" "+local_backup_dir+" "+filename+" "+remote_backup_dir);
+    	String remote_backup_dir = remoteip == ""?"":remoteip + ":" + remotedir;
+    	try {
+    		opFirewall("service iptables stop");
+    		checkRes = excuteShell(script+" "+local_backup_dir+" "+filename+" "+remote_backup_dir);
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			opFirewall("service iptables start");
+		}
     	return checkRes;
     }
     

@@ -6,9 +6,11 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.commons.exec.CommandLine;
+import org.apache.commons.exec.DefaultExecuteResultHandler;
 import org.apache.commons.exec.DefaultExecutor;
 import org.apache.commons.exec.ExecuteException;
 import org.apache.commons.exec.ExecuteResultHandler;
+import org.apache.commons.exec.ExecuteWatchdog;
 import org.apache.commons.exec.PumpStreamHandler;
 import org.apache.commons.io.output.ByteArrayOutputStream;
 
@@ -36,10 +38,6 @@ public class DefaultCommandExecutor  implements ICommandExec
        this.envs = envs;
        this.workingDir = workingDir;
     }
-    
- 
-
-
 
     @Override
     public CommandResult execute() throws IOException, InterruptedException
@@ -49,11 +47,11 @@ public class DefaultCommandExecutor  implements ICommandExec
         DefaultExecutor exec = new DefaultExecutor();
         PumpStreamHandler streamHandler = new PumpStreamHandler(outputStream);
         exec.setStreamHandler(streamHandler);
-        DefaultExecutor executor = new DefaultExecutor();
-        int res = executor.execute(cmdLine);
-        CommandResult commandResult = new CommandResult(res, outputStream.toString());
+        exec.execute(cmdLine, new DefaultExecuteResultHandler());
+        try{Thread.sleep(3000);}catch(Exception ee){}
+        CommandResult commandResult = new CommandResult(0, outputStream.toString());
         return commandResult;
     }
-    
+
 
 }
