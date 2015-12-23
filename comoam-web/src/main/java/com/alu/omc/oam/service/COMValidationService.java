@@ -281,7 +281,7 @@ public class COMValidationService {
     	return checkRes;
     }
     
-    public String datarestorePreCheck(String localdir,String filename,String remoteip,String remotedir){
+    public String datarestorePreCheck(String localdir,String filename,String hostname,String remoteip,String remotedir){
     	String checkRes = "";
     	String source = "/opt/PlexView/ELCM/script/";
     	String destination = "/tmp/";   	
@@ -291,7 +291,7 @@ public class COMValidationService {
     	String remote_backup_dir = remoteip == ""?"":remoteip + ":" + remotedir;
     	try {
     		opFirewall("service iptables stop");
-    		checkRes = excuteShell(script+" "+local_backup_dir+" "+filename+" "+remote_backup_dir);
+    		checkRes = excuteShell(script+" "+local_backup_dir+" "+hostname+" "+filename+" "+remote_backup_dir);
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {

@@ -248,7 +248,7 @@ public class CheckController
     		String vmIP = vmConfig.getNic().get(0).getIp_v4().getIpaddress();
     		cOMValidationService.setIp(vmIP);
     		String checkRes = cOMValidationService.datarestorePreCheck(databackupconfig.getBackupLocation().getLocal_backup_dir(),databackupconfig.getBackupLocation().getLocal_backup_file(),
-    				                         databackupconfig.getBackupLocation().getRemote_server_ip(),databackupconfig.getBackupLocation().getRemote_server_dir());
+    				       vmconfigs.get(vnfc).getHostname(),databackupconfig.getBackupLocation().getRemote_server_ip(),databackupconfig.getBackupLocation().getRemote_server_dir());
     		if(!isSucceed(checkRes)){
     			res.setMessage(vnfc+" : "+checkRes);
     			res.setSucceed(false);
