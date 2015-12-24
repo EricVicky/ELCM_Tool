@@ -57,6 +57,20 @@ public class CheckController
     	return res;    			
     }
     
+    @RequestMapping(value="/check/cpuVTCheck", method=RequestMethod.GET)
+    public ValidationResult  VTcheck(@ModelAttribute("hostip") String hostip) 
+    {
+    	ValidationResult res = new ValidationResult();
+    	cOMValidationService.setIp(hostip);
+    	String checkRes = cOMValidationService.cpuVTCheck(hostip);
+    	if(isSucceed(checkRes)){
+		    res.setSucceed(true);
+    	}else{
+    		res.setSucceed(false);
+    	}	
+    	return res; 
+    }
+    
     @RequestMapping(value="/kvm/check/unique", method=RequestMethod.GET)
     public ValidationResult uniqueCOM(@ModelAttribute("name") String name){
        List<COMStack> stacks =  cOMStackService.list();
@@ -248,7 +262,7 @@ public class CheckController
     		String vmIP = vmConfig.getNic().get(0).getIp_v4().getIpaddress();
     		cOMValidationService.setIp(vmIP);
     		String checkRes = cOMValidationService.datarestorePreCheck(databackupconfig.getBackupLocation().getLocal_backup_dir(),databackupconfig.getBackupLocation().getLocal_backup_file(),
-    				                         databackupconfig.getBackupLocation().getRemote_server_ip(),databackupconfig.getBackupLocation().getRemote_server_dir());
+    				       vmconfigs.get(vnfc).getHostname(),databackupconfig.getBackupLocation().getRemote_server_ip(),databackupconfig.getBackupLocation().getRemote_server_dir());
     		if(!isSucceed(checkRes)){
     			res.setMessage(vnfc+" : "+checkRes);
     			res.setSucceed(false);

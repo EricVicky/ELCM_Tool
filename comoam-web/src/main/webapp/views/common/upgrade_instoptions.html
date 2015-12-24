@@ -86,24 +86,6 @@
 		</select>
 </div>
 <div class="form-group" ng-if="installConfig.comType!='QOSAC'">
-	<label class="control-label" translate="OMCCN_SUPPORT_GSST">Support GSST NE</label> <select
-		name="OMCCN_SUPPORT_GSST" class="form-control" type="text"
-		ng-model="installConfig.app_install_options.OMCCN_SUPPORT_GSST"
-		title="OMCCN_SUPPORT_GSST" validation="required">
-		<option value="true" translate="true">true</option>
-		<option value="false" translate="false">false</option>
-		</select>
-</div>
-<div class="form-group" ng-if="installConfig.comType!='QOSAC'">
-	<label class="control-label" translate="OMCCN_SUPPORT_NETRA">Support NETRA Management</label> <select
-		name="OMCCN_SUPPORT_NETRA" class="form-control" type="text"
-		ng-model="installConfig.app_install_options.OMCCN_SUPPORT_NETRA"
-		title="OMCCN SUPPORT NETRA" validation="required">
-		<option value="true" translate="true">true</option>
-		<option value="false" translate="false">false</option>
-		</select>
-</div>
-<div class="form-group" ng-if="installConfig.comType!='QOSAC'">
 	<label class="control-label" translate="INSTALL_ETHEREAL">Install Ethereal</label> <select
 		name="INSTALL_ETHEREAL" class="form-control" type="text"
 		ng-model="installConfig.app_install_options.INSTALL_ETHEREAL"

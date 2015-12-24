@@ -11,6 +11,13 @@ angular.module('validation',[]).factory('validationService', function($location,
 		    });
 		    return deferred.promise;
 		},
+		checkVT: function (hostip) {
+			var deferred = $q.defer();
+		    $http.get(restUrl + "check/cpuVTCheck", {"params": {"hostip": hostip}}).success(function(res) {
+		        deferred.resolve({ isValid: res.succeed, message: res.message });
+		    });
+		    return deferred.promise;
+		},
 
 		fullbackupPreCheck:function(fullbackupConfig){
 			var Res = $resource(restUrl + "check/fullbackupPreCheck");
@@ -27,8 +34,7 @@ angular.module('validation',[]).factory('validationService', function($location,
 		datarestorePreCheck:function(databackupConfig){
 			var Res = $resource(restUrl + "check/datarestorePreCheck");
 			return Res.save(databackupConfig).$promise;
-		},		
-
+		},	
 	};
 });
 

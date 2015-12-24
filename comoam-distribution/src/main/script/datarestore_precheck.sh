@@ -12,8 +12,9 @@
 ################################################################################
 
 local_restore_dir=$1
-filename=$2
-remote_restore_dir=$3
+hostname=$2
+filename=$3
+remote_restore_dir=$4
 
 ################################################################################
 # Check Function
@@ -21,13 +22,12 @@ remote_restore_dir=$3
 datarestore_file_exist() {
     Restore_File_Dir=$1
     File_name=$2
-    
-    ls ${Restore_File_Dir} | grep ^.*${File_name}$ > /dev/null
-    if [ $? -eq 0 ]; then
-    	return 0
-    else 
-        return 1    
+
+    ls ${Restore_File_Dir} | grep ^${hostname}.*${File_name}$ > /dev/null
+    if [ ! $? -eq 0 ]; then
+        return 1
     fi
+
 }
 
 mount_2_server() {
@@ -45,12 +45,13 @@ umount_2_server() {
 ######################################################################
 restore_precheck() {
     datarestore_file_exist ${local_restore_dir} ${filename}
-    if [ $? -eq 0 ];then
-        echo "Success"
-    else
+    if [ ! $? -eq 0 ];then
         echo "Error: No data backup files exist, data restore is prohibited."
+    else
+        echo "Success"
     fi
 }
+
 #######################################################################
 # Program Start
 #######################################################################

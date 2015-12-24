@@ -58,7 +58,7 @@
 									<div class="form-group">
 										<label class="control-label" translate="HOST_IP">Host IP</label> <select
 											name="host_ip" ng-model="installConfig.active_host_ip"
-											class="form-control" ng-click="check_VT()"
+											class="form-control" ng-blur="check_VT()"
 											ng-options="host.ip_address as host.name for host in hostIPs"
 											title="Host IP" validation="required" >
 											<option value="" translate="PLEASE_SELECT">--Please Select--</option> 

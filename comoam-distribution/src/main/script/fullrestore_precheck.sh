@@ -54,7 +54,6 @@ fullrestore_file_exist() {
     done
 }
 
-
 mount_2_server() {
     Remote_IP_DIR=$1
     Mount_point=$2
@@ -72,11 +71,11 @@ umount_2_server() {
 restore_precheck() {
     fullrestore_dir_exist ${local_restore_dir}
     if [ $? -eq 1 ];then
-        echo "Error: No full backup files exist, full restore is prohibited."
+        echo "Error: Files are missing. Full restore cannot be performed.."
     else
         fullrestore_file_exist ${local_restore_dir}
         if [ $? -eq 1 ];then
-            echo "Error: No full backup files exist, full restore is prohibited."
+            echo "Error: Files are missing. Full restore cannot be performed.."
         else
             echo "Success"
         fi

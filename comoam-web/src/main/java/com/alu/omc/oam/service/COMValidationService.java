@@ -20,7 +20,9 @@ import com.jcraft.jsch.JSchException;
 import com.jcraft.jsch.Session;
 @Service
 public class COMValidationService {
-	
+	private final String SOURCE = "/opt/PlexView/ELCM/script/";
+	private final String DESTINATION =	"/tmp/";
+ 
 	@Resource
     private  CommandProtype commandProtype;
 	private String username = "root";
@@ -209,10 +211,31 @@ public class COMValidationService {
     	}
     } 
     
+    public String cpuVTCheck(String hostip){
+    	String checkRes = "";
+    	String source = SOURCE;
+    	String destination = DESTINATION; 
+    	if(Host.isLocalHost(hostip)){
+    		String script = source+"check_VT_enable.sh";
+    		ICommandExec comamnda = commandProtype.create(script);
+    		try{
+    	        CommandResult res = comamnda.execute();
+    	        checkRes = res.getOutputString();
+            }catch(Exception e){
+            	e.printStackTrace();
+            }
+    	}else{
+    		//cyFiles2Server(source,destination,"check_VT_enable.sh");
+    		String script = destination+"check_VT_enable.sh";
+    		checkRes = excuteShell(script);		
+    	}
+    	return checkRes;
+    } 
+    
     public String fullbackupPreCheck(String hostip,String local_backup_dir,String remoteip,String remotedir){
     	String checkRes = "";
-    	String source = "/opt/PlexView/ELCM/script/";
-    	String destination = "/tmp/"; 
+    	String source = SOURCE;
+    	String destination = DESTINATION; 
 		String remote_backup_dir = remoteip == ""?"":remoteip + ":" + remotedir;
     	if(Host.isLocalHost(hostip)){
     		String script = source+"fullbackup_precheck.sh";
@@ -233,8 +256,8 @@ public class COMValidationService {
     
     public String fullrestorePreCheck(String hostip,String local_backup_dir,String hostname,String remoteip,String remotedir){
     	String checkRes = "";
-    	String source = "/opt/PlexView/ELCM/script/";
-    	String destination = "/tmp/"; 
+    	String source = SOURCE;
+    	String destination = DESTINATION; 
     	String remote_backup_dir = remoteip == ""?"":remoteip + ":" + remotedir;
 		if(Host.isLocalHost(hostip)){
     		String script = source+"fullrestore_precheck.sh";
@@ -255,8 +278,8 @@ public class COMValidationService {
     
     public String databackupPreCheck(String localdir,String filename,String remoteip,String remotedir){
     	String checkRes = "";
-    	String source = "/opt/PlexView/ELCM/script/";
-    	String destination = "/tmp/";   
+    	String source = SOURCE;
+    	String destination = DESTINATION;   
     	cyFiles2Server(source,destination,"databackup_precheck.sh");
     	String script = destination+"databackup_precheck.sh";
     	String local_backup_dir = localdir;
@@ -272,17 +295,17 @@ public class COMValidationService {
     	return checkRes;
     }
     
-    public String datarestorePreCheck(String localdir,String filename,String remoteip,String remotedir){
+    public String datarestorePreCheck(String localdir,String filename,String hostname,String remoteip,String remotedir){
     	String checkRes = "";
-    	String source = "/opt/PlexView/ELCM/script/";
-    	String destination = "/tmp/";   	
+    	String source = SOURCE;
+    	String destination = DESTINATION;   	
     	cyFiles2Server(source,destination,"datarestore_precheck.sh");
     	String script = destination+"datarestore_precheck.sh";
     	String local_backup_dir = localdir;
     	String remote_backup_dir = remoteip == ""?"":remoteip + ":" + remotedir;
     	try {
     		opFirewall("service iptables stop");
-    		checkRes = excuteShell(script+" "+local_backup_dir+" "+filename+" "+remote_backup_dir);
+    		checkRes = excuteShell(script+" "+local_backup_dir+" "+hostname+" "+filename+" "+remote_backup_dir);
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
