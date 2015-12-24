@@ -104,7 +104,7 @@
 		<dependency>
 			<groupId>org.pacesys</groupId>
 			<artifactId>openstack4j</artifactId>
-			<version>2.0.4-COM</version>
+			<version>2.0.6</version>
 			<classifier>withdeps</classifier>
 			<exclusions>
 				<exclusion>  <!-- declare the exclusion here -->
