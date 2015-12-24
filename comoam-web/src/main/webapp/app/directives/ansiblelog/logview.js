@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('monitor').directive( 'ansiblelog', function($log, WizardHandler, websocketService, monitorService) {
+angular.module('monitor').directive( 'ansiblelog', function($log, WizardHandler, websocketService, monitorService, $modal) {
 					return {
 						restrict : 'EA',
 						replace : true,
@@ -9,7 +9,7 @@ angular.module('monitor').directive( 'ansiblelog', function($log, WizardHandler,
 							channel: '=',
 							endponit: '@'
 						},
-						controller : [ '$scope', '$element', '$log', 'WizardHandler', 'websocketService', 'monitorService', function($scope, $element, $log, WizardHandler, websocketService, monitorService) {
+						controller : [ '$scope', '$element', '$log', 'WizardHandler', 'websocketService', 'monitorService','$modal', function($scope, $element, $log, WizardHandler, websocketService, monitorService) {
 									var taskgroup = new Array();
 									$scope.nologshow = true;
 									$scope.loadingshow = true;
@@ -28,16 +28,44 @@ angular.module('monitor').directive( 'ansiblelog', function($log, WizardHandler,
 														monitorService.runAnsibleTask();	
 												});
 									};
-									$scope.errorHandle = function(){
-										
+									$scope.genErrorHandler = function(handlerInfo){
+										$scope.callhandler = monitorService.getHandler(handlerInfo);
+										$scope.message = $scope.callhandler.message;
+									};
+									$scope.confirmHandler = function (){
+										var modalInstance = $modal.open({
+											animation: true,
+											backdrop:'static',
+											templateUrl: 'views/common/handlerErrorConfirm.html',
+											controller: function($scope, $modalInstance, message ){
+													$scope.message = message;
+													$scope.ok = function(){
+															$modalInstance.close(true);
+													};
+													$scope.cancel = function () {
+														$modalInstance.dismiss('cancel');
+													};
+											},
+											resolve: {
+												message: function() {
+													return $scope.message;
+												}
+											},   
+										});	
+										modalInstance.result.then(function (res) {
+										    $scope.result = res;
+										    if($scope.result == true){
+					    						$scope.callhandler();
+					    					}
+										}, function () {
+										});
 									};
 									$scope.showlog = function(data) {
 										var tasks = $('#tasks');
 										var task = $('#task');
 										var loadpos = $('#loadpos');
-										//$log.info(data);
 										var log = JSON3.parse(data.body);
-										if (log.result != ''){
+										if (log.result){
 											if (log.result == "succeed") {
 												$scope.$apply(function() {
 													$scope.loadingshow = false;
@@ -53,6 +81,9 @@ angular.module('monitor').directive( 'ansiblelog', function($log, WizardHandler,
 												});
 											}
 											$scope.$apply(function() {
+												if(!log.result){
+													return;
+												}
 												$scope.result = log.result;
 												if(log.result == 'succeed'){
 													$scope.issucceed = true;
@@ -106,6 +137,11 @@ angular.module('monitor').directive( 'ansiblelog', function($log, WizardHandler,
 										var logviewer = $('#logviewer');
 										logviewer.append(log.logMsg + "<br>");
 										logviewer.scrollTop(logviewer[0].scrollHeight - logviewer.height());
+										//$log.info(log);
+										if(log.handleAction){
+											$scope.error_handler_message = monitorService.getHandlerLabel(log);
+											$scope.genErrorHandler(log);
+										}
 									};
 									if ($scope.channel != null && $scope.channel!=''){
 										$scope.logtail();

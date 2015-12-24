@@ -41,6 +41,7 @@
 					<div  class="alert alert-warning"  ng-show="isfailed" >
 					    <a href="javascirpt:void(0)" class="close" data-dismiss="alert" aria-label="close">&times;</a>
                          <strong>Failed!</strong> {{result_message}}
+                         <br><a ng-show = "error_handler_message" href="javascript:void(0)" ng-click="confirmHandler()">{{ error_handler_message }}</a>
 					</div>
 					</div>
 					</div>

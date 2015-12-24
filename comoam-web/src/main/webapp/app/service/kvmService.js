@@ -61,7 +61,7 @@ angular.module('kvm').factory('KVMService', function($location, $q, $resource, $
 			return lockedHostRes.get({"stackName":comStack}).$promise;
 		},
 		upgrade:function(config, enable_full_backup){
-			var upgradeRes = enable_full_backup?$resource(restUrl + "rest/kvm/upgrade") : $resource(restUrl + "rest/kvm/upgradefullbackup");
+			var upgradeRes = enable_full_backup?$resource(restUrl + "rest/kvm/upgradefullbackup") : $resource(restUrl + "rest/kvm/upgrade");
 			return upgradeRes.save(config).$promise;
 		},
 		chHostname:function(config){

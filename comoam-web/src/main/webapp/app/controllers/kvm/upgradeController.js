@@ -91,7 +91,7 @@ angular.module('kvm').controller('upgradectr', function($scope, $filter,  $log, 
    
 	$scope.doUpgrade = function (){
 		KVMService.upgrade($scope.cl_installConfig, $scope.enable_full_backup).then( function(){
-            monitorService.monitor("KVM", "UPGRADE", $scope.cl_installConfig.comType, $scope.cl_installConfig.deployment_prefix);
+            monitorService.monitor("KVM", $scope.enable_full_backup?"UPGRADE_FULLBACKUP":"UPGRADE", $scope.cl_installConfig.comType, $scope.cl_installConfig.deployment_prefix);
      		$state.go("dashboard.monitor");
 		});
     };

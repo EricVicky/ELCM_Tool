@@ -13,12 +13,10 @@ public class UpgradeFullBackupConfig<T extends COMConfig> extends COMConfig
 {
 
 
-	public String stackName;
 	private String full_backup_dir = "/fullbackup";
 	private String remote_server_dir  = "";  
 	private String remote_server_ip = "";
 	private T config;
-	@Resource
     
 	public String getFull_backup_dir() {
 		return full_backup_dir;
@@ -39,7 +37,6 @@ public class UpgradeFullBackupConfig<T extends COMConfig> extends COMConfig
 		this.remote_server_ip = remote_server_ip;
 	}
 
-    @JsonIgnore
 	public T getConfig() {
 		return config;
 	}
@@ -83,12 +80,6 @@ public class UpgradeFullBackupConfig<T extends COMConfig> extends COMConfig
     @Override
     public String getStackName()
     {
-        return this.stackName;
+        return config.getStackName() ;
     }
-
-    public void setStackName(String stackName)
-    {
-        this.stackName = stackName;
-    }
-
 }

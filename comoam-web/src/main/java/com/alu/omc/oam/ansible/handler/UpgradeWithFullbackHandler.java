@@ -8,8 +8,12 @@ import org.springframework.stereotype.Component;
 
 import com.alu.omc.oam.config.Action;
 import com.alu.omc.oam.config.ActionResult;
+import com.alu.omc.oam.config.COMConfig;
 import com.alu.omc.oam.config.COMStack;
+import com.alu.omc.oam.config.KVMCOMConfig;
+import com.alu.omc.oam.config.UpgradeFullBackupConfig;
 import com.alu.omc.oam.log.ParseResult;
+import com.alu.omc.oam.log.TaskErrorHandler;
 
 
 @Component("UPGRADE_FULLBACKUP_KVM_HANDLER")
@@ -32,25 +36,40 @@ public class UpgradeWithFullbackHandler extends DefaultHandler
     public void onSucceed()
     {
        log.info("upgrade on KVM succeed");
-        COMStack stack = new COMStack(config);
+        COMStack stack = new COMStack(((UpgradeFullBackupConfig<KVMCOMConfig>)config).getConfig());
         service.update(stack);
-        
     }
     @Override
     public void onError()
     {
         log.error("upgrade on KVM failed");
+        sendErrorHandler();
     }
+
+    private void sendErrorHandler()
+    {
+        //send error handler to client
+        if(destroyed){ // allow user to do full restore if failed after destroy step 
+           sender.send(getFulltopic(), new TaskErrorHandler<COMConfig>(Action.FULLRESTORE, this.getConfig().getEnvironment(), this.getConfig()));
+        }else if(this.full_backup_done){// allow user to do start COM
+            sender.send(getFulltopic(), new TaskErrorHandler<COMConfig>(Action.HEALING, this.getConfig().getEnvironment(), this.getConfig()));
+            this.setSucceed(false);
+        }
+    }
+    
+   
     
     public void Parse(String log) {
         ParseResult pr = logParser.parse(log);
+        sender.send(getFulltopic(), pr);
+        if(pr.getStep() == null)
+            return;
         if(pr.getStep().equalsIgnoreCase(UPGRAGE_DONE_KEYWORD)){
             full_backup_done = true;
         }else{
             pr.getStep().equalsIgnoreCase(DESTROY_START_KEYWORD);
             destroyed = true;
         }
-        sender.send(getFulltopic(), pr);
     }
     
     
