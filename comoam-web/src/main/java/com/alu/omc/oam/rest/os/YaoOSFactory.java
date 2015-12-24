@@ -19,7 +19,7 @@ public abstract class YaoOSFactory {
      * @return the OSCLient
      */
     public static OSClient clientFromAccess(YaoAccess access, Facing perspective) {
-        return OSClientSession.createSession((KeystoneAccess) access.getAccess(), perspective, null);
+        return OSClientSession.createSession((KeystoneAccess) access.getAccess(), perspective, null, null);
     }
     
 }
