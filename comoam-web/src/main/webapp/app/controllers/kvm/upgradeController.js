@@ -27,8 +27,6 @@ angular.module('kvm').controller('upgradectr', function($scope, $filter,  $log, 
 			SOFTWARE_SERVER_IS_LOCAL:'YES',
 			OMCCN_SUPPORT_3GPP:'true',
 			OMCCN_SUPPORT_SNMP_N_ITF:'true',
-			OMCCN_SUPPORT_GSST:'false',
-			OMCCN_SUPPORT_NETRA:'false',
 			OMCCN_SUPPORT_NE_TYPES:'all',
 			INSTALL_ETHEREAL:'YES'
 

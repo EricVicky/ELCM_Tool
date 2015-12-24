@@ -49,8 +49,6 @@ angular.module('os').controller('ovmqosacupgradectr', function($scope, $filter, 
 			SOFTWARE_SERVER_IS_LOCAL:'YES',
 			OMCCN_SUPPORT_3GPP:'true',
 			OMCCN_SUPPORT_SNMP_N_ITF:'true',
-			OMCCN_SUPPORT_GSST:'false',
-			OMCCN_SUPPORT_NETRA:'false',
 			INSTALL_ETHEREAL:'YES'
 
 	};
