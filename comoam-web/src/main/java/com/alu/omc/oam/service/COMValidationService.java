@@ -201,6 +201,7 @@ public class COMValidationService {
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////    
     
     public boolean checkIfCOMProcessUp(String ip){
+    	this.ip = ip;
     	String resutlCheckCOM = excuteShell("CheckCOM");
     	System.out.println("" + resutlCheckCOM);
     	//String resultCheckInstallLog = excuteShell("/install/scripts/checkInstallLog.sh");
