@@ -2,11 +2,11 @@ package com.alu.omc.oam.util;
 
 import java.io.File;
 import java.io.IOException;
-import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.alu.omc.oam.config.KVMCOMConfig;
 import com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility;
 import com.fasterxml.jackson.annotation.PropertyAccessor;
 import com.fasterxml.jackson.core.JsonGenerationException;
@@ -35,7 +35,8 @@ public class Json2Object<T>
          try
         {
              Type[] parameterizedTypes = ReflectionUtil.getParameterizedTypes(this);
-             Class<T> clazz = (Class<T>)ReflectionUtil.getClass(parameterizedTypes[0]);
+             @SuppressWarnings("unchecked")
+            Class<T> clazz = (Class<T>)ReflectionUtil.getClass(parameterizedTypes[0]);
              obj = (T)new ObjectMapper().readValue(json, clazz);
              return obj;
            
@@ -47,7 +48,7 @@ public class Json2Object<T>
         }
          return obj;
     }
-    
+
     
     
      public static String  object2Json( Object obj)
