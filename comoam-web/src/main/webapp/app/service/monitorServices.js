@@ -1,10 +1,11 @@
 'use strict';
 
-angular.module('monitor').factory('monitorService', function($log, $location, $resource) {
+angular.module('monitor').factory('monitorService', function($log, $location, $resource, $state) {
 	var stepsDict= {
 			"KVM" : {
 				"install" :["Start", "Generate Config Driver", "Start VM Instance", "Prepare Install Options",  "Finished"],
 				"upgrade": ["Start", "Data Backup", "Prepare Virtual Machines", "Post Image Replacement", "COM Upgrade","Data Restore", "Finished"],
+				"upgrade_fullbackup": ["Start", "Full Backup", "Start Upgrade", "Prepare Virtual Machines", "Destroy VM","Post Image Replacement", "Data Restore", "Finished"],
 				 "backup":["Start","Data Backup","Finished"],
 				 "fullbackup":["Start","Full Backup","Finished"],
 				 "fullrestore":["Start","Full Restore","Finished"],
@@ -68,6 +69,10 @@ angular.module('monitor').factory('monitorService', function($log, $location, $r
 				"succeed" : "Upgrade Completed",
 				"failed": "Upgrade Failed"
 			},
+			"upgrade_fullbackup":{
+				"succeed" : "Upgrade Completed",
+				"failed": "Upgrade Failed"
+			},
 			"backup":{
 				"succeed" : "Backup Completed",
 				"failed": "Backup Failed"
@@ -104,13 +109,34 @@ angular.module('monitor').factory('monitorService', function($log, $location, $r
 				"succeed" : "Change Hostname completed!",
 				"failed": "Change Hostname failed"
 			}
-	}
+	};
+	var baseUrl = $location.absUrl().split("#", 1)[0];
+	var restUrl = baseUrl;
 	var environment;
 	var action;
 	var channel;
 	var topicPrefix= "/log/tail/";
 	var baseUrl = $location.absUrl().split("#", 1)[0];
 	var restUrl = baseUrl;
+	var errorHandlerMap = {
+			"KVM":{
+				"fullrestore" :{
+					"handler": function(fullrestoreconfig){
+								var handlerFunc = function(){
+									action = "fullrestore";
+									$state.reload();
+									var healingRes = $resource(restUrl + "rest/kvm/fullrestore");
+									healingRes.save(fullrestoreconfig).$promise.then(function(){
+										$log.info("request fullback=" + fullrestoreconfig);
+									});
+								}
+                                handlerFunc.message = "Are you to roll back from snapshot under " + fullrestoreconfig.config.vm_img_dir + "?";
+                                return handlerFunc;
+					},
+					"label" : "Roll back"
+				} 
+			}
+	};
 	return {
 		monitorKVMInstall: function(ch) {
 			environment = "KVM";
@@ -279,6 +305,13 @@ angular.module('monitor').factory('monitorService', function($log, $location, $r
 		},
 		getEndMsg: function(res){
 			return endMsg[action][res];
+		},
+		getHandler: function(handlerInfo){
+			var handlerFact = errorHandlerMap[handlerInfo.env][handlerInfo.handleAction.toLowerCase()].handler;
+			return handlerFact(handlerInfo.config);
+		},
+		getHandlerLabel: function(handlerInfo){
+			return errorHandlerMap[handlerInfo.env][handlerInfo.handleAction.toLowerCase()].label;
 		}
 	};
 });

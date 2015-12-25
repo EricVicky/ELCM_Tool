@@ -1,31 +1,22 @@
 package com.alu.omc.oam.service;
 
-import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.io.OutputStream;
-import java.util.ArrayList;
-import java.util.List;
 
 import javax.annotation.Resource;
 
-import com.alu.omc.oam.ansible.exception.AnsibleException;
+import org.apache.commons.lang3.SystemUtils;
+import org.springframework.stereotype.Service;
+
 import com.alu.omc.oam.kvm.model.Host;
 import com.alu.omc.oam.util.CommandProtype;
 import com.alu.omc.oam.util.CommandResult;
 import com.alu.omc.oam.util.ICommandExec;
-
-import org.apache.commons.exec.ExecuteException;
-import org.apache.commons.exec.ExecuteResultHandler;
-import org.apache.commons.lang3.SystemUtils;
-import org.springframework.stereotype.Service;
-
 import com.jcraft.jsch.Channel;
 import com.jcraft.jsch.ChannelSftp;
 import com.jcraft.jsch.JSch;
 import com.jcraft.jsch.JSchException;
-import com.jcraft.jsch.ChannelExec;  
 import com.jcraft.jsch.Session;
 @Service
 public class COMValidationService {
@@ -322,16 +313,5 @@ public class COMValidationService {
 		}
     	return checkRes;
     }
-    
-/*	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-		COMValidationService sessionToCOM = new COMValidationService();
-		sessionToCOM.setoamip("10.223.1.85");
-		sessionToCOM.setUserName("root");
-		sessionToCOM.setpassword("newsys");
-        boolean syl = sessionToCOM.checkCOM();
-		System.out.println("" + syl);
-
-	}*/
 
 }

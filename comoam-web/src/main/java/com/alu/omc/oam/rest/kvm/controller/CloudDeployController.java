@@ -38,6 +38,7 @@ import com.alu.omc.oam.config.OSCOMConfig;
 import com.alu.omc.oam.config.OperationLog;
 import com.alu.omc.oam.config.QosacCOMConfig;
 import com.alu.omc.oam.config.QosacOSCOMConfig;
+import com.alu.omc.oam.config.UpgradeFullBackupConfig;
 import com.alu.omc.oam.config.VMConfig;
 import com.alu.omc.oam.kvm.model.Host;
 import com.alu.omc.oam.service.COMStackService;
@@ -223,6 +224,22 @@ public class CloudDeployController
           config = curConfig;
         }
         ansibleDelegator.addAnsibleTask(Action.UPGRADE, config );
+    }
+    
+    
+    @RequestMapping(value="/kvm/upgradefullbackup", method=RequestMethod.POST)
+    public void upgradeWithFullBackup( @RequestBody KVMCOMConfig config) throws IOException, InterruptedException
+    {
+       //the request is from jmeter
+       if(config.getVm_config() == null){
+          KVMCOMConfig curConfig = getKVMCOMConfig(config.getStackName());
+          curConfig.setOam_cm_image(config.getOam_cm_image());
+          curConfig.setDb_image(config.getDb_image());
+          config = curConfig;
+        }
+       UpgradeFullBackupConfig<KVMCOMConfig> upgradeFullBackConfig = new UpgradeFullBackupConfig<KVMCOMConfig>();
+       upgradeFullBackConfig.setConfig(config);
+       ansibleDelegator.addAnsibleTask(Action.UPGRADE_FULLBACKUP, upgradeFullBackConfig );
     }
     
     @RequestMapping(value="/kvm/chhostname", method=RequestMethod.POST)

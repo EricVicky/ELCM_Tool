@@ -96,7 +96,8 @@ public class MockCommandExec implements ICommandExec {
                     log.error("failed excute the mock command", e);
                     handler.onProcessFailed(new ExecuteException("failed to call ansible" ,1));
                 }
-                handler.onProcessComplete(0);
+                //handler.onProcessComplete(0);
+                handler.onProcessFailed(new ExecuteException("faile to excute", 1));
             }
         }).start();
         
