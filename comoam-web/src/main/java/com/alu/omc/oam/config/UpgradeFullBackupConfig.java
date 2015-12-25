@@ -1,8 +1,5 @@
 package com.alu.omc.oam.config;
 
-
-import javax.annotation.Resource;
-
 import org.yaml.snakeyaml.Yaml;
 
 import com.alu.omc.oam.ansible.Inventory;
@@ -13,7 +10,7 @@ public class UpgradeFullBackupConfig<T extends COMConfig> extends COMConfig
 {
 
 
-	private String full_backup_dir = "/fullbackup";
+	private String full_backup_dir = "";
 	private String remote_server_dir  = "";  
 	private String remote_server_ip = "";
 	private T config;
