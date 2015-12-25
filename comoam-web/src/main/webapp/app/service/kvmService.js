@@ -62,7 +62,7 @@ angular.module('kvm').factory('KVMService', function($location, $q, $resource, $
 		},
 		upgrade:function(config, enable_full_backup){
 			if(enable_full_backup){
-				var upgradeconfig = {"full_backup_dir":  upgradeconfig.vm_img_dir + "/" + upgradeconfig.deployment_prefix };
+				var upgradeconfig = {"full_backup_dir":  config.vm_img_dir + "/" + config.deployment_prefix };
 				upgradeconfig.config = config;
                 return $resource(restUrl + "rest/kvm/upgradefullbackup").save(upgradeconfig).$promise;
 			}else{
