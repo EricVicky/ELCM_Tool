@@ -151,7 +151,7 @@ public class CheckController
             return new ValidationResult(false, "failed");
         }
         String comsStackStr = comStack.getComConfig();
-        KVMCOMConfig comConfig = new Json2Object<KVMCOMConfig>().toMap(comsStackStr);
+        KVMCOMConfig comConfig = new Json2Object<KVMCOMConfig>(){}.toMap(comsStackStr);
         VMConfig vmConfig =  comConfig.getVm_config().get("oam");
         String ipaddress = vmConfig.getNic().get(0).getIp_v4().getIpaddress();
         boolean processUp = cOMValidationService.checkIfCOMProcessUp(ipaddress);
