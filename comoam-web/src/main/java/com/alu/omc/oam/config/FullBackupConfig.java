@@ -1,12 +1,9 @@
 package com.alu.omc.oam.config;
 
 
-import javax.annotation.Resource;
-
 import org.yaml.snakeyaml.Yaml;
 
 import com.alu.omc.oam.ansible.Inventory;
-import com.alu.omc.oam.service.COMStackService;
 import com.alu.omc.oam.util.YamlFormatterUtil;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -16,12 +13,20 @@ public class FullBackupConfig<T extends COMConfig> extends COMConfig
 
 	public String stackName;
 	private String full_backup_dir = "";
-	private String remote_server_dir  = "";  
+
+    private String remote_server_dir  = "";  
 	private String remote_server_ip = "";
+	private boolean fast_mode = false;
 	private T config;
-	@Resource
-	COMStackService cOMStackService;
     
+	public boolean getFast_mode()
+	{
+	    return fast_mode;
+	}
+	public void setFast_mode(boolean fast_mode)
+	{
+	    this.fast_mode = fast_mode;
+	}
 	public String getFull_backup_dir() {
 		return full_backup_dir;
 	}

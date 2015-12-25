@@ -67,6 +67,7 @@ public class PlaybookFactory
         playbooks.put(key(Environment.KVM, Action.FULLBACKUP, COMType.QOSAC), new Playbook("data_full_backup.yml") );
         playbooks.put(key(Environment.KVM, Action.FULLRESTORE, COMType.QOSAC), new Playbook("data_full_restore.yml") );
         playbooks.put(key(Environment.KVM, Action.UPGRADE_FULLBACKUP), new Playbook("upgrade_with_fullbackup.yml") );
+        playbooks.put(key(Environment.KVM, Action.HEALING), new Playbook("healing.yml") );
     }
 
     public Playbook getPlaybook(Action action, COMFact fact) {

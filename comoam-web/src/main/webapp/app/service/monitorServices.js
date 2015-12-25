@@ -14,7 +14,8 @@ angular.module('monitor').factory('monitorService', function($log, $location, $r
 				 "gr_pri_install":["Start","Pri GR Install","Finished"],
 				 "gr_sec_install":["Start","Sec GR Install","Finished"],
 				 "gr_uninstall":["Start","GR Uninstall","Finished"],
-				 "chhostname":["Start","Changing Hostname","Finished"]
+				 "chhostname":["Start","Changing Hostname","Finished"],
+	              "healing": ["Start", "Start VM", "Start COM", "Finished"]
 			},
 			"Openstack" :{
 				"install" : ["Start", "Valiadtion Key", "Generate Heat Templates",  "Check Presence of Heat Stack", "Cloud Init",  "Start COM", "Finished"],
@@ -108,6 +109,11 @@ angular.module('monitor').factory('monitorService', function($log, $location, $r
 			"chhostname":{
 				"succeed" : "Change Hostname completed!",
 				"failed": "Change Hostname failed"
+			},
+			"healing":{
+				"succeed" : "COM is running",
+				"failed": "Unable to start COM"
+				
 			}
 	};
 	var baseUrl = $location.absUrl().split("#", 1)[0];
@@ -125,6 +131,7 @@ angular.module('monitor').factory('monitorService', function($log, $location, $r
 								var handlerFunc = function(){
 									action = "fullrestore";
 									$state.reload();
+									fullrestoreconfig.fast_mode = true;
 									var healingRes = $resource(restUrl + "rest/kvm/fullrestore");
 									healingRes.save(fullrestoreconfig).$promise.then(function(){
 										$log.info("request fullback=" + fullrestoreconfig);
@@ -134,7 +141,22 @@ angular.module('monitor').factory('monitorService', function($log, $location, $r
                                 return handlerFunc;
 					},
 					"label" : "Roll back"
-				} 
+				},
+				"healing":{
+					"handler": function(config){
+								var handlerFunc = function(){
+									action = "healing";
+									$state.reload();
+									var healingRes = $resource(restUrl + "rest/kvm/healing");
+									healingRes.save(fullrestoreconfig).$promise.then(function(){
+										$log.info("request healing=" + config);
+									});
+								}
+                                handlerFunc.message = "Start " + config.comType + " VNF " + config.deployment_prefix + "?";
+                                return handlerFunc;
+					},
+					"label": "Healing"
+				}
 			}
 	};
 	return {

@@ -52,7 +52,9 @@ public class UpgradeWithFullbackHandler extends DefaultHandler
         if(destroyed){ // allow user to do full restore if failed after destroy step 
            sender.send(getFulltopic(), new TaskErrorHandler<COMConfig>(Action.FULLRESTORE, this.getConfig().getEnvironment(), this.getConfig()));
         }else if(this.full_backup_done){// allow user to do start COM
-            sender.send(getFulltopic(), new TaskErrorHandler<COMConfig>(Action.HEALING, this.getConfig().getEnvironment(), this.getConfig()));
+            @SuppressWarnings("unchecked")
+            UpgradeFullBackupConfig<KVMCOMConfig> upconfig =  (UpgradeFullBackupConfig<KVMCOMConfig>)this.getConfig();
+            sender.send(getFulltopic(), new TaskErrorHandler<KVMCOMConfig>(Action.HEALING, this.getConfig().getEnvironment(), upconfig.getConfig()));
             this.setSucceed(false);
         }
     }
@@ -66,9 +68,8 @@ public class UpgradeWithFullbackHandler extends DefaultHandler
             return;
         if(pr.getStep().equalsIgnoreCase(UPGRAGE_DONE_KEYWORD)){
             full_backup_done = true;
-        }else{
-            pr.getStep().equalsIgnoreCase(DESTROY_START_KEYWORD);
-            destroyed = true;
+        }else if( pr.getStep().equalsIgnoreCase(DESTROY_START_KEYWORD)){
+            //destroyed = true;
         }
     }
     

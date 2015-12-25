@@ -77,6 +77,13 @@ public class CloudDeployController
         encryPassword(config);
     }
     
+    @RequestMapping(value="/kvm/healing", method=RequestMethod.POST)
+    public void healing( @RequestBody KVMCOMConfig config) throws IOException, InterruptedException
+    {
+        ansibleDelegator.addAnsibleTask(Action.HEALING, config );
+        encryPassword(config);
+    }
+    
     private void encryPassword(EncryPassword ep){ 
         ep.setRoot_password(EncryptUtils.encryptPasswd(ep.getRoot_password()));
         ep.setAxadmin_password(EncryptUtils.encryptPasswd(ep.getAxadmin_password()));

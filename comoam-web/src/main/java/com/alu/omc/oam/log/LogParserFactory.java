@@ -67,6 +67,7 @@ public class LogParserFactory
         parserCache.put(new ActionKey(Action.FULLBACKUP, Environment.KVM, COMType.QOSAC), kvmfullqosacBackupParser());
         parserCache.put(new ActionKey(Action.FULLRESTORE, Environment.KVM, COMType.QOSAC), kvmfullqosacRestoreParser());
         parserCache.put(new ActionKey(Action.UPGRADE_FULLBACKUP, Environment.KVM), kvmUpgradeFullbackParser());
+        parserCache.put(new ActionKey(Action.HEALING, Environment.KVM), kvmHealingParser());
     }
     
     private ILogParser kvmfullqosacBackupParser() {
@@ -296,6 +297,15 @@ public class LogParserFactory
         dict.put("ansible-playbook", "Start");
         return new LogParser(dict);
     }    
+    private ILogParser kvmHealingParser(){
+        Map<String, String> dict = new LinkedHashMap<String, String>();
+        dict.put("TASK\\:\\s\\[Reboot\\sserver\\]", "Finished");
+        dict.put("PLAY\\s\\[stop\\sCOM\\]", "Start COM");
+        dict.put("PLAY\\s\\[backup\\scom\\sdata\\]", "Start VM");
+        dict.put("ansible-playbook", "Start");
+        return new LogParser(dict);
+    }    
+     
     private ILogParser osUpgradeParser(){
         Map<String, String> dict = new LinkedHashMap<String, String>();
         dict.put("TASK\\:\\s\\[Reboot\\sserver\\]", "Finished");
