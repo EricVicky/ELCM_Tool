@@ -292,15 +292,15 @@ public class LogParserFactory
         dict.put("TASK\\:\\s\\[vnf\\_create\\_vms\\s\\|\\scopy\\sqcow2\\sdisk\\simage\\]", "Post Image Replacement");
         dict.put("TASK\\:\\s\\[vnf\\_delete\\_vms\\s\\|\\sdestroy\\svirtual\\smachine\\]", "Destroy VM");
         dict.put("TASK\\:\\s\\[vnf\\_prepare\\_vms\\s\\|\\screate\\sdata\\sdirectory\\sfor\\svirtual\\smachine\\]","Prepare Virtual Machines");
-        dict.put("PLAY\\s\\[stop\\sCOM\\]", "Full Backup");
+        dict.put("TASK\\:\\s\\[failed\\sif\\sGR\\sinstalled\\]", "Full Backup");
         dict.put("ansible-playbook", "Start");
         return new LogParser(dict);
     }    
     private ILogParser kvmHealingParser(){
         Map<String, String> dict = new LinkedHashMap<String, String>();
-        dict.put("TASK\\:\\s\\[Reboot\\sserver\\]", "Finished");
-        dict.put("PLAY\\s\\[stop\\sCOM\\]", "Start COM");
-        dict.put("PLAY\\s\\[backup\\scom\\sdata\\]", "Start VM");
+        dict.put("PLAY\\sRECAP", "Finished");
+        dict.put("TASK\\:\\s\\[start\\_com\\s\\|\\sstart\\scom\\sapplication\\]", "Start COM");
+        dict.put("TASK\\:\\s\\[vnf\\_start\\_vms\\s\\|\\sstart\\svirtual\\smachine\\]", "Start VM");
         dict.put("ansible-playbook", "Start");
         return new LogParser(dict);
     }    
