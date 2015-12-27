@@ -69,7 +69,7 @@ public class UpgradeWithFullbackHandler extends DefaultHandler
         if(pr.getStep().equalsIgnoreCase(UPGRAGE_DONE_KEYWORD)){
             full_backup_done = true;
         }else if( pr.getStep().equalsIgnoreCase(DESTROY_START_KEYWORD)){
-            //destroyed = true;
+            destroyed = true;
         }
     }
     

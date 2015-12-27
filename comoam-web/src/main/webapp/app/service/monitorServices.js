@@ -148,7 +148,7 @@ angular.module('monitor').factory('monitorService', function($log, $location, $r
 									action = "healing";
 									$state.reload();
 									var healingRes = $resource(restUrl + "rest/kvm/healing");
-									healingRes.save(fullrestoreconfig).$promise.then(function(){
+									healingRes.save(config).$promise.then(function(){
 										$log.info("request healing=" + config);
 									});
 								}
