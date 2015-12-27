@@ -237,9 +237,6 @@ public class CloudDeployController
     @RequestMapping(value="/kvm/upgradefullbackup", method=RequestMethod.POST)
     public void upgradeWithFullBackup( @RequestBody UpgradeFullBackupConfig<KVMCOMConfig> config) throws IOException, InterruptedException
     {
-       //the request is from jmeter
-       KVMCOMConfig curConfig = getKVMCOMConfig(config.getStackName());
-       config.setConfig(curConfig);
        ansibleDelegator.addAnsibleTask(Action.UPGRADE_FULLBACKUP, config );
     }
     
