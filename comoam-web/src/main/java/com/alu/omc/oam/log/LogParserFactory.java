@@ -292,8 +292,7 @@ public class LogParserFactory
         dict.put("TASK\\:\\s\\[vnf\\_create\\_vms\\s\\|\\scopy\\sqcow2\\sdisk\\simage\\]", "Post Image Replacement");
         dict.put("TASK\\:\\s\\[vnf\\_delete\\_vms\\s\\|\\sdestroy\\svirtual\\smachine\\]", "Destroy VM");
         dict.put("TASK\\:\\s\\[vnf\\_prepare\\_vms\\s\\|\\screate\\sdata\\sdirectory\\sfor\\svirtual\\smachine\\]","Prepare Virtual Machines");
-        dict.put("PLAY\\s\\[stop\\sCOM\\]", "Start Upgrade");
-        dict.put("PLAY\\s\\[backup\\scom\\sdata\\]", "Full Backup");
+        dict.put("PLAY\\s\\[stop\\sCOM\\]", "Full Backup");
         dict.put("ansible-playbook", "Start");
         return new LogParser(dict);
     }    
