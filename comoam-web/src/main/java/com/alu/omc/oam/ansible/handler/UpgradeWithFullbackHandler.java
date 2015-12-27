@@ -20,7 +20,7 @@ import com.alu.omc.oam.log.TaskErrorHandler;
 @Scope(value = "prototype")
 public class UpgradeWithFullbackHandler extends DefaultHandler 
 {
-    final static String   UPGRAGE_DONE_KEYWORD = "Start Upgrade";
+    final static String   UPGRAGE_DONE_KEYWORD = "Full Backup";
     final static String   DESTROY_START_KEYWORD = "Destroy VM";
     boolean full_backup_done = false;
     boolean destroyed = false;
