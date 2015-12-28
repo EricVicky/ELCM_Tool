@@ -35,6 +35,7 @@
 		<tomcat.version>8.0.14</tomcat.version>
 		<install.root>/opt/PlexView/ELCM/</install.root>
 		<install.datasource>${install.root}datasource/</install.datasource>
+		<maven.tomcat.webXml>profiles/${build.env}/config/web.xml</maven.tomcat.webXml>
 	</properties>
 
 	<dependencies>
@@ -269,6 +270,7 @@
 								</resource>
 
 							</webResources>
+							 <webXml>profiles/${build.env}/config/web.xml</webXml>
 						</configuration>
 					</plugin>
 					<plugin>
