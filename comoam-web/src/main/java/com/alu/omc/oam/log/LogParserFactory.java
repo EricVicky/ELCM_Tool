@@ -288,8 +288,8 @@ public class LogParserFactory
      private ILogParser kvmUpgradeFullbackParser(){
         Map<String, String> dict = new LinkedHashMap<String, String>();
         dict.put("TASK\\:\\s\\[Reboot\\sserver\\]", "Finished");
-        dict.put("TASK\\:\\s\\[restore\\_data\\s\\|\\srestore\\sdata\\]", "Data Restore");
-        dict.put("TASK\\:\\s\\[run\\spost\\sreplace\\sscript\\,\\smay\\stake\\saround\\s20\\sminutes\\]", "COM Upgrade");
+        dict.put("TASK\\:\\s\\[tune\\smemory\\]", "Data Restore");
+        dict.put("TASK\\:\\s\\[restore\\_data\\s\\|\\srestore\\sdata\\]", "COM Upgrade");
         dict.put("TASK\\:\\s\\[vnf\\_create\\_vms\\s\\|\\scopy\\sqcow2\\sdisk\\simage\\]", "Post Image Replacement");
         dict.put("TASK\\:\\s\\[vnf\\_delete\\_vms\\s\\|\\sdestroy\\svirtual\\smachine\\]", "Destroy VM");
         dict.put("TASK\\:\\s\\[vnf\\_prepare\\_vms\\s\\|\\screate\\sdata\\sdirectory\\sfor\\svirtual\\smachine\\]","Prepare Virtual Machines");
