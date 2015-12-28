@@ -70,7 +70,8 @@ public class FullBackupConfig<T extends COMConfig> extends COMConfig
         return config.getVars()
         		+"full_backup_dir: "+YamlFormatterUtil.format(yaml.dump(this.full_backup_dir))
         		+"remote_server_dir: "+YamlFormatterUtil.format(yaml.dump(this.remote_server_dir))
-        		+"remote_server_ip: "+YamlFormatterUtil.format(yaml.dump(this.remote_server_ip));
+        		+"remote_server_ip: "+YamlFormatterUtil.format(yaml.dump(this.remote_server_ip))
+        		+"fast_mode: "+YamlFormatterUtil.format(yaml.dump(this.fast_mode));
     }
 
     @Override
