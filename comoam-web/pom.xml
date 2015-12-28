@@ -290,6 +290,7 @@
 							<server>TomcatServer</server>
 							<path>/comoam</path>
 							<contextFile>src/test/resources/context.xml</contextFile>
+							<tomcatWebXml>profiles/${build.env}/config/web.xml</tomcatWebXml>
 						</configuration>
 					</plugin>
 				</plugins>
