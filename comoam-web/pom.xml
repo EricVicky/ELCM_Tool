@@ -351,6 +351,7 @@
 									</includes>
 								</resource>
 							</webResources>
+							 <webXml>profiles/${build.env}/config/web.xml</webXml>
 						</configuration>
 					</plugin>
 					<plugin>
