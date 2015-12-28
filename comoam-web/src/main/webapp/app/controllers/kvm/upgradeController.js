@@ -35,6 +35,7 @@ angular.module('kvm').controller('upgradectr', function($scope, $filter,  $log, 
     $scope.reloadimglist = function(){
     	if($scope.com_instance != null){
     		$scope.installConfig = JSON3.parse($scope.com_instance.comConfig);
+    		$scope.loadimglist($scope.installConfig.active_host_ip, $scope.installConfig.vm_img_dir);
     		//clone
     		$scope.clone_installConfig();
             $scope.initistoption();
