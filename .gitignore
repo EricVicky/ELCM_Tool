@@ -6,3 +6,4 @@
 **/logs/*
 /.tern-project
 /*.json
+/comoam-web/src/main/webapp/app/directives/header/header.html
