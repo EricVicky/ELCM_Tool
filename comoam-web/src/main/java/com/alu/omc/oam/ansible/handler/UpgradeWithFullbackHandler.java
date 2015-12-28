@@ -10,6 +10,7 @@ import com.alu.omc.oam.config.Action;
 import com.alu.omc.oam.config.ActionResult;
 import com.alu.omc.oam.config.COMConfig;
 import com.alu.omc.oam.config.COMStack;
+import com.alu.omc.oam.config.GRUnInstallConfig;
 import com.alu.omc.oam.config.KVMCOMConfig;
 import com.alu.omc.oam.config.UpgradeFullBackupConfig;
 import com.alu.omc.oam.log.ParseResult;
@@ -20,10 +21,12 @@ import com.alu.omc.oam.log.TaskErrorHandler;
 @Scope(value = "prototype")
 public class UpgradeWithFullbackHandler extends DefaultHandler 
 {
-    final static String   UPGRAGE_DONE_KEYWORD = "Full Backup";
+    final static String   FULLBACKUP_DONE_KEYWORD = "Full Backup";
     final static String   DESTROY_START_KEYWORD = "Destroy VM";
+    final static String   GR_CHECK_KEYWORD = "Check GR Status";
     boolean full_backup_done = false;
     boolean destroyed = false;
+    boolean gr_check = false;
     private static Logger log = LoggerFactory.getLogger(UpgradeWithFullbackHandler.class);
     @Override
     public void onStart()
@@ -55,7 +58,10 @@ public class UpgradeWithFullbackHandler extends DefaultHandler
             @SuppressWarnings("unchecked")
             UpgradeFullBackupConfig<KVMCOMConfig> upconfig =  (UpgradeFullBackupConfig<KVMCOMConfig>)this.getConfig();
             sender.send(getFulltopic(), new TaskErrorHandler<KVMCOMConfig>(Action.HEALING, this.getConfig().getEnvironment(), upconfig.getConfig()));
-            this.setSucceed(false);
+        }else if(this.gr_check){// allow user to uninstall GR
+        	@SuppressWarnings("unchecked")
+        	UpgradeFullBackupConfig<KVMCOMConfig> grconfig = (UpgradeFullBackupConfig<KVMCOMConfig>)this.getConfig();
+        	sender.send(getFulltopic(), new TaskErrorHandler<KVMCOMConfig>(Action.GRUNINST, this.getConfig().getEnvironment(), grconfig.getConfig()));
         }
     }
     
@@ -66,10 +72,12 @@ public class UpgradeWithFullbackHandler extends DefaultHandler
         sender.send(getFulltopic(), pr);
         if(pr.getStep() == null)
             return;
-        if(pr.getStep().equalsIgnoreCase(UPGRAGE_DONE_KEYWORD)){
+        if(pr.getStep().equalsIgnoreCase(FULLBACKUP_DONE_KEYWORD)){
             full_backup_done = true;
         }else if( pr.getStep().equalsIgnoreCase(DESTROY_START_KEYWORD)){
             destroyed = true;
+        }else if( pr.getStep().equalsIgnoreCase(GR_CHECK_KEYWORD)){
+        	gr_check = true;
         }
     }
     

@@ -5,7 +5,7 @@ angular.module('monitor').factory('monitorService', function($log, $location, $r
 			"KVM" : {
 				"install" :["Start", "Generate Config Driver", "Start VM Instance", "Prepare Install Options",  "Finished"],
 				"upgrade": ["Start", "Data Backup", "Prepare Virtual Machines", "Post Image Replacement", "COM Upgrade","Data Restore", "Finished"],
-				"upgrade_fullbackup": ["Start", "Full Backup", "Prepare Virtual Machines", "Destroy VM","Post Image Replacement", "Data Restore", "Finished"],
+				"upgrade_fullbackup": ["Start", "Check GR Status","Full Backup", "Prepare Virtual Machines", "Destroy VM","Post Image Replacement", "COM Upgrade", "Data Restore", "Finished"],
 				 "backup":["Start","Data Backup","Finished"],
 				 "fullbackup":["Start","Full Backup","Finished"],
 				 "fullrestore":["Start","Full Restore","Finished"],
@@ -112,8 +112,7 @@ angular.module('monitor').factory('monitorService', function($log, $location, $r
 			},
 			"healing":{
 				"succeed" : "COM is running",
-				"failed": "Unable to start COM"
-				
+				"failed": "Unable to start COM"		
 			}
 	};
 	var baseUrl = $location.absUrl().split("#", 1)[0];
@@ -122,8 +121,6 @@ angular.module('monitor').factory('monitorService', function($log, $location, $r
 	var action;
 	var channel;
 	var topicPrefix= "/log/tail/";
-	var baseUrl = $location.absUrl().split("#", 1)[0];
-	var restUrl = baseUrl;
 	var errorHandlerMap = {
 			"KVM":{
 				"fullrestore" :{
@@ -136,11 +133,11 @@ angular.module('monitor').factory('monitorService', function($log, $location, $r
 									healingRes.save(fullrestoreconfig).$promise.then(function(){
 										$log.info("request fullback=" + fullrestoreconfig);
 									});
-								}
+								};
                                 handlerFunc.message = "Are you to roll back from snapshot under " + fullrestoreconfig.config.vm_img_dir + "?";
                                 return handlerFunc;
 					},
-					"label" : "Roll back"
+					"label" : "Roll Back"
 				},
 				"healing":{
 					"handler": function(config){
@@ -151,11 +148,27 @@ angular.module('monitor').factory('monitorService', function($log, $location, $r
 									healingRes.save(config).$promise.then(function(){
 										$log.info("request healing=" + config);
 									});
-								}
+								};
                                 handlerFunc.message = "Start " + config.comType + " VNF " + config.deployment_prefix + "?";
                                 return handlerFunc;
 					},
 					"label": "Healing"
+				},
+				"gruninst":{
+					"handler": function(config){
+								var handlerFunc = function(){
+									action = "gr_uninstall";
+									$state.reload();
+									var grconfig = {"comConfig":config};
+									var healingRes = $resource(restUrl + "rest/gr/kvm/uninstall");
+									healingRes.save(grconfig).$promise.then(function(){
+										$log.info("request healing=" + grconfig);
+									});
+								};
+                                handlerFunc.message = "Uninstall GR of " + config.deployment_prefix + "?";
+                                return handlerFunc;
+					},
+					"label": "Uninstall GR"
 				}
 			}
 	};
