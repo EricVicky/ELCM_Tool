@@ -134,7 +134,7 @@ angular.module('monitor').factory('monitorService', function($log, $location, $r
 										$log.info("request fullback=" + fullrestoreconfig);
 									});
 								};
-                                handlerFunc.message = "Are you to roll back from snapshot under " + fullrestoreconfig.config.vm_img_dir + "?";
+                                handlerFunc.message = "Are you sure to roll back from snapshot under " + fullrestoreconfig.config.vm_img_dir + "?";
                                 return handlerFunc;
 					},
 					"label" : "Roll Back"
@@ -149,7 +149,7 @@ angular.module('monitor').factory('monitorService', function($log, $location, $r
 										$log.info("request healing=" + config);
 									});
 								};
-                                handlerFunc.message = "Start " + config.comType + " VNF " + config.deployment_prefix + "?";
+                                handlerFunc.message = "Start Healing " + config.deployment_prefix + "?";
                                 return handlerFunc;
 					},
 					"label": "Healing"

@@ -1,4 +1,4 @@
-angular.module('datatable',['ui.grid', 'ui.grid.resizeColumns']).controller('datatablectr', function($scope,KVMService,$modal,DashboardService, $state){
+angular.module('datatable',['ui.grid', 'ui.grid.resizeColumns']).controller('datatablectr', function($scope,KVMService,$modal,DashboardService,monitorService,$modal, $state){
 	
 	KVMService.getComInstance().then( function(data) {
 		$scope.comInstance = data;
@@ -178,6 +178,38 @@ angular.module('datatable',['ui.grid', 'ui.grid.resizeColumns']).controller('dat
 	  $scope.gochhostname = function(row){
 		  DashboardService.setSelectedInstance(row.entity.comConfig);
 		  $state.go("dashboard.chhostname");			  
+	  };
+	  
+	  $scope.healing = function(row){
+		  var modalInstance = $modal.open({
+				animation: true,
+				backdrop:'static',
+				templateUrl: 'views/common/handlerErrorConfirm.html',
+				controller: function($scope, $modalInstance, message ){
+						$scope.message = "Start Healing " + message + "?";;
+						$scope.ok = function(){
+								$modalInstance.close(true);
+						};
+						$scope.cancel = function () {
+							$modalInstance.dismiss('cancel');
+						};
+				},
+				resolve: {
+					message: function() {
+						return row.entity.comConfig.deployment_prefix;
+					}
+				},   
+			});	
+			modalInstance.result.then(function (res) {
+			    $scope.result = res;
+			    if($scope.result == true){
+			    	KVMService.healing(row.entity.comConfig).then( function(){
+			      	      monitorService.monitor("KVM", "HEALING", row.entity.comConfig.comType,  row.entity.comConfig.deployment_prefix);
+			   			  $state.go("dashboard.monitor");
+			  		  });
+				}
+			}, function () {
+			});		  
 	  };
 	
 	
