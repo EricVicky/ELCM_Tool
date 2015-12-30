@@ -6,6 +6,7 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import com.alu.omc.oam.config.Action;
+import com.alu.omc.oam.config.ActionResult;
 import com.alu.omc.oam.config.BACKUPConfig;
 import com.alu.omc.oam.config.KVMCOMConfig;
 
@@ -34,6 +35,15 @@ public class FullRestoreKVMHandler extends DefaultHandler {
     	log.error("fullrestore failed on KVM");
     }
 
+    @Override
+    public ActionResult getActionResult(){
+        if(this.succeed){
+            return ActionResult.FULL_RESTORE_SUCCEED;
+        }else{
+            return ActionResult.FULL_RESTORE_FAIL;
+        }
+    }
+    
 	@Override
 	public Action getAction() {
 		return Action.FULLRESTORE;

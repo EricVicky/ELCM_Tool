@@ -6,6 +6,7 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import com.alu.omc.oam.config.Action;
+import com.alu.omc.oam.config.ActionResult;
 
 @Component("FULLBACKUP_KVM_ATC_HANDLER")
 @Scope(value = "prototype")
@@ -30,6 +31,15 @@ public class FullBackupKVMATCHandler extends DefaultHandler {
     public void onError()
     {
     	log.error("fullbackup failed on ATC");
+    }
+
+    @Override
+    public ActionResult getActionResult(){
+        if(this.succeed){
+            return ActionResult.FULL_BACKUP_SUCCEED;
+        }else{
+            return ActionResult.FULL_BACKUP_FAIL;
+        }
     }
 
 	@Override
