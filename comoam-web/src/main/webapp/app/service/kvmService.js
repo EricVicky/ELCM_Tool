@@ -93,6 +93,10 @@ angular.module('kvm').factory('KVMService', function($location, $q, $resource, $
 		},
 		getInstallEnvItems: function(){
 			return installEnvItems;
+		},
+		healing: function(config) {
+			var healingRes = $resource(restUrl + "rest/kvm/healing");
+			return healingRes.save(config).$promise;
 		}
 	};
 });

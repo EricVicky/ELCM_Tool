@@ -6,6 +6,7 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import com.alu.omc.oam.config.Action;
+import com.alu.omc.oam.config.ActionResult;
 import com.alu.omc.oam.config.BACKUPConfig;
 import com.alu.omc.oam.config.COMStack;
 import com.alu.omc.oam.config.KVMCOMConfig;
@@ -35,7 +36,16 @@ public class RestoreKVMHandler extends DefaultHandler{
     {
     	log.error("restore failed on KVM");
     }
-
+    
+    @Override
+    public ActionResult getActionResult(){
+        if(this.succeed){
+            return ActionResult.DATA_RESTORE_SUCCEED;
+        }else{
+            return ActionResult.DATA_RESTORE_FAIL;
+        }
+    }
+    
 	@Override
 	public Action getAction() {
 		// TODO Auto-generated method stub

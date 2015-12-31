@@ -6,6 +6,7 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import com.alu.omc.oam.config.Action;
+import com.alu.omc.oam.config.ActionResult;
 
 @Component("FULLRESTORE_KVM_QOSAC_HANDLER")
 @Scope(value = "prototype")
@@ -30,6 +31,15 @@ public class FullRestoreKVMQOSACHandler extends DefaultHandler {
     public void onError()
     {
     	log.error("fullrestore failed on QOSAC");
+    }
+    
+    @Override
+    public ActionResult getActionResult(){
+        if(this.succeed){
+            return ActionResult.FULL_RESTORE_SUCCEED;
+        }else{
+            return ActionResult.FULL_RESTORE_FAIL;
+        }
     }
 
 	@Override

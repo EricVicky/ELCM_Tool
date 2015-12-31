@@ -6,6 +6,7 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import com.alu.omc.oam.config.Action;
+import com.alu.omc.oam.config.ActionResult;
 
 @Component("FULLRESTORE_KVM_ATC_HANDLER")
 @Scope(value = "prototype")
@@ -32,6 +33,15 @@ public class FullRestoreKVMATCHandler extends DefaultHandler {
     	log.error("fullrestore failed on ATC");
     }
 
+    @Override
+    public ActionResult getActionResult(){
+        if(this.succeed){
+            return ActionResult.FULL_RESTORE_SUCCEED;
+        }else{
+            return ActionResult.FULL_RESTORE_FAIL;
+        }
+    }
+    
 	@Override
 	public Action getAction() {
 		return Action.FULLRESTORE;
