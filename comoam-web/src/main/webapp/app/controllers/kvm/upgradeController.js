@@ -1,5 +1,5 @@
 angular.module('kvm').controller('upgradectr', function($scope, $filter,  $log, KVMService
-		,  monitorService, DashboardService, $dialogs, $state) {
+		,  monitorService, DashboardService, $dialogs, $state, validationService) {
 	
 	$scope.submitComtype = function(){
 		$scope.loadimglist($scope.cl_installConfig.active_host_ip, $scope.cl_installConfig.vm_img_dir);
@@ -144,14 +144,19 @@ angular.module('kvm').controller('upgradectr', function($scope, $filter,  $log, 
     };
     
     $scope.fullBackupPreCheck = function(){
-        var fullbackConfig = $scope.fullbackupConfig ={                         	    					
+    	if(!$scope.enable_full_backup) return;
+        var fullbackupConfig = {                         	    					
 				full_backup_dir : $scope.cl_installConfig.vm_img_dir+"/"+ $scope.cl_installConfig.deployment_prefix
 		};
 	    fullbackupConfig.stackName = $scope.cl_installConfig.deployment_prefix;
-    	KVMService.fullbackupPreCheck(fullbackupConfig).then(function(rs){
+	    validationService.fullbackupPreCheck(fullbackupConfig).then(function(rs){
     		if(!rs.succeed){
-    			alert("No enough space left for backup!");
     			$scope.enable_full_backup = false;
+				var modalInstance = $modal.open({
+						animation: true,
+						backdrop:'static',
+						templateUrl: 'views/kvm/nospaceleft.html',
+				});	
     		}
     	});
     };
