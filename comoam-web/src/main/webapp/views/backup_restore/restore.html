@@ -226,7 +226,7 @@
 									<a class="btn btn-primary"
 										ng-click="rc.restoreWizard.forward()"
 										ng-show="rc.restoreWizard.currentIndex < rc.restoreWizard.navigationLength" translate="CONTINUE">Continue</a>
-									<a class="btn btn-primary" ng-click="restore()" ng-disabled="tab2.$invalid || valid == false || checkmessage==true"
+									<a class="btn btn-primary" ng-click="restore_lockcheck()" ng-disabled="tab2.$invalid || valid == false || checkmessage==true"
 										ng-show="rc.restoreWizard.currentIndex == rc.restoreWizard.navigationLength">Data Restore</a>
 								</div>
 							</div>
