@@ -134,10 +134,10 @@ angular.module('monitor').factory('monitorService', function($log, $location, $r
 										$log.info("request fullback=" + fullrestoreconfig);
 									});
 								};
-                                handlerFunc.message = "Are you sure to roll back from snapshot under " + fullrestoreconfig.config.vm_img_dir + "?";
+                                handlerFunc.message = "Are you sure to rollback from snapshot under " + fullrestoreconfig.config.vm_img_dir + "?";
                                 return handlerFunc;
 					},
-					"label" : "Roll Back"
+					"label" : "Rollback"
 				},
 				"healing":{
 					"handler": function(config){
