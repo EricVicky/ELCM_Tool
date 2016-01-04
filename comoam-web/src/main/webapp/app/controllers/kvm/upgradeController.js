@@ -141,8 +141,19 @@ angular.module('kvm').controller('upgradectr', function($scope, $filter,  $log, 
             			$scope.doUpgrade();
             		}
             	});
-    }
-
+    };
+    
+    $scope.fullBackupPreCheck = function(){
+        var fullbackConfig = $scope.fullbackupConfig ={                         	    					
+				full_backup_dir : $scope.cl_installConfig.vm_img_dir+"/"+ $scope.cl_installConfig.deployment_prefix
+		};
+	    fullbackupConfig.stackName = $scope.cl_installConfig.deployment_prefix;
+    	KVMService.fullbackupPreCheck(fullbackupConfig).then(function(rs){
+    		if(!rs.succeed){
+    			$scope.enable_full_backup = false;
+    		}
+    	});
+    };
 } );
 
 
