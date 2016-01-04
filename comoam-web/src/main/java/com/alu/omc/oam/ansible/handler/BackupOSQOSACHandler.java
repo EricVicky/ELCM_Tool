@@ -6,6 +6,7 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import com.alu.omc.oam.config.Action;
+import com.alu.omc.oam.config.ActionResult;
 import com.alu.omc.oam.config.BACKUPConfig;
 import com.alu.omc.oam.config.COMStack;
 import com.alu.omc.oam.config.KVMCOMConfig;
@@ -37,6 +38,15 @@ public class BackupOSQOSACHandler extends DefaultHandler {
     	log.error("backup QOSAC failed on openstack");
     }
 
+    @Override
+	public ActionResult getActionResult(){
+		if(this.succeed){
+			return ActionResult.DATA_BACKUP_SUCCEED;
+		}else{
+			return ActionResult.DATA_BACKUP_FAIL;
+		}
+	}
+    
 	@Override
 	public Action getAction() {
 		// TODO Auto-generated method stub

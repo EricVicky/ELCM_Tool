@@ -5,7 +5,7 @@ angular.module('monitor').factory('monitorService', function($log, $location, $r
 			"KVM" : {
 				"install" :["Start", "Generate Config Driver", "Start VM Instance", "Prepare Install Options",  "Finished"],
 				"upgrade": ["Start", "Data Backup", "Prepare Virtual Machines", "Post Image Replacement", "COM Upgrade","Data Restore", "Finished"],
-				"upgrade_fullbackup": ["Start", "Check GR Status","Full Backup", "Prepare Virtual Machines", "Destroy VM","Post Image Replacement", "COM Upgrade", "Data Restore", "Finished"],
+				"upgrade_fullbackup": ["Start", "Check GR Status","Full Backup", "Prepare Upgrade", "Start Upgrade","Post Image Replacement", "Data Restore", "Finished"],
 				 "backup":["Start","Data Backup","Finished"],
 				 "fullbackup":["Start","Full Backup","Finished"],
 				 "fullrestore":["Start","Full Restore","Finished"],
@@ -149,7 +149,7 @@ angular.module('monitor').factory('monitorService', function($log, $location, $r
 										$log.info("request healing=" + config);
 									});
 								};
-                                handlerFunc.message = "Start Healing " + config.deployment_prefix + "?";
+                                handlerFunc.message = "Are you sure to Start VNF " + config.deployment_prefix + "?";
                                 return handlerFunc;
 					},
 					"label": "Healing"

@@ -22,7 +22,7 @@ import com.alu.omc.oam.log.TaskErrorHandler;
 public class UpgradeWithFullbackHandler extends DefaultHandler 
 {
     final static String   FULLBACKUP_DONE_KEYWORD = "Full Backup";
-    final static String   DESTROY_START_KEYWORD = "Destroy VM";
+    final static String   DESTROY_START_KEYWORD = "Start Upgrade";
     final static String   GR_CHECK_KEYWORD = "Check GR Status";
     boolean full_backup_done = false;
     boolean destroyed = false;
