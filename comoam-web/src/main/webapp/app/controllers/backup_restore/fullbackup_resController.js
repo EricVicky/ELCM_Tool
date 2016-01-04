@@ -58,6 +58,27 @@ angular.module('fullbackup_restore', ['ui.router',
                                 	    	$scope.valid = true;
                                 	    };
                                 	    
+                                	    $scope.fullbackup_lockcheck = function(){
+                                	    	KVMService.comstackStatus($scope.installConfig.deployment_prefix).then(function(status){
+                                        		var ACTION_IN_PROGRESS = 2;
+                                        		if(status.state == ACTION_IN_PROGRESS){
+                                        			window.confirm("Full backup is already launching on selected VNF instance, please wait!");
+                                        		}else{
+                                                    $scope.fullbackup();
+                                        		}
+                                        	});
+                                	    };
+                                	    $scope.fullrestore_lockcheck = function(){
+                                	    	KVMService.comstackStatus($scope.installConfig.deployment_prefix).then(function(status){
+                                        		var ACTION_IN_PROGRESS = 2;
+                                        		if(status.state == ACTION_IN_PROGRESS){
+                                        			window.confirm("Full restore is already launching on selected VNF instance, please wait!");
+                                        		}else{
+                                                    $scope.fullrestore();
+                                        		}
+                                        	});
+                                	    };
+                                	    
                                 	    $scope.fullbackup = function(){
                                 	    	if($scope.installConfig.comType=="QOSAC"||$scope.installConfig.comType=="ATC"){
                                 	    		$scope.dofullbackup();  

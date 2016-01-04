@@ -223,7 +223,7 @@
 									<a class="btn btn-primary"
 										ng-click="rc.backupWizard.forward()"
 										ng-show="rc.backupWizard.currentIndex < rc.backupWizard.navigationLength" translate="CONTINUE">Continue</a>
-									<a class="btn btn-primary" ng-click="fullbackup()" ng-disabled="tab2.$invalid || valid == false || checkmessage==true"
+									<a class="btn btn-primary" ng-click="fullbackup_lockcheck()" ng-disabled="tab2.$invalid || valid == false || checkmessage==true"
 										ng-show="rc.backupWizard.currentIndex == rc.backupWizard.navigationLength">Full Backup</a>
 								</div>
 							</div>
