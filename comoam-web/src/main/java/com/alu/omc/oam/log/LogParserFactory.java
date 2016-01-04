@@ -293,7 +293,7 @@ public class LogParserFactory
         dict.put("TASK\\:\\s\\[vnf\\_delete\\_vms\\s\\|\\sdestroy\\svirtual\\smachine\\]", "Start Upgrade");
         dict.put("TASK\\:\\s\\[vnf\\_prepare\\_vms\\s\\|\\screate\\sdata\\sdirectory\\sfor\\svirtual\\smachine\\]","Prepare Upgrade");
         dict.put("TASK\\:\\s\\[vnf\\_shutdown\\_vms\\s\\|\\sshutdown\\soam\\svirtual\\smachine\\]", "Full Backup");
-        dict.put("TASK\\:\\s\\[cal\\_diskspace\\s\\|\\scalculate\\sthe\\shost\\sspace\\]", "Check GR Status");
+        dict.put("TASK\\:\\s\\[cal\\_diskspace\\s\\|\\scalculate\\sthe\\shost\\sspace\\]", "Health Check");
         dict.put("ansible-playbook", "Start");
         return new LogParser(dict);
     }    

@@ -1,5 +1,5 @@
 angular.module('kvm').controller('upgradectr', function($scope, $filter,  $log, KVMService
-		,  monitorService, DashboardService, $dialogs, $state, validationService) {
+		,  monitorService, DashboardService, $dialogs, $state, validationService, $modal) {
 	
 	$scope.submitComtype = function(){
 		$scope.loadimglist($scope.cl_installConfig.active_host_ip, $scope.cl_installConfig.vm_img_dir);
@@ -155,6 +155,16 @@ angular.module('kvm').controller('upgradectr', function($scope, $filter,  $log, 
 				var modalInstance = $modal.open({
 						animation: true,
 						backdrop:'static',
+						controller: function($scope, $modalInstance, dir){
+							$scope.ok = function(){
+								$modalInstance.close(true);
+							}
+						},
+						resolve: {
+							dir: function() {
+								return  $scope.cl_installConfig.vm_img_dir+"/"+ $scope.cl_installConfig.deployment_prefix
+							}
+						},  
 						templateUrl: 'views/kvm/nospaceleft.html',
 				});	
     		}
