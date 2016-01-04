@@ -150,6 +150,7 @@ angular.module('kvm').controller('upgradectr', function($scope, $filter,  $log, 
 	    fullbackupConfig.stackName = $scope.cl_installConfig.deployment_prefix;
     	KVMService.fullbackupPreCheck(fullbackupConfig).then(function(rs){
     		if(!rs.succeed){
+    			alert("No enough space left for backup!");
     			$scope.enable_full_backup = false;
     		}
     	});
