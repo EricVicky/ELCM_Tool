@@ -156,6 +156,7 @@ angular.module('kvm').controller('upgradectr', function($scope, $filter,  $log, 
 						animation: true,
 						backdrop:'static',
 						controller: function($scope, $modalInstance, dir){
+							$scope.dir = dir;
 							$scope.ok = function(){
 								$modalInstance.close(true);
 							}
