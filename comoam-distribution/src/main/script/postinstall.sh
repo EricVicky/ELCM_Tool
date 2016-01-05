@@ -14,7 +14,7 @@ if [ -f /opt/PlexView/ELCM/cert.tar.gz ]; then
     tar -xzf /opt/PlexView/ELCM/cert.tar.gz  -C / 
 fi
 echo "install jpam"
-tar -xzf /usr/lib/jvm/jre-1.7.0-openjdk.x86_64/lib/amd64/libjpam.so.tar.gz -C /usr/lib/jvm/jre-1.7.0-openjdk.x86_64/lib/amd64/
+tar -xzf /opt/PlexView/ELCM/lib/libjpam.so.tar.gz -C /opt/PlexView/ELCM/lib/
 echo "start COM ELCM"
 if [ ! -d /opt/PlexView/ELCM/server/logs ]; then
     mkdir /opt/PlexView/ELCM/server/logs
