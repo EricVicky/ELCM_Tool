@@ -94,7 +94,8 @@
 #                   Example (all one line)
 #                   LOGGING_MANAGER="-Djava.util.logging.manager=org.apache.juli.ClassLoaderLogManager"
 # -----------------------------------------------------------------------------
-
+#add jpam.so to LD_LIBRARY_PATH 
+export LD_LIBRARY_PATH=/opt/PlexView/ELCM/lib/:$LD_LIBRARY_PATH
 # OS specific support.  $var _must_ be set to either true or false.
 cygwin=false
 darwin=false

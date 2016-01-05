@@ -147,7 +147,7 @@
 									</sources>
 								</mapping>
 								<mapping>
-									<directory>/usr/lib/jvm/jre/lib/amd64/</directory>
+									<directory>/opt/PlexView/ELCM/lib</directory>
 									<username>root</username>
 									<groupname>root</groupname>
 									<sources>

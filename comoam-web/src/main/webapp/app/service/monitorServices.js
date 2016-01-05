@@ -5,7 +5,7 @@ angular.module('monitor').factory('monitorService', function($log, $location, $r
 			"KVM" : {
 				"install" :["Start", "Generate Config Driver", "Start VM Instance", "Prepare Install Options",  "Finished"],
 				"upgrade": ["Start", "Data Backup", "Prepare Virtual Machines", "Post Image Replacement", "COM Upgrade","Data Restore", "Finished"],
-				"upgrade_fullbackup": ["Start", "Check GR Status","Full Backup", "Prepare Upgrade", "Start Upgrade","Post Image Replacement", "Data Restore", "Finished"],
+				"upgrade_fullbackup": ["Start", "Health Check","Full Backup", "Prepare Upgrade", "Start Upgrade","Post Image Replacement", "Data Restore", "Finished"],
 				 "backup":["Start","Data Backup","Finished"],
 				 "fullbackup":["Start","Full Backup","Finished"],
 				 "fullrestore":["Start","Full Restore","Finished"],
@@ -134,10 +134,10 @@ angular.module('monitor').factory('monitorService', function($log, $location, $r
 										$log.info("request fullback=" + fullrestoreconfig);
 									});
 								};
-                                handlerFunc.message = "Are you sure to roll back from snapshot under " + fullrestoreconfig.config.vm_img_dir + "?";
+                                handlerFunc.message = "Are you sure to rollback from snapshot under " + fullrestoreconfig.config.vm_img_dir + "?";
                                 return handlerFunc;
 					},
-					"label" : "Roll Back"
+					"label" : "Rollback"
 				},
 				"healing":{
 					"handler": function(config){
@@ -149,7 +149,7 @@ angular.module('monitor').factory('monitorService', function($log, $location, $r
 										$log.info("request healing=" + config);
 									});
 								};
-                                handlerFunc.message = "Are you sure to Start VNF " + config.deployment_prefix + "?";
+                                handlerFunc.message = "Are you sure to start healing?";
                                 return handlerFunc;
 					},
 					"label": "Healing"
