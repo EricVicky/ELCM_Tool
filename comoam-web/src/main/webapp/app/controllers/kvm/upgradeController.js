@@ -1,6 +1,6 @@
 angular.module('kvm').controller('upgradectr', function($scope, $filter,  $log, KVMService
 		,  monitorService, DashboardService, $dialogs, $state, validationService, $modal) {
-	
+	$scope.enable_full_backup = true;
 	$scope.submitComtype = function(){
 		$scope.loadimglist($scope.cl_installConfig.active_host_ip, $scope.cl_installConfig.vm_img_dir);
 	};
@@ -39,6 +39,10 @@ angular.module('kvm').controller('upgradectr', function($scope, $filter,  $log, 
     		//clone
     		$scope.clone_installConfig();
             $scope.initistoption();
+            //set default 
+        	$scope.enable_full_backup = true;
+            //check the space
+        	$scope.fullBackupPreCheck();
     	}
 
     };
@@ -86,6 +90,10 @@ angular.module('kvm').controller('upgradectr', function($scope, $filter,  $log, 
         $scope.clone_installConfig();
 
     	$scope.initistoption();
+        //check the space
+        //set default 
+    	$scope.enable_full_backup = true;
+    	$scope.fullBackupPreCheck();
     };
    
 	$scope.doUpgrade = function (){
@@ -126,7 +134,7 @@ angular.module('kvm').controller('upgradectr', function($scope, $filter,  $log, 
 			}
 		}
 		$scope.setDefaultInstace();
-		
+
     });
     
     $scope.upgrade = function(){
