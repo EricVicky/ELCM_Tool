@@ -272,7 +272,7 @@ public class COMValidationService {
     	}else{
     		cyFiles2Server(source,destination,"fullrestore_precheck.sh");
     		String script = destination+"fullrestore_precheck.sh";
-    		checkRes = excuteShell(script+" "+local_backup_dir+" "+remote_backup_dir);	
+    		checkRes = excuteShell(script+" "+local_backup_dir+" "+hostname+" "+remote_backup_dir);	
     	}
     	return checkRes;
     }
