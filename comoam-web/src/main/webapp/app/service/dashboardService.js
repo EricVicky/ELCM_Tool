@@ -7,7 +7,9 @@ angular.module('dashboard', []).factory('DashboardService', function($log) {
 			slectedInstance = upgradeIns;
 		},
 		getSelectedInstance:function(){
-			return slectedInstance;
+			var instance = slectedInstance;
+			slectedInstance = null;
+			return instance;
 		}
 	};
 });
