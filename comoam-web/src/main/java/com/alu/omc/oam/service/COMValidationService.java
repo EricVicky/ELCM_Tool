@@ -124,7 +124,7 @@ public class COMValidationService {
         }else{
             session = getSession(this.ip);
         } 
-        Channel channel = getChannel(session,"exec");
+        Channel channel = getChannel(session,"shell");
 		String finalCommand = command+"\n";
 		try {
     		OutputStream outstream = channel.getOutputStream();
