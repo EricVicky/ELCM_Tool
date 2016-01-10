@@ -22,7 +22,7 @@ databackup_file_exist() {
     Backup_File_Dir=$1
     File_name=$2
     
-    ls ${Backup_File_Dir} | grep ***${File_name} > /dev/null
+    ls ${Backup_File_Dir} | grep ${File_name} > /dev/null
     if [ $? -eq 0 ]; then
     	echo "Warning: Initial backup files exist!!!"
     fi
