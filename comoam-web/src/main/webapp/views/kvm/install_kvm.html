@@ -34,7 +34,7 @@
 										<label class="control-label" translate="COM_NAME">COM Name</label> <input
 											name="deployment_prefix" class="form-control" type="text" unique-com
 											ng-model="installConfig.deployment_prefix" placeholder="Please Insert COM Name"
-											title="Prefix of VM Instance" validation="required|alpha_num|max_len:14" />
+											title="Prefix of VM Instance" validation="required|pattern=/^([a-z0-9-.])+$/i:alt=May only contain letters, numbers, dashes and dot|max_len:50" />
 											<span class="validation text-danger" ng-show="tab1.deployment_prefix.$error.notunique"><label translate="EXISTED_COM_NAME">Existed COM Name!</label></span>
 									</div>
 									<div class="form-group">
