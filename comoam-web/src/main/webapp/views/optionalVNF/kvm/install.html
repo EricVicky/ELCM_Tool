@@ -63,7 +63,7 @@
 											name="deployment_prefix" class="form-control" type="text" 
 											ng-model="installConfig.deployment_prefix"
 											placeholder="Please Insert Deployment Prefix"
-											title="Deployment Prefix" validation="required|alpha_num|max_len:14" />
+											title="Deployment Prefix"  validation="required|pattern=/^([a-z0-9-.])+$/i:alt=May only contain letters, numbers, dashes and dot|max_len:50" />
 											<span class="validation text-danger" ng-show="tab1.deployment_prefix.$error.notunique"><label translate="EXISTED_COM_NAME">Existed COM Name!</label></span>
 									</div>
 									<div class="form-group" ng-if="installConfig.comType=='ATC'">
