@@ -101,7 +101,11 @@ angular.module('fullbackup_restore', ['ui.router',
                                 	    						controller: 'fullmessage_ctrl',
                                 	    						resolve: {
                                 	    							msg: function() {
-                                	    								return $scope.message.substring(0,$scope.message.indexOf("Success"));
+                                	    								if($scope.message.indexOf("precheck start") != -1){
+                                	    									return $scope.message.substring($scope.message.indexOf("Warning"),$scope.message.indexOf("Success"));
+                                	    								}else{
+                                	    									return $scope.message.substring(0,$scope.message.indexOf("Success"));							
+                                	    								}
                                 	    							}
                                 	    						},   
                                 	    					});	
