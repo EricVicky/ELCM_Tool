@@ -12,18 +12,23 @@
 ################################################################################
 
 local_backup_dir=$1
-remote_backup_dir=$2
+hostname=$2
+remote_backup_dir=$3
 
 ################################################################################
 # Check Function
 ################################################################################
 fullbackup_file_exist() {
-    Backup_File_Dir=$1
-    
-    ls ${Backup_File_Dir} | grep ***_snapshot > /dev/null
-    if [ $? -eq 0 ]; then
-    	echo "Warning: Initial backup files will be erased by the new full backup!"
-    fi
+    Backup_File_Dir=$1  
+    arr=(${hostname//:/ })
+    for vm_name in ${arr[@]}
+    do
+        ls ${Backup_File_Dir} | grep ${vm_name}_snapshot > /dev/null
+        if [ $? -eq 0 ]; then
+            echo "Warning: Initial backup files will be erased by the new full backup!"
+            break;
+        fi
+    done
 
 }
 
@@ -84,6 +89,7 @@ backup_precheck() {
 #######################################################################
 # Program Start
 #######################################################################
+
 echo "precheck start"
 file_space=`du ${local_backup_dir} --max-depth=2|awk '{ print $1 }'|tail -1`
 
