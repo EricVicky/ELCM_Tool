@@ -184,11 +184,19 @@ public class CheckController
     public ValidationResult fullbackupCheckResult(@RequestBody FullBackupConfig<KVMCOMConfig> fullbackupconfig) throws Exception{
     	fullbackupconfig.setConfig(getKVMCOMConfig(fullbackupconfig.getStackName()));
     	ValidationResult res = new ValidationResult();
+    	StringBuffer hostname = new StringBuffer();
     	res.setSucceed(true);
     	String hostip = fullbackupconfig.getConfig().getHost().getIp_address();
+    	Map<String, VMConfig> vmconfigs = fullbackupconfig.getConfig().getVm_config();
+    	Iterator iterator = vmconfigs.keySet().iterator();
+    	while(iterator.hasNext()){
+    		String vnfc =(String)iterator.next();
+    		if(!hostname.toString().equals("")) hostname.append(":");
+    		hostname.append(vmconfigs.get(vnfc).getHostname());
+    	}
     	cOMValidationService.setIp(hostip);
-    	String checkRes= cOMValidationService.fullbackupPreCheck(hostip,fullbackupconfig.getConfig().getVm_img_dir()+"/"+fullbackupconfig.getConfig().getDeployment_prefix()
-    			                 ,fullbackupconfig.getRemote_server_ip(),fullbackupconfig.getRemote_server_dir());
+    	String checkRes= cOMValidationService.fullbackupPreCheck(hostip,fullbackupconfig.getConfig().getVm_img_dir()+"/"+fullbackupconfig.getConfig().getDeployment_prefix(),
+    			         hostname.toString(),fullbackupconfig.getRemote_server_ip(),fullbackupconfig.getRemote_server_dir());
     	if(!isSucceed(checkRes)){
     		res.setMessage(checkRes);
 			res.setSucceed(false);
