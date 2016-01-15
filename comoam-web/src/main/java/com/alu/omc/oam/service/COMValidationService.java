@@ -259,7 +259,9 @@ public class COMValidationService {
     	        System.out.println(res.getOutputString());
     	        System.out.println(res.getOutputString().subSequence(1, 2));
     	    	String[] lines = checkRes.split("\r\n");
-    	    	System.out.println(lines);
+    	    	for(int i=0;i<lines.length;i++){
+    	    		System.out.println(lines[i]);
+    	    	}
             }catch(Exception e){
             	e.printStackTrace();
             }
