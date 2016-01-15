@@ -246,21 +246,7 @@ public class COMValidationService {
     } 
     
     private String deal(String stdout){
-    	String[] lines = stdout.split("\r\n");	
-    	System.out.println(lines.length);
-    	for(int i=0;i<lines.length;i++){
-    		System.out.println(i+lines[i]);
-    	}
-    	String[] lines1 = stdout.split("\r");
-    	System.out.println(lines1.length);
-    	for(int i=0;i<lines1.length;i++){
-    		System.out.println(i+lines1[i]);
-    	}
-    	String[] lines2 = stdout.split("\n");
-    	System.out.println(lines2.length);
-    	for(int i=0;i<lines2.length;i++){
-    		System.out.println(i+lines2[i]);
-    	}
+    	String[] lines = stdout.split("\n");
     	return lines[1]+lines[2];
     }
     
