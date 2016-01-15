@@ -256,6 +256,10 @@ public class COMValidationService {
     	    try{
     	        CommandResult res = comamnda.execute();
     	        checkRes = res.getOutputString();
+    	        System.out.println(res.getOutputString());
+    	        System.out.println(res.getOutputString().subSequence(1, 2));
+    	    	String[] lines = checkRes.split("\r\n");
+    	    	System.out.println(lines);
             }catch(Exception e){
             	e.printStackTrace();
             }
