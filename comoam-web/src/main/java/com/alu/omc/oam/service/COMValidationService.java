@@ -247,7 +247,9 @@ public class COMValidationService {
     
     private String deal(String stdout){
     	String[] lines = stdout.split("\r\n");	
-    	System.out.println("deal:" + lines[1]+lines[2]);
+    	for(int i=0;i<lines.length;i++){
+    		System.out.println(lines[i]);
+    	}
     	return lines[1]+lines[2];
     }
     
@@ -262,6 +264,10 @@ public class COMValidationService {
     	    try{
     	        CommandResult res = comamnda.execute();
     	        checkRes = deal(res.getOutputString());
+    	    	String[] lines = res.getOutputString().split("\r\n");
+    	    	for(int i=0;i<lines.length;i++){
+    	    		System.out.println(lines[i]);
+    	    	}
             }catch(Exception e){
             	e.printStackTrace();
             }
