@@ -245,6 +245,12 @@ public class COMValidationService {
     	return checkRes;
     } 
     
+    private String deal(String stdout){
+    	String[] lines = stdout.split("\r\n");	
+    	System.out.println("deal:" + lines[1]+lines[2]);
+    	return lines[1]+lines[2];
+    }
+    
     public String fullbackupPreCheck(String hostip,String local_backup_dir,String hostname,String remoteip,String remotedir){
     	String checkRes = "";
     	String source = SOURCE;
@@ -255,13 +261,7 @@ public class COMValidationService {
     		ICommandExec comamnda = commandProtype.create(script+" "+local_backup_dir+" "+hostname+" "+remote_backup_dir);
     	    try{
     	        CommandResult res = comamnda.execute();
-    	        checkRes = res.getOutputString();
-    	        System.out.println(res.getOutputString());
-    	        System.out.println(res.getOutputString().subSequence(1, 2));
-    	    	String[] lines = checkRes.split("\r\n");
-    	    	for(int i=0;i<lines.length;i++){
-    	    		System.out.println(lines[i]);
-    	    	}
+    	        checkRes = deal(res.getOutputString());
             }catch(Exception e){
             	e.printStackTrace();
             }
