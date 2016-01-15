@@ -282,7 +282,7 @@ public class COMValidationService {
     		ICommandExec comamnda = commandProtype.create(script+" "+local_backup_dir+" "+hostname+" "+remote_backup_dir);
     	    try{
     	        CommandResult res = comamnda.execute();
-    	        checkRes = res.getOutputString(); 
+    	        checkRes = deal(res.getOutputString()); 
             }catch(Exception e){
             	e.printStackTrace();
             }
