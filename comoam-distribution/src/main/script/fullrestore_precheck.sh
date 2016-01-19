@@ -86,6 +86,8 @@ restore_precheck() {
 # Program Start
 #######################################################################
 
+
+echo "precheck start"
 if [ -z ${remote_restore_dir} ];then    
     restore_precheck
 else

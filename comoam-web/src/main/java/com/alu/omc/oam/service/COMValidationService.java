@@ -22,12 +22,13 @@ import com.jcraft.jsch.Session;
 public class COMValidationService {
 	private final String SOURCE = "/opt/PlexView/ELCM/script/";
 	private final String DESTINATION =	"/tmp/";
+	private final String START_POINT =	"precheck start";
  
 	@Resource
     private  CommandProtype commandProtype;
 	private String username = "root";
 	private String ip ;
-	private String password = "EMS_qd_n2";
+	private String password = "newsys";
 	
     public void setUserName( String username ){
     	this.username = username;
@@ -126,10 +127,12 @@ public class COMValidationService {
         } 
         Channel channel = getChannel(session,"shell");
 		String finalCommand = command+"\n";
+		System.out.println("The firewall command: " + command);
 		try {
     		OutputStream outstream = channel.getOutputStream();
 			outstream.write(finalCommand.getBytes());
 			outstream.flush();
+			try{Thread.sleep(1000);}catch(Exception ee){}
 			System.out.println("The firewall command " + command + " is excuted");
             outstream.close();
 		} catch (IOException e) {
@@ -177,12 +180,20 @@ public class COMValidationService {
 	}
 	
 	private String trim(String stdout){
-		final int FIX_PROMOTE_LINES = 3; 
+		int fix_promote_lines=0;	
+		System.out.println("stdout:"+stdout);
 		StringBuffer res = new StringBuffer();
 		if(stdout!=null && stdout.length() > 0){
 			String[] lines = stdout.split("\r\n");
-			if(lines.length >= FIX_PROMOTE_LINES){
-				for(int i=FIX_PROMOTE_LINES; i< lines.length; i++){
+			System.out.println("The lines: " + lines);
+			for(int i=0;i<lines.length;i++){
+				if(lines[i].equals(START_POINT)){
+					fix_promote_lines = i;
+					System.out.println("fix_promote_lines:"+fix_promote_lines);
+				}
+			}
+			if(lines.length >= fix_promote_lines){
+				for(int i=fix_promote_lines+1; i< lines.length; i++){
 					if(lines[i].endsWith("# "))
 						break;
 					res.append(lines[i]);
@@ -196,6 +207,7 @@ public class COMValidationService {
 		}
 		return res.toString();
 	}
+	
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	//Above are defined function. Below are detail function
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////    
@@ -226,31 +238,36 @@ public class COMValidationService {
             	e.printStackTrace();
             }
     	}else{
-    		//cyFiles2Server(source,destination,"check_VT_enable.sh");
+    		cyFiles2Server(source,destination,"check_VT_enable.sh");
     		String script = destination+"check_VT_enable.sh";
     		checkRes = excuteShell(script);		
     	}
     	return checkRes;
     } 
     
-    public String fullbackupPreCheck(String hostip,String local_backup_dir,String remoteip,String remotedir){
+    private String deal(String stdout){
+    	String[] lines = stdout.split("\n");
+    	return lines[1]+lines[2];
+    }
+    
+    public String fullbackupPreCheck(String hostip,String local_backup_dir,String hostname,String remoteip,String remotedir){
     	String checkRes = "";
     	String source = SOURCE;
     	String destination = DESTINATION; 
 		String remote_backup_dir = remoteip == ""?"":remoteip + ":" + remotedir;
     	if(Host.isLocalHost(hostip)){
     		String script = source+"fullbackup_precheck.sh";
-    		ICommandExec comamnda = commandProtype.create(script+" "+local_backup_dir+" "+remote_backup_dir);
+    		ICommandExec comamnda = commandProtype.create(script+" "+local_backup_dir+" "+hostname+" "+remote_backup_dir);
     	    try{
     	        CommandResult res = comamnda.execute();
-    	        checkRes = res.getOutputString();
+    	        checkRes = deal(res.getOutputString());
             }catch(Exception e){
             	e.printStackTrace();
             }
     	}else{
     		cyFiles2Server(source,destination,"fullbackup_precheck.sh");
     		String script = destination+"fullbackup_precheck.sh";
-    		checkRes = excuteShell(script+" "+local_backup_dir+" "+remote_backup_dir);	
+    		checkRes = excuteShell(script+" "+local_backup_dir+" "+hostname+" "+remote_backup_dir);	
     	}
     	return checkRes;
     }
@@ -265,7 +282,7 @@ public class COMValidationService {
     		ICommandExec comamnda = commandProtype.create(script+" "+local_backup_dir+" "+hostname+" "+remote_backup_dir);
     	    try{
     	        CommandResult res = comamnda.execute();
-    	        checkRes = res.getOutputString(); 
+    	        checkRes = deal(res.getOutputString()); 
             }catch(Exception e){
             	e.printStackTrace();
             }

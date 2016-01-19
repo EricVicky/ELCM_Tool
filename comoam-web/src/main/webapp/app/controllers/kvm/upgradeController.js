@@ -141,7 +141,7 @@ angular.module('kvm').controller('upgradectr', function($scope, $filter,  $log, 
             	KVMService.comstackStatus($scope.cl_installConfig.deployment_prefix).then(function(status){
             		var ACTION_IN_PROGRESS = 2;
             		if(status.state == ACTION_IN_PROGRESS){
-            			if(window.confirm("some operation  proceed on selected VNF instance, go to monitor?")){
+            			if(window.confirm(status.lastAction.toLowerCase()+" has proceed on selected VNF instance, go to monitor?")){
             				monitorService.monitor("KVM", status.lastaction, $scope.cl_installConfig.comType, $scope.cl_installConfig.deployment_prefix);
             				$state.go('dashboard.monitor');
             			}
