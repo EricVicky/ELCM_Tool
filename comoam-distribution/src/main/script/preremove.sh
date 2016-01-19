@@ -11,5 +11,6 @@ if [ ! -z $SERVER_PROCESS_ID ]; then
    echo "force shutdown..."
    kill -15 $SERVER_PROCESS_ID
 fi
-/opt/PlexView/ELCM/server/bin/databackup.sh
+. /opt/PlexView/ELCM/server/bin/databackup_lib.sh
+ELCM_data_backup
 

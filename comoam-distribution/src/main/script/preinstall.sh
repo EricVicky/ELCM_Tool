@@ -18,5 +18,6 @@ SERVER_PROCESS_ID=$(ps -ef|grep '/opt/PlexView/ELCM/server'|grep -v 'grep'|awk '
 if [ ! -z $SERVER_PROCESS_ID ]; then
    echo "force shutdown..."
    kill -15 $SERVER_PROCESS_ID
-   /opt/PlexView/ELCM/server/bin/databackup.sh
+   . /opt/PlexView/ELCM/script/databackup_lib.sh
+   ELCM_data_backup
 fi
