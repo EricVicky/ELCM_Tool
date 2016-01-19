@@ -16,11 +16,13 @@ import org.springframework.web.bind.annotation.RestController;
 import com.alu.omc.oam.ansible.RunningComstackLock;
 import com.alu.omc.oam.ansible.validation.ValidationResult;
 import com.alu.omc.oam.config.Action;
+import com.alu.omc.oam.config.ActionResult;
 import com.alu.omc.oam.config.AtcCOMConfig;
 import com.alu.omc.oam.config.BACKUPConfig;
 import com.alu.omc.oam.config.COMConfig;
 import com.alu.omc.oam.config.COMStack;
 import com.alu.omc.oam.config.FullBackupConfig;
+import com.alu.omc.oam.config.GRInstallConfig;
 import com.alu.omc.oam.config.KVMCOMConfig;
 import com.alu.omc.oam.config.Status;
 import com.alu.omc.oam.config.VMConfig;
@@ -43,13 +45,57 @@ public class CheckController
     @Resource
     COMValidationService cOMValidationService;
     
+    @RequestMapping(value="/check/grStatus", method=RequestMethod.GET)
+    public ValidationResult  status(@ModelAttribute("stackName") String stackName) 
+    {
+    	ValidationResult res = new ValidationResult();
+    	res.setSucceed(true);
+    	if(runningComstackLock.getAction(stackName) == Action.GRINST_PRI || 
+    	   runningComstackLock.getAction(stackName) == Action.GRINST_SEC){
+    		res.setMessage("GR installlation in progress");
+    	}else{
+    		List<COMStack> stacks =  cOMStackService.list();
+            for(COMStack stack : stacks){
+               if (stack.getName().equals(stackName)&&stack.getActionResult() == ActionResult.GRINSTALL_SUCCEED){
+                   res.setMessage("GR installation succeed");
+               }else if(stack.getName().equals(stackName)&&stack.getActionResult() == ActionResult.GRINSTALL_FAIL){
+            	   res.setSucceed(false);
+                   res.setMessage("GR installation failed");
+               }else{
+            	   res.setSucceed(false);
+            	   res.setMessage("other actions");
+               }
+            }
+    	}
+    	return res;    			
+    }
+    
+    @RequestMapping(value="/check/grReplicat_data", method=RequestMethod.GET)
+    public ValidationResult  repliacateData(@ModelAttribute("stackName") String stackName) 
+    {
+    	ValidationResult res = new ValidationResult();
+    	KVMCOMConfig config = getKVMCOMConfig(stackName);
+    	Map<String, VMConfig> vmconfigs = config.getVm_config();
+    	Iterator<String> iterator = vmconfigs.keySet().iterator();
+    	while(iterator.hasNext()){
+    		String vnfc = iterator.next();
+    		if(("oam").equals(vnfc)){
+    			VMConfig vmConfig = vmconfigs.get(vnfc);
+    			String oamIP = vmConfig.getNic().get(0).getIp_v4().getIpaddress();
+    			cOMValidationService.setIp(oamIP);
+    		}
+    	}
+    	//String checkRes= cOMValidationService.grReplicateData(); // NOSONAR
+    	return res;    			
+    }
+    
     @RequestMapping(value="/check/ping", method=RequestMethod.GET)
     public ValidationResult  ping(@ModelAttribute("host") String host) 
     {
     	ValidationResult res = new ValidationResult();
     	if (host!=null)
     	{
-    		res.setSucceed(!hostService.ping((String)host));
+    		res.setSucceed(!hostService.ping((String)host)); // NOSONAR
     		if (!res.isSucceed()){
     			res.setMessage("This IP is in use, please change!");
     		}	   		
@@ -58,7 +104,7 @@ public class CheckController
     }
     
     @RequestMapping(value="/check/cpuVTCheck", method=RequestMethod.GET)
-    public ValidationResult  VTcheck(@ModelAttribute("hostip") String hostip) 
+    public ValidationResult  vTcheck(@ModelAttribute("hostip") String hostip) 
     {
     	ValidationResult res = new ValidationResult();
     	cOMValidationService.setIp(hostip);
@@ -75,11 +121,10 @@ public class CheckController
     public ValidationResult uniqueCOM(@ModelAttribute("name") String name){
        List<COMStack> stacks =  cOMStackService.list();
        ValidationResult res = new ValidationResult();
-       if (name!=null && stacks != null && stacks.size() >0)
+       if (name!=null && stacks != null && !stacks.isEmpty())
         {
             for(COMStack stack : stacks){
                if (stack.getName().equals(name)){
-                   //unique = false;
             	   res.setSucceed(false);
                    break;
                }
@@ -89,20 +134,15 @@ public class CheckController
     }
     
     @RequestMapping(value="/gr/kvm/checkinstalled", method=RequestMethod.GET)
-    public ValidationResult GRCheck(@ModelAttribute("name") String name){
+    public ValidationResult grCheck(@ModelAttribute("name") String name){
        List<COMStack> stacks =  cOMStackService.list();
        ValidationResult res = new ValidationResult();
-       if (name!=null && stacks != null && stacks.size() >0)
-        {
+       res.setSucceed(false);
+       if (name!=null && stacks != null && !stacks.isEmpty()) {
             for(COMStack stack : stacks){
-               if (stack.getName().equals(name)){
-                   if(stack.getStatus()==Status.GRINSTALLED){
-                	   res.setSucceed(true);
-                       break;
-                   }else{
-                	   res.setSucceed(false);
-                       break;
-                   }
+               if (stack.getName().equals(name)&&stack.getStatus()==Status.GRINSTALLED){
+            	   res.setSucceed(true);
+                   break;
                }
             }
         }
@@ -113,11 +153,10 @@ public class CheckController
     public ValidationResult uniqueSTACK(@ModelAttribute("name") String name){
        List<COMStack> stacks =  cOMStackService.list();
        ValidationResult res = new ValidationResult();
-       if (name!=null && stacks != null && stacks.size() >0)
+       if (name!=null && stacks != null && !stacks.isEmpty())
         {
             for(COMStack stack : stacks){
                if (stack.getName().equals(name)){
-                   //unique = false;
             	   res.setSucceed(false);
                    break;
                }
@@ -175,23 +214,23 @@ public class CheckController
     
     private KVMCOMConfig getKVMCOMConfig(String stackName){
         COMStack comStack = cOMStackService.get(stackName); 
-         @SuppressWarnings("unchecked") 
-         KVMCOMConfig config = new Json2Object<KVMCOMConfig>(){}.toMap(comStack.getComConfig());
-         return config;
+        return new Json2Object<KVMCOMConfig>(){}.toMap(comStack.getComConfig());
     }
     
     @RequestMapping(value="/check/fullbackupPreCheck", method=RequestMethod.POST)
-    public ValidationResult fullbackupCheckResult(@RequestBody FullBackupConfig<KVMCOMConfig> fullbackupconfig) throws Exception{
+    public ValidationResult fullbackupCheckResult(@RequestBody FullBackupConfig<KVMCOMConfig> fullbackupconfig) {
     	fullbackupconfig.setConfig(getKVMCOMConfig(fullbackupconfig.getStackName()));
     	ValidationResult res = new ValidationResult();
-    	StringBuffer hostname = new StringBuffer();
+    	StringBuilder hostname = new StringBuilder();
     	res.setSucceed(true);
     	String hostip = fullbackupconfig.getConfig().getHost().getIp_address();
     	Map<String, VMConfig> vmconfigs = fullbackupconfig.getConfig().getVm_config();
-    	Iterator iterator = vmconfigs.keySet().iterator();
+    	Iterator<String> iterator = vmconfigs.keySet().iterator();
     	while(iterator.hasNext()){
-    		String vnfc =(String)iterator.next();
-    		if(!hostname.toString().equals("")) hostname.append(":");
+    		String vnfc = iterator.next();
+    		if(!("").equals(hostname.toString())){
+    			hostname.append(":");
+    		}
     		hostname.append(vmconfigs.get(vnfc).getHostname());
     	}
     	cOMValidationService.setIp(hostip);
@@ -207,17 +246,19 @@ public class CheckController
     }
     
     @RequestMapping(value="/check/fullrestorePreCheck", method=RequestMethod.POST)
-    public ValidationResult fullrestorePreCheck(@RequestBody FullBackupConfig<KVMCOMConfig> fullbackupconfig) throws Exception{
+    public ValidationResult fullrestorePreCheck(@RequestBody FullBackupConfig<KVMCOMConfig> fullbackupconfig) {
     	fullbackupconfig.setConfig(getKVMCOMConfig(fullbackupconfig.getStackName()));
     	ValidationResult res = new ValidationResult();
-    	StringBuffer hostname = new StringBuffer();
+    	StringBuilder hostname = new StringBuilder();
     	res.setSucceed(true);
     	String hostip = fullbackupconfig.getConfig().getHost().getIp_address();
     	Map<String, VMConfig> vmconfigs = fullbackupconfig.getConfig().getVm_config();
-    	Iterator iterator = vmconfigs.keySet().iterator();
+    	Iterator<String> iterator = vmconfigs.keySet().iterator();
     	while(iterator.hasNext()){
-    		String vnfc =(String)iterator.next();
-    		if(!hostname.toString().equals("")) hostname.append(":");
+    		String vnfc = iterator.next();
+    		if(!("").equals(hostname.toString())){
+    			hostname.append(":");
+    		}
     		hostname.append(vmconfigs.get(vnfc).getHostname());
     	}
     	cOMValidationService.setIp(hostip);
@@ -233,14 +274,14 @@ public class CheckController
     }
     
     @RequestMapping(value="/check/databackupPreCheck", method=RequestMethod.POST)
-    public ValidationResult databackupCheckResult(@RequestBody BACKUPConfig<KVMCOMConfig> databackupconfig) throws Exception{
+    public ValidationResult databackupCheckResult(@RequestBody BACKUPConfig<KVMCOMConfig> databackupconfig){
     	databackupconfig.setConfig(getKVMCOMConfig(databackupconfig.getStackName()));
     	ValidationResult res = new ValidationResult();
     	res.setSucceed(true);
     	Map<String, VMConfig> vmconfigs = databackupconfig.getConfig().getVm_config();
-    	Iterator iterator = vmconfigs.keySet().iterator();
+    	Iterator<String> iterator = vmconfigs.keySet().iterator();
     	while(iterator.hasNext()){
-    		String vnfc =(String)iterator.next();
+    		String vnfc = iterator.next();
     		VMConfig vmConfig = vmconfigs.get(vnfc);
     		String vmIP = vmConfig.getNic().get(0).getIp_v4().getIpaddress();
     		cOMValidationService.setIp(vmIP);
@@ -259,14 +300,14 @@ public class CheckController
     }
     
     @RequestMapping(value="/check/datarestorePreCheck", method=RequestMethod.POST)
-    public ValidationResult datarestorePreCheck(@RequestBody BACKUPConfig<KVMCOMConfig> databackupconfig) throws Exception{
+    public ValidationResult datarestorePreCheck(@RequestBody BACKUPConfig<KVMCOMConfig> databackupconfig){
     	databackupconfig.setConfig(getKVMCOMConfig(databackupconfig.getStackName()));
     	ValidationResult res = new ValidationResult();
     	res.setSucceed(true);
     	Map<String, VMConfig> vmconfigs = databackupconfig.getConfig().getVm_config();
-    	Iterator iterator = vmconfigs.keySet().iterator();
+    	Iterator<String> iterator = vmconfigs.keySet().iterator();
     	while(iterator.hasNext()){
-    		String vnfc =(String)iterator.next();
+    		String vnfc = iterator.next();
     		VMConfig vmConfig = vmconfigs.get(vnfc);
     		String vmIP = vmConfig.getNic().get(0).getIp_v4().getIpaddress();
     		cOMValidationService.setIp(vmIP);

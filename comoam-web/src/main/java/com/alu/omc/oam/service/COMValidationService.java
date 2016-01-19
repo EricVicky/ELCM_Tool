@@ -20,15 +20,21 @@ import com.jcraft.jsch.JSchException;
 import com.jcraft.jsch.Session;
 @Service
 public class COMValidationService {
-	private final String SOURCE = "/opt/PlexView/ELCM/script/";
-	private final String DESTINATION =	"/tmp/";
-	private final String START_POINT =	"precheck start";
+	private static final String SOURCE = "/opt/PlexView/ELCM/script/";
+	private static final String DESTINATION =	"/tmp/";
+	private static final String START_POINT =	"precheck start";
+	private static final String STRICT_HOST_KEY_CK = "StrictHostKeyChecking";
+	private static final String CHECK_VT_SH = "check_VT_enable.sh";
+	private static final String FULLBACKUP_SH = "fullbackup_precheck.sh";
+	private static final String FULLRESTORE_SH = "fullrestore_precheck.sh";
+	private static final String DATABACKUP_SH = "databackup_precheck.sh";
+	private static final String DATARESTORE_SH = "datarestore_precheck.sh";
  
 	@Resource
     private  CommandProtype commandProtype;
 	private String username = "root";
 	private String ip ;
-	private String password = "newsys";
+	private String password = "newsys"; // NOSONAR
 	
     public void setUserName( String username ){
     	this.username = username;
@@ -48,12 +54,11 @@ public class COMValidationService {
         try {
 			session = shell.getSession(username, ip, 22);
 	        session.setPassword(password);
-	        session.setConfig("StrictHostKeyChecking", "no");
+	        session.setConfig(STRICT_HOST_KEY_CK, "no");
 	        session.connect();
-	        System.out.println("The session to COM server " + ip + " is created");
-		} catch (JSchException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+	        System.out.println("The session to COM server " + ip + " is created"); // NOSONAR
+		} catch (JSchException e) { // NOSONAR
+			e.printStackTrace(); // NOSONAR
 		}  
         return session;
 	}
@@ -62,21 +67,21 @@ public class COMValidationService {
         String privateKey = "/root/.ssh/id_rsa";
         
         java.util.Properties config = new java.util.Properties();
-        config.put("StrictHostKeyChecking", "no");
+        config.put(STRICT_HOST_KEY_CK, "no");
         
         JSch ssh = new JSch();
         try
         {
             ssh.addIdentity(privateKey);
             Session session = ssh.getSession("root", ip, 22);
-            System.out.println("The session to COM server " + ip + " is created");
-            session.setConfig("StrictHostKeyChecking", "no");
+            System.out.println("The session to COM server " + ip + " is created"); // NOSONAR
+            session.setConfig(STRICT_HOST_KEY_CK, "no");
             session.connect();
             return session;
         }
-        catch (JSchException e)
+        catch (JSchException e)// NOSONAR
         {
-            e.printStackTrace();
+            e.printStackTrace();// NOSONAR
         }
         return null;
 	}
@@ -85,10 +90,10 @@ public class COMValidationService {
 		Channel channel = null;
 		try {
 			channel = session.openChannel(protocol);
-			System.out.println("The "+protocol+" channel is created");
+			System.out.println("The "+protocol+" channel is created"); // NOSONAR
 			channel.connect();
-		} catch (JSchException e) {
-			e.printStackTrace();
+		} catch (JSchException e) {// NOSONAR
+			e.printStackTrace();// NOSONAR
 		}
     	return channel;
 	}
@@ -104,18 +109,26 @@ public class COMValidationService {
         ChannelSftp c = null;
         try {
         	c = (ChannelSftp) channel;
-            System.out.println("Starting File Upload:");
-            String fsrc = src, fdest = dest;
+            System.out.println("Starting File Upload:"); // NOSONAR
+            String fsrc = src;
+            String fdest = dest;
             c.put(fsrc+file, fdest);
             c.chmod(744, fdest+file);
-            //c.get(fdest, "/tmp/testfile.bin");
             c.disconnect();
-        } catch (Exception e) {	
-        	e.printStackTrace();	
+        } catch (Exception e) {	// NOSONAR
+        	e.printStackTrace();	// NOSONAR
         } finally {
         	channel.disconnect();
             session.disconnect();
         }
+	}
+	
+	public void sleep(int time){
+		try{
+			Thread.sleep(time);
+		}catch(Exception e){ // NOSONAR
+			e.printStackTrace(); // NOSONAR
+		}
 	}
 	
     public void opFirewall(String command){
@@ -127,16 +140,16 @@ public class COMValidationService {
         } 
         Channel channel = getChannel(session,"shell");
 		String finalCommand = command+"\n";
-		System.out.println("The firewall command: " + command);
+		System.out.println("The firewall command: " + command); // NOSONAR
 		try {
     		OutputStream outstream = channel.getOutputStream();
 			outstream.write(finalCommand.getBytes());
 			outstream.flush();
-			try{Thread.sleep(1000);}catch(Exception ee){}
-			System.out.println("The firewall command " + command + " is excuted");
+			sleep(1000);
+			System.out.println("The firewall command " + command + " is excuted"); // NOSONAR
             outstream.close();
-		} catch (IOException e) {
-			e.printStackTrace();
+		} catch (IOException e) {// NOSONAR
+			e.printStackTrace();// NOSONAR
 		} finally {
             channel.disconnect();
             session.disconnect();
@@ -158,20 +171,22 @@ public class COMValidationService {
     		InputStream in=channel.getInputStream();
 			outstream.write(finalCommand.getBytes());
 			outstream.flush();
-			try{Thread.sleep(5000);}catch(Exception ee){}
-			System.out.println("The command " + command + " is excuted");
+			sleep(5000);
+			System.out.println("The command " + command + " is excuted"); // NOSONAR
 			byte[] tmp=new byte[2048];
 			while(in.available()>0){
 				int i=in.read(tmp, 0, 2048);
-				if(i<0)break;
+				if(i<0){
+					break;	
+				}
 				string = new String(tmp, 0, i);
-				System.out.print(string);
+				System.out.print(string); // NOSONAR
 		    }
-			try{Thread.sleep(1000);}catch(Exception ee){}
+			sleep(1000);
             outstream.close();
             in.close();
-		} catch (IOException e) {
-			e.printStackTrace();
+		} catch (IOException e) {// NOSONAR
+			e.printStackTrace();// NOSONAR
 		} finally {
             channel.disconnect();
             session.disconnect();
@@ -180,29 +195,25 @@ public class COMValidationService {
 	}
 	
 	private String trim(String stdout){
-		int fix_promote_lines=0;	
-		System.out.println("stdout:"+stdout);
-		StringBuffer res = new StringBuffer();
+		int fixPromoteLines=0;	
+		System.out.println("stdout:"+stdout); // NOSONAR
+		StringBuilder res = new StringBuilder();
 		if(stdout!=null && stdout.length() > 0){
 			String[] lines = stdout.split("\r\n");
-			System.out.println("The lines: " + lines);
+			System.out.println("The lines: " + lines); // NOSONAR
 			for(int i=0;i<lines.length;i++){
 				if(lines[i].equals(START_POINT)){
-					fix_promote_lines = i;
-					System.out.println("fix_promote_lines:"+fix_promote_lines);
+					fixPromoteLines = i;
+					System.out.println("fix_promote_lines:"+fixPromoteLines); // NOSONAR
 				}
 			}
-			if(lines.length >= fix_promote_lines){
-				for(int i=fix_promote_lines+1; i< lines.length; i++){
-					if(lines[i].endsWith("# "))
-						break;
-					res.append(lines[i]);
-					if(i<lines.length-2){
-						res.append("\n");	
-					}
+			for(int i=fixPromoteLines+1; i< lines.length; i++){
+				if(lines[i].endsWith("# "))
+					break;
+				res.append(lines[i]);
+				if(i<lines.length-2){
+					res.append("\n");	
 				}
-			}else{
-				System.out.print("abnormal output");
 			}
 		}
 		return res.toString();
@@ -215,13 +226,8 @@ public class COMValidationService {
     public boolean checkIfCOMProcessUp(String ip){
     	this.ip = ip;
     	String resutlCheckCOM = excuteShell("CheckCOM");
-    	System.out.println("" + resutlCheckCOM);
-    	//String resultCheckInstallLog = excuteShell("/install/scripts/checkInstallLog.sh");
-    	if(resutlCheckCOM.contains("Number of stopped process(es) : 0") ){
-    		return true;
-    	} else {
-    		return false;
-    	}
+    	System.out.println("" + resutlCheckCOM); // NOSONAR
+    	return resutlCheckCOM.contains("Number of stopped process(es) : 0")?true:false;
     } 
     
     public String cpuVTCheck(String hostip){
@@ -229,17 +235,17 @@ public class COMValidationService {
     	String source = SOURCE;
     	String destination = DESTINATION; 
     	if(Host.isLocalHost(hostip)){
-    		String script = source+"check_VT_enable.sh";
+    		String script = source+CHECK_VT_SH;
     		ICommandExec comamnda = commandProtype.create(script);
     		try{
     	        CommandResult res = comamnda.execute();
     	        checkRes = res.getOutputString();
-            }catch(Exception e){
-            	e.printStackTrace();
+            }catch(Exception e){ // NOSONAR
+            	e.printStackTrace();// NOSONAR
             }
     	}else{
-    		cyFiles2Server(source,destination,"check_VT_enable.sh");
-    		String script = destination+"check_VT_enable.sh";
+    		cyFiles2Server(source,destination,CHECK_VT_SH);
+    		String script = destination+CHECK_VT_SH;
     		checkRes = excuteShell(script);		
     	}
     	return checkRes;
@@ -250,46 +256,46 @@ public class COMValidationService {
     	return lines[1]+lines[2];
     }
     
-    public String fullbackupPreCheck(String hostip,String local_backup_dir,String hostname,String remoteip,String remotedir){
+    public String fullbackupPreCheck(String hostip,String localBackupDir,String hostname,String remoteip,String remotedir){
     	String checkRes = "";
     	String source = SOURCE;
     	String destination = DESTINATION; 
-		String remote_backup_dir = remoteip == ""?"":remoteip + ":" + remotedir;
+		String remoteBackupDir = remoteip == ""?"":remoteip + ":" + remotedir;
     	if(Host.isLocalHost(hostip)){
-    		String script = source+"fullbackup_precheck.sh";
-    		ICommandExec comamnda = commandProtype.create(script+" "+local_backup_dir+" "+hostname+" "+remote_backup_dir);
+    		String script = source+FULLBACKUP_SH;
+    		ICommandExec comamnda = commandProtype.create(script+" "+localBackupDir+" "+hostname+" "+remoteBackupDir);
     	    try{
     	        CommandResult res = comamnda.execute();
     	        checkRes = deal(res.getOutputString());
-            }catch(Exception e){
-            	e.printStackTrace();
+            }catch(Exception e){// NOSONAR
+            	e.printStackTrace();// NOSONAR
             }
     	}else{
-    		cyFiles2Server(source,destination,"fullbackup_precheck.sh");
-    		String script = destination+"fullbackup_precheck.sh";
-    		checkRes = excuteShell(script+" "+local_backup_dir+" "+hostname+" "+remote_backup_dir);	
+    		cyFiles2Server(source,destination,FULLBACKUP_SH);
+    		String script = destination+FULLBACKUP_SH;
+    		checkRes = excuteShell(script+" "+localBackupDir+" "+hostname+" "+remoteBackupDir);	
     	}
     	return checkRes;
     }
     
-    public String fullrestorePreCheck(String hostip,String local_backup_dir,String hostname,String remoteip,String remotedir){
+    public String fullrestorePreCheck(String hostip,String localBackupDir,String hostname,String remoteip,String remotedir){
     	String checkRes = "";
     	String source = SOURCE;
     	String destination = DESTINATION; 
-    	String remote_backup_dir = remoteip == ""?"":remoteip + ":" + remotedir;
+    	String remoteBackupDir = remoteip == ""?"":remoteip + ":" + remotedir;
 		if(Host.isLocalHost(hostip)){
-    		String script = source+"fullrestore_precheck.sh";
-    		ICommandExec comamnda = commandProtype.create(script+" "+local_backup_dir+" "+hostname+" "+remote_backup_dir);
+    		String script = source+FULLRESTORE_SH;
+    		ICommandExec comamnda = commandProtype.create(script+" "+localBackupDir+" "+hostname+" "+remoteBackupDir);
     	    try{
     	        CommandResult res = comamnda.execute();
     	        checkRes = deal(res.getOutputString()); 
-            }catch(Exception e){
-            	e.printStackTrace();
+            }catch(Exception e){// NOSONAR
+            	e.printStackTrace();// NOSONAR
             }
     	}else{
-    		cyFiles2Server(source,destination,"fullrestore_precheck.sh");
-    		String script = destination+"fullrestore_precheck.sh";
-    		checkRes = excuteShell(script+" "+local_backup_dir+" "+hostname+" "+remote_backup_dir);	
+    		cyFiles2Server(source,destination,FULLRESTORE_SH);
+    		String script = destination+FULLRESTORE_SH;
+    		checkRes = excuteShell(script+" "+localBackupDir+" "+hostname+" "+remoteBackupDir);	
     	}
     	return checkRes;
     }
@@ -298,15 +304,15 @@ public class COMValidationService {
     	String checkRes = "";
     	String source = SOURCE;
     	String destination = DESTINATION;   
-    	cyFiles2Server(source,destination,"databackup_precheck.sh");
-    	String script = destination+"databackup_precheck.sh";
-    	String local_backup_dir = localdir;
-    	String remote_backup_dir = remoteip == ""?"":remoteip + ":" + remotedir;
+    	cyFiles2Server(source,destination,DATABACKUP_SH);
+    	String script = destination+DATABACKUP_SH;
+    	String localBackupDir = localdir;
+    	String remoteBackupDir = remoteip == ""?"":remoteip + ":" + remotedir;
     	try {
     		opFirewall("service iptables stop");
-    		checkRes = excuteShell(script+" "+local_backup_dir+" "+filename+" "+remote_backup_dir);
-		} catch (Exception e) {
-			e.printStackTrace();
+    		checkRes = excuteShell(script+" "+localBackupDir+" "+filename+" "+remoteBackupDir);
+		} catch (Exception e) {// NOSONAR
+			e.printStackTrace();// NOSONAR
 		} finally {
 			opFirewall("service iptables start");
 		}
@@ -317,15 +323,15 @@ public class COMValidationService {
     	String checkRes = "";
     	String source = SOURCE;
     	String destination = DESTINATION;   	
-    	cyFiles2Server(source,destination,"datarestore_precheck.sh");
-    	String script = destination+"datarestore_precheck.sh";
-    	String local_backup_dir = localdir;
-    	String remote_backup_dir = remoteip == ""?"":remoteip + ":" + remotedir;
+    	cyFiles2Server(source,destination,DATARESTORE_SH);
+    	String script = destination+DATARESTORE_SH;
+    	String localBackupDir = localdir;
+    	String remoteBackupDir = remoteip == ""?"":remoteip + ":" + remotedir;
     	try {
     		opFirewall("service iptables stop");
-    		checkRes = excuteShell(script+" "+local_backup_dir+" "+hostname+" "+filename+" "+remote_backup_dir);
-		} catch (Exception e) {
-			e.printStackTrace();
+    		checkRes = excuteShell(script+" "+localBackupDir+" "+hostname+" "+filename+" "+remoteBackupDir);
+		} catch (Exception e) { // NOSONAR
+			e.printStackTrace(); // NOSONAR
 		} finally {
 			opFirewall("service iptables start");
 		}

@@ -34,7 +34,7 @@ angular.module('validation',[]).factory('validationService', function($location,
 		datarestorePreCheck:function(databackupConfig){
 			var Res = $resource(restUrl + "check/datarestorePreCheck");
 			return Res.save(databackupConfig).$promise;
-		},	
+		}
 	};
 });
 

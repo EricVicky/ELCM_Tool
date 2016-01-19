@@ -27,6 +27,10 @@ public class RunningComstackLock
         lockMap.remove(comstack);
     }
     
+    public Action getAction(String comstack){
+    	return lockMap.get(comstack);
+    }
+    
     public StackStatus getStatus(String comstack){
         StackStatus status = new StackStatus();
         status.setLastAction(lockMap.get(comstack));
