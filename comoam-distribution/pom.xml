@@ -254,10 +254,6 @@
 							         <scriptFile>src/main/script/preremove.sh</scriptFile>
 							         <fileEncoding>utf-8</fileEncoding>
 							 </preremoveScriptlet>
-							 <postremoveScriptlet>
-							         <scriptFile>src/main/script/postremove.sh</scriptFile>
-							         <fileEncoding>utf-8</fileEncoding>
-							 </postremoveScriptlet>
 						</configuration>
 					</plugin>
 				</plugins>
