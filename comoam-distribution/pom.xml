@@ -68,7 +68,7 @@
 								<id>unpack-playbook</id>
 								<phase>process-sources</phase>
 								<goals>
-									<goal>copy</goal>
+									<goal>unpack</goal>
 								</goals>
 								<configuration>
 									<artifactItems>
@@ -78,17 +78,16 @@
 											<version>${project.version}</version>
 											<type>tar</type>
 											<overWrite>true</overWrite>
-											<outputDirectory>${project.build.directory}/</outputDirectory>
-											<destFileName>playbook.tar</destFileName>
+											<outputDirectory>${project.build.directory}/ELCM-playbook</outputDirectory>
 										</artifactItem>
 									</artifactItems>
 								</configuration>
 							</execution>
 							<execution>
-								<id>copy-webapp</id>
+								<id>unpack-webapp</id>
 								<phase>process-sources</phase>
 								<goals>
-									<goal>copy</goal>
+									<goal>unpack</goal>
 								</goals>
 								<configuration>
 									<artifactItems>
@@ -98,8 +97,7 @@
 											<version>${project.version}</version>
 											<type>war</type>
 											<overWrite>true</overWrite>
-											<outputDirectory>${project.build.directory}/apache-tomcat-${tomcat.version}/webapps/</outputDirectory>
-											<destFileName>ROOT.war</destFileName>
+											<outputDirectory>${project.build.directory}/webapps/ELCM/ROOT</outputDirectory>
 										</artifactItem>
 									</artifactItems>
 								</configuration>
@@ -132,7 +130,17 @@
 									<groupname>root</groupname>
 									<sources>
 										<source>
-											<location>${project.build.directory}/playbook.tar</location>
+											<location>${project.build.directory}/ELCM-playbook</location>
+										</source>
+									</sources>
+								</mapping>
+								<mapping>
+									<directory>/opt/PlexView/ELCM/server/webapps/</directory>
+									<username>root</username>
+									<groupname>root</groupname>
+									<sources>
+										<source>
+											<location>${project.build.directory}/webapps/ELCM</location>
 										</source>
 									</sources>
 								</mapping>
