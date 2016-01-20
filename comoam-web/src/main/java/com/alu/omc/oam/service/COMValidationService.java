@@ -85,7 +85,7 @@ public class COMValidationService {
     	String result = "";
     	StringBuilder exeRes = new StringBuilder();
     	try{
-    		session.setTimeout(0);
+    		session.setTimeout(5000);
     		((ChannelExec) channel).setCommand(command);
     		channel.setInputStream(null);
     		((ChannelExec) channel).setErrStream(System.err);
@@ -99,6 +99,7 @@ public class COMValidationService {
 	                	break;	
 	                }
 	                result = new String(tmp, 0, i);
+	                System.out.println("result is:"+result);
 	                exeRes.append(result);
 	            }
 	            if (channel.isClosed()) {
@@ -361,6 +362,7 @@ public class COMValidationService {
     public String grReplicateData(String command){
     	Session session = getSession();
     	Channel channel = null;
+    	System.out.println("command is :"+command);
 		try {
 			channel = session.openChannel("exec");
 		} catch (JSchException e1) { // NOSONAR
