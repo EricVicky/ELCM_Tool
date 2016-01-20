@@ -219,6 +219,8 @@ public class COMValidationService {
 		return res.toString();
 	}
 	
+
+	
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	//Above are defined function. Below are detail function
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////    
@@ -335,6 +337,16 @@ public class COMValidationService {
 		} finally {
 			opFirewall("service iptables start");
 		}
+    	return checkRes;
+    }
+    
+    public String grReplicateData(){
+    	String checkRes = "";
+    	try {
+    		checkRes = excuteShell("echo 'y' | /export/home/omcmon/usr/bin/replicate_data full");
+		} catch (Exception e) { // NOSONAR
+			e.printStackTrace(); // NOSONAR
+		} 
     	return checkRes;
     }
 

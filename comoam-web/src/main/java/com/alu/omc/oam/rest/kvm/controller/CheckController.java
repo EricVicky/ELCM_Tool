@@ -56,15 +56,21 @@ public class CheckController
     	}else{
     		List<COMStack> stacks =  cOMStackService.list();
             for(COMStack stack : stacks){
-               if (stack.getName().equals(stackName)&&stack.getActionResult() == ActionResult.GRINSTALL_SUCCEED){
-                   res.setMessage("GR installation succeed");
-               }else if(stack.getName().equals(stackName)&&stack.getActionResult() == ActionResult.GRINSTALL_FAIL){
-            	   res.setSucceed(false);
-                   res.setMessage("GR installation failed");
-               }else{
-            	   res.setSucceed(false);
-            	   res.setMessage("other actions");
-               }
+            	if(stack.getName().equals(stackName)){
+            		switch(stack.getActionResult()){  // NOSONAR
+            		case GRINSTALL_SUCCEED:
+            			res.setMessage("GR installation succeed");
+            			break;
+            		case GRINSTALL_FAIL:
+            			res.setSucceed(false);
+                        res.setMessage("GR installation failed");
+                        break;
+                    default:
+                    	res.setSucceed(false);
+                 	    res.setMessage("GR not installed");
+            		}
+            		break;
+            	}
             }
     	}
     	return res;    			
@@ -74,8 +80,9 @@ public class CheckController
     public ValidationResult  repliacateData(@ModelAttribute("stackName") String stackName) 
     {
     	ValidationResult res = new ValidationResult();
-    	KVMCOMConfig config = getKVMCOMConfig(stackName);
-    	Map<String, VMConfig> vmconfigs = config.getVm_config();
+    	GRInstallConfig<KVMCOMConfig> config = new GRInstallConfig<>();
+    	config.setPri(getKVMCOMConfig(stackName));
+    	Map<String, VMConfig> vmconfigs = config.getPri().getVm_config();
     	Iterator<String> iterator = vmconfigs.keySet().iterator();
     	while(iterator.hasNext()){
     		String vnfc = iterator.next();
@@ -83,9 +90,11 @@ public class CheckController
     			VMConfig vmConfig = vmconfigs.get(vnfc);
     			String oamIP = vmConfig.getNic().get(0).getIp_v4().getIpaddress();
     			cOMValidationService.setIp(oamIP);
+    			break;
     		}
     	}
-    	//String checkRes= cOMValidationService.grReplicateData(); // NOSONAR
+    	String checkRes= cOMValidationService.grReplicateData(); // NOSONAR
+    	res.setMessage(checkRes);
     	return res;    			
     }
     
