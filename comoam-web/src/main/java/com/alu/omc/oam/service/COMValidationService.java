@@ -14,6 +14,7 @@ import com.alu.omc.oam.util.CommandProtype;
 import com.alu.omc.oam.util.CommandResult;
 import com.alu.omc.oam.util.ICommandExec;
 import com.jcraft.jsch.Channel;
+import com.jcraft.jsch.ChannelExec;
 import com.jcraft.jsch.ChannelSftp;
 import com.jcraft.jsch.JSch;
 import com.jcraft.jsch.JSchException;
@@ -341,14 +342,48 @@ public class COMValidationService {
     }
     
     public String grReplicateData(){
-    	String checkRes = "";
-    	try {
-    		//checkRes = excuteShell("echo 'y' | /export/home/omcmon/usr/bin/replicate_data full");
-    		checkRes = excuteShell("/tmp/test.sh");
-		} catch (Exception e) { // NOSONAR
-			e.printStackTrace(); // NOSONAR
-		} 
-    	return checkRes;
+    	String rez = "+!";
+    	Session session = null;
+    	 try {
+    	        JSch jsch = new JSch();
+    	        if(SystemUtils.IS_OS_WINDOWS){
+    	        	 session = getSession(this.username, this.ip, this.password);
+    	        }else{
+    	        	 session = getSession(this.ip);
+    	        } 
+    	        System.out.println("Connection established.");
+    	        Channel channel = session.openChannel("exec");
+    	        ((ChannelExec) channel).setCommand("/tmp/test.sh"); //setting command
+    	        channel.setInputStream(null);
+    	        ((ChannelExec) channel).setErrStream(System.err);
+    	        InputStream in = channel.getInputStream();
+    	        channel.connect();
+    	        byte[] tmp = new byte[1024];
+    	        while (true) {
+    	            while (in.available() > 0) {
+    	                int i = in.read(tmp, 0, 1024);
+    	                if (i < 0)
+    	                    break;
+    	                System.out.print(new String(tmp, 0, i));
+    	                rez = new String(tmp, 0, i);
+    	            }
+    	            if (channel.isClosed()) {
+    	                System.out.println("exit-status: "+channel.getExitStatus());
+    	                break;
+    	            }
+    	            try {
+    	                Thread.sleep(1000);
+    	            } catch (Exception e) {
+    	                rez = e.toString();
+    	            }
+    	        }
+    	        channel.disconnect();
+    	        session.disconnect();
+    	    }
+    	    catch (Exception e) {
+    	        rez = e.toString();
+    	    }
+    	return rez;
     }
 
 }
