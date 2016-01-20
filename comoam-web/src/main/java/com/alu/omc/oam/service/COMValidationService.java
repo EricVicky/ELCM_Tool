@@ -344,7 +344,7 @@ public class COMValidationService {
     	String checkRes = "";
     	try {
     		//checkRes = excuteShell("echo 'y' | /export/home/omcmon/usr/bin/replicate_data full");
-    		checkRes = excuteShell("test.sh");
+    		checkRes = excuteShell("/tmp/test.sh");
 		} catch (Exception e) { // NOSONAR
 			e.printStackTrace(); // NOSONAR
 		} 
