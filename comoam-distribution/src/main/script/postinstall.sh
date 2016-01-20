@@ -1,6 +1,5 @@
 #!/bin/sh
 echo "extract playbook"
-tar -xf  /opt/PlexView/ELCM/playbook.tar -C /opt/PlexView/ELCM/
 chmod 600 /opt/PlexView/ELCM/ELCM-playbook/group_vars
 
 if [ -f /opt/PlexView/ELCM/datasource.tar.gz ]; then

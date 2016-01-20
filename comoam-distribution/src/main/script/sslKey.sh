@@ -94,7 +94,7 @@ openssl pkcs12 -export -in ${SSLDir}/ssl.crt/server.crt -inkey ${SSLDir}/ssl.key
 apachePKCS12File=/opt/PlexView/ELCM/tmp/ssl.crt/server.pkcs12
 tomcatHomeDir=/opt/PlexView/ELCM/server
 tomcatKeyStoreDir="$tomcatHomeDir/ssl/keystore"
-if [ ! -f $tomcatKeyStoreDir/elcm.jks ]
+if [ ! -f $tomcatKeyStoreDir/ELCM.jks ]
 then
         cd /opt/PlexView/ELCM/tmp
         if [ -f $apachePKCS12File ]; then

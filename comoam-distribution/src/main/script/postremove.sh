@@ -1,11 +1,12 @@
 #!/bin/sh
-echo "remove playbook"
-rm -rf /opt/PlexView/ELCM/ELCM-playbook
-echo "remove server"
-rm -rf /opt/PlexView/ELCM/server
-echo "remove script"
-rm -rf /opt/PlexView/ELCM/script
-#cat /etc/rc.local|grep -v '/opt/PlexView/ELCM/' > /etc/rc.local
-sed -i '/\/opt\/PlexView\/ELCM.*$/d' /etc/rc.local
-rm -f /usr/lib/jvm/jre-1.7.0-openjdk.x86_64/lib/amd64/libjpam.so
-echo "uninstall completed!"
+ELCM_STARTUP=/opt/PlexView/ELCM/server/bin/startup.sh
+if [ -f ${ELCM_STARTUP} ]; then
+   echo "restart ELCM"
+   #force shutdown ELCM if the ELCM is still runnig
+   SERVER_PROCESS_ID=$(ps -ef|grep '/opt/PlexView/ELCM/server'|grep -v 'grep'|awk '{print $2}')
+   if [ ! -z $SERVER_PROCESS_ID ]; then
+      echo "force shutdown..."
+      kill -15 $SERVER_PROCESS_ID
+   fi
+   ${ELCM_STARTUP}
+fi
