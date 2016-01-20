@@ -364,7 +364,7 @@ public class COMValidationService {
     	Channel channel = null;
     	System.out.println("command is :"+command);
 		try {
-			channel = session.openChannel("shell");
+			channel = session.openChannel("exec");
 		} catch (JSchException e1) { // NOSONAR
 			e1.printStackTrace(); // NOSONAR
 		}
