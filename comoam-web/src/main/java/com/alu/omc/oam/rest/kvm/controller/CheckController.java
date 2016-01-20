@@ -93,7 +93,7 @@ public class CheckController
     			break;
     		}
     	}
-    	String checkRes= cOMValidationService.grReplicateData(); // NOSONAR
+    	String checkRes= cOMValidationService.grReplicateData();
     	res.setMessage(checkRes);
     	return res;    			
     }

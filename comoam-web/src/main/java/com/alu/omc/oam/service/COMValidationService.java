@@ -343,7 +343,8 @@ public class COMValidationService {
     public String grReplicateData(){
     	String checkRes = "";
     	try {
-    		checkRes = excuteShell("echo 'y' | /export/home/omcmon/usr/bin/replicate_data full");
+    		//checkRes = excuteShell("echo 'y' | /export/home/omcmon/usr/bin/replicate_data full");
+    		checkRes = excuteShell("test.sh");
 		} catch (Exception e) { // NOSONAR
 			e.printStackTrace(); // NOSONAR
 		} 
