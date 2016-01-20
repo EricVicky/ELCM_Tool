@@ -99,7 +99,6 @@ public class COMValidationService {
 	                	break;	
 	                }
 	                result = new String(tmp, 0, i);
-	                System.out.println("result is:"+result);
 	                exeRes.append(result);
 	            }
 	            if (channel.isClosed()) {
@@ -116,6 +115,7 @@ public class COMValidationService {
     	}catch (Exception e) {
     		result = e.toString();
 	    }
+    	System.out.println("result is:"+exeRes.toString());
     	return exeRes.toString();
     }
 
@@ -364,7 +364,7 @@ public class COMValidationService {
     	Channel channel = null;
     	System.out.println("command is :"+command);
 		try {
-			channel = session.openChannel("exec");
+			channel = session.openChannel("shell");
 		} catch (JSchException e1) { // NOSONAR
 			e1.printStackTrace(); // NOSONAR
 		}
