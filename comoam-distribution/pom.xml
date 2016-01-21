@@ -65,10 +65,10 @@
 								</configuration>
 							</execution>
 							<execution>
-								<id>unpack-playbook</id>
+								<id>copy-playbook</id>
 								<phase>process-sources</phase>
 								<goals>
-									<goal>unpack</goal>
+									<goal>copy</goal>
 								</goals>
 								<configuration>
 									<artifactItems>
@@ -78,7 +78,8 @@
 											<version>${project.version}</version>
 											<type>tar</type>
 											<overWrite>true</overWrite>
-											<outputDirectory>${project.build.directory}/ELCM-playbook</outputDirectory>
+											<outputDirectory>${project.build.directory}/</outputDirectory>
+											<destFileName>playbook.tar</destFileName>
 										</artifactItem>
 									</artifactItems>
 								</configuration>
@@ -130,7 +131,7 @@
 									<groupname>root</groupname>
 									<sources>
 										<source>
-											<location>${project.build.directory}/ELCM-playbook</location>
+											<location>${project.build.directory}/playbook.tar</location>
 										</source>
 									</sources>
 								</mapping>
