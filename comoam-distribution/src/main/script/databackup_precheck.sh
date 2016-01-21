@@ -90,7 +90,7 @@ backup_precheck() {
 # Program Start
 #######################################################################
 
-echo "precheck start"
+
 if [ -z ${remote_backup_dir} ];then
     size=10000    
     backup_precheck

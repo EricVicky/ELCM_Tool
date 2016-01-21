@@ -90,7 +90,7 @@ backup_precheck() {
 # Program Start
 #######################################################################
 
-echo "precheck start"
+
 file_space=`du ${local_backup_dir} --max-depth=2|awk '{ print $1 }'|tail -1`
 
 if [ -z ${remote_backup_dir} ];then    

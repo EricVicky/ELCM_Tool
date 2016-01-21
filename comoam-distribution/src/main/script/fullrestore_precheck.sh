@@ -87,7 +87,7 @@ restore_precheck() {
 #######################################################################
 
 
-echo "precheck start"
+
 if [ -z ${remote_restore_dir} ];then    
     restore_precheck
 else

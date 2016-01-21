@@ -58,13 +58,6 @@ angular.module('fullbackup_restore', ['ui.router',
                                 	    	$scope.valid = true;
                                 	    };
                                 	    
-                                	    $scope.click = function(){
-                                    	    validationService.testGR($scope.installConfig.deployment_prefix).then( function(data){
-                                    	        $scope.message = data.message;
-                                    	        $scope.result = data.isValid;
-                                    	    });
-                                    	};
-                                	    
                                 	    $scope.fullbackup_lockcheck = function(){
                                 	    	KVMService.comstackStatus($scope.installConfig.deployment_prefix).then(function(status){
                                         		var ACTION_IN_PROGRESS = 2;

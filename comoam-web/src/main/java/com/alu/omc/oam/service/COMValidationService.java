@@ -26,6 +26,8 @@ public class COMValidationService {
 	private static final String DESTINATION =	"/tmp/";
 	private static final String START_POINT =	"precheck start";
 	private static final String STRICT_HOST_KEY_CK = "StrictHostKeyChecking";
+	private static final String START_FIREWALL = "service iptables start";
+	private static final String STOP_FIREWALL = "service iptables stop";
 	private static final String CHECK_VT_SH = "check_VT_enable.sh";
 	private static final String FULLBACKUP_SH = "fullbackup_precheck.sh";
 	private static final String FULLRESTORE_SH = "fullrestore_precheck.sh";
@@ -86,7 +88,7 @@ public class COMValidationService {
     	String result = "";
     	StringBuilder exeRes = new StringBuilder();
     	try{
-    		session.setTimeout(5000);
+    		session.setTimeout(1000);
     		((ChannelExec) channel).setCommand(command);
     		channel.setInputStream(null);
     		((ChannelExec) channel).setErrStream(System.err);
@@ -322,57 +324,37 @@ public class COMValidationService {
     	return checkRes;
     }
     
-    public String databackupPreCheck(String localdir,String filename,String remoteip,String remotedir){
-    	String checkRes = "";
-    	String source = SOURCE;
-    	String destination = DESTINATION;   
-    	cyFiles2Server(source,destination,DATABACKUP_SH);
-    	String script = destination+DATABACKUP_SH;
-    	String localBackupDir = localdir;
-    	String remoteBackupDir = remoteip == ""?"":remoteip + ":" + remotedir;
+    public String preCheck(String script,String command){
+    	cyFiles2Server(SOURCE,DESTINATION,script);
+    	String res = "";
+    	Session session = getSession();
     	try {
-    		opFirewall("service iptables stop");
-    		checkRes = excuteShell(script+" "+localBackupDir+" "+filename+" "+remoteBackupDir);
+			opFirewall(STOP_FIREWALL);
+			Channel channel = session.openChannel("exec");
+    		res = exeCommand(command,session,channel);
 		} catch (Exception e) {// NOSONAR
 			e.printStackTrace();// NOSONAR
 		} finally {
-			opFirewall("service iptables start");
+			opFirewall(START_FIREWALL);
 		}
-    	return checkRes;
+		return res;	
     }
     
-    public String datarestorePreCheck(String localdir,String filename,String hostname,String remoteip,String remotedir){
-    	String checkRes = "";
-    	String source = SOURCE;
-    	String destination = DESTINATION;   	
-    	cyFiles2Server(source,destination,DATARESTORE_SH);
-    	String script = destination+DATARESTORE_SH;
-    	String localBackupDir = localdir;
+    public String preCheckOfDataBackup(String localdir,String filename,String remoteip,String remotedir){
     	String remoteBackupDir = remoteip == ""?"":remoteip + ":" + remotedir;
-    	try {
-    		opFirewall("service iptables stop");
-    		checkRes = excuteShell(script+" "+localBackupDir+" "+hostname+" "+filename+" "+remoteBackupDir);
-		} catch (Exception e) { // NOSONAR
-			e.printStackTrace(); // NOSONAR
-		} finally {
-			opFirewall("service iptables start");
-		}
-    	return checkRes;
+    	String command = DESTINATION+DATABACKUP_SH+" "+localdir+" "+filename+" "+remoteBackupDir;
+		return preCheck(DATABACKUP_SH,command);
+    }
+    
+    public String preCheckOfDataRestore(String localdir,String filename,String hostname,String remoteip,String remotedir){
+    	String remoteBackupDir = remoteip == ""?"":remoteip + ":" + remotedir;
+    	String command = DESTINATION+DATARESTORE_SH+" "+localdir+" "+hostname+" "+filename+" "+remoteBackupDir;
+    	return preCheck(DATARESTORE_SH,command);
     }
     
     public String grReplicateData(String script){
-    	String destination = DESTINATION;
-    	String source = SOURCE;
-    	Session session = getSession();
-    	Channel channel = null;
-    	cyFiles2Server(source,destination,REPLICATE_DATA);
-    	String command = destination+script;
-		try {
-			channel = session.openChannel("exec");
-		} catch (JSchException e1) { // NOSONAR
-			e1.printStackTrace(); // NOSONAR
-		}
-		return exeCommand(command,session,channel);
+    	String command = DESTINATION+script;
+    	return preCheck(REPLICATE_DATA,command);
     }
 
 }
