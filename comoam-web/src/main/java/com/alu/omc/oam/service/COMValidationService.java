@@ -31,6 +31,7 @@ public class COMValidationService {
 	private static final String FULLRESTORE_SH = "fullrestore_precheck.sh";
 	private static final String DATABACKUP_SH = "databackup_precheck.sh";
 	private static final String DATARESTORE_SH = "datarestore_precheck.sh";
+	private static final String REPLICATE_DATA = "grReplicateData.sh";
  
 	@Resource
     private  CommandProtype commandProtype;
@@ -359,10 +360,13 @@ public class COMValidationService {
     	return checkRes;
     }
     
-    public String grReplicateData(String command){
+    public String grReplicateData(String script){
+    	String destination = DESTINATION;
+    	String source = SOURCE;
     	Session session = getSession();
     	Channel channel = null;
-    	System.out.println("command is :"+command);
+    	cyFiles2Server(source,destination,REPLICATE_DATA);
+    	String command = destination+script;
 		try {
 			channel = session.openChannel("exec");
 		} catch (JSchException e1) { // NOSONAR

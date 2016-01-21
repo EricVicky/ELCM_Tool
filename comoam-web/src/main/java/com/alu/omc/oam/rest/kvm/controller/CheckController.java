@@ -93,7 +93,7 @@ public class CheckController
     			break;
     		}
     	}
-    	String checkRes= cOMValidationService.grReplicateData("echo 'y' | /export/home/omcmon/usr/bin/replicate_data full");
+    	String checkRes= cOMValidationService.grReplicateData("grReplicateData.sh");
     	res.setMessage(checkRes);
     	return res;    			
     }
