@@ -10,3 +10,8 @@ if [ -f ${ELCM_STARTUP} ]; then
    fi
    ${ELCM_STARTUP}
 fi
+rm -rf /opt/PlexView/ELCM/ELCM-playbook
+# if it is rpm -U, then extract the playbook again
+if [ -f /opt/PlexView/ELCM/playbook.tar ]; then
+    tar -xf  /opt/PlexView/ELCM/playbook.tar -C /opt/PlexView/ELCM/
+fi
