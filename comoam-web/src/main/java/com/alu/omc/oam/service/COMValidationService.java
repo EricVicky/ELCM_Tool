@@ -21,6 +21,7 @@ import com.jcraft.jsch.JSchException;
 import com.jcraft.jsch.Session;
 @Service
 public class COMValidationService {
+	private static final String ROOT = "root";
 	private static final String SOURCE = "/opt/PlexView/ELCM/script/";
 	private static final String DESTINATION =	"/tmp/";
 	private static final String START_POINT =	"precheck start";
@@ -30,11 +31,13 @@ public class COMValidationService {
 	private static final String FULLRESTORE_SH = "fullrestore_precheck.sh";
 	private static final String DATABACKUP_SH = "databackup_precheck.sh";
 	private static final String DATARESTORE_SH = "datarestore_precheck.sh";
+	private static final String REPLICATE_DATA = "grReplicateData.sh";
  
 	@Resource
     private  CommandProtype commandProtype;
 	private String username = "root";
 	private String ip ;
+	private int port = 22;
 	private String password = "newsys"; // NOSONAR
 	
     public void setUserName( String username ){
@@ -48,44 +51,75 @@ public class COMValidationService {
     public void setpassword( String password ){
     	this.password = password;
     }
-	//windows OS
-	private Session getSession(String username, String ip, String password){
-        JSch shell = new JSch();
-        Session session = null;
-        try {
-			session = shell.getSession(username, ip, 22);
-	        session.setPassword(password);
-	        session.setConfig(STRICT_HOST_KEY_CK, "no");
-	        session.connect();
-	        System.out.println("The session to COM server " + ip + " is created"); // NOSONAR
-		} catch (JSchException e) { // NOSONAR
-			e.printStackTrace(); // NOSONAR
-		}  
-        return session;
-	}
-	//Linux OS
-	private Session getSession(String ip){
-        String privateKey = "/root/.ssh/id_rsa";
-        
-        java.util.Properties config = new java.util.Properties();
-        config.put(STRICT_HOST_KEY_CK, "no");
-        
-        JSch ssh = new JSch();
-        try
-        {
-            ssh.addIdentity(privateKey);
-            Session session = ssh.getSession("root", ip, 22);
-            System.out.println("The session to COM server " + ip + " is created"); // NOSONAR
-            session.setConfig(STRICT_HOST_KEY_CK, "no");
-            session.connect();
-            return session;
-        }
-        catch (JSchException e)// NOSONAR
-        {
-            e.printStackTrace();// NOSONAR
-        }
-        return null;
-	}
+    
+    private Session getSession(){
+    	JSch jsch = new JSch();
+    	Session session = null; 	
+    	if(SystemUtils.IS_OS_WINDOWS){
+    		try{
+    			session = jsch.getSession(this.username, this.ip, this.port);
+    	        session.setPassword(password);
+    	        session.setConfig(STRICT_HOST_KEY_CK, "no");
+    	        session.connect();
+    		}catch (JSchException e) { // NOSONAR
+    			e.printStackTrace(); // NOSONAR
+    		} 
+    	}else{
+    		String privateKey = "/root/.ssh/id_rsa";
+            java.util.Properties config = new java.util.Properties();
+            config.put(STRICT_HOST_KEY_CK, "no");
+            try
+            {
+            	jsch.addIdentity(privateKey);
+                session = jsch.getSession(ROOT, this.ip, this.port);
+                session.setConfig(STRICT_HOST_KEY_CK, "no");
+                session.connect();
+            }
+            catch (JSchException e){ // NOSONAR
+                e.printStackTrace();// NOSONAR
+            }
+    	}
+    	return session;
+    }
+    
+    public String exeCommand(String command,Session session,Channel channel){
+    	String result = "";
+    	StringBuilder exeRes = new StringBuilder();
+    	try{
+    		session.setTimeout(5000);
+    		((ChannelExec) channel).setCommand(command);
+    		channel.setInputStream(null);
+    		((ChannelExec) channel).setErrStream(System.err);
+	        InputStream in = channel.getInputStream();
+	        channel.connect();
+	        byte[] tmp = new byte[1024];
+	        while (true) {
+	            while (in.available() > 0) {
+	                int i = in.read(tmp, 0, 1024);
+	                if (i < 0){
+	                	break;	
+	                }
+	                result = new String(tmp, 0, i);
+	                exeRes.append(result);
+	            }
+	            if (channel.isClosed()) {
+	                break;
+	            }
+	            try {
+	                Thread.sleep(1000);
+	            } catch (Exception e) {
+	            	result = e.toString();
+	            }
+	        }
+	        channel.disconnect();
+	        session.disconnect();
+    	}catch (Exception e) {
+    		result = e.toString();
+	    }
+    	System.out.println("result is:"+exeRes.toString());
+    	return exeRes.toString();
+    }
+
 	//Get channel
 	private Channel getChannel(Session session,String protocol){
 		Channel channel = null;
@@ -100,12 +134,7 @@ public class COMValidationService {
 	}
 	
 	public void cyFiles2Server(String src, String dest, String file){
-		Session session = null;
-        if(SystemUtils.IS_OS_WINDOWS){
-            session = getSession(this.username, this.ip, this.password);
-        }else{
-            session = getSession(this.ip);
-        } 
+		Session session = getSession();
 		Channel channel = getChannel(session,"sftp");
         ChannelSftp c = null;
         try {
@@ -133,12 +162,7 @@ public class COMValidationService {
 	}
 	
     public void opFirewall(String command){
-    	Session session = null;
-        if(SystemUtils.IS_OS_WINDOWS){
-            session = getSession(this.username, this.ip, this.password);
-        }else{
-            session = getSession(this.ip);
-        } 
+    	Session session = getSession();
         Channel channel = getChannel(session,"shell");
 		String finalCommand = command+"\n";
 		System.out.println("The firewall command: " + command); // NOSONAR
@@ -158,12 +182,7 @@ public class COMValidationService {
     }
     
 	public String excuteShell(String command){
-		Session session = null;
-        if(SystemUtils.IS_OS_WINDOWS){
-            session = getSession(this.username, this.ip, this.password);
-        }else{
-            session = getSession(this.ip);
-        } 
+		Session session = getSession();
         Channel channel = getChannel(session,"shell");
 		String finalCommand = command+"\n";
 		String string = null;
@@ -341,49 +360,19 @@ public class COMValidationService {
     	return checkRes;
     }
     
-    public String grReplicateData(){
-    	String rez = "+!";
-    	Session session = null;
-    	 try {
-    	        JSch jsch = new JSch();
-    	        if(SystemUtils.IS_OS_WINDOWS){
-    	        	 session = getSession(this.username, this.ip, this.password);
-    	        }else{
-    	        	 session = getSession(this.ip);
-    	        } 
-    	        System.out.println("Connection established.");
-    	        Channel channel = session.openChannel("exec");
-    	        ((ChannelExec) channel).setCommand("/tmp/test.sh"); //setting command
-    	        channel.setInputStream(null);
-    	        ((ChannelExec) channel).setErrStream(System.err);
-    	        InputStream in = channel.getInputStream();
-    	        channel.connect();
-    	        byte[] tmp = new byte[1024];
-    	        while (true) {
-    	            while (in.available() > 0) {
-    	                int i = in.read(tmp, 0, 1024);
-    	                if (i < 0)
-    	                    break;
-    	                System.out.print(new String(tmp, 0, i));
-    	                rez = new String(tmp, 0, i);
-    	            }
-    	            if (channel.isClosed()) {
-    	                System.out.println("exit-status: "+channel.getExitStatus());
-    	                break;
-    	            }
-    	            try {
-    	                Thread.sleep(1000);
-    	            } catch (Exception e) {
-    	                rez = e.toString();
-    	            }
-    	        }
-    	        channel.disconnect();
-    	        session.disconnect();
-    	    }
-    	    catch (Exception e) {
-    	        rez = e.toString();
-    	    }
-    	return rez;
+    public String grReplicateData(String script){
+    	String destination = DESTINATION;
+    	String source = SOURCE;
+    	Session session = getSession();
+    	Channel channel = null;
+    	cyFiles2Server(source,destination,REPLICATE_DATA);
+    	String command = destination+script;
+		try {
+			channel = session.openChannel("exec");
+		} catch (JSchException e1) { // NOSONAR
+			e1.printStackTrace(); // NOSONAR
+		}
+		return exeCommand(command,session,channel);
     }
 
 }

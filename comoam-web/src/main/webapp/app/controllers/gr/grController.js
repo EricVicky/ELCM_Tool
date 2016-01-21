@@ -5,7 +5,7 @@ angular.module('gr', [ 'ui.router',
                         'rcForm', 
                         'ghiscoding.validation',
                         'ngResource'])
-     .controller('grInstallController', function($scope, $q, $timeout, $log, 
+     .controller('grInstallController', function($scope, $q, $timeout, $log, KVMService,
             $state, GRService,monitorService,$modal) {
     	 $scope.ip_types = ["ipv4", "ipv6"];
     	 GRService.getComInstance().then(function( comstacks ){
@@ -174,7 +174,24 @@ angular.module('gr', [ 'ui.router',
     		 }
     		 $scope.gr_ip_changed();
     	 };
-    	 $scope.installGR = function() {
+    	 $scope.installGR = function(){
+ 	    	KVMService.comstackStatus($scope.gr_config.pri.deployment_prefix).then(function(status){
+         		var ACTION_IN_PROGRESS = 2;
+         		if(status.state == ACTION_IN_PROGRESS){
+         			window.confirm(status.lastAction.toLowerCase()+" has been proceed on selected VNF instance, please wait!");
+         		}else{
+         			KVMService.comstackStatus($scope.gr_config.sec.deployment_prefix).then(function(status){
+                 		var ACTION_IN_PROGRESS = 2;
+                 		if(status.state == ACTION_IN_PROGRESS){
+                 			window.confirm(status.lastAction.toLowerCase()+" has been proceed on selected VNF instance, please wait!");
+                 		}else{
+                             $scope.doInstallGR();
+                 		}
+                 	});
+         		}
+         	});
+ 	     };
+    	 $scope.doInstallGR = function() {
     		 if($scope.COMStack.length > 0){
     			 for(var i=0; i < $scope.COMStack.length; i++){
      		    	if($scope.COMStack[i].name == $scope.gr_config.pri.stackName){
