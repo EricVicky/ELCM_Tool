@@ -202,7 +202,7 @@
 												title="directory" validation="required" ng-init="backupConfig.backupLocation.local_backup_dir='/localbackup'"/>
 										</div>
 										<div class="form-group">
-											<label class="control-label" translate="FILE_NAME">Version</label> <input
+											<label class="control-label">File Name<label style="color:red">(must end with .tgz)</label></label> <input
 												name="version" class="form-control" type="text" validation="pattern=/^[0-9a-zA-Z_]+.tgz$/:alt=Invalid Filename|required"
 												ng-model="backupConfig.backupLocation.local_backup_file"
 												title="file name" ng-blur="checkname();init()"/>

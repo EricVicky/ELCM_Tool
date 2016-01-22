@@ -57,13 +57,13 @@ public class CheckController
     		List<COMStack> stacks =  cOMStackService.list();
             for(COMStack stack : stacks){
             	if(stack.getName().equals(stackName)){
-            		switch(stack.getActionResult()){  // NOSONAR
-            		case GRINSTALL_SUCCEED:
+            		switch(stack.getStatus()){  // NOSONAR
+            		case GRINSTALLED:
             			res.setMessage("GR installation succeed");
             			break;
-            		case GRINSTALL_FAIL:
+            		case STANDALONE:
             			res.setSucceed(false);
-                        res.setMessage("GR installation failed");
+                        res.setMessage("GR not installed");
                         break;
                     default:
                     	res.setSucceed(false);
@@ -76,27 +76,27 @@ public class CheckController
     	return res;    			
     }
     
-    @RequestMapping(value="/check/grReplicat_data", method=RequestMethod.GET)
-    public ValidationResult  repliacateData(@ModelAttribute("stackName") String stackName) 
-    {
-    	ValidationResult res = new ValidationResult();
-    	GRInstallConfig<KVMCOMConfig> config = new GRInstallConfig<>();
-    	config.setPri(getKVMCOMConfig(stackName));
-    	Map<String, VMConfig> vmconfigs = config.getPri().getVm_config();
-    	Iterator<String> iterator = vmconfigs.keySet().iterator();
-    	while(iterator.hasNext()){
-    		String vnfc = iterator.next();
-    		if(("oam").equals(vnfc)){
-    			VMConfig vmConfig = vmconfigs.get(vnfc);
-    			String oamIP = vmConfig.getNic().get(0).getIp_v4().getIpaddress();
-    			cOMValidationService.setIp(oamIP);
-    			break;
-    		}
-    	}
-    	String checkRes= cOMValidationService.grReplicateData("grReplicateData.sh");
-    	res.setMessage(checkRes);
-    	return res;    			
-    }
+//    @RequestMapping(value="/check/grReplicat_data", method=RequestMethod.GET)
+//    public ValidationResult  repliacateData(@ModelAttribute("stackName") String stackName) 
+//    {
+//    	ValidationResult res = new ValidationResult();
+//    	GRInstallConfig<KVMCOMConfig> config = new GRInstallConfig<>();
+//    	config.setPri(getKVMCOMConfig(stackName));
+//    	Map<String, VMConfig> vmconfigs = config.getPri().getVm_config();
+//    	Iterator<String> iterator = vmconfigs.keySet().iterator();
+//    	while(iterator.hasNext()){
+//    		String vnfc = iterator.next();
+//    		if(("oam").equals(vnfc)){
+//    			VMConfig vmConfig = vmconfigs.get(vnfc);
+//    			String oamIP = vmConfig.getNic().get(0).getIp_v4().getIpaddress();
+//    			cOMValidationService.setIp(oamIP);
+//    			break;
+//    		}
+//    	}
+//    	String checkRes= cOMValidationService.grReplicateData("grReplicateData.sh");
+//    	res.setMessage(checkRes);
+//    	return res;    			
+//    }
     
     @RequestMapping(value="/check/ping", method=RequestMethod.GET)
     public ValidationResult  ping(@ModelAttribute("host") String host) 
@@ -117,7 +117,7 @@ public class CheckController
     {
     	ValidationResult res = new ValidationResult();
     	cOMValidationService.setIp(hostip);
-    	String checkRes = cOMValidationService.cpuVTCheck(hostip);
+    	String checkRes = cOMValidationService.cpuVirtualCheck();
     	if(isSucceed(checkRes)){
 		    res.setSucceed(true);
     	}else{
@@ -243,7 +243,7 @@ public class CheckController
     		hostname.append(vmconfigs.get(vnfc).getHostname());
     	}
     	cOMValidationService.setIp(hostip);
-    	String checkRes= cOMValidationService.fullbackupPreCheck(hostip,fullbackupconfig.getConfig().getVm_img_dir()+"/"+fullbackupconfig.getConfig().getDeployment_prefix(),
+    	String checkRes= cOMValidationService.preCheckOfFullBackup(fullbackupconfig.getConfig().getVm_img_dir()+"/"+fullbackupconfig.getConfig().getDeployment_prefix(),
     			         hostname.toString(),fullbackupconfig.getRemote_server_ip(),fullbackupconfig.getRemote_server_dir());
     	if(!isSucceed(checkRes)){
     		res.setMessage(checkRes);
@@ -271,7 +271,7 @@ public class CheckController
     		hostname.append(vmconfigs.get(vnfc).getHostname());
     	}
     	cOMValidationService.setIp(hostip);
-    	String checkRes= cOMValidationService.fullrestorePreCheck(hostip,fullbackupconfig.getConfig().getVm_img_dir()+"/"+fullbackupconfig.getConfig().getDeployment_prefix(),
+    	String checkRes= cOMValidationService.preCheckOfFullRestore(fullbackupconfig.getConfig().getVm_img_dir()+"/"+fullbackupconfig.getConfig().getDeployment_prefix(),
     			         hostname.toString(),fullbackupconfig.getRemote_server_ip(),fullbackupconfig.getRemote_server_dir());
     	if(!isSucceed(checkRes)){
     		res.setMessage(checkRes);

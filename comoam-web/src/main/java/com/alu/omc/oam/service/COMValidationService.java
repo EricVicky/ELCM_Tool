@@ -21,19 +21,21 @@ import com.jcraft.jsch.JSchException;
 import com.jcraft.jsch.Session;
 @Service
 public class COMValidationService {
-	private static final String ROOT = "root";
-	private static final String SOURCE = "/opt/PlexView/ELCM/script/";
-	private static final String DESTINATION =	"/tmp/";
-	private static final String START_POINT =	"precheck start";
-	private static final String STRICT_HOST_KEY_CK = "StrictHostKeyChecking";
-	private static final String START_FIREWALL = "service iptables start";
-	private static final String STOP_FIREWALL = "service iptables stop";
-	private static final String CHECK_VT_SH = "check_VT_enable.sh";
-	private static final String FULLBACKUP_SH = "fullbackup_precheck.sh";
-	private static final String FULLRESTORE_SH = "fullrestore_precheck.sh";
-	private static final String DATABACKUP_SH = "databackup_precheck.sh";
-	private static final String DATARESTORE_SH = "datarestore_precheck.sh";
-	private static final String REPLICATE_DATA = "grReplicateData.sh";
+	
+	private final class COMMAND{
+		private static final String ROOT = "root";
+		private static final String SOURCE = "/opt/PlexView/ELCM/script/";
+		private static final String DESTINATION =	"/tmp/";
+		private static final String STRICT_HOST_KEY_CK = "StrictHostKeyChecking";
+		private static final String START_FIREWALL = "service iptables start";
+		private static final String STOP_FIREWALL = "service iptables stop";
+		private static final String CHECK_VT_SH = "check_VT_enable.sh";
+		private static final String FULLBACKUP_SH = "fullbackup_precheck.sh";
+		private static final String FULLRESTORE_SH = "fullrestore_precheck.sh";
+		private static final String DATABACKUP_SH = "databackup_precheck.sh";
+		private static final String DATARESTORE_SH = "datarestore_precheck.sh";
+		private static final String REPLICATE_DATA = "grReplicateData.sh";
+	}
  
 	@Resource
     private  CommandProtype commandProtype;
@@ -41,8 +43,8 @@ public class COMValidationService {
 	private String ip ;
 	private int port = 22;
 	private String password = "newsys"; // NOSONAR
-	
-    public void setUserName( String username ){
+
+	public void setUserName( String username ){
     	this.username = username;
     }
     
@@ -61,7 +63,7 @@ public class COMValidationService {
     		try{
     			session = jsch.getSession(this.username, this.ip, this.port);
     	        session.setPassword(password);
-    	        session.setConfig(STRICT_HOST_KEY_CK, "no");
+    	        session.setConfig(COMMAND.STRICT_HOST_KEY_CK, "no");
     	        session.connect();
     		}catch (JSchException e) { // NOSONAR
     			e.printStackTrace(); // NOSONAR
@@ -69,12 +71,12 @@ public class COMValidationService {
     	}else{
     		String privateKey = "/root/.ssh/id_rsa";
             java.util.Properties config = new java.util.Properties();
-            config.put(STRICT_HOST_KEY_CK, "no");
+            config.put(COMMAND.STRICT_HOST_KEY_CK, "no");
             try
             {
             	jsch.addIdentity(privateKey);
-                session = jsch.getSession(ROOT, this.ip, this.port);
-                session.setConfig(STRICT_HOST_KEY_CK, "no");
+                session = jsch.getSession(COMMAND.ROOT, this.ip, this.port);
+                session.setConfig(COMMAND.STRICT_HOST_KEY_CK, "no");
                 session.connect();
             }
             catch (JSchException e){ // NOSONAR
@@ -213,36 +215,35 @@ public class COMValidationService {
             channel.disconnect();
             session.disconnect();
 		}    	
-    	return trim(string);
+    	return string;
 	}
 	
-	private String trim(String stdout){
-		int fixPromoteLines=0;	
-		System.out.println("stdout:"+stdout); // NOSONAR
-		StringBuilder res = new StringBuilder();
-		if(stdout!=null && stdout.length() > 0){
-			String[] lines = stdout.split("\r\n");
-			System.out.println("The lines: " + lines); // NOSONAR
-			for(int i=0;i<lines.length;i++){
-				if(lines[i].equals(START_POINT)){
-					fixPromoteLines = i;
-					System.out.println("fix_promote_lines:"+fixPromoteLines); // NOSONAR
-				}
-			}
-			for(int i=fixPromoteLines+1; i< lines.length; i++){
-				if(lines[i].endsWith("# "))
-					break;
-				res.append(lines[i]);
-				if(i<lines.length-2){
-					res.append("\n");	
-				}
-			}
-		}
-		return res.toString();
-	}
-	
+    public String preCheck(String script,String command){
+    	String res = "";
+    	if(Host.isLocalHost(this.ip)){
+    		ICommandExec comamnda = commandProtype.create(COMMAND.SOURCE+command.substring(5));
+    	    try{
+    	        CommandResult commandRes = comamnda.execute();
+    	        res = commandRes.getOutputString();
+            }catch(Exception e){// NOSONAR
+            	e.printStackTrace();// NOSONAR
+            }
+    	}else{
+    		//cyFiles2Server(SOURCE,DESTINATION,script);
+    		Session session = getSession();
+    		try {
+    			opFirewall(COMMAND.STOP_FIREWALL);
+    			Channel channel = session.openChannel("exec");
+    			res = exeCommand(command,session,channel);
+    		} catch (Exception e) {// NOSONAR
+    			e.printStackTrace();// NOSONAR
+    		} finally {
+    			opFirewall(COMMAND.START_FIREWALL);
+    		}	
+    	}
+		return res;	
+    }
 
-	
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	//Above are defined function. Below are detail function
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////    
@@ -254,107 +255,38 @@ public class COMValidationService {
     	return resutlCheckCOM.contains("Number of stopped process(es) : 0")?true:false;
     } 
     
-    public String cpuVTCheck(String hostip){
-    	String checkRes = "";
-    	String source = SOURCE;
-    	String destination = DESTINATION; 
-    	if(Host.isLocalHost(hostip)){
-    		String script = source+CHECK_VT_SH;
-    		ICommandExec comamnda = commandProtype.create(script);
-    		try{
-    	        CommandResult res = comamnda.execute();
-    	        checkRes = res.getOutputString();
-            }catch(Exception e){ // NOSONAR
-            	e.printStackTrace();// NOSONAR
-            }
-    	}else{
-    		cyFiles2Server(source,destination,CHECK_VT_SH);
-    		String script = destination+CHECK_VT_SH;
-    		checkRes = excuteShell(script);		
-    	}
-    	return checkRes;
-    } 
-    
-    private String deal(String stdout){
-    	String[] lines = stdout.split("\n");
-    	return lines[1]+lines[2];
+    public String cpuVirtualCheck(){
+    	String command = COMMAND.DESTINATION+COMMAND.CHECK_VT_SH;
+    	return preCheck(COMMAND.CHECK_VT_SH,command);
     }
     
-    public String fullbackupPreCheck(String hostip,String localBackupDir,String hostname,String remoteip,String remotedir){
-    	String checkRes = "";
-    	String source = SOURCE;
-    	String destination = DESTINATION; 
-		String remoteBackupDir = remoteip == ""?"":remoteip + ":" + remotedir;
-    	if(Host.isLocalHost(hostip)){
-    		String script = source+FULLBACKUP_SH;
-    		ICommandExec comamnda = commandProtype.create(script+" "+localBackupDir+" "+hostname+" "+remoteBackupDir);
-    	    try{
-    	        CommandResult res = comamnda.execute();
-    	        checkRes = deal(res.getOutputString());
-            }catch(Exception e){// NOSONAR
-            	e.printStackTrace();// NOSONAR
-            }
-    	}else{
-    		cyFiles2Server(source,destination,FULLBACKUP_SH);
-    		String script = destination+FULLBACKUP_SH;
-    		checkRes = excuteShell(script+" "+localBackupDir+" "+hostname+" "+remoteBackupDir);	
-    	}
-    	return checkRes;
-    }
-    
-    public String fullrestorePreCheck(String hostip,String localBackupDir,String hostname,String remoteip,String remotedir){
-    	String checkRes = "";
-    	String source = SOURCE;
-    	String destination = DESTINATION; 
+    public String preCheckOfFullRestore(String localdir,String hostname,String remoteip,String remotedir){
     	String remoteBackupDir = remoteip == ""?"":remoteip + ":" + remotedir;
-		if(Host.isLocalHost(hostip)){
-    		String script = source+FULLRESTORE_SH;
-    		ICommandExec comamnda = commandProtype.create(script+" "+localBackupDir+" "+hostname+" "+remoteBackupDir);
-    	    try{
-    	        CommandResult res = comamnda.execute();
-    	        checkRes = deal(res.getOutputString()); 
-            }catch(Exception e){// NOSONAR
-            	e.printStackTrace();// NOSONAR
-            }
-    	}else{
-    		cyFiles2Server(source,destination,FULLRESTORE_SH);
-    		String script = destination+FULLRESTORE_SH;
-    		checkRes = excuteShell(script+" "+localBackupDir+" "+hostname+" "+remoteBackupDir);	
-    	}
-    	return checkRes;
+    	String command = COMMAND.DESTINATION+COMMAND.FULLRESTORE_SH+" "+localdir+" "+hostname+" "+remoteBackupDir;
+    	return preCheck(COMMAND.FULLRESTORE_SH,command);
     }
     
-    public String preCheck(String script,String command){
-    	cyFiles2Server(SOURCE,DESTINATION,script);
-    	String res = "";
-    	Session session = getSession();
-    	try {
-			opFirewall(STOP_FIREWALL);
-			Channel channel = session.openChannel("exec");
-    		res = exeCommand(command,session,channel);
-		} catch (Exception e) {// NOSONAR
-			e.printStackTrace();// NOSONAR
-		} finally {
-			opFirewall(START_FIREWALL);
-		}
-		return res;	
+    public String preCheckOfFullBackup(String localdir,String hostname,String remoteip,String remotedir){
+    	String remoteBackupDir = remoteip == ""?"":remoteip + ":" + remotedir;
+    	String command = COMMAND.DESTINATION+COMMAND.FULLBACKUP_SH+" "+localdir+" "+hostname+" "+remoteBackupDir;
+    	return preCheck(COMMAND.FULLBACKUP_SH,command);
     }
     
     public String preCheckOfDataBackup(String localdir,String filename,String remoteip,String remotedir){
     	String remoteBackupDir = remoteip == ""?"":remoteip + ":" + remotedir;
-    	String command = DESTINATION+DATABACKUP_SH+" "+localdir+" "+filename+" "+remoteBackupDir;
-		return preCheck(DATABACKUP_SH,command);
+    	String command = COMMAND.DESTINATION+COMMAND.DATABACKUP_SH+" "+localdir+" "+filename+" "+remoteBackupDir;
+		return preCheck(COMMAND.DATABACKUP_SH,command);
     }
     
     public String preCheckOfDataRestore(String localdir,String filename,String hostname,String remoteip,String remotedir){
     	String remoteBackupDir = remoteip == ""?"":remoteip + ":" + remotedir;
-    	String command = DESTINATION+DATARESTORE_SH+" "+localdir+" "+hostname+" "+filename+" "+remoteBackupDir;
-    	return preCheck(DATARESTORE_SH,command);
+    	String command = COMMAND.DESTINATION+COMMAND.DATARESTORE_SH+" "+localdir+" "+hostname+" "+filename+" "+remoteBackupDir;
+    	return preCheck(COMMAND.DATARESTORE_SH,command);
     }
     
     public String grReplicateData(String script){
-    	String command = DESTINATION+script;
-    	return preCheck(REPLICATE_DATA,command);
+    	String command = COMMAND.DESTINATION+script;
+    	return preCheck(COMMAND.REPLICATE_DATA,command);
     }
 
 }
