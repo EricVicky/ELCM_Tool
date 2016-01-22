@@ -221,6 +221,7 @@ public class COMValidationService {
     public String preCheck(String script,String command){
     	String res = "";
     	if(Host.isLocalHost(this.ip)){
+    		System.out.println(COMMAND.SOURCE+command.substring(5));
     		ICommandExec comamnda = commandProtype.create(COMMAND.SOURCE+command.substring(5));
     	    try{
     	        CommandResult commandRes = comamnda.execute();
@@ -229,7 +230,7 @@ public class COMValidationService {
             	e.printStackTrace();// NOSONAR
             }
     	}else{
-    		//cyFiles2Server(SOURCE,DESTINATION,script);
+    		cyFiles2Server(COMMAND.SOURCE,COMMAND.DESTINATION,script);
     		Session session = getSession();
     		try {
     			opFirewall(COMMAND.STOP_FIREWALL);
