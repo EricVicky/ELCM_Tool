@@ -3,9 +3,13 @@ package com.alu.omc.oam.service;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.HashMap;
+import java.util.Hashtable;
+import java.util.Map;
 
 import javax.annotation.Resource;
 
+import org.apache.commons.exec.environment.EnvironmentUtils;
 import org.apache.commons.lang3.SystemUtils;
 import org.springframework.stereotype.Service;
 
@@ -86,11 +90,15 @@ public class COMValidationService {
     	return session;
     }
     
-    public String exeCommand(String command,Session session,Channel channel){
+//    @SuppressWarnings("deprecation")
+	public String exeCommand(String command,Session session,Channel channel){
     	String result = "";
     	StringBuilder exeRes = new StringBuilder();
     	try{
     		session.setTimeout(1000);
+//    		Hashtable<String, String> envs = new Hashtable <String, String>();
+//    		envs.putAll( EnvironmentUtils.getProcEnvironment());
+//    		((ChannelExec) channel).setEnv(envs);
     		((ChannelExec) channel).setCommand(command);
     		channel.setInputStream(null);
     		((ChannelExec) channel).setErrStream(System.err);
