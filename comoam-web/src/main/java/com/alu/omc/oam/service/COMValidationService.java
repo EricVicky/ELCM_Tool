@@ -91,15 +91,11 @@ public class COMValidationService {
     	return session;
     }
     
-//    @SuppressWarnings("deprecation")
 	public String exeCommand(String command,Session session,Channel channel){
     	String result = "";
     	StringBuilder exeRes = new StringBuilder();
     	try{
-    		session.setTimeout(1000);
-//    		Hashtable<String, String> envs = new Hashtable <String, String>();
-//    		envs.putAll( EnvironmentUtils.getProcEnvironment());
-//    		((ChannelExec) channel).setEnv(envs);
+    		session.setTimeout(800);
     		((ChannelExec) channel).setCommand(command);
     		channel.setInputStream(null);
     		((ChannelExec) channel).setErrStream(System.err);
@@ -158,11 +154,10 @@ public class COMValidationService {
             c.put(fsrc+file, fdest);
             c.chmod(744, fdest+file);
             c.disconnect();
+            channel.disconnect();
+            session.disconnect();
         } catch (Exception e) {	// NOSONAR
         	e.printStackTrace();	// NOSONAR
-        } finally {
-        	channel.disconnect();
-            session.disconnect();
         }
 	}
 	
