@@ -18,6 +18,13 @@ angular.module('validation',[]).factory('validationService', function($location,
 		    });
 		    return deferred.promise;
 		},
+		test: function (stackName) {
+			var deferred = $q.defer();
+		    $http.get(restUrl + "check/grReplicat_data", {"params": {"stackName": stackName}}).success(function(res) {
+		        deferred.resolve({ isValid: res.succeed, message: res.message });
+		    });
+		    return deferred.promise;
+		},
 		fullbackupPreCheck:function(fullbackupConfig){
 			var Res = $resource(restUrl + "check/fullbackupPreCheck");
 			return Res.save(fullbackupConfig).$promise;

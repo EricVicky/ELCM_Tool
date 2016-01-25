@@ -76,27 +76,27 @@ public class CheckController
     	return res;    			
     }
     
-//    @RequestMapping(value="/check/grReplicat_data", method=RequestMethod.GET)
-//    public ValidationResult  repliacateData(@ModelAttribute("stackName") String stackName) 
-//    {
-//    	ValidationResult res = new ValidationResult();
-//    	GRInstallConfig<KVMCOMConfig> config = new GRInstallConfig<>();
-//    	config.setPri(getKVMCOMConfig(stackName));
-//    	Map<String, VMConfig> vmconfigs = config.getPri().getVm_config();
-//    	Iterator<String> iterator = vmconfigs.keySet().iterator();
-//    	while(iterator.hasNext()){
-//    		String vnfc = iterator.next();
-//    		if(("oam").equals(vnfc)){
-//    			VMConfig vmConfig = vmconfigs.get(vnfc);
-//    			String oamIP = vmConfig.getNic().get(0).getIp_v4().getIpaddress();
-//    			cOMValidationService.setIp(oamIP);
-//    			break;
-//    		}
-//    	}
-//    	String checkRes= cOMValidationService.grReplicateData("grReplicateData.sh");
-//    	res.setMessage(checkRes);
-//    	return res;    			
-//    }
+    @RequestMapping(value="/check/grReplicat_data", method=RequestMethod.GET)
+    public ValidationResult  repliacateData(@ModelAttribute("stackName") String stackName) 
+    {
+    	ValidationResult res = new ValidationResult();
+    	GRInstallConfig<KVMCOMConfig> config = new GRInstallConfig<>();
+    	config.setPri(getKVMCOMConfig(stackName));
+    	Map<String, VMConfig> vmconfigs = config.getPri().getVm_config();
+    	Iterator<String> iterator = vmconfigs.keySet().iterator();
+    	while(iterator.hasNext()){
+    		String vnfc = iterator.next();
+    		if(("oam").equals(vnfc)){
+    			VMConfig vmConfig = vmconfigs.get(vnfc);
+    			String oamIP = vmConfig.getNic().get(0).getIp_v4().getIpaddress();
+    			cOMValidationService.setIp(oamIP);
+    			break;
+    		}
+    	}
+    	String checkRes= cOMValidationService.grReplicateData("grReplicateData.sh");
+    	res.setMessage(checkRes);
+    	return res;    			
+    }
     
     @RequestMapping(value="/check/ping", method=RequestMethod.GET)
     public ValidationResult  ping(@ModelAttribute("host") String host) 
