@@ -295,7 +295,7 @@ public class COMValidationService {
     
     public String grReplicateData(String script){
     	String command = COMMAND.DESTINATION+"get_GRRole.sh";
-    	return preCheck(COMMAND.REPLICATE_DATA,command);
+    	return preCheck("get_GRRole.sh",command);
     }
 
 }
