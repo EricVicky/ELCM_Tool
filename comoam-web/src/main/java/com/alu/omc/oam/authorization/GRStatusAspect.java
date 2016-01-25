@@ -2,6 +2,7 @@ package com.alu.omc.oam.authorization;
 
 import java.io.Serializable;
 import java.lang.reflect.Method;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -62,31 +63,38 @@ public class GRStatusAspect implements  Serializable{
 				break;
 			}
 		}
-    	List<COMStack> stacks =  dataSource.list();
-		for(COMStack stack : stacks){
-			KVMCOMConfig config = getKVMCOMConfig(stack.getName());
-			Map<String, VMConfig> vmconfigs = config.getVm_config();
-			Iterator<String> iterator = vmconfigs.keySet().iterator();
-	    	while(iterator.hasNext()){
-	    		String vnfc = iterator.next();
-	    		if(("oam").equals(vnfc)){
-	    			VMConfig vmConfig = vmconfigs.get(vnfc);
-	    			String oamIP = vmConfig.getNic().get(0).getIp_v4().getIpaddress();
-	    			cOMValidationService.setIp(oamIP);
-	    			break;
-	    		}
-	    	}
-	    	String checkRes = cOMValidationService.updateGRRole();
-			if(checkRes.contains("act")){
-				stack.setRole(GRROLE.Primary);
-				dataSource.save(stacks);
-			}else if (checkRes.contains("stby")){
-				stack.setRole(GRROLE.Secondary);
-				dataSource.save(stacks);
-			}else{
-				continue;
-			}
-		}
+//    	List<COMStack> stacks =  dataSource.list();
+//		for(COMStack stack : stacks){
+//			long s=stack.getUpdatedate().getTime();
+//			Date date = new Date();
+//			
+//			
+//			
+//			
+//			
+//			KVMCOMConfig config = getKVMCOMConfig(stack.getName());
+//			Map<String, VMConfig> vmconfigs = config.getVm_config();
+//			Iterator<String> iterator = vmconfigs.keySet().iterator();
+//	    	while(iterator.hasNext()){
+//	    		String vnfc = iterator.next();
+//	    		if(("oam").equals(vnfc)){
+//	    			VMConfig vmConfig = vmconfigs.get(vnfc);
+//	    			String oamIP = vmConfig.getNic().get(0).getIp_v4().getIpaddress();
+//	    			cOMValidationService.setIp(oamIP);
+//	    			break;
+//	    		}
+//	    	}
+//	    	String checkRes = cOMValidationService.updateGRRole();
+//			if(checkRes.contains("act")){
+//				stack.setRole(GRROLE.Primary);
+//				dataSource.save(stacks);
+//			}else if (checkRes.contains("stby")){
+//				stack.setRole(GRROLE.Secondary);
+//				dataSource.save(stacks);
+//			}else{
+//				continue;
+//			}
+//		}
 		Object[] args = joinPoint.getArgs();
 		Object retValue = joinPoint.proceed(args);
 		return retValue;
