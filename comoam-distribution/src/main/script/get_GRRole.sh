@@ -1,3 +1,4 @@
 #!/bin/bash
+#env|grep scripts
 
-omc_stat | grep 'THIS SERVER ROLE'
+/alcatel/omc1/OMC_MON/scripts/tools/omc_stat | grep 'THIS SERVER ROLE'
