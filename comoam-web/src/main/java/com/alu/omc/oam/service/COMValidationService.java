@@ -227,6 +227,19 @@ public class COMValidationService {
     	return string;
 	}
 	
+	public String getGRRole(String script,String command){
+		String res = "";
+		cyFiles2Server(COMMAND.SOURCE,COMMAND.DESTINATION,script);
+		Session session = getSession();
+		try {
+			Channel channel = session.openChannel("exec");
+			res = exeCommand(command,session,channel);
+		} catch (Exception e) {// NOSONAR
+			e.printStackTrace();// NOSONAR
+		}	
+		return res;	
+	}
+	
     public String preCheck(String script,String command){
     	String res = "";
     	if(Host.isLocalHost(this.ip)){
@@ -301,7 +314,7 @@ public class COMValidationService {
     
     public String updateGRRole(){
     	String command = COMMAND.DESTINATION+COMMAND.GETGRROLE;
-    	return preCheck(COMMAND.GETGRROLE,command);
+    	return getGRRole(COMMAND.GETGRROLE,command);
     }
 
 }
