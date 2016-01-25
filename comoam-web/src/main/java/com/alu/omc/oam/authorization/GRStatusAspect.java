@@ -77,10 +77,10 @@ public class GRStatusAspect implements  Serializable{
 	    		}
 	    	}
 	    	String checkRes = cOMValidationService.updateGRRole();
-			if(checkRes.contains("Primary")){
+			if(checkRes.contains("act")){
 				stack.setRole(GRROLE.Primary);
 				dataSource.save(stacks);
-			}else if (checkRes.contains("Secondary")){
+			}else if (checkRes.contains("stby")){
 				stack.setRole(GRROLE.Secondary);
 				dataSource.save(stacks);
 			}else{
