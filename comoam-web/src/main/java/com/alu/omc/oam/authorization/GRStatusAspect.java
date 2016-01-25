@@ -16,8 +16,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import com.alu.omc.oam.ansible.persistence.JsonDataSource;
 import com.alu.omc.oam.config.COMStack;
 import com.alu.omc.oam.config.GRInstallConfig;
+import com.alu.omc.oam.config.GRROLE;
 import com.alu.omc.oam.config.KVMCOMConfig;
 import com.alu.omc.oam.config.Status;
 import com.alu.omc.oam.config.VMConfig;
@@ -41,6 +44,8 @@ public class GRStatusAspect implements  Serializable{
 	@Resource
 	@Autowired
     COMStackService cOMStackService;
+	@Resource
+    private JsonDataSource dataSource;
     
 	private static Logger log = LoggerFactory.getLogger(GRStatusAspect.class);
 
@@ -57,31 +62,31 @@ public class GRStatusAspect implements  Serializable{
 				break;
 			}
 		}
-//		List<COMStack> stacks =  cOMStackService.list();
-//		for(COMStack stack : stacks){
-//			if(stack.getStatus()==Status.GRINSTALLED){
-//				GRInstallConfig<KVMCOMConfig> config = new GRInstallConfig<>();
-//				config.setPri(getKVMCOMConfig(stack.getName()));
-//				Map<String, VMConfig> vmconfigs = config.getPri().getVm_config();
-//				Iterator<String> iterator = vmconfigs.keySet().iterator();
-//		    	while(iterator.hasNext()){
-//		    		String vnfc = iterator.next();
-//		    		if(("oam").equals(vnfc)){
-//		    			VMConfig vmConfig = vmconfigs.get(vnfc);
-//		    			String oamIP = vmConfig.getNic().get(0).getIp_v4().getIpaddress();
-//		    			cOMValidationService.setIp(oamIP);
-//		    			break;
-//		    		}
-//		    	}
-//		    	String checkRes = cOMValidationService.cpuVirtualCheck();
-//		    	if(checkRes == ""){
-//		    		//stack.setRole();
-//		    		cOMStackService.update(stack);		
-//		    	}
-//			}else{
-//				continue;
-//			}
-//		}
+    	List<COMStack> stacks =  dataSource.list();
+		for(COMStack stack : stacks){
+			KVMCOMConfig config = getKVMCOMConfig(stack.getName());
+			Map<String, VMConfig> vmconfigs = config.getVm_config();
+			Iterator<String> iterator = vmconfigs.keySet().iterator();
+	    	while(iterator.hasNext()){
+	    		String vnfc = iterator.next();
+	    		if(("oam").equals(vnfc)){
+	    			VMConfig vmConfig = vmconfigs.get(vnfc);
+	    			String oamIP = vmConfig.getNic().get(0).getIp_v4().getIpaddress();
+	    			cOMValidationService.setIp(oamIP);
+	    			break;
+	    		}
+	    	}
+	    	String checkRes = cOMValidationService.updateGRRole();
+			if(checkRes.contains("Primary")){
+				stack.setRole(GRROLE.Primary);
+				dataSource.save(stacks);
+			}else if (checkRes.contains("Secondary")){
+				stack.setRole(GRROLE.Secondary);
+				dataSource.save(stacks);
+			}else{
+				continue;
+			}
+		}
 		Object[] args = joinPoint.getArgs();
 		Object retValue = joinPoint.proceed(args);
 		return retValue;

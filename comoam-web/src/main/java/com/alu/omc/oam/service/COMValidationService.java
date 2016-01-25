@@ -39,6 +39,7 @@ public class COMValidationService {
 		private static final String DATABACKUP_SH = "databackup_precheck.sh";
 		private static final String DATARESTORE_SH = "datarestore_precheck.sh";
 		private static final String REPLICATE_DATA = "grReplicateData.sh";
+		private static final String GETGRROLE = "get_GRRole.sh";
 	}
  
 	@Resource
@@ -294,8 +295,13 @@ public class COMValidationService {
     }
     
     public String grReplicateData(String script){
-    	String command = COMMAND.DESTINATION+"get_GRRole.sh";
-    	return preCheck("get_GRRole.sh",command);
+    	String command = COMMAND.DESTINATION+script;
+    	return preCheck(COMMAND.REPLICATE_DATA,command);
+    }
+    
+    public String updateGRRole(){
+    	String command = COMMAND.DESTINATION+COMMAND.GETGRROLE;
+    	return preCheck(COMMAND.GETGRROLE,command);
     }
 
 }
