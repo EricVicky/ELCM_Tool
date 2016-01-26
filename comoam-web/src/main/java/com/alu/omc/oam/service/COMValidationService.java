@@ -79,6 +79,7 @@ public class COMValidationService {
             config.put(COMMAND.STRICT_HOST_KEY_CK, "no");
             try
             {
+            	session.setTimeout(1000);
             	jsch.addIdentity(privateKey);
                 session = jsch.getSession(COMMAND.ROOT, this.ip, this.port);
                 session.setConfig(COMMAND.STRICT_HOST_KEY_CK, "no");
@@ -95,7 +96,7 @@ public class COMValidationService {
     	String result = "";
     	StringBuilder exeRes = new StringBuilder();
     	try{
-    		session.setTimeout(100);
+    		session.setTimeout(800);
     		((ChannelExec) channel).setCommand(command);
     		channel.setInputStream(null);
     		((ChannelExec) channel).setErrStream(System.err);
