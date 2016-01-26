@@ -81,9 +81,9 @@ public class COMValidationService {
             {
             	jsch.addIdentity(privateKey);
                 session = jsch.getSession(COMMAND.ROOT, this.ip, this.port);
-                session.setTimeout(1000);
                 session.setConfig(COMMAND.STRICT_HOST_KEY_CK, "no");
                 session.connect();
+                session.setTimeout(1000);
             }
             catch (JSchException e){ // NOSONAR
                 e.printStackTrace();// NOSONAR
