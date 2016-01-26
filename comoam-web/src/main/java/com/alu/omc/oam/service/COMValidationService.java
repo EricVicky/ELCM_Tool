@@ -95,7 +95,7 @@ public class COMValidationService {
     	String result = "";
     	StringBuilder exeRes = new StringBuilder();
     	try{
-    		session.setTimeout(800);
+    		session.setTimeout(100);
     		((ChannelExec) channel).setCommand(command);
     		channel.setInputStream(null);
     		((ChannelExec) channel).setErrStream(System.err);
