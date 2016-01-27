@@ -17,12 +17,12 @@ angular.module('datatable',['ui.grid', 'ui.grid.resizeColumns']).controller('dat
             enableFiltering: true,
 			columnDefs: [
 			             {displayName: 'COM Name',  name: 'name',
-			            	 //enableFiltering: false,
-                        	 //enableColumnMenu: false,
+			            	 enableFiltering: false,
+                        	 enableColumnMenu: false,
 			            	 width:100
 			             },
 			             {displayName: 'VNF Type',  name: 'comType',
-			            	 //enableFiltering: false,
+			            	 enableFiltering: false,
                         	 enableColumnMenu: false,
 			            	 width:90
 			             },
