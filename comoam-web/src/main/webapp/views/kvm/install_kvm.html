@@ -270,30 +270,162 @@
 															<td colspan="4" translate="PREFIX_OF_VM_INS">Prefix of VM Instance</td>
 															<td colspan="2">{{installConfig.deployment_prefix}}</td>
 														</tr>
-														
-														<tr align="center" ng-repeat-start="VM in installConfig.vm_config" ng-if="installConfig.comType=='FCAPS' || installConfig.comType=='OAM' || installConfig.comType=='CM'">
-															<td rowspan="{{VM.nic.length*2+3}}" width="15%" align="center" style="vertical-align: middle">{{VM.hostname}}</td>
+														<tr align="center"
+															ng-if="installConfig.comType=='FCAPS' || installConfig.comType=='OAM' || installConfig.comType=='CM' || installConfig.comType=='QoSAC'">
+															<td rowspan="{{ networktraffic*2 + 2 }}" width="15%" align="center"
+																style="vertical-align: middle" translate="OAM_VM">OAM VM</td>
+															<div ng-if="installConfig.vm_config.oam.nic[0]">
+																<td rowspan="2" width="15%" align="center"
+																	style="vertical-align: middle">{{installConfig.vm_config.oam.nic[0].name}}</td>
+																<td rowspan="2" width="15%" align="center" style="vertical-align: middle" translate="BRIDGE">Bridge</td>
+																<td rowspan="2" width="10%" align="center" style="vertical-align: middle">{{installConfig.vm_config.oam.nic[0].bridge}}</td>
+																<td width="10%" translate="IPV4">IPv4</td>
+																<td>ip:{{installConfig.vm_config.oam.nic[0].ip_v4.ipaddress}}/{{installConfig.vm_config.oam.nic[0].ip_v4.prefix}} gateway:{{installConfig.vm_config.oam.nic[0].ip_v4.gateway}}</td>
+															</div>
 														</tr>
-														<tr align="center" ng-repeat-start="NIC in VM.nic" ng-if="installConfig.comType=='FCAPS' || installConfig.comType=='OAM' || installConfig.comType=='CM'">
-															<td rowspan="2" width="15%" align="center" style="vertical-align: middle">{{NIC.name}}</td>
-															<td rowspan="2" width="15%" align="center" style="vertical-align: middle" translate="BRIDGE">Bridge</td>
-															<td rowspan="2" align="center" style="vertical-align: middle">{{NIC.bridge}}</td>
-															<td width="10%" translate="IPV4">IPv4</td>
-															<td>ip:{{NIC.ip_v4.ipaddress}}/{{NIC.ip_v4.prefix}} gateway:{{NIC.ip_v4.gateway}}</td>
-														</tr>
-														<tr align="center" ng-repeat-end ng-if="installConfig.comType=='FCAPS' || installConfig.comType=='OAM' || installConfig.comType=='CM'">
+														<tr align="center"
+															ng-if="installConfig.comType=='FCAPS' || installConfig.comType=='OAM' || installConfig.comType=='CM' || installConfig.comType=='QoSAC'">
 															<td width="10%" translate="IPV6">IPv6</td>
-															<td>ip:{{NIC.ip_v6.ipaddress}}/{{NIC.ip_v6.prefix}} gateway:{{NIC.ip_v6.gateway}}</td>
+															<td>ip:{{installConfig.vm_config.oam.nic[0].ip_v6.ipaddress}}/{{installConfig.vm_config.oam.nic[0].ip_v6.prefix}} gateway:{{installConfig.vm_config.oam.nic[0].ip_v6.gateway}}</td>
 														</tr>
-														<tr align="center" ng-if="installConfig.comType=='FCAPS' || installConfig.comType=='OAM' || installConfig.comType=='CM'">
+														<tr align="center" ng-if="installConfig.vm_config.oam.nic[1]">
+															<td rowspan="2" width="15%" align="center"
+																style="vertical-align: middle">{{installConfig.vm_config.oam.nic[1].name}}</td>
+															<td rowspan="2" width="15%" align="center" style="vertical-align: middle" translate="BRIDGE">Bridge</td>
+															<td rowspan="2" align="center" style="vertical-align: middle">{{installConfig.vm_config.oam.nic[1].bridge}}</td>
+															<td width="10%" translate="IPV4">IPv4</td>
+															<td>ip:{{installConfig.vm_config.oam.nic[1].ip_v4.ipaddress}}/{{installConfig.vm_config.oam.nic[1].ip_v4.prefix}} gateway:{{installConfig.vm_config.oam.nic[1].ip_v4.gateway}}</td>
+														</tr>
+														<tr align="center" ng-if="installConfig.vm_config.oam.nic[1]">
+															<td width="10%" translate="IPV6">IPv6</td>
+															<td>ip:{{installConfig.vm_config.oam.nic[1].ip_v6.ipaddress}}/{{installConfig.vm_config.oam.nic[1].ip_v6.prefix}} gateway:{{installConfig.vm_config.oam.nic[1].ip_v6.gateway}}</td>
+														</tr>
+														<tr align="center" ng-if="installConfig.vm_config.oam.nic[2]">
+															<td rowspan="2" width="15%" align="center"
+																	style="vertical-align: middle">{{installConfig.vm_config.oam.nic[2].name}}</td>
+															<td rowspan="2" width="15%" align="center" style="vertical-align: middle" translate="BRIDGE">Bridge</td>
+															<td rowspan="2" align="center" style="vertical-align: middle">{{installConfig.vm_config.oam.nic[2].bridge}}</td>
+															<td width="10%" translate="IPV4">IPv4</td>
+															<td>ip:{{installConfig.vm_config.oam.nic[2].ip_v4.ipaddress}}/{{installConfig.vm_config.oam.nic[2].ip_v4.prefix}} gateway:{{installConfig.vm_config.oam.nic[2].ip_v4.gateway}}</td>
+														</tr>
+														<tr align="center" ng-if="installConfig.vm_config.oam.nic[2]">
+															<td width="10%" translate="IPV6">IPv6</td>
+															<td>ip:{{installConfig.vm_config.oam.nic[2].ip_v6.ipaddress}}/{{installConfig.vm_config.oam.nic[2].ip_v6.prefix}} gateway:{{installConfig.vm_config.oam.nic[2].ip_v6.gateway}}</td>
+														</tr>
+														<tr align="center"
+															ng-if="installConfig.comType=='FCAPS' || installConfig.comType=='OAM' || installConfig.comType=='CM' || installConfig.comType=='QoSAC'">
 															<td translate="FLAVOR" colspan="3">Flavor</td>
-															<td colspan="2">vCPU:{{VM.flavor.vCpu}}&nbsp;&nbsp;Memory:{{VM.flavor.memory/1024/1024}}GB&nbsp;&nbsp;Disk:{{VM.flavor.disk}}GB</td>
+															<td colspan="2">vCPU:{{installConfig.vm_config.oam.flavor.vCpu}}&nbsp;&nbsp;Memory:{{installConfig.vm_config.oam.flavor.memory/1024/1024}}GB&nbsp;&nbsp;Disk:{{final_disk.oam.disk}}GB</td>
 														</tr>
-														<tr align="center" ng-repeat-end ng-if="installConfig.comType=='FCAPS' || installConfig.comType=='OAM' || installConfig.comType=='CM'">
-															<td colspan="3">Image</td>
-															<td colspan="2">{{VM.imgname}}</td>
+														<tr align="center"
+															ng-if="installConfig.comType=='FCAPS' || installConfig.comType=='OAM' || installConfig.comType=='CM' || installConfig.comType=='QoSAC'">
+															<td translate="OAM_IMAGE" colspan="3">OAM image</td>
+															<td colspan="2">{{installConfig.oam_cm_image}}</td>
 														</tr>
-														
+														<tr align="center"
+															ng-if="installConfig.comType=='FCAPS' || installConfig.comType=='OAM' || installConfig.comType=='CM'">
+															<td rowspan="{{ networktraffic*2 + 2 }}" width="15%" align="center"
+																style="vertical-align: middle" translate="">DB VM</td>
+															<div ng-if="installConfig.vm_config.db.nic[0]">
+																<td rowspan="2" width="15%" align="center"
+																	style="vertical-align: middle">{{installConfig.vm_config.db.nic[0].name}}</td>
+																<td rowspan="2" width="15%" align="center" style="vertical-align: middle" translate="BRIDGE">Bridge</td>
+																<td rowspan="2" align="center" style="vertical-align: middle">{{installConfig.vm_config.db.nic[0].bridge}}</td>
+																<td width="10%" translate="IPV4">IPv4</td>
+																<td>ip:{{installConfig.vm_config.db.nic[0].ip_v4.ipaddress}}/{{installConfig.vm_config.db.nic[0].ip_v4.prefix}} gateway:{{installConfig.vm_config.db.nic[0].ip_v4.gateway}}</td>
+															</div>
+														</tr>
+														<tr align="center"
+															ng-if="installConfig.comType=='FCAPS' || installConfig.comType=='OAM' || installConfig.comType=='CM'">
+															<td width="10%" translate="IPV6">IPv6</td>
+															<td>ip:{{installConfig.vm_config.db.nic[0].ip_v6.ipaddress}}/{{installConfig.vm_config.db.nic[0].ip_v6.prefix}} gateway:{{installConfig.vm_config.db.nic[0].ip_v6.gateway}}</td>
+														</tr>
+														<tr align="center" ng-if="installConfig.vm_config.db.nic[1]">
+															<td rowspan="2" width="15%" align="center"
+																	style="vertical-align: middle">{{installConfig.vm_config.db.nic[1].name}}</td>
+															<td rowspan="2" width="15%" align="center" style="vertical-align: middle" translate="BRIDGE">Bridge</td>
+															<td rowspan="2" align="center" style="vertical-align: middle">{{installConfig.vm_config.db.nic[1].bridge}}</td>
+															<td width="10%" translate="IPV4">IPv4</td>
+															<td>ip:{{installConfig.vm_config.db.nic[1].ip_v4.ipaddress}}/{{installConfig.vm_config.db.nic[1].ip_v4.prefix}} gateway:{{installConfig.vm_config.db.nic[1].ip_v4.gateway}}</td>
+														</tr>
+														<tr align="center" ng-if="installConfig.vm_config.db.nic[1]">
+															<td width="10%" translate="IPV6">IPv6</td>
+															<td>ip:{{installConfig.vm_config.db.nic[1].ip_v6.ipaddress}}/{{installConfig.vm_config.db.nic[1].ip_v6.prefix}} gateway:{{installConfig.vm_config.db.nic[1].ip_v6.gateway}}</td>
+														</tr>
+														<tr align="center" ng-if="installConfig.vm_config.db.nic[2]">
+															<td rowspan="2" width="15%" align="center"
+																	style="vertical-align: middle">{{installConfig.vm_config.db.nic[2].name}}</td>
+															<td rowspan="2" width="15%" align="center" style="vertical-align: middle" translate="BRIDGE">Bridge</td>
+															<td rowspan="2" align="center" style="vertical-align: middle">{{installConfig.vm_config.db.nic[2].bridge}}</td>
+															<td width="10%" translate="IPV4">IPv4</td>
+															<td>ip:{{installConfig.vm_config.db.nic[2].ip_v4.ipaddress}}/{{installConfig.vm_config.db.nic[2].ip_v4.prefix}} gateway:{{installConfig.vm_config.db.nic[2].ip_v4.gateway}}</td>
+														</tr>
+														<tr align="center" ng-if="installConfig.vm_config.db.nic[2]">
+															<td width="10%" translate="IPV6">IPv6</td>
+															<td>ip:{{installConfig.vm_config.db.nic[2].ip_v6.ipaddress}}/{{installConfig.vm_config.db.nic[2].ip_v6.prefix}} gateway:{{installConfig.vm_config.db.nic[2].ip_v6.gateway}}</td>
+														</tr>
+														<tr align="center"
+															ng-if="installConfig.comType=='FCAPS' || installConfig.comType=='OAM' || installConfig.comType=='CM'">
+															<td translate="FLAVOR" colspan="3">Flavor</td>
+															<td colspan="2">vCPU:{{installConfig.vm_config.db.flavor.vCpu}}&nbsp;&nbsp;Memory:{{installConfig.vm_config.db.flavor.memory/1024/1024}}GB&nbsp;&nbsp;Disk:{{installConfig.vm_config.db.flavor.disk}}GB</td>
+														</tr>
+														<tr align="center"
+															ng-if="installConfig.comType=='FCAPS' || installConfig.comType=='OAM' || installConfig.comType=='CM'">
+															<td translate="DB_IMAGE" colspan="3">DB image</td>
+															<td colspan="2">{{installConfig.db_image}}</td>
+														</tr>
+														<tr align="center"
+															ng-if="installConfig.comType=='FCAPS' || installConfig.comType=='CM'">
+															<td rowspan="{{ networktraffic*2 + 2 }}" width="15%" align="center"
+																style="vertical-align: middle" translate="">CM VM</td>
+															<div ng-if="installConfig.vm_config.cm.nic[0]">
+																<td rowspan="2" width="15%" align="center"
+																	style="vertical-align: middle">{{installConfig.vm_config.cm.nic[0].name}}</td>
+																<td rowspan="2" width="15%" align="center" style="vertical-align: middle" translate="BRIDGE">Bridge</td>
+																<td rowspan="2" align="center" style="vertical-align: middle">{{installConfig.vm_config.cm.nic[0].bridge}}</td>
+																<td width="10%" translate="IPV4">IPv4</td>
+																<td>ip:{{installConfig.vm_config.cm.nic[0].ip_v4.ipaddress}}/{{installConfig.vm_config.cm.nic[0].ip_v4.prefix}} gateway:{{installConfig.vm_config.cm.nic[0].ip_v4.gateway}}</td>
+															</div>
+														</tr>
+														<tr align="center"
+															ng-if="installConfig.comType=='FCAPS' || installConfig.comType=='CM'">
+															<td width="10%" translate="IPV6">IPv6</td>
+															<td>ip:{{installConfig.vm_config.cm.nic[0].ip_v6.ipaddress}}/{{installConfig.vm_config.cm.nic[0].ip_v6.prefix}} gateway:{{installConfig.vm_config.cm.nic[0].ip_v6.gateway}}</td>
+														</tr>
+														<tr align="center" ng-if="installConfig.vm_config.cm.nic[1]">
+															<td rowspan="2" width="15%" align="center"
+																	style="vertical-align: middle">{{installConfig.vm_config.cm.nic[1].name}}</td>
+															<td rowspan="2" width="15%" align="center" style="vertical-align: middle" translate="BRIDGE">Bridge</td>
+															<td rowspan="2" align="center" style="vertical-align: middle">{{installConfig.vm_config.cm.nic[1].bridge}}</td>
+															<td width="10%" translate="IPV4">IPv4</td>
+															<td>ip:{{installConfig.vm_config.cm.nic[1].ip_v4.ipaddress}}/{{installConfig.vm_config.cm.nic[1].ip_v4.prefix}} gateway:{{installConfig.vm_config.cm.nic[1].ip_v4.gateway}}</td>
+														</tr>
+														<tr align="center" ng-if="installConfig.vm_config.cm.nic[1]">
+															<td width="10%" translate="IPV6">IPv6</td>
+															<td>ip:{{installConfig.vm_config.cm.nic[1].ip_v6.ipaddress}}/{{installConfig.vm_config.cm.nic[1].ip_v6.prefix}} gateway:{{installConfig.vm_config.cm.nic[1].ip_v6.gateway}}</td>
+														</tr>
+														<tr align="center" ng-if="installConfig.vm_config.cm.nic[2]">
+															<td rowspan="2" width="15%" align="center"
+																	style="vertical-align: middle">{{installConfig.vm_config.cm.nic[2].name}}</td>
+															<td rowspan="2" width="15%" align="center" style="vertical-align: middle" translate="BRIDGE">Bridge</td>
+															<td rowspan="2" align="center" style="vertical-align: middle">{{installConfig.vm_config.cm.nic[2].bridge}}</td>
+															<td width="10%" translate="IPV4">IPv4</td>
+															<td>ip:{{installConfig.vm_config.cm.nic[2].ip_v4.ipaddress}}/{{installConfig.vm_config.cm.nic[2].ip_v4.prefix}} gateway:{{installConfig.vm_config.cm.nic[2].ip_v4.gateway}}</td>
+														</tr>
+														<tr align="center" ng-if="installConfig.vm_config.cm.nic[2]">
+															<td width="10%" translate="IPV6">IPv6</td>
+															<td>ip:{{installConfig.vm_config.cm.nic[2].ip_v6.ipaddress}}/{{installConfig.vm_config.cm.nic[2].ip_v6.prefix}} gateway:{{installConfig.vm_config.cm.nic[2].ip_v6.gateway}}</td>
+														</tr>
+														<tr align="center"
+															ng-if="installConfig.comType=='FCAPS' || installConfig.comType=='CM'">
+															<td translate="FLAVOR" colspan="3">Flavor</td>
+															<td colspan="2">vCPU:{{installConfig.vm_config.cm.flavor.vCpu}}&nbsp;&nbsp;Memory:{{installConfig.vm_config.cm.flavor.memory/1024/1024}}GB&nbsp;&nbsp;Disk:{{installConfig.vm_config.cm.flavor.disk}}GB</td>
+														</tr>
+														<tr align="center"
+															ng-if="installConfig.comType=='FCAPS' || installConfig.comType=='CM'">
+															<td translate="CM_IMAGE" colspan="3">CM image</td>
+															<td colspan="2">{{installConfig.oam_cm_image}}</td>
+														</tr>
 													</tbody>
 												</table>
 											</div>
