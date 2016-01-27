@@ -30,6 +30,14 @@ angular.module('kvm', [ 'ui.router',
             		}
             	}
             	$scope.calc_disk();
+            	$scope.clean_dirty();
+            	for(var vm in $scope.installConfig.vm_config){
+            		if(vm == 'db'){
+            			$scope.installConfig.vm_config[vm].imgname = $scope.installConfig.db_image;
+            		}else{
+            			$scope.installConfig.vm_config[vm].imgname = $scope.installConfig.oam_cm_image;			
+            		}
+				}
             };
             
             $scope.final_disk = {
