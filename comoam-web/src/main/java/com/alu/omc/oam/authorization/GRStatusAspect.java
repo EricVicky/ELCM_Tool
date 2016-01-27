@@ -63,36 +63,36 @@ public class GRStatusAspect implements  Serializable{
 				break;
 			}
 		}
-//    	List<COMStack> stacks =  dataSource.list();
-//		for(COMStack stack : stacks){
-//			Date date_old = new Date(stack.getUpdatedate().getTime());
-//			Date data_now = new Date();
-//			long deviation=(data_now.getTime()-date_old.getTime())/(1000);
-//			if(deviation>10){
-//				KVMCOMConfig config = getKVMCOMConfig(stack.getName());
-//				Map<String, VMConfig> vmconfigs = config.getVm_config();
-//				Iterator<String> iterator = vmconfigs.keySet().iterator();
-//				while(iterator.hasNext()){
-//					String vnfc = iterator.next();
-//					if(("oam").equals(vnfc)){
-//						VMConfig vmConfig = vmconfigs.get(vnfc);
-//						String oamIP = vmConfig.getNic().get(0).getIp_v4().getIpaddress();
-//						cOMValidationService.setIp(oamIP);
-//						break;
-//					}
-//				}
-//				String checkRes = cOMValidationService.updateGRRole();
-//				if(checkRes.contains("act")){
-//					stack.setRole(GRROLE.Primary);
-//					dataSource.save(stacks);
-//				}else if (checkRes.contains("stby")){
-//					stack.setRole(GRROLE.Secondary);
-//					dataSource.save(stacks);
-//				}else{
-//					continue;
-//				}
-//			}
-//		}
+    	List<COMStack> stacks =  dataSource.list();
+		for(COMStack stack : stacks){
+			Date date_old = new Date(stack.getUpdatedate().getTime());
+			Date data_now = new Date();
+			long deviation=(data_now.getTime()-date_old.getTime())/(1000);
+			if(deviation>10){
+				KVMCOMConfig config = getKVMCOMConfig(stack.getName());
+				Map<String, VMConfig> vmconfigs = config.getVm_config();
+				Iterator<String> iterator = vmconfigs.keySet().iterator();
+				while(iterator.hasNext()){
+					String vnfc = iterator.next();
+					if(("oam").equals(vnfc)){
+						VMConfig vmConfig = vmconfigs.get(vnfc);
+						String oamIP = vmConfig.getNic().get(0).getIp_v4().getIpaddress();
+						cOMValidationService.setIp(oamIP);
+						break;
+					}
+				}
+				String checkRes = cOMValidationService.updateGRRole();
+				if(checkRes.contains("act")){
+					stack.setRole(GRROLE.Primary);
+					dataSource.save(stacks);
+				}else if (checkRes.contains("stby")){
+					stack.setRole(GRROLE.Secondary);
+					dataSource.save(stacks);
+				}else{
+					continue;
+				}
+			}
+		}
 		Object[] args = joinPoint.getArgs();
 		Object retValue = joinPoint.proceed(args);
 		return retValue;
