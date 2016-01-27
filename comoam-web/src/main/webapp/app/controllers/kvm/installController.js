@@ -30,6 +30,7 @@ angular.module('kvm', [ 'ui.router',
             		}
             	}
             	$scope.calc_disk();
+            	$scope.clean_dirty();
             };
             
             $scope.final_disk = {
