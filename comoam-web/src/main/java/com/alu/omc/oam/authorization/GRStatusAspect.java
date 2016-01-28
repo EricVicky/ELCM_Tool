@@ -6,6 +6,7 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Stack;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -20,6 +21,7 @@ import org.springframework.stereotype.Service;
 
 import com.alu.omc.oam.ansible.persistence.JsonDataSource;
 import com.alu.omc.oam.config.COMStack;
+import com.alu.omc.oam.config.COMType;
 import com.alu.omc.oam.config.GRInstallConfig;
 import com.alu.omc.oam.config.GRROLE;
 import com.alu.omc.oam.config.KVMCOMConfig;
@@ -65,10 +67,9 @@ public class GRStatusAspect implements  Serializable{
 		}
     	List<COMStack> stacks =  dataSource.list();
 		for(COMStack stack : stacks){
-			Date date_old = new Date(stack.getUpdatedate().getTime());
-			Date data_now = new Date();
-			long deviation=(data_now.getTime()-date_old.getTime())/(1000);
-			if(deviation>10){
+			Date dateOld = new Date(stack.getUpdatedate().getTime());
+			Date dataNow = new Date();
+			if(isValidTime(dateOld,dataNow) && isCoreVNF(stack.getComType())){
 				KVMCOMConfig config = getKVMCOMConfig(stack.getName());
 				Map<String, VMConfig> vmconfigs = config.getVm_config();
 				Iterator<String> iterator = vmconfigs.keySet().iterator();
@@ -96,6 +97,23 @@ public class GRStatusAspect implements  Serializable{
 		Object[] args = joinPoint.getArgs();
 		Object retValue = joinPoint.proceed(args);
 		return retValue;
+	}
+	
+	private boolean isCoreVNF(COMType comtype){
+		boolean res = true;
+		if(!(comtype.equals(COMType.FCAPS)||comtype.equals(COMType.OAM)||comtype.equals(COMType.CM))){
+			res = false;
+		}
+		return res;
+	}
+	
+	private boolean isValidTime(Date dateOld,Date dataNow){
+		boolean res = true;
+		long deviation=(dataNow.getTime()-dateOld.getTime())/(1000);
+		if(deviation<10){
+			res = false;
+		}
+		return res;
 	}
 	
 	private KVMCOMConfig getKVMCOMConfig(String stackName){
