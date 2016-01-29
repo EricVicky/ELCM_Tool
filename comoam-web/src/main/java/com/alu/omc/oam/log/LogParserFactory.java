@@ -294,7 +294,7 @@ public class LogParserFactory
         dict.put("TASK\\:\\s\\[vnf\\_prepare\\_vms\\s\\|\\screate\\sdata\\sdirectory\\sfor\\svirtual\\smachine\\]","Prepare Upgrade");
         dict.put("TASK\\:\\s\\[vnf\\_shutdown\\_vms\\s\\|\\sshutdown\\soam\\svirtual\\smachine\\]", "Full Backup");
         dict.put("TASK\\:\\s\\[cal\\_diskspace\\s\\|\\scalculate\\sthe\\shost\\sspace\\]", "GR Check");
-        dict.put("TASK\\:\\s\\[check\\_vm\\_alive\\s\\|\\shealth\\scheck\\sfor\\seach\\svm\\]", "Health Check");
+        dict.put("TASK\\:\\s\\[failed\\sif\\sGR\\sinstalled\\]", "Health Check");
         dict.put("ansible-playbook", "Start");
         return new LogParser(dict);
     }    
