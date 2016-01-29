@@ -23,10 +23,12 @@ public class UpgradeWithFullbackHandler extends DefaultHandler
 {
     final static String   FULLBACKUP_DONE_KEYWORD = "Full Backup";
     final static String   DESTROY_START_KEYWORD = "Start Upgrade";
+    final static String   GR_CHECK_KEYWORD = "GR Check";
     final static String   HEALTH_CHECK_KEYWORD = "Health Check";
     boolean full_backup_done = false;
     boolean destroyed = false;
     boolean gr_check = false;
+    boolean health_check = false;
     private static Logger log = LoggerFactory.getLogger(UpgradeWithFullbackHandler.class);
     @Override
     public void onStart()
@@ -62,6 +64,10 @@ public class UpgradeWithFullbackHandler extends DefaultHandler
         	@SuppressWarnings("unchecked")
         	UpgradeFullBackupConfig<KVMCOMConfig> grconfig = (UpgradeFullBackupConfig<KVMCOMConfig>)this.getConfig();
         	sender.send(getFulltopic(), new TaskErrorHandler<KVMCOMConfig>(Action.GRUNINST, this.getConfig().getEnvironment(), grconfig.getConfig()));
+        }else if(this.health_check){
+        	@SuppressWarnings("unchecked")
+            UpgradeFullBackupConfig<KVMCOMConfig> upconfig =  (UpgradeFullBackupConfig<KVMCOMConfig>)this.getConfig();
+            sender.send(getFulltopic(), new TaskErrorHandler<KVMCOMConfig>(Action.HEALING, this.getConfig().getEnvironment(), upconfig.getConfig()));
         }
     }
     
@@ -76,8 +82,10 @@ public class UpgradeWithFullbackHandler extends DefaultHandler
             full_backup_done = true;
         }else if( pr.getStep().equalsIgnoreCase(DESTROY_START_KEYWORD)){
             destroyed = true;
-        }else if( pr.getStep().equalsIgnoreCase(HEALTH_CHECK_KEYWORD)){
+        }else if( pr.getStep().equalsIgnoreCase(GR_CHECK_KEYWORD)){
         	gr_check = true;
+        }else if( pr.getStep().equalsIgnoreCase(HEALTH_CHECK_KEYWORD)){
+        	health_check = true;
         }
     }
     
