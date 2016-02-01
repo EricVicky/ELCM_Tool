@@ -1,738 +1,683 @@
 -------Call Ansible......
-2015-12-27 17:52:23,081 p=3204 u=root |   [WARNING]: The version of gmp you have installed has a known issue regarding
+2016-01-29 09:19:12,905 p=22558 u=root |   [WARNING]: The version of gmp you have installed has a known issue regarding
 timing vulnerabilities when used with pycrypto. If possible, you should update
 it (i.e. yum update gmp).
 
-2015-12-27 17:52:23,293 p=3204 u=root |   
-2015-12-27 17:52:23,293 p=3204 u=root |  /usr/bin/ansible-playbook -c paramiko -i ../../inventory/hosts upgrade_with_fullbackup.yml
-2015-12-27 17:52:23,293 p=3204 u=root |   
-2015-12-27 17:52:23,628 p=3204 u=root |  PLAY [check GR status] ******************************************************** 
-2015-12-27 17:52:23,629 p=3204 u=root |  TASK: [failed if GR installed] ************************************************ 
-2015-12-27 17:52:24,194 p=3204 u=root |  changed: [135.252.141.24]
-2015-12-27 17:52:24,195 p=3204 u=root |  PLAY [calculate the space for full backup] ************************************ 
-2015-12-27 17:52:24,196 p=3204 u=root |  TASK: [cal_diskspace | calculate the host space] ****************************** 
-2015-12-27 17:52:24,276 p=3204 u=root |  changed: [localhost]
-2015-12-27 17:52:24,276 p=3204 u=root |  PLAY [stop COM] *************************************************************** 
-2015-12-27 17:52:24,277 p=3204 u=root |  TASK: [stop_com | stop com application] *************************************** 
-2015-12-27 17:54:12,405 p=3204 u=root |  changed: [135.252.141.24]
-2015-12-27 17:54:12,408 p=3204 u=root |  PLAY [stop COM] *************************************************************** 
-2015-12-27 17:54:12,409 p=3204 u=root |  skipping: no hosts matched
-2015-12-27 17:54:12,409 p=3204 u=root |  PLAY [shutdown VM and prepare data for each VM in data full backup] *********** 
-2015-12-27 17:54:12,410 p=3204 u=root |  TASK: [vnf_shutdown_vms | shutdown oam virtual machine] *********************** 
-2015-12-27 17:54:13,801 p=3204 u=root |  changed: [localhost]
-2015-12-27 17:54:13,802 p=3204 u=root |  TASK: [vnf_shutdown_vms | shutdown cm virtual machine] ************************ 
-2015-12-27 17:54:14,034 p=3204 u=root |  changed: [localhost]
-2015-12-27 17:54:14,035 p=3204 u=root |  TASK: [vnf_shutdown_vms | shutdown db virtual machine] ************************ 
-2015-12-27 17:54:14,258 p=3204 u=root |  changed: [localhost]
-2015-12-27 17:54:14,259 p=3204 u=root |  TASK: [vnf_shutdown_vms | shutdown qosac virtual machine] ********************* 
-2015-12-27 17:54:14,267 p=3204 u=root |  skipping: [localhost]
-2015-12-27 17:54:14,268 p=3204 u=root |  TASK: [vnf_shutdown_vms | wait for oam virtual machine to shutdown] *********** 
-2015-12-27 17:54:24,915 p=3204 u=root |  ok: [localhost]
-2015-12-27 17:54:24,916 p=3204 u=root |  TASK: [vnf_shutdown_vms | wait for cm vritual machine to shutdown] ************ 
-2015-12-27 17:54:25,122 p=3204 u=root |  ok: [localhost]
-2015-12-27 17:54:25,123 p=3204 u=root |  TASK: [vnf_shutdown_vms | wait for db virtual machine to shutdown] ************ 
-2015-12-27 17:54:37,913 p=3204 u=root |  ok: [localhost]
-2015-12-27 17:54:37,913 p=3204 u=root |  TASK: [vnf_shutdown_vms | wait for qosac virtual machine to shutdown] ********* 
-2015-12-27 17:54:37,919 p=3204 u=root |  skipping: [localhost]
-2015-12-27 17:54:37,919 p=3204 u=root |  TASK: [vnf_shutdown_vms | wait for atc virtual machine to shutdown] *********** 
-2015-12-27 17:54:37,924 p=3204 u=root |  skipping: [localhost]
-2015-12-27 17:54:37,925 p=3204 u=root |  TASK: [vnf_full_backup | create directory on host server for local full backup] *** 
-2015-12-27 17:54:38,244 p=3204 u=root |  ok: [localhost]
-2015-12-27 17:54:38,245 p=3204 u=root |  TASK: [vnf_full_backup | create tmp_directory on host server for nfs full backup] *** 
-2015-12-27 17:54:38,257 p=3204 u=root |  skipping: [localhost]
-2015-12-27 17:54:38,258 p=3204 u=root |  TASK: [vnf_full_backup | mkdir to save snapshot for VM] *********************** 
-2015-12-27 17:54:38,548 p=3204 u=root |  ok: [localhost]
-2015-12-27 17:54:38,549 p=3204 u=root |  TASK: [vnf_full_backup | mkdir to save snapshot for VM(NFS)] ****************** 
-2015-12-27 17:54:38,570 p=3204 u=root |  skipping: [localhost]
-2015-12-27 17:54:38,570 p=3204 u=root |  TASK: [vnf_full_backup | save root disk snapshot for VM] ********************** 
-2015-12-27 17:55:13,429 p=3204 u=root |  changed: [localhost]
-2015-12-27 17:55:13,430 p=3204 u=root |  TASK: [vnf_full_backup | save root disk snapshot for VM(NFS)] ***************** 
-2015-12-27 17:55:13,449 p=3204 u=root |  skipping: [localhost]
-2015-12-27 17:55:13,450 p=3204 u=root |  TASK: [vnf_full_backup | save data disk snapshot for VM] ********************** 
-2015-12-27 17:55:16,612 p=3204 u=root |  changed: [localhost]
-2015-12-27 17:55:16,613 p=3204 u=root |  TASK: [vnf_full_backup | save data disk snapshot for VM(NFS)] ***************** 
-2015-12-27 17:55:16,636 p=3204 u=root |  skipping: [localhost]
-2015-12-27 17:55:16,637 p=3204 u=root |  TASK: [vnf_full_backup | save config drive iso snapshot for VM] *************** 
-2015-12-27 17:55:16,803 p=3204 u=root |  changed: [localhost]
-2015-12-27 17:55:16,803 p=3204 u=root |  TASK: [vnf_full_backup | save config drive iso snapshot for VM(NFS)] ********** 
-2015-12-27 17:55:16,823 p=3204 u=root |  skipping: [localhost]
-2015-12-27 17:55:16,823 p=3204 u=root |  TASK: [vnf_full_backup | save vm domain xml for VM] *************************** 
-2015-12-27 17:55:17,018 p=3204 u=root |  changed: [localhost]
-2015-12-27 17:55:17,019 p=3204 u=root |  TASK: [vnf_full_backup | save vm domain xml for VM(NFS)] ********************** 
-2015-12-27 17:55:17,040 p=3204 u=root |  skipping: [localhost]
-2015-12-27 17:55:17,040 p=3204 u=root |  TASK: [vnf_full_backup | mkdir to save snapshot for VM] *********************** 
-2015-12-27 17:55:17,373 p=3204 u=root |  ok: [localhost]
-2015-12-27 17:55:17,374 p=3204 u=root |  TASK: [vnf_full_backup | mkdir to save snapshot for VM(NFS)] ****************** 
-2015-12-27 17:55:17,393 p=3204 u=root |  skipping: [localhost]
-2015-12-27 17:55:17,394 p=3204 u=root |  TASK: [vnf_full_backup | save root disk snapshot for VM] ********************** 
-2015-12-27 17:55:34,882 p=3204 u=root |  changed: [localhost]
-2015-12-27 17:55:34,884 p=3204 u=root |  TASK: [vnf_full_backup | save root disk snapshot for VM(NFS)] ***************** 
-2015-12-27 17:55:34,905 p=3204 u=root |  skipping: [localhost]
-2015-12-27 17:55:34,905 p=3204 u=root |  TASK: [vnf_full_backup | save data disk snapshot for VM] ********************** 
-2015-12-27 17:55:38,326 p=3204 u=root |  changed: [localhost]
-2015-12-27 17:55:38,327 p=3204 u=root |  TASK: [vnf_full_backup | save data disk snapshot for VM(NFS)] ***************** 
-2015-12-27 17:55:38,346 p=3204 u=root |  skipping: [localhost]
-2015-12-27 17:55:38,347 p=3204 u=root |  TASK: [vnf_full_backup | save config drive iso snapshot for VM] *************** 
-2015-12-27 17:55:38,502 p=3204 u=root |  changed: [localhost]
-2015-12-27 17:55:38,503 p=3204 u=root |  TASK: [vnf_full_backup | save config drive iso snapshot for VM(NFS)] ********** 
-2015-12-27 17:55:38,522 p=3204 u=root |  skipping: [localhost]
-2015-12-27 17:55:38,523 p=3204 u=root |  TASK: [vnf_full_backup | save vm domain xml for VM] *************************** 
-2015-12-27 17:55:38,707 p=3204 u=root |  changed: [localhost]
-2015-12-27 17:55:38,708 p=3204 u=root |  TASK: [vnf_full_backup | save vm domain xml for VM(NFS)] ********************** 
-2015-12-27 17:55:38,727 p=3204 u=root |  skipping: [localhost]
-2015-12-27 17:55:38,728 p=3204 u=root |  TASK: [vnf_full_backup | mkdir to save snapshot for VM] *********************** 
-2015-12-27 17:55:39,028 p=3204 u=root |  ok: [localhost]
-2015-12-27 17:55:39,029 p=3204 u=root |  TASK: [vnf_full_backup | mkdir to save snapshot for VM(NFS)] ****************** 
-2015-12-27 17:55:39,048 p=3204 u=root |  skipping: [localhost]
-2015-12-27 17:55:39,049 p=3204 u=root |  TASK: [vnf_full_backup | save root disk snapshot for VM] ********************** 
-2015-12-27 17:55:57,027 p=3204 u=root |  changed: [localhost]
-2015-12-27 17:55:57,028 p=3204 u=root |  TASK: [vnf_full_backup | save root disk snapshot for VM(NFS)] ***************** 
-2015-12-27 17:55:57,049 p=3204 u=root |  skipping: [localhost]
-2015-12-27 17:55:57,050 p=3204 u=root |  TASK: [vnf_full_backup | save data disk snapshot for VM] ********************** 
-2015-12-27 17:56:47,942 p=3204 u=root |  changed: [localhost]
-2015-12-27 17:56:47,943 p=3204 u=root |  TASK: [vnf_full_backup | save data disk snapshot for VM(NFS)] ***************** 
-2015-12-27 17:56:47,963 p=3204 u=root |  skipping: [localhost]
-2015-12-27 17:56:47,963 p=3204 u=root |  TASK: [vnf_full_backup | save config drive iso snapshot for VM] *************** 
-2015-12-27 17:56:48,122 p=3204 u=root |  changed: [localhost]
-2015-12-27 17:56:48,123 p=3204 u=root |  TASK: [vnf_full_backup | save config drive iso snapshot for VM(NFS)] ********** 
-2015-12-27 17:56:48,145 p=3204 u=root |  skipping: [localhost]
-2015-12-27 17:56:48,146 p=3204 u=root |  TASK: [vnf_full_backup | save vm domain xml for VM] *************************** 
-2015-12-27 17:56:48,324 p=3204 u=root |  changed: [localhost]
-2015-12-27 17:56:48,325 p=3204 u=root |  TASK: [vnf_full_backup | save vm domain xml for VM(NFS)] ********************** 
-2015-12-27 17:56:48,344 p=3204 u=root |  skipping: [localhost]
-2015-12-27 17:56:48,345 p=3204 u=root |  TASK: [vnf_full_backup | mkdir to save snapshot for VM] *********************** 
-2015-12-27 17:56:48,353 p=3204 u=root |  skipping: [localhost]
-2015-12-27 17:56:48,354 p=3204 u=root |  TASK: [vnf_full_backup | mkdir to save snapshot for VM(NFS)] ****************** 
-2015-12-27 17:56:48,362 p=3204 u=root |  skipping: [localhost]
-2015-12-27 17:56:48,362 p=3204 u=root |  TASK: [vnf_full_backup | save root disk snapshot for VM] ********************** 
-2015-12-27 17:56:48,371 p=3204 u=root |  skipping: [localhost]
-2015-12-27 17:56:48,371 p=3204 u=root |  TASK: [vnf_full_backup | save root disk snapshot for VM(NFS)] ***************** 
-2015-12-27 17:56:48,380 p=3204 u=root |  skipping: [localhost]
-2015-12-27 17:56:48,381 p=3204 u=root |  TASK: [vnf_full_backup | save data disk snapshot for VM] ********************** 
-2015-12-27 17:56:48,390 p=3204 u=root |  skipping: [localhost]
-2015-12-27 17:56:48,390 p=3204 u=root |  TASK: [vnf_full_backup | save data disk snapshot for VM(NFS)] ***************** 
-2015-12-27 17:56:48,399 p=3204 u=root |  skipping: [localhost]
-2015-12-27 17:56:48,399 p=3204 u=root |  TASK: [vnf_full_backup | save config drive iso snapshot for VM] *************** 
-2015-12-27 17:56:48,407 p=3204 u=root |  skipping: [localhost]
-2015-12-27 17:56:48,408 p=3204 u=root |  TASK: [vnf_full_backup | save config drive iso snapshot for VM(NFS)] ********** 
-2015-12-27 17:56:48,415 p=3204 u=root |  skipping: [localhost]
-2015-12-27 17:56:48,416 p=3204 u=root |  TASK: [vnf_full_backup | save vm domain xml for VM] *************************** 
-2015-12-27 17:56:48,424 p=3204 u=root |  skipping: [localhost]
-2015-12-27 17:56:48,425 p=3204 u=root |  TASK: [vnf_full_backup | save vm domain xml for VM(NFS)] ********************** 
-2015-12-27 17:56:48,433 p=3204 u=root |  skipping: [localhost]
-2015-12-27 17:56:48,433 p=3204 u=root |  TASK: [vnf_full_backup | copy comstack.json file if it exists] **************** 
-2015-12-27 17:56:48,555 p=3204 u=root |  ok: [localhost -> 127.0.0.1]
-2015-12-27 17:56:48,556 p=3204 u=root |  TASK: [vnf_full_backup | copy /opt/PlexView/ELCM/datasource/comstack.json] **** 
-2015-12-27 17:56:48,891 p=3204 u=root |  changed: [localhost]
-2015-12-27 17:56:48,892 p=3204 u=root |  TASK: [vnf_full_backup | copy /opt/PlexView/ELCM/datasource/comstack.json(NFS)] *** 
-2015-12-27 17:56:48,916 p=3204 u=root |  skipping: [localhost]
-2015-12-27 17:56:48,917 p=3204 u=root |  TASK: [vnf_start_vms | start virtual machine] ********************************* 
-2015-12-27 17:56:51,413 p=3204 u=root |  changed: [localhost]
-2015-12-27 17:56:51,414 p=3204 u=root |  TASK: [vnf_start_vms | start virtual machine] ********************************* 
-2015-12-27 17:56:54,315 p=3204 u=root |  changed: [localhost]
-2015-12-27 17:56:54,316 p=3204 u=root |  TASK: [vnf_start_vms | start virtual machine] ********************************* 
-2015-12-27 17:56:55,538 p=3204 u=root |  changed: [localhost]
-2015-12-27 17:56:55,539 p=3204 u=root |  TASK: [vnf_start_vms | start virtual machine] ********************************* 
-2015-12-27 17:56:55,550 p=3204 u=root |  skipping: [localhost]
-2015-12-27 17:56:55,551 p=3204 u=root |  TASK: [vnf_wait_for_alive | wait for server to alive] ************************* 
-2015-12-27 17:57:55,768 p=3204 u=root |  ok: [localhost -> 127.0.0.1]
-2015-12-27 17:57:55,769 p=3204 u=root |  TASK: [vnf_wait_for_alive | wait for server to alive] ************************* 
-2015-12-27 17:58:55,982 p=3204 u=root |  ok: [localhost -> 127.0.0.1]
-2015-12-27 17:58:55,983 p=3204 u=root |  TASK: [vnf_wait_for_alive | wait for server to alive] ************************* 
-2015-12-27 17:59:56,223 p=3204 u=root |  ok: [localhost -> 127.0.0.1]
-2015-12-27 17:59:56,224 p=3204 u=root |  TASK: [vnf_wait_for_alive | wait for server to alive] ************************* 
-2015-12-27 17:59:56,236 p=3204 u=root |  skipping: [localhost]
-2015-12-27 17:59:56,237 p=3204 u=root |  PLAY [start com application] ************************************************** 
-2015-12-27 17:59:56,238 p=3204 u=root |  TASK: [start_com | start com application] ************************************* 
-2015-12-27 18:00:03,308 p=3204 u=root |  changed: [135.252.141.24]
-2015-12-27 18:00:03,308 p=3204 u=root |  PLAY [start com application] ************************************************** 
-2015-12-27 18:00:03,309 p=3204 u=root |  skipping: no hosts matched
-2015-12-27 18:00:03,309 p=3204 u=root |  PLAY [save qcow2 files from mount directory to nfs server] ******************** 
-2015-12-27 18:00:03,309 p=3204 u=root |  TASK: [vnf_backup_to_nfs | COM application has been started!] ***************** 
-2015-12-27 18:00:03,326 p=3204 u=root |  skipping: [localhost]
-2015-12-27 18:00:03,326 p=3204 u=root |  TASK: [vnf_backup_to_nfs | create nfs directory on host server] *************** 
-2015-12-27 18:00:03,338 p=3204 u=root |  skipping: [localhost]
-2015-12-27 18:00:03,338 p=3204 u=root |  TASK: [vnf_backup_to_nfs | mount nfs directory] ******************************* 
-2015-12-27 18:00:03,350 p=3204 u=root |  skipping: [localhost]
-2015-12-27 18:00:03,351 p=3204 u=root |  TASK: [vnf_backup_to_nfs | copy qcow2 in tmp files to nfs server] ************* 
-2015-12-27 18:00:03,364 p=3204 u=root |  skipping: [localhost]
-2015-12-27 18:00:03,365 p=3204 u=root |  TASK: [vnf_backup_to_nfs | copy qcow2 in tmp files to nfs server] ************* 
-2015-12-27 18:00:03,379 p=3204 u=root |  skipping: [localhost]
-2015-12-27 18:00:03,379 p=3204 u=root |  TASK: [vnf_backup_to_nfs | copy qcow2 in tmp files to nfs server] ************* 
-2015-12-27 18:00:03,393 p=3204 u=root |  skipping: [localhost]
-2015-12-27 18:00:03,394 p=3204 u=root |  TASK: [vnf_backup_to_nfs | copy qcow2 in tmp files to nfs server] ************* 
-2015-12-27 18:00:03,408 p=3204 u=root |  skipping: [localhost]
-2015-12-27 18:00:03,409 p=3204 u=root |  TASK: [vnf_backup_to_nfs | copy comstack.json to nfs directory] *************** 
-2015-12-27 18:00:03,420 p=3204 u=root |  skipping: [localhost]
-2015-12-27 18:00:03,421 p=3204 u=root |  PLAY [check GR status] ******************************************************** 
-2015-12-27 18:00:03,421 p=3204 u=root |  TASK: [failed if GR installed] ************************************************ 
-2015-12-27 18:00:04,075 p=3204 u=root |  changed: [135.252.141.24]
-2015-12-27 18:00:04,076 p=3204 u=root |  PLAY [check virtual machine hostname] ***************************************** 
-2015-12-27 18:00:04,077 p=3204 u=root |  TASK: [vnf_check_hostname | check hostname for CM or FCAPS] ******************* 
-2015-12-27 18:00:04,104 p=3204 u=root |  ok: [localhost -> 127.0.0.1]
-2015-12-27 18:00:04,104 p=3204 u=root |  TASK: [vnf_check_hostname | check hostname for OAM] *************************** 
-2015-12-27 18:00:04,110 p=3204 u=root |  skipping: [localhost]
-2015-12-27 18:00:04,111 p=3204 u=root |  PLAY [ckeck qcow2 cksum] ****************************************************** 
-2015-12-27 18:00:04,111 p=3204 u=root |  TASK: [vnf_cksum_qcow2 | make sure qcow2 cksum file exists] ******************* 
-2015-12-27 18:00:04,418 p=3204 u=root |  ok: [localhost]
-2015-12-27 18:00:04,419 p=3204 u=root |  TASK: [vnf_cksum_qcow2 | create temp cksum file] ****************************** 
-2015-12-27 18:00:45,570 p=3204 u=root |  changed: [localhost]
-2015-12-27 18:00:45,571 p=3204 u=root |  TASK: [vnf_cksum_qcow2 | check cksum differences] ***************************** 
-2015-12-27 18:00:45,785 p=3204 u=root |  changed: [localhost]
-2015-12-27 18:00:45,786 p=3204 u=root |  TASK: [vnf_cksum_qcow2 | delete temp cksum file] ****************************** 
-2015-12-27 18:00:46,073 p=3204 u=root |  changed: [localhost]
-2015-12-27 18:00:46,074 p=3204 u=root |  TASK: [vnf_cksum_qcow2 | make sure qcow2 cksum file exists] ******************* 
-2015-12-27 18:00:46,302 p=3204 u=root |  ok: [localhost]
-2015-12-27 18:00:46,303 p=3204 u=root |  TASK: [vnf_cksum_qcow2 | create temp cksum file] ****************************** 
-2015-12-27 18:01:37,847 p=3204 u=root |  changed: [localhost]
-2015-12-27 18:01:37,848 p=3204 u=root |  TASK: [vnf_cksum_qcow2 | check cksum differences] ***************************** 
-2015-12-27 18:01:38,006 p=3204 u=root |  changed: [localhost]
-2015-12-27 18:01:38,007 p=3204 u=root |  TASK: [vnf_cksum_qcow2 | delete temp cksum file] ****************************** 
-2015-12-27 18:01:38,301 p=3204 u=root |  changed: [localhost]
-2015-12-27 18:01:38,302 p=3204 u=root |  TASK: [vnf_cksum_qcow2 | make sure qcow2 cksum file exists] ******************* 
-2015-12-27 18:01:38,313 p=3204 u=root |  skipping: [localhost]
-2015-12-27 18:01:38,314 p=3204 u=root |  TASK: [vnf_cksum_qcow2 | create temp cksum file] ****************************** 
-2015-12-27 18:01:38,323 p=3204 u=root |  skipping: [localhost]
-2015-12-27 18:01:38,323 p=3204 u=root |  TASK: [vnf_cksum_qcow2 | check cksum differences] ***************************** 
-2015-12-27 18:01:38,332 p=3204 u=root |  skipping: [localhost]
-2015-12-27 18:01:38,332 p=3204 u=root |  TASK: [vnf_cksum_qcow2 | delete temp cksum file] ****************************** 
-2015-12-27 18:01:38,341 p=3204 u=root |  skipping: [localhost]
-2015-12-27 18:01:38,341 p=3204 u=root |  PLAY [check previous task result] ********************************************* 
-2015-12-27 18:01:38,342 p=3204 u=root |  TASK: [command true] ********************************************************** 
-2015-12-27 18:01:38,485 p=3204 u=root |  changed: [localhost]
-2015-12-27 18:01:38,486 p=3204 u=root |  PLAY [stop COM] *************************************************************** 
-2015-12-27 18:01:38,487 p=3204 u=root |  TASK: [stop_com | stop com application] *************************************** 
-2015-12-27 18:05:13,974 p=3204 u=root |  changed: [135.252.141.24]
-2015-12-27 18:05:13,975 p=3204 u=root |  PLAY [stop COM] *************************************************************** 
-2015-12-27 18:05:13,975 p=3204 u=root |  skipping: no hosts matched
-2015-12-27 18:05:13,975 p=3204 u=root |  PLAY [backup com data] ******************************************************** 
-2015-12-27 18:05:13,977 p=3204 u=root |  TASK: [backup_data | create local backup directory] *************************** 
-2015-12-27 18:05:14,559 p=3204 u=root |  ok: [135.252.141.24]
-2015-12-27 18:05:14,825 p=3204 u=root |  ok: [135.252.141.25]
-2015-12-27 18:05:14,837 p=3204 u=root |  ok: [135.252.141.26]
-2015-12-27 18:05:14,852 p=3204 u=root |  TASK: [backup_data | mount nfs directory] ************************************* 
-2015-12-27 18:05:14,897 p=3204 u=root |  skipping: [135.252.141.24]
-2015-12-27 18:05:14,899 p=3204 u=root |  skipping: [135.252.141.26]
-2015-12-27 18:05:14,900 p=3204 u=root |  skipping: [135.252.141.25]
-2015-12-27 18:05:14,916 p=3204 u=root |  TASK: [backup_data | backup data] ********************************************* 
-2015-12-27 18:05:25,566 p=3204 u=root |  changed: [135.252.141.25]
-2015-12-27 18:06:09,101 p=3204 u=root |  changed: [135.252.141.24]
-2015-12-27 18:06:18,893 p=3204 u=root |  changed: [135.252.141.26]
-2015-12-27 18:06:18,911 p=3204 u=root |  TASK: [backup_data | backup data for CSA and CFMA] **************************** 
-2015-12-27 18:06:18,949 p=3204 u=root |  skipping: [135.252.141.24]
-2015-12-27 18:06:18,951 p=3204 u=root |  skipping: [135.252.141.26]
-2015-12-27 18:06:18,952 p=3204 u=root |  skipping: [135.252.141.25]
-2015-12-27 18:06:18,967 p=3204 u=root |  TASK: [backup_data | remove qosac backup data] ******************************** 
-2015-12-27 18:06:19,003 p=3204 u=root |  skipping: [135.252.141.26]
-2015-12-27 18:06:19,004 p=3204 u=root |  skipping: [135.252.141.24]
-2015-12-27 18:06:19,006 p=3204 u=root |  skipping: [135.252.141.25]
-2015-12-27 18:06:19,022 p=3204 u=root |  TASK: [backup_data | backup data qosac data] ********************************** 
-2015-12-27 18:06:19,058 p=3204 u=root |  skipping: [135.252.141.24]
-2015-12-27 18:06:19,059 p=3204 u=root |  skipping: [135.252.141.26]
-2015-12-27 18:06:19,061 p=3204 u=root |  skipping: [135.252.141.25]
-2015-12-27 18:06:19,077 p=3204 u=root |  TASK: [backup_data | synchronize data to disk] ******************************** 
-2015-12-27 18:06:19,864 p=3204 u=root |  changed: [135.252.141.25]
-2015-12-27 18:06:20,086 p=3204 u=root |  changed: [135.252.141.26]
-2015-12-27 18:06:20,201 p=3204 u=root |  changed: [135.252.141.24]
-2015-12-27 18:06:20,217 p=3204 u=root |  PLAY [prepare data for virtual machines] ************************************** 
-2015-12-27 18:06:20,219 p=3204 u=root |  TASK: [vnf_prepare_vms | create data directory for virtual machine] *********** 
-2015-12-27 18:06:20,514 p=3204 u=root |  changed: [localhost]
-2015-12-27 18:06:20,514 p=3204 u=root |  TASK: [vnf_prepare_vms | generate domain xml for virtual machine] ************* 
-2015-12-27 18:06:20,795 p=3204 u=root |  changed: [localhost]
-2015-12-27 18:06:20,796 p=3204 u=root |  TASK: [vnf_prepare_vms | generate meta data for cloud init] ******************* 
-2015-12-27 18:06:21,141 p=3204 u=root |  changed: [localhost]
-2015-12-27 18:06:21,142 p=3204 u=root |  TASK: [vnf_prepare_vms | generate cloud-config for clout init] **************** 
-2015-12-27 18:06:21,491 p=3204 u=root |  changed: [localhost]
-2015-12-27 18:06:21,492 p=3204 u=root |  TASK: [vnf_prepare_vms | generate user-script for clout init] ***************** 
-2015-12-27 18:06:21,797 p=3204 u=root |  changed: [localhost]
-2015-12-27 18:06:21,798 p=3204 u=root |  TASK: [vnf_prepare_vms | upload write-mime-mulitpart.py script] *************** 
-2015-12-27 18:06:22,121 p=3204 u=root |  changed: [localhost]
-2015-12-27 18:06:22,122 p=3204 u=root |  TASK: [vnf_prepare_vms | generate user-data for clout init] ******************* 
-2015-12-27 18:06:22,395 p=3204 u=root |  changed: [localhost]
-2015-12-27 18:06:22,396 p=3204 u=root |  TASK: [vnf_prepare_vms | generate config drive iso] *************************** 
-2015-12-27 18:06:22,588 p=3204 u=root |  changed: [localhost]
-2015-12-27 18:06:22,589 p=3204 u=root |  TASK: [vnf_prepare_vms | create data directory for virtual machine] *********** 
-2015-12-27 18:06:22,876 p=3204 u=root |  changed: [localhost]
-2015-12-27 18:06:22,877 p=3204 u=root |  TASK: [vnf_prepare_vms | generate domain xml for virtual machine] ************* 
-2015-12-27 18:06:23,225 p=3204 u=root |  changed: [localhost]
-2015-12-27 18:06:23,226 p=3204 u=root |  TASK: [vnf_prepare_vms | generate meta data for cloud init] ******************* 
-2015-12-27 18:06:23,533 p=3204 u=root |  changed: [localhost]
-2015-12-27 18:06:23,534 p=3204 u=root |  TASK: [vnf_prepare_vms | generate cloud-config for clout init] **************** 
-2015-12-27 18:06:23,864 p=3204 u=root |  changed: [localhost]
-2015-12-27 18:06:23,864 p=3204 u=root |  TASK: [vnf_prepare_vms | generate user-script for clout init] ***************** 
-2015-12-27 18:06:24,142 p=3204 u=root |  changed: [localhost]
-2015-12-27 18:06:24,143 p=3204 u=root |  TASK: [vnf_prepare_vms | upload write-mime-mulitpart.py script] *************** 
-2015-12-27 18:06:24,407 p=3204 u=root |  changed: [localhost]
-2015-12-27 18:06:24,408 p=3204 u=root |  TASK: [vnf_prepare_vms | generate user-data for clout init] ******************* 
-2015-12-27 18:06:24,623 p=3204 u=root |  changed: [localhost]
-2015-12-27 18:06:24,624 p=3204 u=root |  TASK: [vnf_prepare_vms | generate config drive iso] *************************** 
-2015-12-27 18:06:24,784 p=3204 u=root |  changed: [localhost]
-2015-12-27 18:06:24,785 p=3204 u=root |  TASK: [vnf_prepare_vms | create data directory for virtual machine] *********** 
-2015-12-27 18:06:25,104 p=3204 u=root |  changed: [localhost]
-2015-12-27 18:06:25,105 p=3204 u=root |  TASK: [vnf_prepare_vms | generate domain xml for virtual machine] ************* 
-2015-12-27 18:06:25,411 p=3204 u=root |  changed: [localhost]
-2015-12-27 18:06:25,412 p=3204 u=root |  TASK: [vnf_prepare_vms | generate meta data for cloud init] ******************* 
-2015-12-27 18:06:25,683 p=3204 u=root |  changed: [localhost]
-2015-12-27 18:06:25,684 p=3204 u=root |  TASK: [vnf_prepare_vms | generate cloud-config for clout init] **************** 
-2015-12-27 18:06:25,971 p=3204 u=root |  changed: [localhost]
-2015-12-27 18:06:25,971 p=3204 u=root |  TASK: [vnf_prepare_vms | generate user-script for clout init] ***************** 
-2015-12-27 18:06:26,198 p=3204 u=root |  changed: [localhost]
-2015-12-27 18:06:26,199 p=3204 u=root |  TASK: [vnf_prepare_vms | upload write-mime-mulitpart.py script] *************** 
-2015-12-27 18:06:26,501 p=3204 u=root |  changed: [localhost]
-2015-12-27 18:06:26,502 p=3204 u=root |  TASK: [vnf_prepare_vms | generate user-data for clout init] ******************* 
-2015-12-27 18:06:26,720 p=3204 u=root |  changed: [localhost]
-2015-12-27 18:06:26,721 p=3204 u=root |  TASK: [vnf_prepare_vms | generate config drive iso] *************************** 
-2015-12-27 18:06:26,884 p=3204 u=root |  changed: [localhost]
-2015-12-27 18:06:26,885 p=3204 u=root |  TASK: [vnf_prepare_vms | create data directory for virtual machine] *********** 
-2015-12-27 18:06:26,895 p=3204 u=root |  skipping: [localhost]
-2015-12-27 18:06:26,896 p=3204 u=root |  TASK: [vnf_prepare_vms | generate domain xml for virtual machine] ************* 
-2015-12-27 18:06:26,904 p=3204 u=root |  skipping: [localhost]
-2015-12-27 18:06:26,905 p=3204 u=root |  TASK: [vnf_prepare_vms | generate meta data for cloud init] ******************* 
-2015-12-27 18:06:26,913 p=3204 u=root |  skipping: [localhost]
-2015-12-27 18:06:26,913 p=3204 u=root |  TASK: [vnf_prepare_vms | generate cloud-config for clout init] **************** 
-2015-12-27 18:06:26,921 p=3204 u=root |  skipping: [localhost]
-2015-12-27 18:06:26,922 p=3204 u=root |  TASK: [vnf_prepare_vms | generate user-script for clout init] ***************** 
-2015-12-27 18:06:26,929 p=3204 u=root |  skipping: [localhost]
-2015-12-27 18:06:26,930 p=3204 u=root |  TASK: [vnf_prepare_vms | upload write-mime-mulitpart.py script] *************** 
-2015-12-27 18:06:26,938 p=3204 u=root |  skipping: [localhost]
-2015-12-27 18:06:26,939 p=3204 u=root |  TASK: [vnf_prepare_vms | generate user-data for clout init] ******************* 
-2015-12-27 18:06:26,947 p=3204 u=root |  skipping: [localhost]
-2015-12-27 18:06:26,948 p=3204 u=root |  TASK: [vnf_prepare_vms | generate config drive iso] *************************** 
-2015-12-27 18:06:26,956 p=3204 u=root |  skipping: [localhost]
-2015-12-27 18:06:26,957 p=3204 u=root |  PLAY [gather host facts] ****************************************************** 
-2015-12-27 18:06:26,957 p=3204 u=root |  GATHERING FACTS *************************************************************** 
-2015-12-27 18:06:28,021 p=3204 u=root |  ok: [localhost]
-2015-12-27 18:06:28,022 p=3204 u=root |  PLAY [prepare data for virtual machines] ************************************** 
-2015-12-27 18:06:28,023 p=3204 u=root |  TASK: [vnf_prepare_instopt | create data directory for virtual machine] ******* 
-2015-12-27 18:06:28,298 p=3204 u=root |  ok: [localhost]
-2015-12-27 18:06:28,299 p=3204 u=root |  TASK: [vnf_prepare_instopt | generate install options] ************************ 
-2015-12-27 18:06:28,720 p=3204 u=root |  changed: [localhost]
-2015-12-27 18:06:28,722 p=3204 u=root |  TASK: [vnf_prepare_instopt | create data directory for virtual machine] ******* 
-2015-12-27 18:06:29,010 p=3204 u=root |  ok: [localhost]
-2015-12-27 18:06:29,011 p=3204 u=root |  TASK: [vnf_prepare_instopt | generate install options] ************************ 
-2015-12-27 18:06:29,385 p=3204 u=root |  changed: [localhost]
-2015-12-27 18:06:29,386 p=3204 u=root |  TASK: [vnf_prepare_instopt | create data directory for virtual machine] ******* 
-2015-12-27 18:06:29,671 p=3204 u=root |  ok: [localhost]
-2015-12-27 18:06:29,672 p=3204 u=root |  TASK: [vnf_prepare_instopt | generate install options] ************************ 
-2015-12-27 18:06:30,041 p=3204 u=root |  changed: [localhost]
-2015-12-27 18:06:30,042 p=3204 u=root |  TASK: [vnf_prepare_instopt | create data directory for virtual machine] ******* 
-2015-12-27 18:06:30,052 p=3204 u=root |  skipping: [localhost]
-2015-12-27 18:06:30,052 p=3204 u=root |  TASK: [vnf_prepare_instopt | generate install options] ************************ 
-2015-12-27 18:06:30,060 p=3204 u=root |  skipping: [localhost]
-2015-12-27 18:06:30,061 p=3204 u=root |  PLAY [prepare host server environment] **************************************** 
-2015-12-27 18:06:30,061 p=3204 u=root |  TASK: [prepare_host_env | create deployment directory] ************************ 
-2015-12-27 18:06:30,370 p=3204 u=root |  ok: [localhost]
-2015-12-27 18:06:30,371 p=3204 u=root |  TASK: [prepare_host_env | create directory for virtual machine] *************** 
-2015-12-27 18:06:30,658 p=3204 u=root |  ok: [localhost]
-2015-12-27 18:06:30,658 p=3204 u=root |  TASK: [prepare_host_env | create directory for virtual machine] *************** 
-2015-12-27 18:06:30,988 p=3204 u=root |  ok: [localhost]
-2015-12-27 18:06:30,989 p=3204 u=root |  TASK: [prepare_host_env | create directory for virtual machine] *************** 
-2015-12-27 18:06:31,236 p=3204 u=root |  ok: [localhost]
-2015-12-27 18:06:31,237 p=3204 u=root |  TASK: [prepare_host_env | create directory for virtual machine] *************** 
-2015-12-27 18:06:31,246 p=3204 u=root |  skipping: [localhost]
-2015-12-27 18:06:31,246 p=3204 u=root |  TASK: [prepare_host_env | upload domain xml for virtual machine] ************** 
-2015-12-27 18:06:31,633 p=3204 u=root |  changed: [localhost]
-2015-12-27 18:06:31,634 p=3204 u=root |  TASK: [prepare_host_env | upload config drive for virtual machine] ************ 
-2015-12-27 18:06:31,996 p=3204 u=root |  changed: [localhost]
-2015-12-27 18:06:31,997 p=3204 u=root |  TASK: [prepare_host_env | upload domain xml for virtual machine] ************** 
-2015-12-27 18:06:32,373 p=3204 u=root |  changed: [localhost]
-2015-12-27 18:06:32,374 p=3204 u=root |  TASK: [prepare_host_env | upload config drive for virtual machine] ************ 
-2015-12-27 18:06:32,690 p=3204 u=root |  changed: [localhost]
-2015-12-27 18:06:32,691 p=3204 u=root |  TASK: [prepare_host_env | upload domain xml for virtual machine] ************** 
-2015-12-27 18:06:33,029 p=3204 u=root |  changed: [localhost]
-2015-12-27 18:06:33,030 p=3204 u=root |  TASK: [prepare_host_env | upload config drive for virtual machine] ************ 
-2015-12-27 18:06:33,331 p=3204 u=root |  changed: [localhost]
-2015-12-27 18:06:33,332 p=3204 u=root |  TASK: [prepare_host_env | upload domain xml for virtual machine] ************** 
-2015-12-27 18:06:33,341 p=3204 u=root |  skipping: [localhost]
-2015-12-27 18:06:33,342 p=3204 u=root |  TASK: [prepare_host_env | upload config drive for virtual machine] ************ 
-2015-12-27 18:06:33,350 p=3204 u=root |  skipping: [localhost]
-2015-12-27 18:06:33,350 p=3204 u=root |  PLAY [create virtual machines] ************************************************ 
-2015-12-27 18:06:33,351 p=3204 u=root |  TASK: [vnf_delete_vms | destroy virtual machine] ****************************** 
-2015-12-27 18:06:34,866 p=3204 u=root |  changed: [localhost]
-2015-12-27 18:06:34,867 p=3204 u=root |  TASK: [vnf_delete_vms | destroy virtual machine] ****************************** 
-2015-12-27 18:06:37,297 p=3204 u=root |  changed: [localhost]
-2015-12-27 18:06:37,298 p=3204 u=root |  TASK: [vnf_delete_vms | destroy virtual machine] ****************************** 
-2015-12-27 18:06:39,400 p=3204 u=root |  changed: [localhost]
-2015-12-27 18:06:39,401 p=3204 u=root |  TASK: [vnf_delete_vms | destroy virtual machine] ****************************** 
-2015-12-27 18:06:39,413 p=3204 u=root |  skipping: [localhost]
-2015-12-27 18:06:39,414 p=3204 u=root |  TASK: [vnf_delete_vms | debug msg="All VMs have been destroyed."] ************* 
-2015-12-27 18:06:39,417 p=3204 u=root |  ok: [localhost] => {
+2016-01-29 09:19:13,028 p=22558 u=root |   
+2016-01-29 09:19:13,028 p=22558 u=root |  /usr/bin/ansible-playbook -c paramiko -i ../../inventory/hosts upgrade_with_fullbackup.yml
+2016-01-29 09:19:13,028 p=22558 u=root |   
+2016-01-29 09:19:13,359 p=22558 u=root |  PLAY [Health Check] ********************************************* 
+2016-01-29 09:19:13,360 p=22558 u=root |  TASK: [check_vm_alive | health check for each vm] ********************************* 
+2016-01-29 09:19:13,501 p=22558 u=root |  ok: [localhost]
+2016-01-29 09:19:13,503 p=22558 u=root |  TASK: [check_vm_alive | health check for each vm] ********************************* 
+2016-01-29 09:19:13,514 p=22558 u=root |  skipping: [localhost]
+2016-01-29 09:19:13,514 p=22558 u=root |  TASK: [check_vm_alive | health check for each vm] ********************************* 
+2016-01-29 09:19:13,667 p=22558 u=root |  ok: [localhost]
+2016-01-29 09:19:13,668 p=22558 u=root |  TASK: [check_vm_alive | health check for each vm] ********************************* 
+2016-01-29 09:19:13,679 p=22558 u=root |  skipping: [localhost]
+2016-01-29 09:19:13,680 p=22558 u=root |  PLAY [check GR status] ******************************************************** 
+2016-01-29 09:19:13,681 p=22558 u=root |  TASK: [failed if GR installed] ************************************************ 
+2016-01-29 09:19:14,262 p=22558 u=root |  changed: [135.252.141.24]
+2016-01-29 09:19:14,263 p=22558 u=root |  PLAY [calculate the space for full backup] ************************************ 
+2016-01-29 09:19:14,263 p=22558 u=root |  TASK: [cal_diskspace | calculate the host space] ****************************** 
+2016-01-29 09:19:14,329 p=22558 u=root |  changed: [localhost]
+2016-01-29 09:19:14,330 p=22558 u=root |  PLAY [stop COM] *************************************************************** 
+2016-01-29 09:19:14,330 p=22558 u=root |  TASK: [stop_com | stop com application] *************************************** 
+2016-01-29 09:19:23,760 p=22558 u=root |  changed: [135.252.141.24]
+2016-01-29 09:19:23,760 p=22558 u=root |  PLAY [stop COM] *************************************************************** 
+2016-01-29 09:19:23,761 p=22558 u=root |  skipping: no hosts matched
+2016-01-29 09:19:23,761 p=22558 u=root |  PLAY [shutdown VM and prepare data for each VM in data full backup] *********** 
+2016-01-29 09:19:23,762 p=22558 u=root |  TASK: [vnf_shutdown_vms | shutdown oam virtual machine] *********************** 
+2016-01-29 09:19:24,027 p=22558 u=root |  changed: [localhost]
+2016-01-29 09:19:24,028 p=22558 u=root |  TASK: [vnf_shutdown_vms | shutdown cm virtual machine] ************************ 
+2016-01-29 09:19:24,036 p=22558 u=root |  skipping: [localhost]
+2016-01-29 09:19:24,037 p=22558 u=root |  TASK: [vnf_shutdown_vms | shutdown db virtual machine] ************************ 
+2016-01-29 09:19:25,276 p=22558 u=root |  changed: [localhost]
+2016-01-29 09:19:25,277 p=22558 u=root |  TASK: [vnf_shutdown_vms | shutdown qosac virtual machine] ********************* 
+2016-01-29 09:19:25,287 p=22558 u=root |  skipping: [localhost]
+2016-01-29 09:19:25,287 p=22558 u=root |  TASK: [vnf_shutdown_vms | wait for oam virtual machine to shutdown] *********** 
+2016-01-29 09:19:35,909 p=22558 u=root |  ok: [localhost]
+2016-01-29 09:19:35,909 p=22558 u=root |  TASK: [vnf_shutdown_vms | wait for cm vritual machine to shutdown] ************ 
+2016-01-29 09:19:35,915 p=22558 u=root |  skipping: [localhost]
+2016-01-29 09:19:35,916 p=22558 u=root |  TASK: [vnf_shutdown_vms | wait for db virtual machine to shutdown] ************ 
+2016-01-29 09:19:51,749 p=22558 u=root |  ok: [localhost]
+2016-01-29 09:19:51,751 p=22558 u=root |  TASK: [vnf_shutdown_vms | wait for qosac virtual machine to shutdown] ********* 
+2016-01-29 09:19:51,759 p=22558 u=root |  skipping: [localhost]
+2016-01-29 09:19:51,760 p=22558 u=root |  TASK: [vnf_shutdown_vms | wait for atc virtual machine to shutdown] *********** 
+2016-01-29 09:19:51,765 p=22558 u=root |  skipping: [localhost]
+2016-01-29 09:19:51,765 p=22558 u=root |  TASK: [vnf_full_backup | create directory on host server for local full backup] *** 
+2016-01-29 09:19:52,100 p=22558 u=root |  ok: [localhost]
+2016-01-29 09:19:52,101 p=22558 u=root |  TASK: [vnf_full_backup | create tmp_directory on host server for nfs full backup] *** 
+2016-01-29 09:19:52,114 p=22558 u=root |  skipping: [localhost]
+2016-01-29 09:19:52,115 p=22558 u=root |  TASK: [vnf_full_backup | mkdir to save snapshot for VM] *********************** 
+2016-01-29 09:19:52,467 p=22558 u=root |  changed: [localhost]
+2016-01-29 09:19:52,468 p=22558 u=root |  TASK: [vnf_full_backup | mkdir to save snapshot for VM(NFS)] ****************** 
+2016-01-29 09:19:52,491 p=22558 u=root |  skipping: [localhost]
+2016-01-29 09:19:52,493 p=22558 u=root |  TASK: [vnf_full_backup | save root disk snapshot for VM] ********************** 
+2016-01-29 09:20:14,117 p=22558 u=root |  changed: [localhost]
+2016-01-29 09:20:14,118 p=22558 u=root |  TASK: [vnf_full_backup | save root disk snapshot for VM(NFS)] ***************** 
+2016-01-29 09:20:14,139 p=22558 u=root |  skipping: [localhost]
+2016-01-29 09:20:14,139 p=22558 u=root |  TASK: [vnf_full_backup | save data disk snapshot for VM] ********************** 
+2016-01-29 09:20:20,769 p=22558 u=root |  changed: [localhost]
+2016-01-29 09:20:20,770 p=22558 u=root |  TASK: [vnf_full_backup | save data disk snapshot for VM(NFS)] ***************** 
+2016-01-29 09:20:20,791 p=22558 u=root |  skipping: [localhost]
+2016-01-29 09:20:20,792 p=22558 u=root |  TASK: [vnf_full_backup | save config drive iso snapshot for VM] *************** 
+2016-01-29 09:20:20,962 p=22558 u=root |  changed: [localhost]
+2016-01-29 09:20:20,962 p=22558 u=root |  TASK: [vnf_full_backup | save config drive iso snapshot for VM(NFS)] ********** 
+2016-01-29 09:20:20,982 p=22558 u=root |  skipping: [localhost]
+2016-01-29 09:20:20,983 p=22558 u=root |  TASK: [vnf_full_backup | save vm domain xml for VM] *************************** 
+2016-01-29 09:20:21,259 p=22558 u=root |  changed: [localhost]
+2016-01-29 09:20:21,260 p=22558 u=root |  TASK: [vnf_full_backup | save vm domain xml for VM(NFS)] ********************** 
+2016-01-29 09:20:21,280 p=22558 u=root |  skipping: [localhost]
+2016-01-29 09:20:21,281 p=22558 u=root |  TASK: [vnf_full_backup | mkdir to save snapshot for VM] *********************** 
+2016-01-29 09:20:21,289 p=22558 u=root |  skipping: [localhost]
+2016-01-29 09:20:21,290 p=22558 u=root |  TASK: [vnf_full_backup | mkdir to save snapshot for VM(NFS)] ****************** 
+2016-01-29 09:20:21,299 p=22558 u=root |  skipping: [localhost]
+2016-01-29 09:20:21,299 p=22558 u=root |  TASK: [vnf_full_backup | save root disk snapshot for VM] ********************** 
+2016-01-29 09:20:21,307 p=22558 u=root |  skipping: [localhost]
+2016-01-29 09:20:21,307 p=22558 u=root |  TASK: [vnf_full_backup | save root disk snapshot for VM(NFS)] ***************** 
+2016-01-29 09:20:21,315 p=22558 u=root |  skipping: [localhost]
+2016-01-29 09:20:21,315 p=22558 u=root |  TASK: [vnf_full_backup | save data disk snapshot for VM] ********************** 
+2016-01-29 09:20:21,323 p=22558 u=root |  skipping: [localhost]
+2016-01-29 09:20:21,323 p=22558 u=root |  TASK: [vnf_full_backup | save data disk snapshot for VM(NFS)] ***************** 
+2016-01-29 09:20:21,331 p=22558 u=root |  skipping: [localhost]
+2016-01-29 09:20:21,332 p=22558 u=root |  TASK: [vnf_full_backup | save config drive iso snapshot for VM] *************** 
+2016-01-29 09:20:21,339 p=22558 u=root |  skipping: [localhost]
+2016-01-29 09:20:21,340 p=22558 u=root |  TASK: [vnf_full_backup | save config drive iso snapshot for VM(NFS)] ********** 
+2016-01-29 09:20:21,347 p=22558 u=root |  skipping: [localhost]
+2016-01-29 09:20:21,348 p=22558 u=root |  TASK: [vnf_full_backup | save vm domain xml for VM] *************************** 
+2016-01-29 09:20:21,355 p=22558 u=root |  skipping: [localhost]
+2016-01-29 09:20:21,355 p=22558 u=root |  TASK: [vnf_full_backup | save vm domain xml for VM(NFS)] ********************** 
+2016-01-29 09:20:21,364 p=22558 u=root |  skipping: [localhost]
+2016-01-29 09:20:21,364 p=22558 u=root |  TASK: [vnf_full_backup | mkdir to save snapshot for VM] *********************** 
+2016-01-29 09:20:21,668 p=22558 u=root |  changed: [localhost]
+2016-01-29 09:20:21,668 p=22558 u=root |  TASK: [vnf_full_backup | mkdir to save snapshot for VM(NFS)] ****************** 
+2016-01-29 09:20:21,678 p=22558 u=root |  skipping: [localhost]
+2016-01-29 09:20:21,679 p=22558 u=root |  TASK: [vnf_full_backup | save root disk snapshot for VM] ********************** 
+2016-01-29 09:21:14,852 p=22558 u=root |  changed: [localhost]
+2016-01-29 09:21:14,854 p=22558 u=root |  TASK: [vnf_full_backup | save root disk snapshot for VM(NFS)] ***************** 
+2016-01-29 09:21:14,874 p=22558 u=root |  skipping: [localhost]
+2016-01-29 09:21:14,874 p=22558 u=root |  TASK: [vnf_full_backup | save data disk snapshot for VM] ********************** 
+2016-01-29 09:22:43,007 p=22558 u=root |  changed: [localhost]
+2016-01-29 09:22:43,008 p=22558 u=root |  TASK: [vnf_full_backup | save data disk snapshot for VM(NFS)] ***************** 
+2016-01-29 09:22:43,029 p=22558 u=root |  skipping: [localhost]
+2016-01-29 09:22:43,029 p=22558 u=root |  TASK: [vnf_full_backup | save config drive iso snapshot for VM] *************** 
+2016-01-29 09:22:43,297 p=22558 u=root |  changed: [localhost]
+2016-01-29 09:22:43,298 p=22558 u=root |  TASK: [vnf_full_backup | save config drive iso snapshot for VM(NFS)] ********** 
+2016-01-29 09:22:43,318 p=22558 u=root |  skipping: [localhost]
+2016-01-29 09:22:43,319 p=22558 u=root |  TASK: [vnf_full_backup | save vm domain xml for VM] *************************** 
+2016-01-29 09:22:43,581 p=22558 u=root |  changed: [localhost]
+2016-01-29 09:22:43,582 p=22558 u=root |  TASK: [vnf_full_backup | save vm domain xml for VM(NFS)] ********************** 
+2016-01-29 09:22:43,605 p=22558 u=root |  skipping: [localhost]
+2016-01-29 09:22:43,606 p=22558 u=root |  TASK: [vnf_full_backup | mkdir to save snapshot for VM] *********************** 
+2016-01-29 09:22:43,615 p=22558 u=root |  skipping: [localhost]
+2016-01-29 09:22:43,616 p=22558 u=root |  TASK: [vnf_full_backup | mkdir to save snapshot for VM(NFS)] ****************** 
+2016-01-29 09:22:43,624 p=22558 u=root |  skipping: [localhost]
+2016-01-29 09:22:43,625 p=22558 u=root |  TASK: [vnf_full_backup | save root disk snapshot for VM] ********************** 
+2016-01-29 09:22:43,634 p=22558 u=root |  skipping: [localhost]
+2016-01-29 09:22:43,634 p=22558 u=root |  TASK: [vnf_full_backup | save root disk snapshot for VM(NFS)] ***************** 
+2016-01-29 09:22:43,643 p=22558 u=root |  skipping: [localhost]
+2016-01-29 09:22:43,643 p=22558 u=root |  TASK: [vnf_full_backup | save data disk snapshot for VM] ********************** 
+2016-01-29 09:22:43,652 p=22558 u=root |  skipping: [localhost]
+2016-01-29 09:22:43,653 p=22558 u=root |  TASK: [vnf_full_backup | save data disk snapshot for VM(NFS)] ***************** 
+2016-01-29 09:22:43,662 p=22558 u=root |  skipping: [localhost]
+2016-01-29 09:22:43,663 p=22558 u=root |  TASK: [vnf_full_backup | save config drive iso snapshot for VM] *************** 
+2016-01-29 09:22:43,671 p=22558 u=root |  skipping: [localhost]
+2016-01-29 09:22:43,672 p=22558 u=root |  TASK: [vnf_full_backup | save config drive iso snapshot for VM(NFS)] ********** 
+2016-01-29 09:22:43,680 p=22558 u=root |  skipping: [localhost]
+2016-01-29 09:22:43,681 p=22558 u=root |  TASK: [vnf_full_backup | save vm domain xml for VM] *************************** 
+2016-01-29 09:22:43,688 p=22558 u=root |  skipping: [localhost]
+2016-01-29 09:22:43,689 p=22558 u=root |  TASK: [vnf_full_backup | save vm domain xml for VM(NFS)] ********************** 
+2016-01-29 09:22:43,697 p=22558 u=root |  skipping: [localhost]
+2016-01-29 09:22:43,697 p=22558 u=root |  TASK: [vnf_full_backup | copy comstack.json file if it exists] **************** 
+2016-01-29 09:22:43,839 p=22558 u=root |  ok: [localhost -> 127.0.0.1]
+2016-01-29 09:22:43,840 p=22558 u=root |  TASK: [vnf_full_backup | copy /opt/PlexView/ELCM/datasource/comstack.json] **** 
+2016-01-29 09:22:44,154 p=22558 u=root |  changed: [localhost]
+2016-01-29 09:22:44,155 p=22558 u=root |  TASK: [vnf_full_backup | copy /opt/PlexView/ELCM/datasource/comstack.json(NFS)] *** 
+2016-01-29 09:22:44,173 p=22558 u=root |  skipping: [localhost]
+2016-01-29 09:22:44,174 p=22558 u=root |  TASK: [vnf_start_vms | start virtual machine] ********************************* 
+2016-01-29 09:22:47,705 p=22558 u=root |  changed: [localhost]
+2016-01-29 09:22:47,706 p=22558 u=root |  TASK: [vnf_start_vms | start virtual machine] ********************************* 
+2016-01-29 09:22:47,717 p=22558 u=root |  skipping: [localhost]
+2016-01-29 09:22:47,718 p=22558 u=root |  TASK: [vnf_start_vms | start virtual machine] ********************************* 
+2016-01-29 09:22:49,662 p=22558 u=root |  changed: [localhost]
+2016-01-29 09:22:49,663 p=22558 u=root |  TASK: [vnf_start_vms | start virtual machine] ********************************* 
+2016-01-29 09:22:49,673 p=22558 u=root |  skipping: [localhost]
+2016-01-29 09:22:49,674 p=22558 u=root |  TASK: [vnf_wait_for_alive | wait for server to alive] ************************* 
+2016-01-29 09:23:47,906 p=22558 u=root |  ok: [localhost -> 127.0.0.1]
+2016-01-29 09:23:47,908 p=22558 u=root |  TASK: [vnf_wait_for_alive | delay 5 seconds so that OS is in stable state] **** 
+2016-01-29 09:23:53,075 p=22558 u=root |  ok: [localhost -> 127.0.0.1]
+2016-01-29 09:23:53,076 p=22558 u=root |  TASK: [vnf_wait_for_alive | wait for server to alive] ************************* 
+2016-01-29 09:23:53,089 p=22558 u=root |  skipping: [localhost]
+2016-01-29 09:23:53,090 p=22558 u=root |  TASK: [vnf_wait_for_alive | delay 5 seconds so that OS is in stable state] **** 
+2016-01-29 09:23:53,099 p=22558 u=root |  skipping: [localhost]
+2016-01-29 09:23:53,100 p=22558 u=root |  TASK: [vnf_wait_for_alive | wait for server to alive] ************************* 
+2016-01-29 09:23:53,255 p=22558 u=root |  ok: [localhost -> 127.0.0.1]
+2016-01-29 09:23:53,256 p=22558 u=root |  TASK: [vnf_wait_for_alive | delay 5 seconds so that OS is in stable state] **** 
+2016-01-29 09:23:58,538 p=22558 u=root |  ok: [localhost -> 127.0.0.1]
+2016-01-29 09:23:58,539 p=22558 u=root |  TASK: [vnf_wait_for_alive | wait for server to alive] ************************* 
+2016-01-29 09:23:58,553 p=22558 u=root |  skipping: [localhost]
+2016-01-29 09:23:58,554 p=22558 u=root |  TASK: [vnf_wait_for_alive | delay 5 seconds so that OS is in stable state] **** 
+2016-01-29 09:23:58,564 p=22558 u=root |  skipping: [localhost]
+2016-01-29 09:23:58,565 p=22558 u=root |  PLAY [start com application] ************************************************** 
+2016-01-29 09:23:58,566 p=22558 u=root |  TASK: [start_com | start com application] ************************************* 
+2016-01-29 09:24:11,668 p=22558 u=root |  changed: [135.252.141.24]
+2016-01-29 09:24:11,668 p=22558 u=root |  PLAY [start com application] ************************************************** 
+2016-01-29 09:24:11,669 p=22558 u=root |  skipping: no hosts matched
+2016-01-29 09:24:11,669 p=22558 u=root |  PLAY [save qcow2 files from mount directory to nfs server] ******************** 
+2016-01-29 09:24:11,669 p=22558 u=root |  TASK: [vnf_backup_to_nfs | COM application has been started!] ***************** 
+2016-01-29 09:24:11,682 p=22558 u=root |  skipping: [localhost]
+2016-01-29 09:24:11,683 p=22558 u=root |  TASK: [vnf_backup_to_nfs | create nfs directory on host server] *************** 
+2016-01-29 09:24:11,694 p=22558 u=root |  skipping: [localhost]
+2016-01-29 09:24:11,695 p=22558 u=root |  TASK: [vnf_backup_to_nfs | mount nfs directory] ******************************* 
+2016-01-29 09:24:11,707 p=22558 u=root |  skipping: [localhost]
+2016-01-29 09:24:11,707 p=22558 u=root |  TASK: [vnf_backup_to_nfs | copy qcow2 in tmp files to nfs server] ************* 
+2016-01-29 09:24:11,721 p=22558 u=root |  skipping: [localhost]
+2016-01-29 09:24:11,722 p=22558 u=root |  TASK: [vnf_backup_to_nfs | copy qcow2 in tmp files to nfs server] ************* 
+2016-01-29 09:24:11,736 p=22558 u=root |  skipping: [localhost]
+2016-01-29 09:24:11,736 p=22558 u=root |  TASK: [vnf_backup_to_nfs | copy qcow2 in tmp files to nfs server] ************* 
+2016-01-29 09:24:11,751 p=22558 u=root |  skipping: [localhost]
+2016-01-29 09:24:11,752 p=22558 u=root |  TASK: [vnf_backup_to_nfs | copy qcow2 in tmp files to nfs server] ************* 
+2016-01-29 09:24:11,765 p=22558 u=root |  skipping: [localhost]
+2016-01-29 09:24:11,766 p=22558 u=root |  TASK: [vnf_backup_to_nfs | copy comstack.json to nfs directory] *************** 
+2016-01-29 09:24:11,778 p=22558 u=root |  skipping: [localhost]
+2016-01-29 09:24:11,778 p=22558 u=root |  PLAY [check GR status] ******************************************************** 
+2016-01-29 09:24:11,779 p=22558 u=root |  TASK: [failed if GR installed] ************************************************ 
+2016-01-29 09:24:12,391 p=22558 u=root |  changed: [135.252.141.24]
+2016-01-29 09:24:12,392 p=22558 u=root |  PLAY [check virtual machine hostname] ***************************************** 
+2016-01-29 09:24:12,393 p=22558 u=root |  TASK: [vnf_check_hostname | check hostname for CM or FCAPS] ******************* 
+2016-01-29 09:24:12,400 p=22558 u=root |  skipping: [localhost]
+2016-01-29 09:24:12,400 p=22558 u=root |  TASK: [vnf_check_hostname | check hostname for OAM] *************************** 
+2016-01-29 09:24:12,411 p=22558 u=root |  ok: [localhost -> 127.0.0.1]
+2016-01-29 09:24:12,411 p=22558 u=root |  PLAY [ckeck qcow2 cksum] ****************************************************** 
+2016-01-29 09:24:12,412 p=22558 u=root |  TASK: [vnf_cksum_qcow2 | make sure qcow2 cksum file exists] ******************* 
+2016-01-29 09:24:12,725 p=22558 u=root |  ok: [localhost]
+2016-01-29 09:24:12,726 p=22558 u=root |  TASK: [vnf_cksum_qcow2 | create temp cksum file] ****************************** 
+2016-01-29 09:25:20,660 p=22558 u=root |  changed: [localhost]
+2016-01-29 09:25:20,661 p=22558 u=root |  TASK: [vnf_cksum_qcow2 | check cksum differences] ***************************** 
+2016-01-29 09:25:20,865 p=22558 u=root |  changed: [localhost]
+2016-01-29 09:25:20,867 p=22558 u=root |  TASK: [vnf_cksum_qcow2 | delete temp cksum file] ****************************** 
+2016-01-29 09:25:21,146 p=22558 u=root |  changed: [localhost]
+2016-01-29 09:25:21,147 p=22558 u=root |  TASK: [vnf_cksum_qcow2 | make sure qcow2 cksum file exists] ******************* 
+2016-01-29 09:25:21,357 p=22558 u=root |  ok: [localhost]
+2016-01-29 09:25:21,358 p=22558 u=root |  TASK: [vnf_cksum_qcow2 | create temp cksum file] ****************************** 
+2016-01-29 09:26:31,286 p=22558 u=root |  changed: [localhost]
+2016-01-29 09:26:31,287 p=22558 u=root |  TASK: [vnf_cksum_qcow2 | check cksum differences] ***************************** 
+2016-01-29 09:26:31,528 p=22558 u=root |  changed: [localhost]
+2016-01-29 09:26:31,529 p=22558 u=root |  TASK: [vnf_cksum_qcow2 | delete temp cksum file] ****************************** 
+2016-01-29 09:26:31,855 p=22558 u=root |  changed: [localhost]
+2016-01-29 09:26:31,856 p=22558 u=root |  TASK: [vnf_cksum_qcow2 | make sure qcow2 cksum file exists] ******************* 
+2016-01-29 09:26:31,868 p=22558 u=root |  skipping: [localhost]
+2016-01-29 09:26:31,868 p=22558 u=root |  TASK: [vnf_cksum_qcow2 | create temp cksum file] ****************************** 
+2016-01-29 09:26:31,878 p=22558 u=root |  skipping: [localhost]
+2016-01-29 09:26:31,878 p=22558 u=root |  TASK: [vnf_cksum_qcow2 | check cksum differences] ***************************** 
+2016-01-29 09:26:31,887 p=22558 u=root |  skipping: [localhost]
+2016-01-29 09:26:31,887 p=22558 u=root |  TASK: [vnf_cksum_qcow2 | delete temp cksum file] ****************************** 
+2016-01-29 09:26:31,897 p=22558 u=root |  skipping: [localhost]
+2016-01-29 09:26:31,897 p=22558 u=root |  PLAY [stop COM] *************************************************************** 
+2016-01-29 09:26:31,898 p=22558 u=root |  TASK: [stop_com | stop com application] *************************************** 
+2016-01-29 09:28:27,021 p=22558 u=root |  changed: [135.252.141.24]
+2016-01-29 09:28:27,021 p=22558 u=root |  PLAY [stop COM] *************************************************************** 
+2016-01-29 09:28:27,022 p=22558 u=root |  skipping: no hosts matched
+2016-01-29 09:28:27,022 p=22558 u=root |  PLAY [backup com data] ******************************************************** 
+2016-01-29 09:28:27,023 p=22558 u=root |  TASK: [backup_data | create local backup directory] *************************** 
+2016-01-29 09:28:27,675 p=22558 u=root |  ok: [135.252.141.24]
+2016-01-29 09:28:27,757 p=22558 u=root |  ok: [135.252.141.25]
+2016-01-29 09:28:27,773 p=22558 u=root |  TASK: [backup_data | mount nfs directory] ************************************* 
+2016-01-29 09:28:27,817 p=22558 u=root |  skipping: [135.252.141.24]
+2016-01-29 09:28:27,817 p=22558 u=root |  skipping: [135.252.141.25]
+2016-01-29 09:28:27,835 p=22558 u=root |  TASK: [backup_data | backup data] ********************************************* 
+2016-01-29 09:29:17,143 p=22558 u=root |  changed: [135.252.141.24]
+2016-01-29 09:29:30,356 p=22558 u=root |  changed: [135.252.141.25]
+2016-01-29 09:29:30,373 p=22558 u=root |  TASK: [backup_data | backup data for CSA and CFMA] **************************** 
+2016-01-29 09:29:30,413 p=22558 u=root |  skipping: [135.252.141.24]
+2016-01-29 09:29:30,415 p=22558 u=root |  skipping: [135.252.141.25]
+2016-01-29 09:29:30,432 p=22558 u=root |  TASK: [backup_data | remove qosac backup data] ******************************** 
+2016-01-29 09:29:30,468 p=22558 u=root |  skipping: [135.252.141.24]
+2016-01-29 09:29:30,469 p=22558 u=root |  skipping: [135.252.141.25]
+2016-01-29 09:29:30,485 p=22558 u=root |  TASK: [backup_data | backup data qosac data] ********************************** 
+2016-01-29 09:29:30,518 p=22558 u=root |  skipping: [135.252.141.24]
+2016-01-29 09:29:30,523 p=22558 u=root |  skipping: [135.252.141.25]
+2016-01-29 09:29:30,537 p=22558 u=root |  TASK: [backup_data | synchronize data to disk] ******************************** 
+2016-01-29 09:29:31,789 p=22558 u=root |  changed: [135.252.141.25]
+2016-01-29 09:29:31,946 p=22558 u=root |  changed: [135.252.141.24]
+2016-01-29 09:29:31,962 p=22558 u=root |  PLAY [prepare data for virtual machines] ************************************** 
+2016-01-29 09:29:31,964 p=22558 u=root |  TASK: [vnf_prepare_vms | create data directory for virtual machine] *********** 
+2016-01-29 09:29:32,260 p=22558 u=root |  changed: [localhost]
+2016-01-29 09:29:32,261 p=22558 u=root |  TASK: [vnf_prepare_vms | generate domain xml for virtual machine] ************* 
+2016-01-29 09:29:32,601 p=22558 u=root |  changed: [localhost]
+2016-01-29 09:29:32,601 p=22558 u=root |  TASK: [vnf_prepare_vms | generate meta data for cloud init] ******************* 
+2016-01-29 09:29:32,944 p=22558 u=root |  changed: [localhost]
+2016-01-29 09:29:32,945 p=22558 u=root |  TASK: [vnf_prepare_vms | generate cloud-config for cloud init] **************** 
+2016-01-29 09:29:33,265 p=22558 u=root |  changed: [localhost]
+2016-01-29 09:29:33,266 p=22558 u=root |  TASK: [vnf_prepare_vms | generate user-script for clout init] ***************** 
+2016-01-29 09:29:33,594 p=22558 u=root |  changed: [localhost]
+2016-01-29 09:29:33,595 p=22558 u=root |  TASK: [vnf_prepare_vms | upload write-mime-mulitpart.py script] *************** 
+2016-01-29 09:29:33,894 p=22558 u=root |  changed: [localhost]
+2016-01-29 09:29:33,895 p=22558 u=root |  TASK: [vnf_prepare_vms | generate user-data for clout init] ******************* 
+2016-01-29 09:29:34,118 p=22558 u=root |  changed: [localhost]
+2016-01-29 09:29:34,119 p=22558 u=root |  TASK: [vnf_prepare_vms | generate config drive iso] *************************** 
+2016-01-29 09:29:34,301 p=22558 u=root |  changed: [localhost]
+2016-01-29 09:29:34,302 p=22558 u=root |  TASK: [vnf_prepare_vms | create data directory for virtual machine] *********** 
+2016-01-29 09:29:34,312 p=22558 u=root |  skipping: [localhost]
+2016-01-29 09:29:34,313 p=22558 u=root |  TASK: [vnf_prepare_vms | generate domain xml for virtual machine] ************* 
+2016-01-29 09:29:34,321 p=22558 u=root |  skipping: [localhost]
+2016-01-29 09:29:34,322 p=22558 u=root |  TASK: [vnf_prepare_vms | generate meta data for cloud init] ******************* 
+2016-01-29 09:29:34,330 p=22558 u=root |  skipping: [localhost]
+2016-01-29 09:29:34,330 p=22558 u=root |  TASK: [vnf_prepare_vms | generate cloud-config for cloud init] **************** 
+2016-01-29 09:29:34,340 p=22558 u=root |  skipping: [localhost]
+2016-01-29 09:29:34,341 p=22558 u=root |  TASK: [vnf_prepare_vms | generate user-script for clout init] ***************** 
+2016-01-29 09:29:34,350 p=22558 u=root |  skipping: [localhost]
+2016-01-29 09:29:34,351 p=22558 u=root |  TASK: [vnf_prepare_vms | upload write-mime-mulitpart.py script] *************** 
+2016-01-29 09:29:34,358 p=22558 u=root |  skipping: [localhost]
+2016-01-29 09:29:34,359 p=22558 u=root |  TASK: [vnf_prepare_vms | generate user-data for clout init] ******************* 
+2016-01-29 09:29:34,367 p=22558 u=root |  skipping: [localhost]
+2016-01-29 09:29:34,367 p=22558 u=root |  TASK: [vnf_prepare_vms | generate config drive iso] *************************** 
+2016-01-29 09:29:34,375 p=22558 u=root |  skipping: [localhost]
+2016-01-29 09:29:34,376 p=22558 u=root |  TASK: [vnf_prepare_vms | create data directory for virtual machine] *********** 
+2016-01-29 09:29:34,570 p=22558 u=root |  changed: [localhost]
+2016-01-29 09:29:34,571 p=22558 u=root |  TASK: [vnf_prepare_vms | generate domain xml for virtual machine] ************* 
+2016-01-29 09:29:34,885 p=22558 u=root |  changed: [localhost]
+2016-01-29 09:29:34,886 p=22558 u=root |  TASK: [vnf_prepare_vms | generate meta data for cloud init] ******************* 
+2016-01-29 09:29:35,216 p=22558 u=root |  changed: [localhost]
+2016-01-29 09:29:35,217 p=22558 u=root |  TASK: [vnf_prepare_vms | generate cloud-config for cloud init] **************** 
+2016-01-29 09:29:35,566 p=22558 u=root |  changed: [localhost]
+2016-01-29 09:29:35,567 p=22558 u=root |  TASK: [vnf_prepare_vms | generate user-script for clout init] ***************** 
+2016-01-29 09:29:35,840 p=22558 u=root |  changed: [localhost]
+2016-01-29 09:29:35,841 p=22558 u=root |  TASK: [vnf_prepare_vms | upload write-mime-mulitpart.py script] *************** 
+2016-01-29 09:29:36,135 p=22558 u=root |  changed: [localhost]
+2016-01-29 09:29:36,136 p=22558 u=root |  TASK: [vnf_prepare_vms | generate user-data for clout init] ******************* 
+2016-01-29 09:29:36,364 p=22558 u=root |  changed: [localhost]
+2016-01-29 09:29:36,365 p=22558 u=root |  TASK: [vnf_prepare_vms | generate config drive iso] *************************** 
+2016-01-29 09:29:36,527 p=22558 u=root |  changed: [localhost]
+2016-01-29 09:29:36,528 p=22558 u=root |  TASK: [vnf_prepare_vms | create data directory for virtual machine] *********** 
+2016-01-29 09:29:36,539 p=22558 u=root |  skipping: [localhost]
+2016-01-29 09:29:36,539 p=22558 u=root |  TASK: [vnf_prepare_vms | generate domain xml for virtual machine] ************* 
+2016-01-29 09:29:36,549 p=22558 u=root |  skipping: [localhost]
+2016-01-29 09:29:36,550 p=22558 u=root |  TASK: [vnf_prepare_vms | generate meta data for cloud init] ******************* 
+2016-01-29 09:29:36,557 p=22558 u=root |  skipping: [localhost]
+2016-01-29 09:29:36,558 p=22558 u=root |  TASK: [vnf_prepare_vms | generate cloud-config for cloud init] **************** 
+2016-01-29 09:29:36,567 p=22558 u=root |  skipping: [localhost]
+2016-01-29 09:29:36,568 p=22558 u=root |  TASK: [vnf_prepare_vms | generate user-script for clout init] ***************** 
+2016-01-29 09:29:36,575 p=22558 u=root |  skipping: [localhost]
+2016-01-29 09:29:36,576 p=22558 u=root |  TASK: [vnf_prepare_vms | upload write-mime-mulitpart.py script] *************** 
+2016-01-29 09:29:36,584 p=22558 u=root |  skipping: [localhost]
+2016-01-29 09:29:36,584 p=22558 u=root |  TASK: [vnf_prepare_vms | generate user-data for clout init] ******************* 
+2016-01-29 09:29:36,592 p=22558 u=root |  skipping: [localhost]
+2016-01-29 09:29:36,592 p=22558 u=root |  TASK: [vnf_prepare_vms | generate config drive iso] *************************** 
+2016-01-29 09:29:36,600 p=22558 u=root |  skipping: [localhost]
+2016-01-29 09:29:36,600 p=22558 u=root |  PLAY [gather host facts] ****************************************************** 
+2016-01-29 09:29:36,601 p=22558 u=root |  GATHERING FACTS *************************************************************** 
+2016-01-29 09:29:37,247 p=22558 u=root |  ok: [localhost]
+2016-01-29 09:29:37,248 p=22558 u=root |  PLAY [prepare data for virtual machines] ************************************** 
+2016-01-29 09:29:37,248 p=22558 u=root |  TASK: [vnf_prepare_instopt | create data directory for virtual machine] ******* 
+2016-01-29 09:29:37,568 p=22558 u=root |  ok: [localhost]
+2016-01-29 09:29:37,569 p=22558 u=root |  TASK: [vnf_prepare_instopt | generate install options] ************************ 
+2016-01-29 09:29:37,968 p=22558 u=root |  changed: [localhost]
+2016-01-29 09:29:37,969 p=22558 u=root |  TASK: [vnf_prepare_instopt | create data directory for virtual machine] ******* 
+2016-01-29 09:29:37,979 p=22558 u=root |  skipping: [localhost]
+2016-01-29 09:29:37,980 p=22558 u=root |  TASK: [vnf_prepare_instopt | generate install options] ************************ 
+2016-01-29 09:29:37,988 p=22558 u=root |  skipping: [localhost]
+2016-01-29 09:29:37,989 p=22558 u=root |  TASK: [vnf_prepare_instopt | create data directory for virtual machine] ******* 
+2016-01-29 09:29:38,268 p=22558 u=root |  ok: [localhost]
+2016-01-29 09:29:38,269 p=22558 u=root |  TASK: [vnf_prepare_instopt | generate install options] ************************ 
+2016-01-29 09:29:38,645 p=22558 u=root |  changed: [localhost]
+2016-01-29 09:29:38,646 p=22558 u=root |  TASK: [vnf_prepare_instopt | create data directory for virtual machine] ******* 
+2016-01-29 09:29:38,657 p=22558 u=root |  skipping: [localhost]
+2016-01-29 09:29:38,657 p=22558 u=root |  TASK: [vnf_prepare_instopt | generate install options] ************************ 
+2016-01-29 09:29:38,665 p=22558 u=root |  skipping: [localhost]
+2016-01-29 09:29:38,666 p=22558 u=root |  PLAY [prepare host server environment] **************************************** 
+2016-01-29 09:29:38,667 p=22558 u=root |  TASK: [prepare_host_env | create deployment directory] ************************ 
+2016-01-29 09:29:38,979 p=22558 u=root |  ok: [localhost]
+2016-01-29 09:29:38,980 p=22558 u=root |  TASK: [prepare_host_env | create directory for virtual machine] *************** 
+2016-01-29 09:29:39,284 p=22558 u=root |  ok: [localhost]
+2016-01-29 09:29:39,285 p=22558 u=root |  TASK: [prepare_host_env | create directory for virtual machine] *************** 
+2016-01-29 09:29:39,297 p=22558 u=root |  skipping: [localhost]
+2016-01-29 09:29:39,298 p=22558 u=root |  TASK: [prepare_host_env | create directory for virtual machine] *************** 
+2016-01-29 09:29:39,618 p=22558 u=root |  ok: [localhost]
+2016-01-29 09:29:39,619 p=22558 u=root |  TASK: [prepare_host_env | create directory for virtual machine] *************** 
+2016-01-29 09:29:39,630 p=22558 u=root |  skipping: [localhost]
+2016-01-29 09:29:39,631 p=22558 u=root |  TASK: [prepare_host_env | upload domain xml for virtual machine] ************** 
+2016-01-29 09:29:40,002 p=22558 u=root |  ok: [localhost]
+2016-01-29 09:29:40,003 p=22558 u=root |  TASK: [prepare_host_env | upload config drive for virtual machine] ************ 
+2016-01-29 09:29:40,383 p=22558 u=root |  changed: [localhost]
+2016-01-29 09:29:40,384 p=22558 u=root |  TASK: [prepare_host_env | upload domain xml for virtual machine] ************** 
+2016-01-29 09:29:40,394 p=22558 u=root |  skipping: [localhost]
+2016-01-29 09:29:40,395 p=22558 u=root |  TASK: [prepare_host_env | upload config drive for virtual machine] ************ 
+2016-01-29 09:29:40,405 p=22558 u=root |  skipping: [localhost]
+2016-01-29 09:29:40,406 p=22558 u=root |  TASK: [prepare_host_env | upload domain xml for virtual machine] ************** 
+2016-01-29 09:29:40,749 p=22558 u=root |  ok: [localhost]
+2016-01-29 09:29:40,750 p=22558 u=root |  TASK: [prepare_host_env | upload config drive for virtual machine] ************ 
+2016-01-29 09:29:41,104 p=22558 u=root |  changed: [localhost]
+2016-01-29 09:29:41,106 p=22558 u=root |  TASK: [prepare_host_env | upload domain xml for virtual machine] ************** 
+2016-01-29 09:29:41,115 p=22558 u=root |  skipping: [localhost]
+2016-01-29 09:29:41,116 p=22558 u=root |  TASK: [prepare_host_env | upload config drive for virtual machine] ************ 
+2016-01-29 09:29:41,124 p=22558 u=root |  skipping: [localhost]
+2016-01-29 09:29:41,126 p=22558 u=root |  PLAY [create virtual machines] ************************************************ 
+2016-01-29 09:29:41,127 p=22558 u=root |  TASK: [vnf_delete_vms | destroy virtual machine] ****************************** 
+2016-01-29 09:29:42,443 p=22558 u=root |  changed: [localhost]
+2016-01-29 09:29:42,444 p=22558 u=root |  TASK: [vnf_delete_vms | destroy virtual machine] ****************************** 
+2016-01-29 09:29:42,455 p=22558 u=root |  skipping: [localhost]
+2016-01-29 09:29:42,456 p=22558 u=root |  TASK: [vnf_delete_vms | destroy virtual machine] ****************************** 
+2016-01-29 09:29:43,987 p=22558 u=root |  changed: [localhost]
+2016-01-29 09:29:43,988 p=22558 u=root |  TASK: [vnf_delete_vms | destroy virtual machine] ****************************** 
+2016-01-29 09:29:44,000 p=22558 u=root |  skipping: [localhost]
+2016-01-29 09:29:44,001 p=22558 u=root |  TASK: [vnf_delete_vms | debug msg="All VMs have been destroyed."] ************* 
+2016-01-29 09:29:44,004 p=22558 u=root |  ok: [localhost] => {
     "msg": "All VMs have been destroyed."
 }
-2015-12-27 18:06:39,417 p=3204 u=root |  TASK: [vnf_delete_vms | undefine virtual machine] ***************************** 
-2015-12-27 18:06:39,731 p=3204 u=root |  ok: [localhost]
-2015-12-27 18:06:39,732 p=3204 u=root |  TASK: [vnf_delete_vms | query virtual machine status] ************************* 
-2015-12-27 18:06:39,920 p=3204 u=root |  failed: [localhost] => {"failed": true}
-2015-12-27 18:06:39,920 p=3204 u=root |  msg: virtual machine EricHandsomeM001OAM01 not found
-2015-12-27 18:06:39,920 p=3204 u=root |  ...ignoring
-2015-12-27 18:06:39,921 p=3204 u=root |  TASK: [vnf_delete_vms | make sure undefine virtual machine] ******************* 
-2015-12-27 18:06:39,936 p=3204 u=root |  ok: [localhost]
-2015-12-27 18:06:39,937 p=3204 u=root |  TASK: [vnf_delete_vms | undefine virtual machine] ***************************** 
-2015-12-27 18:06:40,119 p=3204 u=root |  ok: [localhost]
-2015-12-27 18:06:40,120 p=3204 u=root |  TASK: [vnf_delete_vms | query virtual machine status] ************************* 
-2015-12-27 18:06:40,303 p=3204 u=root |  failed: [localhost] => {"failed": true}
-2015-12-27 18:06:40,303 p=3204 u=root |  msg: virtual machine EricHandsomeM002CM01 not found
-2015-12-27 18:06:40,303 p=3204 u=root |  ...ignoring
-2015-12-27 18:06:40,304 p=3204 u=root |  TASK: [vnf_delete_vms | make sure undefine virtual machine] ******************* 
-2015-12-27 18:06:40,318 p=3204 u=root |  ok: [localhost]
-2015-12-27 18:06:40,318 p=3204 u=root |  TASK: [vnf_delete_vms | undefine virtual machine] ***************************** 
-2015-12-27 18:06:40,487 p=3204 u=root |  ok: [localhost]
-2015-12-27 18:06:40,488 p=3204 u=root |  TASK: [vnf_delete_vms | query virtual machine status] ************************* 
-2015-12-27 18:06:40,676 p=3204 u=root |  failed: [localhost] => {"failed": true}
-2015-12-27 18:06:40,677 p=3204 u=root |  msg: virtual machine EricHandsomeM003DB01 not found
-2015-12-27 18:06:40,677 p=3204 u=root |  ...ignoring
-2015-12-27 18:06:40,678 p=3204 u=root |  TASK: [vnf_delete_vms | make sure undefine virtual machine] ******************* 
-2015-12-27 18:06:40,693 p=3204 u=root |  ok: [localhost]
-2015-12-27 18:06:40,693 p=3204 u=root |  TASK: [vnf_delete_vms | undefine virtual machine] ***************************** 
-2015-12-27 18:06:40,703 p=3204 u=root |  skipping: [localhost]
-2015-12-27 18:06:40,703 p=3204 u=root |  TASK: [vnf_delete_vms | query virtual machine status] ************************* 
-2015-12-27 18:06:40,713 p=3204 u=root |  skipping: [localhost]
-2015-12-27 18:06:40,713 p=3204 u=root |  TASK: [vnf_delete_vms | make sure undefine virtual machine] ******************* 
-2015-12-27 18:06:40,724 p=3204 u=root |  skipping: [localhost]
-2015-12-27 18:06:40,725 p=3204 u=root |  TASK: [vnf_delete_vms | debug msg="All VMs have been deleted."] *************** 
-2015-12-27 18:06:40,727 p=3204 u=root |  ok: [localhost] => {
+2016-01-29 09:29:44,004 p=22558 u=root |  TASK: [vnf_delete_vms | undefine virtual machine] ***************************** 
+2016-01-29 09:29:45,207 p=22558 u=root |  ok: [localhost]
+2016-01-29 09:29:45,208 p=22558 u=root |  TASK: [vnf_delete_vms | query virtual machine status] ************************* 
+2016-01-29 09:29:45,412 p=22558 u=root |  failed: [localhost] => {"failed": true}
+2016-01-29 09:29:45,412 p=22558 u=root |  msg: virtual machine Ericgr1M001OAM01 not found
+2016-01-29 09:29:45,412 p=22558 u=root |  ...ignoring
+2016-01-29 09:29:45,413 p=22558 u=root |  TASK: [vnf_delete_vms | make sure undefine virtual machine] ******************* 
+2016-01-29 09:29:45,429 p=22558 u=root |  ok: [localhost]
+2016-01-29 09:29:45,429 p=22558 u=root |  TASK: [vnf_delete_vms | undefine virtual machine] ***************************** 
+2016-01-29 09:29:45,438 p=22558 u=root |  skipping: [localhost]
+2016-01-29 09:29:45,438 p=22558 u=root |  TASK: [vnf_delete_vms | query virtual machine status] ************************* 
+2016-01-29 09:29:45,447 p=22558 u=root |  skipping: [localhost]
+2016-01-29 09:29:45,448 p=22558 u=root |  TASK: [vnf_delete_vms | make sure undefine virtual machine] ******************* 
+2016-01-29 09:29:45,457 p=22558 u=root |  skipping: [localhost]
+2016-01-29 09:29:45,457 p=22558 u=root |  TASK: [vnf_delete_vms | undefine virtual machine] ***************************** 
+2016-01-29 09:29:45,653 p=22558 u=root |  ok: [localhost]
+2016-01-29 09:29:45,654 p=22558 u=root |  TASK: [vnf_delete_vms | query virtual machine status] ************************* 
+2016-01-29 09:29:45,854 p=22558 u=root |  failed: [localhost] => {"failed": true}
+2016-01-29 09:29:45,855 p=22558 u=root |  msg: virtual machine Ericgr1M002DB01 not found
+2016-01-29 09:29:45,855 p=22558 u=root |  ...ignoring
+2016-01-29 09:29:45,856 p=22558 u=root |  TASK: [vnf_delete_vms | make sure undefine virtual machine] ******************* 
+2016-01-29 09:29:45,873 p=22558 u=root |  ok: [localhost]
+2016-01-29 09:29:45,874 p=22558 u=root |  TASK: [vnf_delete_vms | undefine virtual machine] ***************************** 
+2016-01-29 09:29:45,883 p=22558 u=root |  skipping: [localhost]
+2016-01-29 09:29:45,884 p=22558 u=root |  TASK: [vnf_delete_vms | query virtual machine status] ************************* 
+2016-01-29 09:29:45,893 p=22558 u=root |  skipping: [localhost]
+2016-01-29 09:29:45,894 p=22558 u=root |  TASK: [vnf_delete_vms | make sure undefine virtual machine] ******************* 
+2016-01-29 09:29:45,903 p=22558 u=root |  skipping: [localhost]
+2016-01-29 09:29:45,903 p=22558 u=root |  TASK: [vnf_delete_vms | debug msg="All VMs have been deleted."] *************** 
+2016-01-29 09:29:45,907 p=22558 u=root |  ok: [localhost] => {
     "msg": "All VMs have been deleted."
 }
-2015-12-27 18:06:40,728 p=3204 u=root |  TASK: [vnf_create_vms | copy qcow2 disk image] ******************************** 
-2015-12-27 18:06:53,589 p=3204 u=root |  changed: [localhost]
-2015-12-27 18:06:53,590 p=3204 u=root |  TASK: [vnf_create_vms | copy iso image] *************************************** 
-2015-12-27 18:06:53,608 p=3204 u=root |  skipping: [localhost]
-2015-12-27 18:06:53,608 p=3204 u=root |  TASK: [vnf_create_vms | create virtual machine instance] ********************** 
-2015-12-27 18:06:53,823 p=3204 u=root |  changed: [localhost]
-2015-12-27 18:06:53,824 p=3204 u=root |  TASK: [vnf_create_vms | set VM to autostart with host] ************************ 
-2015-12-27 18:06:54,013 p=3204 u=root |  ok: [localhost]
-2015-12-27 18:06:54,014 p=3204 u=root |  TASK: [vnf_create_vms | start virtual machine] ******************************** 
-2015-12-27 18:06:56,503 p=3204 u=root |  changed: [localhost]
-2015-12-27 18:06:56,504 p=3204 u=root |  TASK: [vnf_create_vms | copy qcow2 disk image] ******************************** 
-2015-12-27 18:07:11,621 p=3204 u=root |  changed: [localhost]
-2015-12-27 18:07:11,622 p=3204 u=root |  TASK: [vnf_create_vms | copy iso image] *************************************** 
-2015-12-27 18:07:11,640 p=3204 u=root |  skipping: [localhost]
-2015-12-27 18:07:11,641 p=3204 u=root |  TASK: [vnf_create_vms | create virtual machine instance] ********************** 
-2015-12-27 18:07:11,826 p=3204 u=root |  changed: [localhost]
-2015-12-27 18:07:11,827 p=3204 u=root |  TASK: [vnf_create_vms | set VM to autostart with host] ************************ 
-2015-12-27 18:07:12,022 p=3204 u=root |  ok: [localhost]
-2015-12-27 18:07:12,023 p=3204 u=root |  TASK: [vnf_create_vms | start virtual machine] ******************************** 
-2015-12-27 18:07:13,944 p=3204 u=root |  changed: [localhost]
-2015-12-27 18:07:13,945 p=3204 u=root |  TASK: [vnf_create_vms | copy qcow2 disk image] ******************************** 
-2015-12-27 18:07:33,003 p=3204 u=root |  changed: [localhost]
-2015-12-27 18:07:33,004 p=3204 u=root |  TASK: [vnf_create_vms | copy iso image] *************************************** 
-2015-12-27 18:07:33,022 p=3204 u=root |  skipping: [localhost]
-2015-12-27 18:07:33,022 p=3204 u=root |  TASK: [vnf_create_vms | create virtual machine instance] ********************** 
-2015-12-27 18:07:33,217 p=3204 u=root |  changed: [localhost]
-2015-12-27 18:07:33,218 p=3204 u=root |  TASK: [vnf_create_vms | set VM to autostart with host] ************************ 
-2015-12-27 18:07:33,420 p=3204 u=root |  ok: [localhost]
-2015-12-27 18:07:33,421 p=3204 u=root |  TASK: [vnf_create_vms | start virtual machine] ******************************** 
-2015-12-27 18:07:34,718 p=3204 u=root |  changed: [localhost]
-2015-12-27 18:07:34,719 p=3204 u=root |  TASK: [vnf_create_vms | copy qcow2 disk image] ******************************** 
-2015-12-27 18:07:34,729 p=3204 u=root |  skipping: [localhost]
-2015-12-27 18:07:34,729 p=3204 u=root |  TASK: [vnf_create_vms | copy iso image] *************************************** 
-2015-12-27 18:07:34,737 p=3204 u=root |  skipping: [localhost]
-2015-12-27 18:07:34,738 p=3204 u=root |  TASK: [vnf_create_vms | create virtual machine instance] ********************** 
-2015-12-27 18:07:34,745 p=3204 u=root |  skipping: [localhost]
-2015-12-27 18:07:34,746 p=3204 u=root |  TASK: [vnf_create_vms | set VM to autostart with host] ************************ 
-2015-12-27 18:07:34,754 p=3204 u=root |  skipping: [localhost]
-2015-12-27 18:07:34,754 p=3204 u=root |  TASK: [vnf_create_vms | start virtual machine] ******************************** 
-2015-12-27 18:07:34,762 p=3204 u=root |  skipping: [localhost]
-2015-12-27 18:07:34,763 p=3204 u=root |  TASK: [vnf_wait_for_alive | wait for server to alive] ************************* 
-2015-12-27 18:08:34,987 p=3204 u=root |  ok: [localhost -> 127.0.0.1]
-2015-12-27 18:08:34,988 p=3204 u=root |  TASK: [vnf_wait_for_alive | wait for server to alive] ************************* 
-2015-12-27 18:09:35,200 p=3204 u=root |  ok: [localhost -> 127.0.0.1]
-2015-12-27 18:09:35,201 p=3204 u=root |  TASK: [vnf_wait_for_alive | wait for server to alive] ************************* 
-2015-12-27 18:10:35,403 p=3204 u=root |  ok: [localhost -> 127.0.0.1]
-2015-12-27 18:10:35,404 p=3204 u=root |  TASK: [vnf_wait_for_alive | wait for server to alive] ************************* 
-2015-12-27 18:10:35,417 p=3204 u=root |  skipping: [localhost]
-2015-12-27 18:10:35,417 p=3204 u=root |  PLAY [set password of user root and axadmin] ********************************** 
-2015-12-27 18:10:35,418 p=3204 u=root |  TASK: [change_password | change root password] ******************************** 
-2015-12-27 18:10:36,328 p=3204 u=root |  changed: [135.252.141.25]
-2015-12-27 18:10:36,330 p=3204 u=root |  changed: [135.252.141.24]
-2015-12-27 18:10:36,340 p=3204 u=root |  changed: [135.252.141.26]
-2015-12-27 18:10:36,354 p=3204 u=root |  TASK: [change_password | change axadmin password] ***************************** 
-2015-12-27 18:10:37,085 p=3204 u=root |  changed: [135.252.141.24]
-2015-12-27 18:10:37,126 p=3204 u=root |  changed: [135.252.141.26]
-2015-12-27 18:10:37,136 p=3204 u=root |  changed: [135.252.141.25]
-2015-12-27 18:10:37,151 p=3204 u=root |  PLAY [set password of user root and axadmin] ********************************** 
-2015-12-27 18:10:37,152 p=3204 u=root |  skipping: no hosts matched
-2015-12-27 18:10:37,152 p=3204 u=root |  PLAY [upload install_options] ************************************************* 
-2015-12-27 18:10:37,153 p=3204 u=root |  TASK: [upload_install_options | create /install/config directory] ************* 
-2015-12-27 18:10:37,739 p=3204 u=root |  ok: [135.252.141.25]
-2015-12-27 18:10:37,744 p=3204 u=root |  ok: [135.252.141.24]
-2015-12-27 18:10:37,764 p=3204 u=root |  ok: [135.252.141.26]
-2015-12-27 18:10:37,779 p=3204 u=root |  TASK: [upload_install_options | upload install_options] *********************** 
-2015-12-27 18:10:38,427 p=3204 u=root |  changed: [135.252.141.25]
-2015-12-27 18:10:38,448 p=3204 u=root |  changed: [135.252.141.24]
-2015-12-27 18:10:38,541 p=3204 u=root |  changed: [135.252.141.26]
-2015-12-27 18:10:38,556 p=3204 u=root |  PLAY [image replacement post script] ****************************************** 
-2015-12-27 18:10:38,557 p=3204 u=root |  TASK: [run post replace script, may take around 20 minutes] ******************* 
-2015-12-27 18:11:49,097 p=3204 u=root |  changed: [135.252.141.26]
-2015-12-27 18:12:09,437 p=3204 u=root |  changed: [135.252.141.25]
-2015-12-27 18:30:21,367 p=3204 u=root |  changed: [135.252.141.24]
-2015-12-27 18:30:21,385 p=3204 u=root |  TASK: [configure new disk drive] ********************************************** 
-2015-12-27 18:32:14,716 p=3204 u=root |  changed: [135.252.141.26]
-2015-12-27 18:32:23,763 p=3204 u=root |  changed: [135.252.141.25]
-2015-12-27 18:32:56,866 p=3204 u=root |  changed: [135.252.141.24]
-2015-12-27 18:32:56,882 p=3204 u=root |  TASK: [organize directories for image replacement] **************************** 
-2015-12-27 18:32:58,093 p=3204 u=root |  changed: [135.252.141.24]
-2015-12-27 18:32:58,506 p=3204 u=root |  changed: [135.252.141.25]
-2015-12-27 18:33:23,804 p=3204 u=root |  changed: [135.252.141.26]
-2015-12-27 18:33:23,822 p=3204 u=root |  PLAY [stop COM] *************************************************************** 
-2015-12-27 18:33:23,823 p=3204 u=root |  TASK: [stop_com | stop com application] *************************************** 
-2015-12-27 18:34:17,363 p=3204 u=root |  changed: [135.252.141.24]
-2015-12-27 18:34:17,364 p=3204 u=root |  PLAY [stop COM] *************************************************************** 
-2015-12-27 18:34:17,364 p=3204 u=root |  skipping: no hosts matched
-2015-12-27 18:34:17,364 p=3204 u=root |  PLAY [restore data] *********************************************************** 
-2015-12-27 18:34:17,365 p=3204 u=root |  TASK: [restore_data | create local restore directory] ************************* 
-2015-12-27 18:34:17,912 p=3204 u=root |  ok: [135.252.141.24]
-2015-12-27 18:34:17,968 p=3204 u=root |  ok: [135.252.141.26]
-2015-12-27 18:34:17,968 p=3204 u=root |  ok: [135.252.141.25]
-2015-12-27 18:34:17,986 p=3204 u=root |  TASK: [restore_data | mount nfs directory] ************************************ 
-2015-12-27 18:34:18,031 p=3204 u=root |  skipping: [135.252.141.24]
-2015-12-27 18:34:18,034 p=3204 u=root |  skipping: [135.252.141.26]
-2015-12-27 18:34:18,036 p=3204 u=root |  skipping: [135.252.141.25]
-2015-12-27 18:34:18,052 p=3204 u=root |  TASK: [restore_data | restore data] ******************************************* 
-2015-12-27 18:34:21,834 p=3204 u=root |  changed: [135.252.141.25]
-2015-12-27 18:34:54,962 p=3204 u=root |  changed: [135.252.141.26]
-2015-12-27 18:38:18,477 p=3204 u=root |  changed: [135.252.141.24]
-2015-12-27 18:38:18,494 p=3204 u=root |  TASK: [restore_data | restore data for CSA and CFMA] ************************** 
-2015-12-27 18:38:18,534 p=3204 u=root |  skipping: [135.252.141.24]
-2015-12-27 18:38:18,536 p=3204 u=root |  skipping: [135.252.141.26]
-2015-12-27 18:38:18,538 p=3204 u=root |  skipping: [135.252.141.25]
-2015-12-27 18:38:18,555 p=3204 u=root |  TASK: [restore_data | restore qosac data] ************************************* 
-2015-12-27 18:38:18,594 p=3204 u=root |  skipping: [135.252.141.24]
-2015-12-27 18:38:18,595 p=3204 u=root |  skipping: [135.252.141.26]
-2015-12-27 18:38:18,598 p=3204 u=root |  skipping: [135.252.141.25]
-2015-12-27 18:38:18,616 p=3204 u=root |  PLAY [Update COM DB Schema] *************************************************** 
-2015-12-27 18:38:18,616 p=3204 u=root |  TASK: [get COM version] ******************************************************* 
-2015-12-27 18:38:19,125 p=3204 u=root |  changed: [135.252.141.24]
-2015-12-27 18:38:19,125 p=3204 u=root |  TASK: [apply patch] *********************************************************** 
-2015-12-27 18:38:19,134 p=3204 u=root |  skipping: [135.252.141.24]
-2015-12-27 18:38:19,135 p=3204 u=root |  TASK: [Update COM DB schema] ************************************************** 
-2015-12-27 18:39:23,411 p=3204 u=root |  changed: [135.252.141.24]
-2015-12-27 18:39:23,412 p=3204 u=root |  PLAY [Vertical scaling COM VM for memory, and CPU] **************************** 
-2015-12-27 18:39:23,412 p=3204 u=root |  TASK: [tune memory] *********************************************************** 
-2015-12-27 18:39:24,229 p=3204 u=root |  changed: [135.252.141.25]
-2015-12-27 18:39:25,119 p=3204 u=root |  changed: [135.252.141.24]
-2015-12-27 18:39:45,137 p=3204 u=root |  changed: [135.252.141.26]
-2015-12-27 18:39:45,153 p=3204 u=root |  PLAY [download public key from remote server] ********************************* 
-2015-12-27 18:39:45,154 p=3204 u=root |  TASK: [fetch axadmin public key from remote server] *************************** 
-2015-12-27 18:39:45,589 p=3204 u=root |  changed: [135.252.141.24]
-2015-12-27 18:39:45,593 p=3204 u=root |  changed: [135.252.141.25]
-2015-12-27 18:39:45,623 p=3204 u=root |  changed: [135.252.141.26]
-2015-12-27 18:39:45,639 p=3204 u=root |  TASK: [fetch plx public key from remote server] ******************************* 
-2015-12-27 18:39:46,055 p=3204 u=root |  changed: [135.252.141.24]
-2015-12-27 18:39:46,103 p=3204 u=root |  changed: [135.252.141.25]
-2015-12-27 18:39:46,107 p=3204 u=root |  changed: [135.252.141.26]
-2015-12-27 18:39:46,122 p=3204 u=root |  TASK: [create authorized_keys for axadmin] ************************************ 
-2015-12-27 18:39:46,566 p=3204 u=root |  changed: [135.252.141.26]
-2015-12-27 18:39:46,639 p=3204 u=root |  changed: [135.252.141.24]
-2015-12-27 18:39:46,646 p=3204 u=root |  changed: [135.252.141.25]
-2015-12-27 18:39:46,661 p=3204 u=root |  TASK: [create known_hosts for axadmin] **************************************** 
-2015-12-27 18:39:47,191 p=3204 u=root |  changed: [135.252.141.26]
-2015-12-27 18:39:47,192 p=3204 u=root |  changed: [135.252.141.25]
-2015-12-27 18:39:47,196 p=3204 u=root |  changed: [135.252.141.24]
-2015-12-27 18:39:47,214 p=3204 u=root |  TASK: [create authorized_keys for plx] **************************************** 
-2015-12-27 18:39:47,755 p=3204 u=root |  changed: [135.252.141.25]
-2015-12-27 18:39:47,801 p=3204 u=root |  changed: [135.252.141.26]
-2015-12-27 18:39:47,809 p=3204 u=root |  changed: [135.252.141.24]
-2015-12-27 18:39:47,825 p=3204 u=root |  TASK: [create known_hosts for plx] ******************************************** 
-2015-12-27 18:39:48,359 p=3204 u=root |  changed: [135.252.141.25]
-2015-12-27 18:39:48,359 p=3204 u=root |  changed: [135.252.141.26]
-2015-12-27 18:39:48,363 p=3204 u=root |  changed: [135.252.141.24]
-2015-12-27 18:39:48,380 p=3204 u=root |  PLAY [setup authorized keys and known hosts on db] **************************** 
-2015-12-27 18:39:48,381 p=3204 u=root |  TASK: [update authorized keys for axadmin] ************************************ 
-2015-12-27 18:39:49,123 p=3204 u=root |  ok: [135.252.141.26] => (item={'key': 'oam', 'value': {'nic': [{'bridge': 'br0', 'name': 'eth0', 'ip_v4': {'prefix': '26', 'ipaddress': '135.252.141.24', 'gateway': '135.252.141.62'}}], 'flavor': {'vCpu': 6, 'disk': 150, 'memory': 25165824}, 'hostname': 'EricHandsomeM001OAM01', 'imgname': 'COM_5_1_2_1.D209.OAM.qcow2'}})
-2015-12-27 18:39:49,132 p=3204 u=root |  skipping: [135.252.141.26] => (item={'key': 'db', 'value': {'nic': [{'bridge': 'br0', 'name': 'eth0', 'ip_v4': {'prefix': '26', 'ipaddress': '135.252.141.26', 'gateway': '135.252.141.62'}}], 'flavor': {'vCpu': 4, 'disk': 300, 'memory': 25165824}, 'hostname': 'EricHandsomeM003DB01', 'imgname': 'COM_5_1_2_1.D209.DB.qcow2'}})
-2015-12-27 18:39:49,812 p=3204 u=root |  ok: [135.252.141.26] => (item={'key': 'cm', 'value': {'nic': [{'bridge': 'br0', 'name': 'eth0', 'ip_v4': {'prefix': '26', 'ipaddress': '135.252.141.25', 'gateway': '135.252.141.62'}}], 'flavor': {'vCpu': 12, 'disk': 100, 'memory': 33554432}, 'hostname': 'EricHandsomeM002CM01', 'imgname': 'COM_5_1_2_1.D209.OAM.qcow2'}})
-2015-12-27 18:39:49,813 p=3204 u=root |  TASK: [clean known hosts for axadmin] ***************************************** 
-2015-12-27 18:39:50,495 p=3204 u=root |  changed: [135.252.141.26] => (item={'key': 'oam', 'value': {'nic': [{'bridge': 'br0', 'name': 'eth0', 'ip_v4': {'prefix': '26', 'ipaddress': '135.252.141.24', 'gateway': '135.252.141.62'}}], 'flavor': {'vCpu': 6, 'disk': 150, 'memory': 25165824}, 'hostname': 'EricHandsomeM001OAM01', 'imgname': 'COM_5_1_2_1.D209.OAM.qcow2'}})
-2015-12-27 18:39:50,502 p=3204 u=root |  skipping: [135.252.141.26] => (item={'key': 'db', 'value': {'nic': [{'bridge': 'br0', 'name': 'eth0', 'ip_v4': {'prefix': '26', 'ipaddress': '135.252.141.26', 'gateway': '135.252.141.62'}}], 'flavor': {'vCpu': 4, 'disk': 300, 'memory': 25165824}, 'hostname': 'EricHandsomeM003DB01', 'imgname': 'COM_5_1_2_1.D209.DB.qcow2'}})
-2015-12-27 18:39:51,170 p=3204 u=root |  changed: [135.252.141.26] => (item={'key': 'cm', 'value': {'nic': [{'bridge': 'br0', 'name': 'eth0', 'ip_v4': {'prefix': '26', 'ipaddress': '135.252.141.25', 'gateway': '135.252.141.62'}}], 'flavor': {'vCpu': 12, 'disk': 100, 'memory': 33554432}, 'hostname': 'EricHandsomeM002CM01', 'imgname': 'COM_5_1_2_1.D209.OAM.qcow2'}})
-2015-12-27 18:39:51,171 p=3204 u=root |  TASK: [update known hosts for axadmin] **************************************** 
-2015-12-27 18:39:51,919 p=3204 u=root |  changed: [135.252.141.26] => (item={'key': 'oam', 'value': {'nic': [{'bridge': 'br0', 'name': 'eth0', 'ip_v4': {'prefix': '26', 'ipaddress': '135.252.141.24', 'gateway': '135.252.141.62'}}], 'flavor': {'vCpu': 6, 'disk': 150, 'memory': 25165824}, 'hostname': 'EricHandsomeM001OAM01', 'imgname': 'COM_5_1_2_1.D209.OAM.qcow2'}})
-2015-12-27 18:39:51,928 p=3204 u=root |  skipping: [135.252.141.26] => (item={'key': 'db', 'value': {'nic': [{'bridge': 'br0', 'name': 'eth0', 'ip_v4': {'prefix': '26', 'ipaddress': '135.252.141.26', 'gateway': '135.252.141.62'}}], 'flavor': {'vCpu': 4, 'disk': 300, 'memory': 25165824}, 'hostname': 'EricHandsomeM003DB01', 'imgname': 'COM_5_1_2_1.D209.DB.qcow2'}})
-2015-12-27 18:39:52,685 p=3204 u=root |  changed: [135.252.141.26] => (item={'key': 'cm', 'value': {'nic': [{'bridge': 'br0', 'name': 'eth0', 'ip_v4': {'prefix': '26', 'ipaddress': '135.252.141.25', 'gateway': '135.252.141.62'}}], 'flavor': {'vCpu': 12, 'disk': 100, 'memory': 33554432}, 'hostname': 'EricHandsomeM002CM01', 'imgname': 'COM_5_1_2_1.D209.OAM.qcow2'}})
-2015-12-27 18:39:52,687 p=3204 u=root |  TASK: [update authorized keys for plx] **************************************** 
-2015-12-27 18:39:53,396 p=3204 u=root |  ok: [135.252.141.26] => (item={'key': 'oam', 'value': {'nic': [{'bridge': 'br0', 'name': 'eth0', 'ip_v4': {'prefix': '26', 'ipaddress': '135.252.141.24', 'gateway': '135.252.141.62'}}], 'flavor': {'vCpu': 6, 'disk': 150, 'memory': 25165824}, 'hostname': 'EricHandsomeM001OAM01', 'imgname': 'COM_5_1_2_1.D209.OAM.qcow2'}})
-2015-12-27 18:39:53,403 p=3204 u=root |  skipping: [135.252.141.26] => (item={'key': 'db', 'value': {'nic': [{'bridge': 'br0', 'name': 'eth0', 'ip_v4': {'prefix': '26', 'ipaddress': '135.252.141.26', 'gateway': '135.252.141.62'}}], 'flavor': {'vCpu': 4, 'disk': 300, 'memory': 25165824}, 'hostname': 'EricHandsomeM003DB01', 'imgname': 'COM_5_1_2_1.D209.DB.qcow2'}})
-2015-12-27 18:39:54,114 p=3204 u=root |  ok: [135.252.141.26] => (item={'key': 'cm', 'value': {'nic': [{'bridge': 'br0', 'name': 'eth0', 'ip_v4': {'prefix': '26', 'ipaddress': '135.252.141.25', 'gateway': '135.252.141.62'}}], 'flavor': {'vCpu': 12, 'disk': 100, 'memory': 33554432}, 'hostname': 'EricHandsomeM002CM01', 'imgname': 'COM_5_1_2_1.D209.OAM.qcow2'}})
-2015-12-27 18:39:54,115 p=3204 u=root |  TASK: [clean known hosts for plx] ********************************************* 
-2015-12-27 18:39:54,766 p=3204 u=root |  changed: [135.252.141.26] => (item={'key': 'oam', 'value': {'nic': [{'bridge': 'br0', 'name': 'eth0', 'ip_v4': {'prefix': '26', 'ipaddress': '135.252.141.24', 'gateway': '135.252.141.62'}}], 'flavor': {'vCpu': 6, 'disk': 150, 'memory': 25165824}, 'hostname': 'EricHandsomeM001OAM01', 'imgname': 'COM_5_1_2_1.D209.OAM.qcow2'}})
-2015-12-27 18:39:54,774 p=3204 u=root |  skipping: [135.252.141.26] => (item={'key': 'db', 'value': {'nic': [{'bridge': 'br0', 'name': 'eth0', 'ip_v4': {'prefix': '26', 'ipaddress': '135.252.141.26', 'gateway': '135.252.141.62'}}], 'flavor': {'vCpu': 4, 'disk': 300, 'memory': 25165824}, 'hostname': 'EricHandsomeM003DB01', 'imgname': 'COM_5_1_2_1.D209.DB.qcow2'}})
-2015-12-27 18:39:55,493 p=3204 u=root |  changed: [135.252.141.26] => (item={'key': 'cm', 'value': {'nic': [{'bridge': 'br0', 'name': 'eth0', 'ip_v4': {'prefix': '26', 'ipaddress': '135.252.141.25', 'gateway': '135.252.141.62'}}], 'flavor': {'vCpu': 12, 'disk': 100, 'memory': 33554432}, 'hostname': 'EricHandsomeM002CM01', 'imgname': 'COM_5_1_2_1.D209.OAM.qcow2'}})
-2015-12-27 18:39:55,494 p=3204 u=root |  TASK: [update known hosts for plx] ******************************************** 
-2015-12-27 18:39:56,373 p=3204 u=root |  changed: [135.252.141.26] => (item={'key': 'oam', 'value': {'nic': [{'bridge': 'br0', 'name': 'eth0', 'ip_v4': {'prefix': '26', 'ipaddress': '135.252.141.24', 'gateway': '135.252.141.62'}}], 'flavor': {'vCpu': 6, 'disk': 150, 'memory': 25165824}, 'hostname': 'EricHandsomeM001OAM01', 'imgname': 'COM_5_1_2_1.D209.OAM.qcow2'}})
-2015-12-27 18:39:56,382 p=3204 u=root |  skipping: [135.252.141.26] => (item={'key': 'db', 'value': {'nic': [{'bridge': 'br0', 'name': 'eth0', 'ip_v4': {'prefix': '26', 'ipaddress': '135.252.141.26', 'gateway': '135.252.141.62'}}], 'flavor': {'vCpu': 4, 'disk': 300, 'memory': 25165824}, 'hostname': 'EricHandsomeM003DB01', 'imgname': 'COM_5_1_2_1.D209.DB.qcow2'}})
-2015-12-27 18:39:57,083 p=3204 u=root |  changed: [135.252.141.26] => (item={'key': 'cm', 'value': {'nic': [{'bridge': 'br0', 'name': 'eth0', 'ip_v4': {'prefix': '26', 'ipaddress': '135.252.141.25', 'gateway': '135.252.141.62'}}], 'flavor': {'vCpu': 12, 'disk': 100, 'memory': 33554432}, 'hostname': 'EricHandsomeM002CM01', 'imgname': 'COM_5_1_2_1.D209.OAM.qcow2'}})
-2015-12-27 18:39:57,084 p=3204 u=root |  PLAY [setup authorized keys and known hosts on oam] *************************** 
-2015-12-27 18:39:57,085 p=3204 u=root |  TASK: [update authorized keys for axadmin] ************************************ 
-2015-12-27 18:39:57,102 p=3204 u=root |  skipping: [135.252.141.24] => (item={'key': 'oam', 'value': {'nic': [{'bridge': 'br0', 'name': 'eth0', 'ip_v4': {'prefix': '26', 'ipaddress': '135.252.141.24', 'gateway': '135.252.141.62'}}], 'flavor': {'vCpu': 6, 'disk': 150, 'memory': 25165824}, 'hostname': 'EricHandsomeM001OAM01', 'imgname': 'COM_5_1_2_1.D209.OAM.qcow2'}})
-2015-12-27 18:39:57,790 p=3204 u=root |  ok: [135.252.141.24] => (item={'key': 'db', 'value': {'nic': [{'bridge': 'br0', 'name': 'eth0', 'ip_v4': {'prefix': '26', 'ipaddress': '135.252.141.26', 'gateway': '135.252.141.62'}}], 'flavor': {'vCpu': 4, 'disk': 300, 'memory': 25165824}, 'hostname': 'EricHandsomeM003DB01', 'imgname': 'COM_5_1_2_1.D209.DB.qcow2'}})
-2015-12-27 18:39:58,484 p=3204 u=root |  ok: [135.252.141.24] => (item={'key': 'cm', 'value': {'nic': [{'bridge': 'br0', 'name': 'eth0', 'ip_v4': {'prefix': '26', 'ipaddress': '135.252.141.25', 'gateway': '135.252.141.62'}}], 'flavor': {'vCpu': 12, 'disk': 100, 'memory': 33554432}, 'hostname': 'EricHandsomeM002CM01', 'imgname': 'COM_5_1_2_1.D209.OAM.qcow2'}})
-2015-12-27 18:39:58,484 p=3204 u=root |  TASK: [clean known hosts for axadmin] ***************************************** 
-2015-12-27 18:39:58,501 p=3204 u=root |  skipping: [135.252.141.24] => (item={'key': 'oam', 'value': {'nic': [{'bridge': 'br0', 'name': 'eth0', 'ip_v4': {'prefix': '26', 'ipaddress': '135.252.141.24', 'gateway': '135.252.141.62'}}], 'flavor': {'vCpu': 6, 'disk': 150, 'memory': 25165824}, 'hostname': 'EricHandsomeM001OAM01', 'imgname': 'COM_5_1_2_1.D209.OAM.qcow2'}})
-2015-12-27 18:39:59,145 p=3204 u=root |  changed: [135.252.141.24] => (item={'key': 'db', 'value': {'nic': [{'bridge': 'br0', 'name': 'eth0', 'ip_v4': {'prefix': '26', 'ipaddress': '135.252.141.26', 'gateway': '135.252.141.62'}}], 'flavor': {'vCpu': 4, 'disk': 300, 'memory': 25165824}, 'hostname': 'EricHandsomeM003DB01', 'imgname': 'COM_5_1_2_1.D209.DB.qcow2'}})
-2015-12-27 18:39:59,799 p=3204 u=root |  changed: [135.252.141.24] => (item={'key': 'cm', 'value': {'nic': [{'bridge': 'br0', 'name': 'eth0', 'ip_v4': {'prefix': '26', 'ipaddress': '135.252.141.25', 'gateway': '135.252.141.62'}}], 'flavor': {'vCpu': 12, 'disk': 100, 'memory': 33554432}, 'hostname': 'EricHandsomeM002CM01', 'imgname': 'COM_5_1_2_1.D209.OAM.qcow2'}})
-2015-12-27 18:39:59,800 p=3204 u=root |  TASK: [update known hosts for axadmin] **************************************** 
-2015-12-27 18:39:59,814 p=3204 u=root |  skipping: [135.252.141.24] => (item={'key': 'oam', 'value': {'nic': [{'bridge': 'br0', 'name': 'eth0', 'ip_v4': {'prefix': '26', 'ipaddress': '135.252.141.24', 'gateway': '135.252.141.62'}}], 'flavor': {'vCpu': 6, 'disk': 150, 'memory': 25165824}, 'hostname': 'EricHandsomeM001OAM01', 'imgname': 'COM_5_1_2_1.D209.OAM.qcow2'}})
-2015-12-27 18:40:00,550 p=3204 u=root |  changed: [135.252.141.24] => (item={'key': 'db', 'value': {'nic': [{'bridge': 'br0', 'name': 'eth0', 'ip_v4': {'prefix': '26', 'ipaddress': '135.252.141.26', 'gateway': '135.252.141.62'}}], 'flavor': {'vCpu': 4, 'disk': 300, 'memory': 25165824}, 'hostname': 'EricHandsomeM003DB01', 'imgname': 'COM_5_1_2_1.D209.DB.qcow2'}})
-2015-12-27 18:40:01,293 p=3204 u=root |  changed: [135.252.141.24] => (item={'key': 'cm', 'value': {'nic': [{'bridge': 'br0', 'name': 'eth0', 'ip_v4': {'prefix': '26', 'ipaddress': '135.252.141.25', 'gateway': '135.252.141.62'}}], 'flavor': {'vCpu': 12, 'disk': 100, 'memory': 33554432}, 'hostname': 'EricHandsomeM002CM01', 'imgname': 'COM_5_1_2_1.D209.OAM.qcow2'}})
-2015-12-27 18:40:01,294 p=3204 u=root |  TASK: [update authorized keys for plx] **************************************** 
-2015-12-27 18:40:01,309 p=3204 u=root |  skipping: [135.252.141.24] => (item={'key': 'oam', 'value': {'nic': [{'bridge': 'br0', 'name': 'eth0', 'ip_v4': {'prefix': '26', 'ipaddress': '135.252.141.24', 'gateway': '135.252.141.62'}}], 'flavor': {'vCpu': 6, 'disk': 150, 'memory': 25165824}, 'hostname': 'EricHandsomeM001OAM01', 'imgname': 'COM_5_1_2_1.D209.OAM.qcow2'}})
-2015-12-27 18:40:02,006 p=3204 u=root |  ok: [135.252.141.24] => (item={'key': 'db', 'value': {'nic': [{'bridge': 'br0', 'name': 'eth0', 'ip_v4': {'prefix': '26', 'ipaddress': '135.252.141.26', 'gateway': '135.252.141.62'}}], 'flavor': {'vCpu': 4, 'disk': 300, 'memory': 25165824}, 'hostname': 'EricHandsomeM003DB01', 'imgname': 'COM_5_1_2_1.D209.DB.qcow2'}})
-2015-12-27 18:40:02,703 p=3204 u=root |  ok: [135.252.141.24] => (item={'key': 'cm', 'value': {'nic': [{'bridge': 'br0', 'name': 'eth0', 'ip_v4': {'prefix': '26', 'ipaddress': '135.252.141.25', 'gateway': '135.252.141.62'}}], 'flavor': {'vCpu': 12, 'disk': 100, 'memory': 33554432}, 'hostname': 'EricHandsomeM002CM01', 'imgname': 'COM_5_1_2_1.D209.OAM.qcow2'}})
-2015-12-27 18:40:02,703 p=3204 u=root |  TASK: [clean known hosts for plx] ********************************************* 
-2015-12-27 18:40:02,718 p=3204 u=root |  skipping: [135.252.141.24] => (item={'key': 'oam', 'value': {'nic': [{'bridge': 'br0', 'name': 'eth0', 'ip_v4': {'prefix': '26', 'ipaddress': '135.252.141.24', 'gateway': '135.252.141.62'}}], 'flavor': {'vCpu': 6, 'disk': 150, 'memory': 25165824}, 'hostname': 'EricHandsomeM001OAM01', 'imgname': 'COM_5_1_2_1.D209.OAM.qcow2'}})
-2015-12-27 18:40:03,388 p=3204 u=root |  changed: [135.252.141.24] => (item={'key': 'db', 'value': {'nic': [{'bridge': 'br0', 'name': 'eth0', 'ip_v4': {'prefix': '26', 'ipaddress': '135.252.141.26', 'gateway': '135.252.141.62'}}], 'flavor': {'vCpu': 4, 'disk': 300, 'memory': 25165824}, 'hostname': 'EricHandsomeM003DB01', 'imgname': 'COM_5_1_2_1.D209.DB.qcow2'}})
-2015-12-27 18:40:03,994 p=3204 u=root |  changed: [135.252.141.24] => (item={'key': 'cm', 'value': {'nic': [{'bridge': 'br0', 'name': 'eth0', 'ip_v4': {'prefix': '26', 'ipaddress': '135.252.141.25', 'gateway': '135.252.141.62'}}], 'flavor': {'vCpu': 12, 'disk': 100, 'memory': 33554432}, 'hostname': 'EricHandsomeM002CM01', 'imgname': 'COM_5_1_2_1.D209.OAM.qcow2'}})
-2015-12-27 18:40:03,995 p=3204 u=root |  TASK: [update known hosts for plx] ******************************************** 
-2015-12-27 18:40:04,009 p=3204 u=root |  skipping: [135.252.141.24] => (item={'key': 'oam', 'value': {'nic': [{'bridge': 'br0', 'name': 'eth0', 'ip_v4': {'prefix': '26', 'ipaddress': '135.252.141.24', 'gateway': '135.252.141.62'}}], 'flavor': {'vCpu': 6, 'disk': 150, 'memory': 25165824}, 'hostname': 'EricHandsomeM001OAM01', 'imgname': 'COM_5_1_2_1.D209.OAM.qcow2'}})
-2015-12-27 18:40:04,789 p=3204 u=root |  changed: [135.252.141.24] => (item={'key': 'db', 'value': {'nic': [{'bridge': 'br0', 'name': 'eth0', 'ip_v4': {'prefix': '26', 'ipaddress': '135.252.141.26', 'gateway': '135.252.141.62'}}], 'flavor': {'vCpu': 4, 'disk': 300, 'memory': 25165824}, 'hostname': 'EricHandsomeM003DB01', 'imgname': 'COM_5_1_2_1.D209.DB.qcow2'}})
-2015-12-27 18:40:05,512 p=3204 u=root |  changed: [135.252.141.24] => (item={'key': 'cm', 'value': {'nic': [{'bridge': 'br0', 'name': 'eth0', 'ip_v4': {'prefix': '26', 'ipaddress': '135.252.141.25', 'gateway': '135.252.141.62'}}], 'flavor': {'vCpu': 12, 'disk': 100, 'memory': 33554432}, 'hostname': 'EricHandsomeM002CM01', 'imgname': 'COM_5_1_2_1.D209.OAM.qcow2'}})
-2015-12-27 18:40:05,513 p=3204 u=root |  PLAY [setup authorized keys and known hosts on cm] **************************** 
-2015-12-27 18:40:05,514 p=3204 u=root |  TASK: [update authorized keys for axadmin] ************************************ 
-2015-12-27 18:40:06,247 p=3204 u=root |  ok: [135.252.141.25] => (item={'key': 'oam', 'value': {'nic': [{'bridge': 'br0', 'name': 'eth0', 'ip_v4': {'prefix': '26', 'ipaddress': '135.252.141.24', 'gateway': '135.252.141.62'}}], 'flavor': {'vCpu': 6, 'disk': 150, 'memory': 25165824}, 'hostname': 'EricHandsomeM001OAM01', 'imgname': 'COM_5_1_2_1.D209.OAM.qcow2'}})
-2015-12-27 18:40:06,963 p=3204 u=root |  ok: [135.252.141.25] => (item={'key': 'db', 'value': {'nic': [{'bridge': 'br0', 'name': 'eth0', 'ip_v4': {'prefix': '26', 'ipaddress': '135.252.141.26', 'gateway': '135.252.141.62'}}], 'flavor': {'vCpu': 4, 'disk': 300, 'memory': 25165824}, 'hostname': 'EricHandsomeM003DB01', 'imgname': 'COM_5_1_2_1.D209.DB.qcow2'}})
-2015-12-27 18:40:06,970 p=3204 u=root |  skipping: [135.252.141.25] => (item={'key': 'cm', 'value': {'nic': [{'bridge': 'br0', 'name': 'eth0', 'ip_v4': {'prefix': '26', 'ipaddress': '135.252.141.25', 'gateway': '135.252.141.62'}}], 'flavor': {'vCpu': 12, 'disk': 100, 'memory': 33554432}, 'hostname': 'EricHandsomeM002CM01', 'imgname': 'COM_5_1_2_1.D209.OAM.qcow2'}})
-2015-12-27 18:40:06,970 p=3204 u=root |  TASK: [clean known hosts for axadmin] ***************************************** 
-2015-12-27 18:40:07,645 p=3204 u=root |  changed: [135.252.141.25] => (item={'key': 'oam', 'value': {'nic': [{'bridge': 'br0', 'name': 'eth0', 'ip_v4': {'prefix': '26', 'ipaddress': '135.252.141.24', 'gateway': '135.252.141.62'}}], 'flavor': {'vCpu': 6, 'disk': 150, 'memory': 25165824}, 'hostname': 'EricHandsomeM001OAM01', 'imgname': 'COM_5_1_2_1.D209.OAM.qcow2'}})
-2015-12-27 18:40:08,299 p=3204 u=root |  changed: [135.252.141.25] => (item={'key': 'db', 'value': {'nic': [{'bridge': 'br0', 'name': 'eth0', 'ip_v4': {'prefix': '26', 'ipaddress': '135.252.141.26', 'gateway': '135.252.141.62'}}], 'flavor': {'vCpu': 4, 'disk': 300, 'memory': 25165824}, 'hostname': 'EricHandsomeM003DB01', 'imgname': 'COM_5_1_2_1.D209.DB.qcow2'}})
-2015-12-27 18:40:08,306 p=3204 u=root |  skipping: [135.252.141.25] => (item={'key': 'cm', 'value': {'nic': [{'bridge': 'br0', 'name': 'eth0', 'ip_v4': {'prefix': '26', 'ipaddress': '135.252.141.25', 'gateway': '135.252.141.62'}}], 'flavor': {'vCpu': 12, 'disk': 100, 'memory': 33554432}, 'hostname': 'EricHandsomeM002CM01', 'imgname': 'COM_5_1_2_1.D209.OAM.qcow2'}})
-2015-12-27 18:40:08,307 p=3204 u=root |  TASK: [update known hosts for axadmin] **************************************** 
-2015-12-27 18:40:09,095 p=3204 u=root |  changed: [135.252.141.25] => (item={'key': 'oam', 'value': {'nic': [{'bridge': 'br0', 'name': 'eth0', 'ip_v4': {'prefix': '26', 'ipaddress': '135.252.141.24', 'gateway': '135.252.141.62'}}], 'flavor': {'vCpu': 6, 'disk': 150, 'memory': 25165824}, 'hostname': 'EricHandsomeM001OAM01', 'imgname': 'COM_5_1_2_1.D209.OAM.qcow2'}})
-2015-12-27 18:40:09,812 p=3204 u=root |  changed: [135.252.141.25] => (item={'key': 'db', 'value': {'nic': [{'bridge': 'br0', 'name': 'eth0', 'ip_v4': {'prefix': '26', 'ipaddress': '135.252.141.26', 'gateway': '135.252.141.62'}}], 'flavor': {'vCpu': 4, 'disk': 300, 'memory': 25165824}, 'hostname': 'EricHandsomeM003DB01', 'imgname': 'COM_5_1_2_1.D209.DB.qcow2'}})
-2015-12-27 18:40:09,820 p=3204 u=root |  skipping: [135.252.141.25] => (item={'key': 'cm', 'value': {'nic': [{'bridge': 'br0', 'name': 'eth0', 'ip_v4': {'prefix': '26', 'ipaddress': '135.252.141.25', 'gateway': '135.252.141.62'}}], 'flavor': {'vCpu': 12, 'disk': 100, 'memory': 33554432}, 'hostname': 'EricHandsomeM002CM01', 'imgname': 'COM_5_1_2_1.D209.OAM.qcow2'}})
-2015-12-27 18:40:09,821 p=3204 u=root |  TASK: [update authorized keys for plx] **************************************** 
-2015-12-27 18:40:10,509 p=3204 u=root |  ok: [135.252.141.25] => (item={'key': 'oam', 'value': {'nic': [{'bridge': 'br0', 'name': 'eth0', 'ip_v4': {'prefix': '26', 'ipaddress': '135.252.141.24', 'gateway': '135.252.141.62'}}], 'flavor': {'vCpu': 6, 'disk': 150, 'memory': 25165824}, 'hostname': 'EricHandsomeM001OAM01', 'imgname': 'COM_5_1_2_1.D209.OAM.qcow2'}})
-2015-12-27 18:40:11,246 p=3204 u=root |  ok: [135.252.141.25] => (item={'key': 'db', 'value': {'nic': [{'bridge': 'br0', 'name': 'eth0', 'ip_v4': {'prefix': '26', 'ipaddress': '135.252.141.26', 'gateway': '135.252.141.62'}}], 'flavor': {'vCpu': 4, 'disk': 300, 'memory': 25165824}, 'hostname': 'EricHandsomeM003DB01', 'imgname': 'COM_5_1_2_1.D209.DB.qcow2'}})
-2015-12-27 18:40:11,253 p=3204 u=root |  skipping: [135.252.141.25] => (item={'key': 'cm', 'value': {'nic': [{'bridge': 'br0', 'name': 'eth0', 'ip_v4': {'prefix': '26', 'ipaddress': '135.252.141.25', 'gateway': '135.252.141.62'}}], 'flavor': {'vCpu': 12, 'disk': 100, 'memory': 33554432}, 'hostname': 'EricHandsomeM002CM01', 'imgname': 'COM_5_1_2_1.D209.OAM.qcow2'}})
-2015-12-27 18:40:11,254 p=3204 u=root |  TASK: [clean known hosts for plx] ********************************************* 
-2015-12-27 18:40:11,759 p=3204 u=root |  changed: [135.252.141.25] => (item={'key': 'oam', 'value': {'nic': [{'bridge': 'br0', 'name': 'eth0', 'ip_v4': {'prefix': '26', 'ipaddress': '135.252.141.24', 'gateway': '135.252.141.62'}}], 'flavor': {'vCpu': 6, 'disk': 150, 'memory': 25165824}, 'hostname': 'EricHandsomeM001OAM01', 'imgname': 'COM_5_1_2_1.D209.OAM.qcow2'}})
-2015-12-27 18:40:12,258 p=3204 u=root |  changed: [135.252.141.25] => (item={'key': 'db', 'value': {'nic': [{'bridge': 'br0', 'name': 'eth0', 'ip_v4': {'prefix': '26', 'ipaddress': '135.252.141.26', 'gateway': '135.252.141.62'}}], 'flavor': {'vCpu': 4, 'disk': 300, 'memory': 25165824}, 'hostname': 'EricHandsomeM003DB01', 'imgname': 'COM_5_1_2_1.D209.DB.qcow2'}})
-2015-12-27 18:40:12,265 p=3204 u=root |  skipping: [135.252.141.25] => (item={'key': 'cm', 'value': {'nic': [{'bridge': 'br0', 'name': 'eth0', 'ip_v4': {'prefix': '26', 'ipaddress': '135.252.141.25', 'gateway': '135.252.141.62'}}], 'flavor': {'vCpu': 12, 'disk': 100, 'memory': 33554432}, 'hostname': 'EricHandsomeM002CM01', 'imgname': 'COM_5_1_2_1.D209.OAM.qcow2'}})
-2015-12-27 18:40:12,266 p=3204 u=root |  TASK: [update known hosts for plx] ******************************************** 
-2015-12-27 18:40:12,984 p=3204 u=root |  changed: [135.252.141.25] => (item={'key': 'oam', 'value': {'nic': [{'bridge': 'br0', 'name': 'eth0', 'ip_v4': {'prefix': '26', 'ipaddress': '135.252.141.24', 'gateway': '135.252.141.62'}}], 'flavor': {'vCpu': 6, 'disk': 150, 'memory': 25165824}, 'hostname': 'EricHandsomeM001OAM01', 'imgname': 'COM_5_1_2_1.D209.OAM.qcow2'}})
-2015-12-27 18:40:13,713 p=3204 u=root |  changed: [135.252.141.25] => (item={'key': 'db', 'value': {'nic': [{'bridge': 'br0', 'name': 'eth0', 'ip_v4': {'prefix': '26', 'ipaddress': '135.252.141.26', 'gateway': '135.252.141.62'}}], 'flavor': {'vCpu': 4, 'disk': 300, 'memory': 25165824}, 'hostname': 'EricHandsomeM003DB01', 'imgname': 'COM_5_1_2_1.D209.DB.qcow2'}})
-2015-12-27 18:40:13,721 p=3204 u=root |  skipping: [135.252.141.25] => (item={'key': 'cm', 'value': {'nic': [{'bridge': 'br0', 'name': 'eth0', 'ip_v4': {'prefix': '26', 'ipaddress': '135.252.141.25', 'gateway': '135.252.141.62'}}], 'flavor': {'vCpu': 12, 'disk': 100, 'memory': 33554432}, 'hostname': 'EricHandsomeM002CM01', 'imgname': 'COM_5_1_2_1.D209.OAM.qcow2'}})
-2015-12-27 18:40:13,721 p=3204 u=root |  PLAY [clean public keys on localhost] ***************************************** 
-2015-12-27 18:40:13,722 p=3204 u=root |  TASK: [clean public keys for axadmin and plx] ********************************* 
-2015-12-27 18:40:14,022 p=3204 u=root |  changed: [localhost] => (item={'key': 'oam', 'value': {'nic': [{'bridge': 'br0', 'name': 'eth0', 'ip_v4': {'prefix': '26', 'ipaddress': '135.252.141.24', 'gateway': '135.252.141.62'}}], 'flavor': {'vCpu': 6, 'disk': 150, 'memory': 25165824}, 'hostname': 'EricHandsomeM001OAM01', 'imgname': 'COM_5_1_2_1.D209.OAM.qcow2'}})
-2015-12-27 18:40:14,295 p=3204 u=root |  changed: [localhost] => (item={'key': 'db', 'value': {'nic': [{'bridge': 'br0', 'name': 'eth0', 'ip_v4': {'prefix': '26', 'ipaddress': '135.252.141.26', 'gateway': '135.252.141.62'}}], 'flavor': {'vCpu': 4, 'disk': 300, 'memory': 25165824}, 'hostname': 'EricHandsomeM003DB01', 'imgname': 'COM_5_1_2_1.D209.DB.qcow2'}})
-2015-12-27 18:40:14,477 p=3204 u=root |  changed: [localhost] => (item={'key': 'cm', 'value': {'nic': [{'bridge': 'br0', 'name': 'eth0', 'ip_v4': {'prefix': '26', 'ipaddress': '135.252.141.25', 'gateway': '135.252.141.62'}}], 'flavor': {'vCpu': 12, 'disk': 100, 'memory': 33554432}, 'hostname': 'EricHandsomeM002CM01', 'imgname': 'COM_5_1_2_1.D209.OAM.qcow2'}})
-2015-12-27 18:40:14,478 p=3204 u=root |  PLAY [fetch host network configuration] *************************************** 
-2015-12-27 18:40:14,479 p=3204 u=root |  TASK: [find network configuration] ******************************************** 
-2015-12-27 18:40:14,565 p=3204 u=root |  changed: [localhost]
-2015-12-27 18:40:14,566 p=3204 u=root |  TASK: [fetch network configuration] ******************************************* 
-2015-12-27 18:40:14,611 p=3204 u=root |  changed: [localhost] => (item=/etc/sysconfig/network-scripts/ifcfg-eth0)
-2015-12-27 18:40:14,649 p=3204 u=root |  changed: [localhost] => (item=/etc/sysconfig/network-scripts/ifcfg-eth3)
-2015-12-27 18:40:14,686 p=3204 u=root |  changed: [localhost] => (item=/etc/sysconfig/network-scripts/ifcfg-eth1)
-2015-12-27 18:40:14,719 p=3204 u=root |  changed: [localhost] => (item=/etc/sysconfig/network-scripts/ifcfg-br0)
-2015-12-27 18:40:14,757 p=3204 u=root |  changed: [localhost] => (item=/etc/sysconfig/network-scripts/ifcfg-eth2)
-2015-12-27 18:40:14,796 p=3204 u=root |  changed: [localhost] => (item=/etc/sysconfig/network-scripts/ifcfg-lo)
-2015-12-27 18:40:14,797 p=3204 u=root |  PLAY [upload host network configuration] ************************************** 
-2015-12-27 18:40:14,798 p=3204 u=root |  TASK: [create host-nework directory] ****************************************** 
-2015-12-27 18:40:15,330 p=3204 u=root |  ok: [135.252.141.24]
-2015-12-27 18:40:15,344 p=3204 u=root |  ok: [135.252.141.25]
-2015-12-27 18:40:15,390 p=3204 u=root |  ok: [135.252.141.26]
-2015-12-27 18:40:15,406 p=3204 u=root |  TASK: [upload hostnework configuration] *************************************** 
-2015-12-27 18:40:17,931 p=3204 u=root |  ok: [135.252.141.24]
-2015-12-27 18:40:17,964 p=3204 u=root |  ok: [135.252.141.25]
-2015-12-27 18:40:18,025 p=3204 u=root |  ok: [135.252.141.26]
-2015-12-27 18:40:18,046 p=3204 u=root |  PLAY [upload group variables] ************************************************* 
-2015-12-27 18:40:18,047 p=3204 u=root |  TASK: [upload group vars] ***************************************************** 
-2015-12-27 18:40:18,675 p=3204 u=root |  changed: [135.252.141.25]
-2015-12-27 18:40:18,742 p=3204 u=root |  changed: [135.252.141.26]
-2015-12-27 18:40:18,745 p=3204 u=root |  changed: [135.252.141.24]
-2015-12-27 18:40:18,761 p=3204 u=root |  PLAY [collect and archieve elcm data] ***************************************** 
-2015-12-27 18:40:18,762 p=3204 u=root |  TASK: [make directory for elcm data] ****************************************** 
-2015-12-27 18:40:19,039 p=3204 u=root |  changed: [localhost]
-2015-12-27 18:40:19,040 p=3204 u=root |  TASK: [backup private key] **************************************************** 
-2015-12-27 18:40:19,121 p=3204 u=root |  changed: [localhost]
-2015-12-27 18:40:19,121 p=3204 u=root |  TASK: [backup public key] ***************************************************** 
-2015-12-27 18:40:19,197 p=3204 u=root |  changed: [localhost]
-2015-12-27 18:40:19,198 p=3204 u=root |  TASK: [check elcm datasource] ************************************************* 
-2015-12-27 18:40:19,287 p=3204 u=root |  changed: [localhost]
-2015-12-27 18:40:19,287 p=3204 u=root |  TASK: [backup elcm datasource] ************************************************ 
-2015-12-27 18:40:19,425 p=3204 u=root |  changed: [localhost]
-2015-12-27 18:40:19,426 p=3204 u=root |  TASK: [archieve elcm data] **************************************************** 
-2015-12-27 18:40:19,577 p=3204 u=root |  changed: [localhost]
-2015-12-27 18:40:19,578 p=3204 u=root |  PLAY [upload elcm data] ******************************************************* 
-2015-12-27 18:40:19,579 p=3204 u=root |  TASK: [upload elcm data] ****************************************************** 
-2015-12-27 18:40:20,179 p=3204 u=root |  changed: [135.252.141.24]
-2015-12-27 18:40:20,179 p=3204 u=root |  PLAY [upload elcm data] ******************************************************* 
-2015-12-27 18:40:20,180 p=3204 u=root |  skipping: no hosts matched
-2015-12-27 18:40:20,180 p=3204 u=root |  PLAY [clean elcm data] ******************************************************** 
-2015-12-27 18:40:20,180 p=3204 u=root |  TASK: [clean elcm data] ******************************************************* 
-2015-12-27 18:40:20,441 p=3204 u=root |  changed: [localhost]
-2015-12-27 18:40:20,441 p=3204 u=root |  TASK: [clean elcm archieve] *************************************************** 
-2015-12-27 18:40:20,696 p=3204 u=root |  changed: [localhost]
-2015-12-27 18:40:20,697 p=3204 u=root |  PLAY [download snmpd configuration file] ************************************** 
-2015-12-27 18:40:20,698 p=3204 u=root |  TASK: [fetch snmpd configuration file] **************************************** 
-2015-12-27 18:40:21,132 p=3204 u=root |  changed: [135.252.141.24]
-2015-12-27 18:40:21,132 p=3204 u=root |  PLAY [setup snmpd configuration on host server] ******************************* 
-2015-12-27 18:40:21,133 p=3204 u=root |  TASK: [check /etc/snmp/snmpd.conf file] *************************************** 
-2015-12-27 18:40:21,286 p=3204 u=root |  changed: [localhost]
-2015-12-27 18:40:21,287 p=3204 u=root |  TASK: [upload snmpd configuration file to host server] ************************ 
-2015-12-27 18:40:21,650 p=3204 u=root |  changed: [localhost]
-2015-12-27 18:40:21,651 p=3204 u=root |  NOTIFIED: [restart snmpd] ***************************************************** 
-2015-12-27 18:40:23,638 p=3204 u=root |  changed: [localhost]
-2015-12-27 18:40:23,640 p=3204 u=root |  PLAY [clean tmp snmpd configuration file] ************************************* 
-2015-12-27 18:40:23,640 p=3204 u=root |  TASK: [clean tmp snmpd configuration file] ************************************ 
-2015-12-27 18:40:23,925 p=3204 u=root |  changed: [localhost]
-2015-12-27 18:40:23,925 p=3204 u=root |  PLAY [create ilo configuration file] ****************************************** 
-2015-12-27 18:40:23,925 p=3204 u=root |  TASK: [check hponcfg] ********************************************************* 
-2015-12-27 18:40:24,008 p=3204 u=root |  changed: [localhost]
-2015-12-27 18:40:24,008 p=3204 u=root |  TASK: [create ilo configuration file] ***************************************** 
-2015-12-27 18:40:31,989 p=3204 u=root |  changed: [localhost]
-2015-12-27 18:40:31,990 p=3204 u=root |  TASK: [fetch ilo configuration file] ****************************************** 
-2015-12-27 18:40:32,052 p=3204 u=root |  changed: [localhost]
-2015-12-27 18:40:32,053 p=3204 u=root |  PLAY [upload host ilo info] *************************************************** 
-2015-12-27 18:40:32,056 p=3204 u=root |  TASK: [check ilo info file] *************************************************** 
-2015-12-27 18:40:32,235 p=3204 u=root |  changed: [135.252.141.24 -> 127.0.0.1]
-2015-12-27 18:40:32,236 p=3204 u=root |  changed: [135.252.141.26 -> 127.0.0.1]
-2015-12-27 18:40:32,251 p=3204 u=root |  changed: [135.252.141.25 -> 127.0.0.1]
-2015-12-27 18:40:32,266 p=3204 u=root |  TASK: [upload host ilo info] ************************************************** 
-2015-12-27 18:40:32,895 p=3204 u=root |  changed: [135.252.141.26]
-2015-12-27 18:40:32,903 p=3204 u=root |  changed: [135.252.141.25]
-2015-12-27 18:40:32,919 p=3204 u=root |  changed: [135.252.141.24]
-2015-12-27 18:40:32,935 p=3204 u=root |  PLAY [clean ilo info] ********************************************************* 
-2015-12-27 18:40:32,936 p=3204 u=root |  TASK: [clean ilo info] ******************************************************** 
-2015-12-27 18:40:33,251 p=3204 u=root |  changed: [localhost]
-2015-12-27 18:40:33,252 p=3204 u=root |  PLAY [delete suspend file] **************************************************** 
-2015-12-27 18:40:33,253 p=3204 u=root |  TASK: [delete_suspend_file | delete suspend file] ***************************** 
-2015-12-27 18:40:33,774 p=3204 u=root |  changed: [135.252.141.24]
-2015-12-27 18:40:33,783 p=3204 u=root |  changed: [135.252.141.26]
-2015-12-27 18:40:33,844 p=3204 u=root |  changed: [135.252.141.25]
-2015-12-27 18:40:33,860 p=3204 u=root |  PLAY [remove cloud-user account] ********************************************** 
-2015-12-27 18:40:33,861 p=3204 u=root |  TASK: [remove_cloud_user | remove cloud-user] ********************************* 
-2015-12-27 18:40:34,403 p=3204 u=root |  failed: [135.252.141.24] => {"changed": true, "cmd": ["userdel", "-r", "-f", "cloud-user"], "delta": "0:00:00.006146", "end": "2015-12-27 18:40:32.894882", "rc": 6, "start": "2015-12-27 18:40:32.888736", "warnings": []}
-2015-12-27 18:40:34,404 p=3204 u=root |  stderr: userdel: user 'cloud-user' does not exist
-2015-12-27 18:40:34,404 p=3204 u=root |  ...ignoring
-2015-12-27 18:40:34,464 p=3204 u=root |  failed: [135.252.141.26] => {"changed": true, "cmd": ["userdel", "-r", "-f", "cloud-user"], "delta": "0:00:00.005644", "end": "2015-12-27 18:40:33.559961", "rc": 6, "start": "2015-12-27 18:40:33.554317", "warnings": []}
-2015-12-27 18:40:34,465 p=3204 u=root |  stderr: userdel: user 'cloud-user' does not exist
-2015-12-27 18:40:34,465 p=3204 u=root |  failed: [135.252.141.25] => {"changed": true, "cmd": ["userdel", "-r", "-f", "cloud-user"], "delta": "0:00:00.005949", "end": "2015-12-27 18:40:33.087142", "rc": 6, "start": "2015-12-27 18:40:33.081193", "warnings": []}
-2015-12-27 18:40:34,466 p=3204 u=root |  ...ignoring
-2015-12-27 18:40:34,466 p=3204 u=root |  stderr: userdel: user 'cloud-user' does not exist
-2015-12-27 18:40:34,466 p=3204 u=root |  ...ignoring
-2015-12-27 18:40:34,484 p=3204 u=root |  PLAY [start com application] ************************************************** 
-2015-12-27 18:40:34,485 p=3204 u=root |  TASK: [start_com | start com application] ************************************* 
-2015-12-27 18:40:39,220 p=3204 u=root |  changed: [135.252.141.24]
-2015-12-27 18:40:39,220 p=3204 u=root |  PLAY [start com application] ************************************************** 
-2015-12-27 18:40:39,220 p=3204 u=root |  skipping: no hosts matched
-2015-12-27 18:40:39,221 p=3204 u=root |  PLAY [Reboot] ***************************************************************** 
-2015-12-27 18:40:39,221 p=3204 u=root |  TASK: [Reboot server] ********************************************************* 
-2015-12-27 18:40:39,875 p=3204 u=root |  changed: [135.252.141.24]
-2015-12-27 18:40:39,935 p=3204 u=root |  changed: [135.252.141.25]
-2015-12-27 18:40:39,947 p=3204 u=root |  changed: [135.252.141.26]
-2015-12-27 18:40:39,963 p=3204 u=root |  PLAY [unlock user] ************************************************************ 
-2015-12-27 18:40:39,964 p=3204 u=root |  TASK: [unlock axadmin] ******************************************************** 
-2015-12-27 18:40:40,654 p=3204 u=root |  changed: [135.252.141.26]
-2015-12-27 18:40:40,671 p=3204 u=root |  changed: [135.252.141.24]
-2015-12-27 18:40:40,681 p=3204 u=root |  changed: [135.252.141.25]
-2015-12-27 18:40:40,697 p=3204 u=root |  TASK: [unlock plx] ************************************************************ 
-2015-12-27 18:40:41,296 p=3204 u=root |  changed: [135.252.141.25]
-2015-12-27 18:40:41,341 p=3204 u=root |  changed: [135.252.141.24]
-2015-12-27 18:40:41,349 p=3204 u=root |  changed: [135.252.141.26]
-2015-12-27 18:40:41,365 p=3204 u=root |  PLAY RECAP ******************************************************************** 
-2015-12-27 18:40:41,366 p=3204 u=root |  135.252.141.24             : ok=46   changed=39   unreachable=0    failed=0   
-2015-12-27 18:40:41,366 p=3204 u=root |  135.252.141.25             : ok=35   changed=28   unreachable=0    failed=0   
-2015-12-27 18:40:41,367 p=3204 u=root |  135.252.141.26             : ok=35   changed=28   unreachable=0    failed=0   
-2015-12-27 18:40:41,367 p=3204 u=root |  localhost                  : ok=130  changed=91   unreachable=0    failed=0   
+2016-01-29 09:29:45,907 p=22558 u=root |  TASK: [vnf_create_vms | copy qcow2 disk image] ******************************** 
+2016-01-29 09:30:01,652 p=22558 u=root |  changed: [localhost]
+2016-01-29 09:30:01,653 p=22558 u=root |  TASK: [vnf_create_vms | copy iso image] *************************************** 
+2016-01-29 09:30:01,677 p=22558 u=root |  skipping: [localhost]
+2016-01-29 09:30:01,677 p=22558 u=root |  TASK: [vnf_create_vms | create virtual machine instance] ********************** 
+2016-01-29 09:30:01,898 p=22558 u=root |  changed: [localhost]
+2016-01-29 09:30:01,899 p=22558 u=root |  TASK: [vnf_create_vms | set VM to autostart with host] ************************ 
+2016-01-29 09:30:02,103 p=22558 u=root |  ok: [localhost]
+2016-01-29 09:30:02,104 p=22558 u=root |  TASK: [vnf_create_vms | start virtual machine] ******************************** 
+2016-01-29 09:30:03,821 p=22558 u=root |  changed: [localhost]
+2016-01-29 09:30:03,822 p=22558 u=root |  TASK: [vnf_create_vms | copy qcow2 disk image] ******************************** 
+2016-01-29 09:30:03,833 p=22558 u=root |  skipping: [localhost]
+2016-01-29 09:30:03,833 p=22558 u=root |  TASK: [vnf_create_vms | copy iso image] *************************************** 
+2016-01-29 09:30:03,842 p=22558 u=root |  skipping: [localhost]
+2016-01-29 09:30:03,842 p=22558 u=root |  TASK: [vnf_create_vms | create virtual machine instance] ********************** 
+2016-01-29 09:30:03,851 p=22558 u=root |  skipping: [localhost]
+2016-01-29 09:30:03,851 p=22558 u=root |  TASK: [vnf_create_vms | set VM to autostart with host] ************************ 
+2016-01-29 09:30:03,860 p=22558 u=root |  skipping: [localhost]
+2016-01-29 09:30:03,860 p=22558 u=root |  TASK: [vnf_create_vms | start virtual machine] ******************************** 
+2016-01-29 09:30:03,869 p=22558 u=root |  skipping: [localhost]
+2016-01-29 09:30:03,869 p=22558 u=root |  TASK: [vnf_create_vms | copy qcow2 disk image] ******************************** 
+2016-01-29 09:30:25,491 p=22558 u=root |  changed: [localhost]
+2016-01-29 09:30:25,493 p=22558 u=root |  TASK: [vnf_create_vms | copy iso image] *************************************** 
+2016-01-29 09:30:25,512 p=22558 u=root |  skipping: [localhost]
+2016-01-29 09:30:25,513 p=22558 u=root |  TASK: [vnf_create_vms | create virtual machine instance] ********************** 
+2016-01-29 09:30:25,714 p=22558 u=root |  changed: [localhost]
+2016-01-29 09:30:25,715 p=22558 u=root |  TASK: [vnf_create_vms | set VM to autostart with host] ************************ 
+2016-01-29 09:30:25,921 p=22558 u=root |  ok: [localhost]
+2016-01-29 09:30:25,922 p=22558 u=root |  TASK: [vnf_create_vms | start virtual machine] ******************************** 
+2016-01-29 09:30:28,331 p=22558 u=root |  changed: [localhost]
+2016-01-29 09:30:28,332 p=22558 u=root |  TASK: [vnf_create_vms | copy qcow2 disk image] ******************************** 
+2016-01-29 09:30:28,344 p=22558 u=root |  skipping: [localhost]
+2016-01-29 09:30:28,347 p=22558 u=root |  TASK: [vnf_create_vms | copy iso image] *************************************** 
+2016-01-29 09:30:28,356 p=22558 u=root |  skipping: [localhost]
+2016-01-29 09:30:28,356 p=22558 u=root |  TASK: [vnf_create_vms | create virtual machine instance] ********************** 
+2016-01-29 09:30:28,367 p=22558 u=root |  skipping: [localhost]
+2016-01-29 09:30:28,368 p=22558 u=root |  TASK: [vnf_create_vms | set VM to autostart with host] ************************ 
+2016-01-29 09:30:28,375 p=22558 u=root |  skipping: [localhost]
+2016-01-29 09:30:28,376 p=22558 u=root |  TASK: [vnf_create_vms | start virtual machine] ******************************** 
+2016-01-29 09:30:28,384 p=22558 u=root |  skipping: [localhost]
+2016-01-29 09:30:28,384 p=22558 u=root |  TASK: [vnf_wait_for_alive | wait for server to alive] ************************* 
+2016-01-29 09:30:58,556 p=22558 u=root |  ok: [localhost -> 127.0.0.1]
+2016-01-29 09:30:58,558 p=22558 u=root |  TASK: [vnf_wait_for_alive | delay 5 seconds so that OS is in stable state] **** 
+2016-01-29 09:31:03,727 p=22558 u=root |  ok: [localhost -> 127.0.0.1]
+2016-01-29 09:31:03,728 p=22558 u=root |  TASK: [vnf_wait_for_alive | wait for server to alive] ************************* 
+2016-01-29 09:31:03,743 p=22558 u=root |  skipping: [localhost]
+2016-01-29 09:31:03,743 p=22558 u=root |  TASK: [vnf_wait_for_alive | delay 5 seconds so that OS is in stable state] **** 
+2016-01-29 09:31:03,752 p=22558 u=root |  skipping: [localhost]
+2016-01-29 09:31:03,753 p=22558 u=root |  TASK: [vnf_wait_for_alive | wait for server to alive] ************************* 
+2016-01-29 09:31:09,910 p=22558 u=root |  ok: [localhost -> 127.0.0.1]
+2016-01-29 09:31:09,911 p=22558 u=root |  TASK: [vnf_wait_for_alive | delay 5 seconds so that OS is in stable state] **** 
+2016-01-29 09:31:15,069 p=22558 u=root |  ok: [localhost -> 127.0.0.1]
+2016-01-29 09:31:15,071 p=22558 u=root |  TASK: [vnf_wait_for_alive | wait for server to alive] ************************* 
+2016-01-29 09:31:15,084 p=22558 u=root |  skipping: [localhost]
+2016-01-29 09:31:15,085 p=22558 u=root |  TASK: [vnf_wait_for_alive | delay 5 seconds so that OS is in stable state] **** 
+2016-01-29 09:31:15,095 p=22558 u=root |  skipping: [localhost]
+2016-01-29 09:31:15,096 p=22558 u=root |  PLAY [set password of user root and axadmin] ********************************** 
+2016-01-29 09:31:15,096 p=22558 u=root |  TASK: [change_password | change root password] ******************************** 
+2016-01-29 09:31:15,923 p=22558 u=root |  changed: [135.252.141.24]
+2016-01-29 09:31:18,117 p=22558 u=root |  changed: [135.252.141.25]
+2016-01-29 09:31:18,133 p=22558 u=root |  TASK: [change_password | change axadmin password] ***************************** 
+2016-01-29 09:31:18,794 p=22558 u=root |  changed: [135.252.141.24]
+2016-01-29 09:31:19,222 p=22558 u=root |  changed: [135.252.141.25]
+2016-01-29 09:31:19,239 p=22558 u=root |  PLAY [set password of user root and axadmin] ********************************** 
+2016-01-29 09:31:19,239 p=22558 u=root |  skipping: no hosts matched
+2016-01-29 09:31:19,240 p=22558 u=root |  PLAY [upload install_options] ************************************************* 
+2016-01-29 09:31:19,241 p=22558 u=root |  TASK: [upload_install_options | create /install/config directory] ************* 
+2016-01-29 09:31:19,870 p=22558 u=root |  ok: [135.252.141.24]
+2016-01-29 09:31:19,951 p=22558 u=root |  ok: [135.252.141.25]
+2016-01-29 09:31:19,967 p=22558 u=root |  TASK: [upload_install_options | upload install_options] *********************** 
+2016-01-29 09:31:20,625 p=22558 u=root |  changed: [135.252.141.24]
+2016-01-29 09:31:20,653 p=22558 u=root |  changed: [135.252.141.25]
+2016-01-29 09:31:20,669 p=22558 u=root |  PLAY [image replacement post script] ****************************************** 
+2016-01-29 09:31:20,670 p=22558 u=root |  TASK: [run post replace script, may take around 20 minutes] ******************* 
+2016-01-29 09:32:11,868 p=22558 u=root |  changed: [135.252.141.25]
+2016-01-29 09:52:23,091 p=22558 u=root |  changed: [135.252.141.24]
+2016-01-29 09:52:23,112 p=22558 u=root |  TASK: [configure new disk drive] ********************************************** 
+2016-01-29 09:54:12,859 p=22558 u=root |  changed: [135.252.141.25]
+2016-01-29 09:55:04,303 p=22558 u=root |  changed: [135.252.141.24]
+2016-01-29 09:55:04,320 p=22558 u=root |  TASK: [organize directories for image replacement] **************************** 
+2016-01-29 09:55:05,474 p=22558 u=root |  changed: [135.252.141.24]
+2016-01-29 09:55:33,963 p=22558 u=root |  changed: [135.252.141.25]
+2016-01-29 09:55:33,979 p=22558 u=root |  PLAY [stop COM] *************************************************************** 
+2016-01-29 09:55:33,980 p=22558 u=root |  TASK: [stop_com | stop com application] *************************************** 
+2016-01-29 09:56:27,148 p=22558 u=root |  changed: [135.252.141.24]
+2016-01-29 09:56:27,148 p=22558 u=root |  PLAY [stop COM] *************************************************************** 
+2016-01-29 09:56:27,148 p=22558 u=root |  skipping: no hosts matched
+2016-01-29 09:56:27,149 p=22558 u=root |  PLAY [restore data] *********************************************************** 
+2016-01-29 09:56:27,149 p=22558 u=root |  TASK: [restore_data | create local restore directory] ************************* 
+2016-01-29 09:56:27,661 p=22558 u=root |  ok: [135.252.141.24]
+2016-01-29 09:56:27,726 p=22558 u=root |  ok: [135.252.141.25]
+2016-01-29 09:56:27,742 p=22558 u=root |  TASK: [restore_data | mount nfs directory] ************************************ 
+2016-01-29 09:56:27,785 p=22558 u=root |  skipping: [135.252.141.24]
+2016-01-29 09:56:27,788 p=22558 u=root |  skipping: [135.252.141.25]
+2016-01-29 09:56:27,803 p=22558 u=root |  TASK: [restore_data | restore data] ******************************************* 
+2016-01-29 09:57:02,639 p=22558 u=root |  changed: [135.252.141.25]
+2016-01-29 10:00:28,137 p=22558 u=root |  changed: [135.252.141.24]
+2016-01-29 10:00:28,167 p=22558 u=root |  TASK: [restore_data | restore data for CSA and CFMA] ************************** 
+2016-01-29 10:00:28,207 p=22558 u=root |  skipping: [135.252.141.24]
+2016-01-29 10:00:28,208 p=22558 u=root |  skipping: [135.252.141.25]
+2016-01-29 10:00:28,224 p=22558 u=root |  TASK: [restore_data | restore qosac data] ************************************* 
+2016-01-29 10:00:28,260 p=22558 u=root |  skipping: [135.252.141.24]
+2016-01-29 10:00:28,261 p=22558 u=root |  skipping: [135.252.141.25]
+2016-01-29 10:00:28,277 p=22558 u=root |  PLAY [Update COM DB Schema] *************************************************** 
+2016-01-29 10:00:28,278 p=22558 u=root |  TASK: [get COM version] ******************************************************* 
+2016-01-29 10:00:28,772 p=22558 u=root |  changed: [135.252.141.24]
+2016-01-29 10:00:28,772 p=22558 u=root |  TASK: [apply patch] *********************************************************** 
+2016-01-29 10:00:28,780 p=22558 u=root |  skipping: [135.252.141.24]
+2016-01-29 10:00:28,780 p=22558 u=root |  TASK: [Update COM DB schema] ************************************************** 
+2016-01-29 10:01:11,477 p=22558 u=root |  changed: [135.252.141.24]
+2016-01-29 10:01:11,478 p=22558 u=root |  PLAY [Vertical scaling COM VM for memory, and CPU] **************************** 
+2016-01-29 10:01:11,478 p=22558 u=root |  TASK: [tune memory] *********************************************************** 
+2016-01-29 10:01:13,173 p=22558 u=root |  changed: [135.252.141.24]
+2016-01-29 10:01:37,590 p=22558 u=root |  changed: [135.252.141.25]
+2016-01-29 10:01:37,604 p=22558 u=root |  PLAY [download public key from remote server] ********************************* 
+2016-01-29 10:01:37,605 p=22558 u=root |  TASK: [fetch axadmin public key from remote server] *************************** 
+2016-01-29 10:01:38,024 p=22558 u=root |  changed: [135.252.141.24]
+2016-01-29 10:01:38,089 p=22558 u=root |  changed: [135.252.141.25]
+2016-01-29 10:01:38,104 p=22558 u=root |  TASK: [fetch plx public key from remote server] ******************************* 
+2016-01-29 10:01:38,513 p=22558 u=root |  changed: [135.252.141.24]
+2016-01-29 10:01:38,893 p=22558 u=root |  changed: [135.252.141.25]
+2016-01-29 10:01:38,908 p=22558 u=root |  TASK: [create authorized_keys for axadmin] ************************************ 
+2016-01-29 10:01:39,413 p=22558 u=root |  changed: [135.252.141.25]
+2016-01-29 10:01:39,428 p=22558 u=root |  changed: [135.252.141.24]
+2016-01-29 10:01:39,443 p=22558 u=root |  TASK: [create known_hosts for axadmin] **************************************** 
+2016-01-29 10:01:39,965 p=22558 u=root |  changed: [135.252.141.25]
+2016-01-29 10:01:39,985 p=22558 u=root |  changed: [135.252.141.24]
+2016-01-29 10:01:40,002 p=22558 u=root |  TASK: [create authorized_keys for plx] **************************************** 
+2016-01-29 10:01:40,538 p=22558 u=root |  changed: [135.252.141.25]
+2016-01-29 10:01:40,546 p=22558 u=root |  changed: [135.252.141.24]
+2016-01-29 10:01:40,572 p=22558 u=root |  TASK: [create known_hosts for plx] ******************************************** 
+2016-01-29 10:01:41,093 p=22558 u=root |  changed: [135.252.141.24]
+2016-01-29 10:01:41,099 p=22558 u=root |  changed: [135.252.141.25]
+2016-01-29 10:01:41,113 p=22558 u=root |  PLAY [setup authorized keys and known hosts on db] **************************** 
+2016-01-29 10:01:41,114 p=22558 u=root |  TASK: [update authorized keys for axadmin] ************************************ 
+2016-01-29 10:01:41,883 p=22558 u=root |  ok: [135.252.141.25] => (item={'key': 'oam', 'value': {'nic': [{'bridge': 'br0', 'name': 'eth0', 'ip_v4': {'prefix': '26', 'ipaddress': '135.252.141.24', 'gateway': '135.252.141.62'}}], 'flavor': {'vCpu': 6, 'disk': 150, 'memory': 25165824}, 'hostname': 'Ericgr1M001OAM01', 'imgname': 'COM_5_1_2_1.D209.OAM.qcow2'}})
+2016-01-29 10:01:41,891 p=22558 u=root |  skipping: [135.252.141.25] => (item={'key': 'db', 'value': {'nic': [{'bridge': 'br0', 'name': 'eth0', 'ip_v4': {'prefix': '26', 'ipaddress': '135.252.141.25', 'gateway': '135.252.141.62'}}], 'flavor': {'vCpu': 4, 'disk': 300, 'memory': 25165824}, 'hostname': 'Ericgr1M002DB01', 'imgname': 'COM_5_1_2_1.D209.DB.qcow2'}})
+2016-01-29 10:01:41,891 p=22558 u=root |  TASK: [clean known hosts for axadmin] ***************************************** 
+2016-01-29 10:01:42,539 p=22558 u=root |  changed: [135.252.141.25] => (item={'key': 'oam', 'value': {'nic': [{'bridge': 'br0', 'name': 'eth0', 'ip_v4': {'prefix': '26', 'ipaddress': '135.252.141.24', 'gateway': '135.252.141.62'}}], 'flavor': {'vCpu': 6, 'disk': 150, 'memory': 25165824}, 'hostname': 'Ericgr1M001OAM01', 'imgname': 'COM_5_1_2_1.D209.OAM.qcow2'}})
+2016-01-29 10:01:42,548 p=22558 u=root |  skipping: [135.252.141.25] => (item={'key': 'db', 'value': {'nic': [{'bridge': 'br0', 'name': 'eth0', 'ip_v4': {'prefix': '26', 'ipaddress': '135.252.141.25', 'gateway': '135.252.141.62'}}], 'flavor': {'vCpu': 4, 'disk': 300, 'memory': 25165824}, 'hostname': 'Ericgr1M002DB01', 'imgname': 'COM_5_1_2_1.D209.DB.qcow2'}})
+2016-01-29 10:01:42,548 p=22558 u=root |  TASK: [update known hosts for axadmin] **************************************** 
+2016-01-29 10:01:43,302 p=22558 u=root |  changed: [135.252.141.25] => (item={'key': 'oam', 'value': {'nic': [{'bridge': 'br0', 'name': 'eth0', 'ip_v4': {'prefix': '26', 'ipaddress': '135.252.141.24', 'gateway': '135.252.141.62'}}], 'flavor': {'vCpu': 6, 'disk': 150, 'memory': 25165824}, 'hostname': 'Ericgr1M001OAM01', 'imgname': 'COM_5_1_2_1.D209.OAM.qcow2'}})
+2016-01-29 10:01:43,311 p=22558 u=root |  skipping: [135.252.141.25] => (item={'key': 'db', 'value': {'nic': [{'bridge': 'br0', 'name': 'eth0', 'ip_v4': {'prefix': '26', 'ipaddress': '135.252.141.25', 'gateway': '135.252.141.62'}}], 'flavor': {'vCpu': 4, 'disk': 300, 'memory': 25165824}, 'hostname': 'Ericgr1M002DB01', 'imgname': 'COM_5_1_2_1.D209.DB.qcow2'}})
+2016-01-29 10:01:43,312 p=22558 u=root |  TASK: [update authorized keys for plx] **************************************** 
+2016-01-29 10:01:44,005 p=22558 u=root |  ok: [135.252.141.25] => (item={'key': 'oam', 'value': {'nic': [{'bridge': 'br0', 'name': 'eth0', 'ip_v4': {'prefix': '26', 'ipaddress': '135.252.141.24', 'gateway': '135.252.141.62'}}], 'flavor': {'vCpu': 6, 'disk': 150, 'memory': 25165824}, 'hostname': 'Ericgr1M001OAM01', 'imgname': 'COM_5_1_2_1.D209.OAM.qcow2'}})
+2016-01-29 10:01:44,013 p=22558 u=root |  skipping: [135.252.141.25] => (item={'key': 'db', 'value': {'nic': [{'bridge': 'br0', 'name': 'eth0', 'ip_v4': {'prefix': '26', 'ipaddress': '135.252.141.25', 'gateway': '135.252.141.62'}}], 'flavor': {'vCpu': 4, 'disk': 300, 'memory': 25165824}, 'hostname': 'Ericgr1M002DB01', 'imgname': 'COM_5_1_2_1.D209.DB.qcow2'}})
+2016-01-29 10:01:44,014 p=22558 u=root |  TASK: [clean known hosts for plx] ********************************************* 
+2016-01-29 10:01:44,666 p=22558 u=root |  changed: [135.252.141.25] => (item={'key': 'oam', 'value': {'nic': [{'bridge': 'br0', 'name': 'eth0', 'ip_v4': {'prefix': '26', 'ipaddress': '135.252.141.24', 'gateway': '135.252.141.62'}}], 'flavor': {'vCpu': 6, 'disk': 150, 'memory': 25165824}, 'hostname': 'Ericgr1M001OAM01', 'imgname': 'COM_5_1_2_1.D209.OAM.qcow2'}})
+2016-01-29 10:01:44,673 p=22558 u=root |  skipping: [135.252.141.25] => (item={'key': 'db', 'value': {'nic': [{'bridge': 'br0', 'name': 'eth0', 'ip_v4': {'prefix': '26', 'ipaddress': '135.252.141.25', 'gateway': '135.252.141.62'}}], 'flavor': {'vCpu': 4, 'disk': 300, 'memory': 25165824}, 'hostname': 'Ericgr1M002DB01', 'imgname': 'COM_5_1_2_1.D209.DB.qcow2'}})
+2016-01-29 10:01:44,674 p=22558 u=root |  TASK: [update known hosts for plx] ******************************************** 
+2016-01-29 10:01:45,395 p=22558 u=root |  changed: [135.252.141.25] => (item={'key': 'oam', 'value': {'nic': [{'bridge': 'br0', 'name': 'eth0', 'ip_v4': {'prefix': '26', 'ipaddress': '135.252.141.24', 'gateway': '135.252.141.62'}}], 'flavor': {'vCpu': 6, 'disk': 150, 'memory': 25165824}, 'hostname': 'Ericgr1M001OAM01', 'imgname': 'COM_5_1_2_1.D209.OAM.qcow2'}})
+2016-01-29 10:01:45,407 p=22558 u=root |  skipping: [135.252.141.25] => (item={'key': 'db', 'value': {'nic': [{'bridge': 'br0', 'name': 'eth0', 'ip_v4': {'prefix': '26', 'ipaddress': '135.252.141.25', 'gateway': '135.252.141.62'}}], 'flavor': {'vCpu': 4, 'disk': 300, 'memory': 25165824}, 'hostname': 'Ericgr1M002DB01', 'imgname': 'COM_5_1_2_1.D209.DB.qcow2'}})
+2016-01-29 10:01:45,407 p=22558 u=root |  PLAY [setup authorized keys and known hosts on oam] *************************** 
+2016-01-29 10:01:45,408 p=22558 u=root |  TASK: [update authorized keys for axadmin] ************************************ 
+2016-01-29 10:01:45,422 p=22558 u=root |  skipping: [135.252.141.24] => (item={'key': 'oam', 'value': {'nic': [{'bridge': 'br0', 'name': 'eth0', 'ip_v4': {'prefix': '26', 'ipaddress': '135.252.141.24', 'gateway': '135.252.141.62'}}], 'flavor': {'vCpu': 6, 'disk': 150, 'memory': 25165824}, 'hostname': 'Ericgr1M001OAM01', 'imgname': 'COM_5_1_2_1.D209.OAM.qcow2'}})
+2016-01-29 10:01:46,155 p=22558 u=root |  ok: [135.252.141.24] => (item={'key': 'db', 'value': {'nic': [{'bridge': 'br0', 'name': 'eth0', 'ip_v4': {'prefix': '26', 'ipaddress': '135.252.141.25', 'gateway': '135.252.141.62'}}], 'flavor': {'vCpu': 4, 'disk': 300, 'memory': 25165824}, 'hostname': 'Ericgr1M002DB01', 'imgname': 'COM_5_1_2_1.D209.DB.qcow2'}})
+2016-01-29 10:01:46,156 p=22558 u=root |  TASK: [clean known hosts for axadmin] ***************************************** 
+2016-01-29 10:01:46,169 p=22558 u=root |  skipping: [135.252.141.24] => (item={'key': 'oam', 'value': {'nic': [{'bridge': 'br0', 'name': 'eth0', 'ip_v4': {'prefix': '26', 'ipaddress': '135.252.141.24', 'gateway': '135.252.141.62'}}], 'flavor': {'vCpu': 6, 'disk': 150, 'memory': 25165824}, 'hostname': 'Ericgr1M001OAM01', 'imgname': 'COM_5_1_2_1.D209.OAM.qcow2'}})
+2016-01-29 10:01:46,838 p=22558 u=root |  changed: [135.252.141.24] => (item={'key': 'db', 'value': {'nic': [{'bridge': 'br0', 'name': 'eth0', 'ip_v4': {'prefix': '26', 'ipaddress': '135.252.141.25', 'gateway': '135.252.141.62'}}], 'flavor': {'vCpu': 4, 'disk': 300, 'memory': 25165824}, 'hostname': 'Ericgr1M002DB01', 'imgname': 'COM_5_1_2_1.D209.DB.qcow2'}})
+2016-01-29 10:01:46,838 p=22558 u=root |  TASK: [update known hosts for axadmin] **************************************** 
+2016-01-29 10:01:46,851 p=22558 u=root |  skipping: [135.252.141.24] => (item={'key': 'oam', 'value': {'nic': [{'bridge': 'br0', 'name': 'eth0', 'ip_v4': {'prefix': '26', 'ipaddress': '135.252.141.24', 'gateway': '135.252.141.62'}}], 'flavor': {'vCpu': 6, 'disk': 150, 'memory': 25165824}, 'hostname': 'Ericgr1M001OAM01', 'imgname': 'COM_5_1_2_1.D209.OAM.qcow2'}})
+2016-01-29 10:01:47,579 p=22558 u=root |  changed: [135.252.141.24] => (item={'key': 'db', 'value': {'nic': [{'bridge': 'br0', 'name': 'eth0', 'ip_v4': {'prefix': '26', 'ipaddress': '135.252.141.25', 'gateway': '135.252.141.62'}}], 'flavor': {'vCpu': 4, 'disk': 300, 'memory': 25165824}, 'hostname': 'Ericgr1M002DB01', 'imgname': 'COM_5_1_2_1.D209.DB.qcow2'}})
+2016-01-29 10:01:47,580 p=22558 u=root |  TASK: [update authorized keys for plx] **************************************** 
+2016-01-29 10:01:47,596 p=22558 u=root |  skipping: [135.252.141.24] => (item={'key': 'oam', 'value': {'nic': [{'bridge': 'br0', 'name': 'eth0', 'ip_v4': {'prefix': '26', 'ipaddress': '135.252.141.24', 'gateway': '135.252.141.62'}}], 'flavor': {'vCpu': 6, 'disk': 150, 'memory': 25165824}, 'hostname': 'Ericgr1M001OAM01', 'imgname': 'COM_5_1_2_1.D209.OAM.qcow2'}})
+2016-01-29 10:01:48,357 p=22558 u=root |  ok: [135.252.141.24] => (item={'key': 'db', 'value': {'nic': [{'bridge': 'br0', 'name': 'eth0', 'ip_v4': {'prefix': '26', 'ipaddress': '135.252.141.25', 'gateway': '135.252.141.62'}}], 'flavor': {'vCpu': 4, 'disk': 300, 'memory': 25165824}, 'hostname': 'Ericgr1M002DB01', 'imgname': 'COM_5_1_2_1.D209.DB.qcow2'}})
+2016-01-29 10:01:48,357 p=22558 u=root |  TASK: [clean known hosts for plx] ********************************************* 
+2016-01-29 10:01:48,370 p=22558 u=root |  skipping: [135.252.141.24] => (item={'key': 'oam', 'value': {'nic': [{'bridge': 'br0', 'name': 'eth0', 'ip_v4': {'prefix': '26', 'ipaddress': '135.252.141.24', 'gateway': '135.252.141.62'}}], 'flavor': {'vCpu': 6, 'disk': 150, 'memory': 25165824}, 'hostname': 'Ericgr1M001OAM01', 'imgname': 'COM_5_1_2_1.D209.OAM.qcow2'}})
+2016-01-29 10:01:49,012 p=22558 u=root |  changed: [135.252.141.24] => (item={'key': 'db', 'value': {'nic': [{'bridge': 'br0', 'name': 'eth0', 'ip_v4': {'prefix': '26', 'ipaddress': '135.252.141.25', 'gateway': '135.252.141.62'}}], 'flavor': {'vCpu': 4, 'disk': 300, 'memory': 25165824}, 'hostname': 'Ericgr1M002DB01', 'imgname': 'COM_5_1_2_1.D209.DB.qcow2'}})
+2016-01-29 10:01:49,013 p=22558 u=root |  TASK: [update known hosts for plx] ******************************************** 
+2016-01-29 10:01:49,026 p=22558 u=root |  skipping: [135.252.141.24] => (item={'key': 'oam', 'value': {'nic': [{'bridge': 'br0', 'name': 'eth0', 'ip_v4': {'prefix': '26', 'ipaddress': '135.252.141.24', 'gateway': '135.252.141.62'}}], 'flavor': {'vCpu': 6, 'disk': 150, 'memory': 25165824}, 'hostname': 'Ericgr1M001OAM01', 'imgname': 'COM_5_1_2_1.D209.OAM.qcow2'}})
+2016-01-29 10:01:49,745 p=22558 u=root |  changed: [135.252.141.24] => (item={'key': 'db', 'value': {'nic': [{'bridge': 'br0', 'name': 'eth0', 'ip_v4': {'prefix': '26', 'ipaddress': '135.252.141.25', 'gateway': '135.252.141.62'}}], 'flavor': {'vCpu': 4, 'disk': 300, 'memory': 25165824}, 'hostname': 'Ericgr1M002DB01', 'imgname': 'COM_5_1_2_1.D209.DB.qcow2'}})
+2016-01-29 10:01:49,746 p=22558 u=root |  PLAY [setup authorized keys and known hosts on cm] **************************** 
+2016-01-29 10:01:49,747 p=22558 u=root |  skipping: no hosts matched
+2016-01-29 10:01:49,747 p=22558 u=root |  PLAY [clean public keys on localhost] ***************************************** 
+2016-01-29 10:01:49,747 p=22558 u=root |  TASK: [clean public keys for axadmin and plx] ********************************* 
+2016-01-29 10:01:50,031 p=22558 u=root |  changed: [localhost] => (item={'key': 'oam', 'value': {'nic': [{'bridge': 'br0', 'name': 'eth0', 'ip_v4': {'prefix': '26', 'ipaddress': '135.252.141.24', 'gateway': '135.252.141.62'}}], 'flavor': {'vCpu': 6, 'disk': 150, 'memory': 25165824}, 'hostname': 'Ericgr1M001OAM01', 'imgname': 'COM_5_1_2_1.D209.OAM.qcow2'}})
+2016-01-29 10:01:50,205 p=22558 u=root |  changed: [localhost] => (item={'key': 'db', 'value': {'nic': [{'bridge': 'br0', 'name': 'eth0', 'ip_v4': {'prefix': '26', 'ipaddress': '135.252.141.25', 'gateway': '135.252.141.62'}}], 'flavor': {'vCpu': 4, 'disk': 300, 'memory': 25165824}, 'hostname': 'Ericgr1M002DB01', 'imgname': 'COM_5_1_2_1.D209.DB.qcow2'}})
+2016-01-29 10:01:50,206 p=22558 u=root |  PLAY [fetch host network configuration] *************************************** 
+2016-01-29 10:01:50,207 p=22558 u=root |  TASK: [find network configuration] ******************************************** 
+2016-01-29 10:01:50,351 p=22558 u=root |  changed: [localhost]
+2016-01-29 10:01:50,352 p=22558 u=root |  TASK: [fetch network configuration] ******************************************* 
+2016-01-29 10:01:50,410 p=22558 u=root |  changed: [localhost] => (item=/etc/sysconfig/network-scripts/ifcfg-eth0)
+2016-01-29 10:01:50,449 p=22558 u=root |  changed: [localhost] => (item=/etc/sysconfig/network-scripts/ifcfg-eth3)
+2016-01-29 10:01:50,488 p=22558 u=root |  changed: [localhost] => (item=/etc/sysconfig/network-scripts/ifcfg-eth1)
+2016-01-29 10:01:50,530 p=22558 u=root |  changed: [localhost] => (item=/etc/sysconfig/network-scripts/ifcfg-br0)
+2016-01-29 10:01:50,573 p=22558 u=root |  changed: [localhost] => (item=/etc/sysconfig/network-scripts/ifcfg-eth2)
+2016-01-29 10:01:50,615 p=22558 u=root |  changed: [localhost] => (item=/etc/sysconfig/network-scripts/ifcfg-lo)
+2016-01-29 10:01:50,616 p=22558 u=root |  PLAY [upload host network configuration] ************************************** 
+2016-01-29 10:01:50,616 p=22558 u=root |  TASK: [create host-nework directory] ****************************************** 
+2016-01-29 10:01:51,139 p=22558 u=root |  ok: [135.252.141.25]
+2016-01-29 10:01:51,152 p=22558 u=root |  ok: [135.252.141.24]
+2016-01-29 10:01:51,174 p=22558 u=root |  TASK: [upload hostnework configuration] *************************************** 
+2016-01-29 10:01:53,711 p=22558 u=root |  ok: [135.252.141.25]
+2016-01-29 10:01:53,722 p=22558 u=root |  ok: [135.252.141.24]
+2016-01-29 10:01:53,737 p=22558 u=root |  PLAY [upload group variables] ************************************************* 
+2016-01-29 10:01:53,738 p=22558 u=root |  TASK: [upload group vars] ***************************************************** 
+2016-01-29 10:01:54,390 p=22558 u=root |  changed: [135.252.141.25]
+2016-01-29 10:01:54,457 p=22558 u=root |  changed: [135.252.141.24]
+2016-01-29 10:01:54,472 p=22558 u=root |  PLAY [collect and archieve elcm data] ***************************************** 
+2016-01-29 10:01:54,473 p=22558 u=root |  TASK: [make directory for elcm data] ****************************************** 
+2016-01-29 10:01:54,751 p=22558 u=root |  changed: [localhost]
+2016-01-29 10:01:54,752 p=22558 u=root |  TASK: [backup private key] **************************************************** 
+2016-01-29 10:01:54,884 p=22558 u=root |  changed: [localhost]
+2016-01-29 10:01:54,885 p=22558 u=root |  TASK: [backup public key] ***************************************************** 
+2016-01-29 10:01:55,020 p=22558 u=root |  changed: [localhost]
+2016-01-29 10:01:55,021 p=22558 u=root |  TASK: [check elcm datasource] ************************************************* 
+2016-01-29 10:01:56,165 p=22558 u=root |  changed: [localhost]
+2016-01-29 10:01:56,167 p=22558 u=root |  TASK: [backup elcm datasource] ************************************************ 
+2016-01-29 10:01:56,315 p=22558 u=root |  changed: [localhost]
+2016-01-29 10:01:56,315 p=22558 u=root |  TASK: [archieve elcm data] **************************************************** 
+2016-01-29 10:01:56,476 p=22558 u=root |  changed: [localhost]
+2016-01-29 10:01:56,477 p=22558 u=root |  PLAY [upload elcm data] ******************************************************* 
+2016-01-29 10:01:56,478 p=22558 u=root |  TASK: [upload elcm data] ****************************************************** 
+2016-01-29 10:01:57,151 p=22558 u=root |  changed: [135.252.141.24]
+2016-01-29 10:01:57,151 p=22558 u=root |  PLAY [upload elcm data] ******************************************************* 
+2016-01-29 10:01:57,151 p=22558 u=root |  skipping: no hosts matched
+2016-01-29 10:01:57,152 p=22558 u=root |  PLAY [clean elcm data] ******************************************************** 
+2016-01-29 10:01:57,152 p=22558 u=root |  TASK: [clean elcm data] ******************************************************* 
+2016-01-29 10:01:57,421 p=22558 u=root |  changed: [localhost]
+2016-01-29 10:01:57,422 p=22558 u=root |  TASK: [clean elcm archieve] *************************************************** 
+2016-01-29 10:01:57,602 p=22558 u=root |  changed: [localhost]
+2016-01-29 10:01:57,603 p=22558 u=root |  PLAY [download snmpd configuration file] ************************************** 
+2016-01-29 10:01:57,604 p=22558 u=root |  TASK: [fetch snmpd configuration file] **************************************** 
+2016-01-29 10:01:58,031 p=22558 u=root |  changed: [135.252.141.24]
+2016-01-29 10:01:58,032 p=22558 u=root |  PLAY [setup snmpd configuration on host server] ******************************* 
+2016-01-29 10:01:58,032 p=22558 u=root |  TASK: [check /etc/snmp/snmpd.conf file] *************************************** 
+2016-01-29 10:01:58,177 p=22558 u=root |  changed: [localhost]
+2016-01-29 10:01:58,177 p=22558 u=root |  TASK: [upload snmpd configuration file to host server] ************************ 
+2016-01-29 10:01:58,512 p=22558 u=root |  changed: [localhost]
+2016-01-29 10:01:58,513 p=22558 u=root |  NOTIFIED: [restart snmpd] ***************************************************** 
+2016-01-29 10:02:00,427 p=22558 u=root |  changed: [localhost]
+2016-01-29 10:02:00,428 p=22558 u=root |  PLAY [clean tmp snmpd configuration file] ************************************* 
+2016-01-29 10:02:00,429 p=22558 u=root |  TASK: [clean tmp snmpd configuration file] ************************************ 
+2016-01-29 10:02:00,746 p=22558 u=root |  changed: [localhost]
+2016-01-29 10:02:00,747 p=22558 u=root |  PLAY [create ilo configuration file] ****************************************** 
+2016-01-29 10:02:00,748 p=22558 u=root |  TASK: [check hponcfg] ********************************************************* 
+2016-01-29 10:02:00,889 p=22558 u=root |  changed: [localhost]
+2016-01-29 10:02:00,890 p=22558 u=root |  TASK: [create ilo configuration file] ***************************************** 
+2016-01-29 10:02:10,240 p=22558 u=root |  changed: [localhost]
+2016-01-29 10:02:10,241 p=22558 u=root |  TASK: [fetch ilo configuration file] ****************************************** 
+2016-01-29 10:02:10,296 p=22558 u=root |  changed: [localhost]
+2016-01-29 10:02:10,297 p=22558 u=root |  PLAY [upload host ilo info] *************************************************** 
+2016-01-29 10:02:10,298 p=22558 u=root |  TASK: [check ilo info file] *************************************************** 
+2016-01-29 10:02:10,474 p=22558 u=root |  changed: [135.252.141.24 -> 127.0.0.1]
+2016-01-29 10:02:10,481 p=22558 u=root |  changed: [135.252.141.25 -> 127.0.0.1]
+2016-01-29 10:02:10,497 p=22558 u=root |  TASK: [upload host ilo info] ************************************************** 
+2016-01-29 10:02:11,007 p=22558 u=root |  changed: [135.252.141.24]
+2016-01-29 10:02:11,100 p=22558 u=root |  changed: [135.252.141.25]
+2016-01-29 10:02:11,115 p=22558 u=root |  PLAY [clean ilo info] ********************************************************* 
+2016-01-29 10:02:11,116 p=22558 u=root |  TASK: [clean ilo info] ******************************************************** 
+2016-01-29 10:02:11,387 p=22558 u=root |  changed: [localhost]
+2016-01-29 10:02:11,388 p=22558 u=root |  PLAY [delete suspend file] **************************************************** 
+2016-01-29 10:02:11,391 p=22558 u=root |  TASK: [delete_suspend_file | delete suspend file] ***************************** 
+2016-01-29 10:02:11,903 p=22558 u=root |  changed: [135.252.141.25]
+2016-01-29 10:02:11,911 p=22558 u=root |  changed: [135.252.141.24]
+2016-01-29 10:02:11,927 p=22558 u=root |  PLAY [remove cloud-user account] ********************************************** 
+2016-01-29 10:02:11,929 p=22558 u=root |  TASK: [remove_cloud_user | remove cloud-user] ********************************* 
+2016-01-29 10:02:12,457 p=22558 u=root |  failed: [135.252.141.25] => {"changed": true, "cmd": ["userdel", "-r", "-f", "cloud-user"], "delta": "0:00:00.005276", "end": "2016-01-29 10:02:10.216407", "rc": 6, "start": "2016-01-29 10:02:10.211131", "warnings": []}
+2016-01-29 10:02:12,457 p=22558 u=root |  stderr: userdel: user 'cloud-user' does not exist
+2016-01-29 10:02:12,457 p=22558 u=root |  ...ignoring
+2016-01-29 10:02:12,491 p=22558 u=root |  failed: [135.252.141.24] => {"changed": true, "cmd": ["userdel", "-r", "-f", "cloud-user"], "delta": "0:00:00.005635", "end": "2016-01-29 10:02:11.786003", "rc": 6, "start": "2016-01-29 10:02:11.780368", "warnings": []}
+2016-01-29 10:02:12,491 p=22558 u=root |  stderr: userdel: user 'cloud-user' does not exist
+2016-01-29 10:02:12,492 p=22558 u=root |  ...ignoring
+2016-01-29 10:02:12,507 p=22558 u=root |  PLAY [start com application] ************************************************** 
+2016-01-29 10:02:12,508 p=22558 u=root |  TASK: [start_com | start com application] ************************************* 
+2016-01-29 10:02:21,307 p=22558 u=root |  changed: [135.252.141.24]
+2016-01-29 10:02:21,308 p=22558 u=root |  PLAY [start com application] ************************************************** 
+2016-01-29 10:02:21,308 p=22558 u=root |  skipping: no hosts matched
+2016-01-29 10:02:21,308 p=22558 u=root |  PLAY [unlock user] ************************************************************ 
+2016-01-29 10:02:21,309 p=22558 u=root |  TASK: [unlock axadmin] ******************************************************** 
+2016-01-29 10:02:21,954 p=22558 u=root |  changed: [135.252.141.24]
+2016-01-29 10:02:21,980 p=22558 u=root |  changed: [135.252.141.25]
+2016-01-29 10:02:21,995 p=22558 u=root |  TASK: [unlock plx] ************************************************************ 
+2016-01-29 10:02:22,545 p=22558 u=root |  changed: [135.252.141.24]
+2016-01-29 10:02:22,562 p=22558 u=root |  changed: [135.252.141.25]
+2016-01-29 10:02:22,577 p=22558 u=root |  PLAY [Reboot] ***************************************************************** 
+2016-01-29 10:02:22,578 p=22558 u=root |  TASK: [Reboot server] ********************************************************* 
+2016-01-29 10:02:23,158 p=22558 u=root |  changed: [135.252.141.24]
+2016-01-29 10:02:23,169 p=22558 u=root |  changed: [135.252.141.25]
+2016-01-29 10:02:23,186 p=22558 u=root |  PLAY RECAP ******************************************************************** 
+2016-01-29 10:02:23,187 p=22558 u=root |  135.252.141.24             : ok=46   changed=39   unreachable=0    failed=0   
+2016-01-29 10:02:23,187 p=22558 u=root |  135.252.141.25             : ok=35   changed=28   unreachable=0    failed=0   
+2016-01-29 10:02:23,188 p=22558 u=root |  localhost                  : ok=104  changed=69   unreachable=0    failed=0   

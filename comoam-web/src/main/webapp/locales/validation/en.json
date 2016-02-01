@@ -252,5 +252,7 @@
     "GRINSTALL_SUCCEED":"GR Install succeeded",
     "GRINSTALL_FAIL":"GR Install failed",
     "GRUNINSTALL_SUCCEED":"GR Uninstall succeeded",
-    "GRUNINSTALL_FAIL":"GR Uninstall failed"
+    "GRUNINSTALL_FAIL":"GR Uninstall failed",
+    "HEALING_SUCCEED":"Healthing succeeded",
+    "HEALING_FAIL":"Healthing failed"
 }
