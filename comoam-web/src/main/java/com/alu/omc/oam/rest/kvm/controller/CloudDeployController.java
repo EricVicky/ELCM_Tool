@@ -1,7 +1,9 @@
 package com.alu.omc.oam.rest.kvm.controller;
 
 import java.io.IOException;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Resource;
 
@@ -14,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.alu.omc.oam.ansible.AnsibleDelegator;
 import com.alu.omc.oam.ansible.Ansibleworkspace;
 import com.alu.omc.oam.ansible.persistence.JsonDataSource;
+import com.alu.omc.oam.ansible.validation.ValidationResult;
 import com.alu.omc.oam.config.Action;
 import com.alu.omc.oam.config.AnsibleLog;
 import com.alu.omc.oam.config.ArsCOMConfig;
@@ -42,6 +45,7 @@ import com.alu.omc.oam.config.UpgradeFullBackupConfig;
 import com.alu.omc.oam.config.VMConfig;
 import com.alu.omc.oam.kvm.model.Host;
 import com.alu.omc.oam.service.COMStackService;
+import com.alu.omc.oam.service.COMValidationService;
 import com.alu.omc.oam.service.HostService;
 import com.alu.omc.oam.service.OperationLogService;
 import com.alu.omc.oam.util.EncryptUtils;
@@ -62,6 +66,31 @@ public class CloudDeployController
     JsonDataSource jsonDataSource;
     @Resource
     OperationLogService operationLogService;
+    @Resource
+    COMValidationService cOMValidationService;
+    
+    @RequestMapping(value="/kvm/addipv6", method=RequestMethod.GET)
+    public ValidationResult  repliacateData(@ModelAttribute("stackName") String stackName,@ModelAttribute("ipaddress") String ipaddress,
+    		                                @ModelAttribute("gateway") String gateway,@ModelAttribute("prefix") String prefix) 
+    {
+    	ValidationResult res = new ValidationResult();
+    	KVMCOMConfig config = getKVMCOMConfig(stackName);
+    	Map<String, VMConfig> vmconfigs = config.getVm_config();
+    	Iterator<String> iterator = vmconfigs.keySet().iterator();
+    	while(iterator.hasNext()){
+    		String vnfc = iterator.next();
+    		VMConfig vmConfig = vmconfigs.get(vnfc);
+			String vmIP = vmConfig.getNic().get(0).getIp_v4().getIpaddress();
+			cOMValidationService.setIp(vmIP);
+			String checkRes= cOMValidationService.addIpv6();
+			res.addWarningMes(checkRes);
+    	}
+    	String hostIp = config.getHost().getIp_address();
+    	cOMValidationService.setIp(hostIp);
+		String checkRes= cOMValidationService.grReplicateData("grReplicateData.sh");
+
+    	return res;    			
+    }
     
     @RequestMapping(value="/os/deployment", method=RequestMethod.POST)
     public void deploy( @RequestBody OSCOMConfig config) throws IOException, InterruptedException
