@@ -123,7 +123,11 @@ angular.module('datatable',['ui.grid', 'ui.grid.resizeColumns']).controller('dat
 		});	
 		modalInstance.result.then(function (ipv6) {
 		    $scope.ipv6_config = ipv6;
-		    
+		    KVMService.addipv6($scope.ipv6_config.stackname,$scope.ipv6_config.ipaddress,
+		    		           $scope.ipv6_config.gateway,$scope.ipv6_config.prefix).then( function(data) {
+		    		       		
+		    		    		
+		    		        });
 		    
 		}, function () {
 		});	

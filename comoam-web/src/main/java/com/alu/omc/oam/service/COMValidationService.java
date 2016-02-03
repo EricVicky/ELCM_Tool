@@ -330,10 +330,5 @@ public class COMValidationService {
     	String command = COMMAND.FDADDIPV6;
     	return ipv6Config(command);
     }
-    
-//    public String syncIpv6(){
-//    	//String command = COMMAND.DESTINATION+COMMAND.SYNCIPV6+" "+" ";
-//    	return ipv6Config(command);
-//    }
 
 }
