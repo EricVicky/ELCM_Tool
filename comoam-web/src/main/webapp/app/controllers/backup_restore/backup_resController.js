@@ -97,6 +97,10 @@ angular.module('backup_restore', ['ui.router',
     	if($scope.installConfig.comType=="QOSAC"||$scope.installConfig.comType=="ATC"){
     		$scope.doBackup();  
     	}
+    	if($scope.remote_server != true){
+    		delete $scope.backupConfig.backupLocation.remote_server_dir;
+    		delete $scope.backupConfig.backupLocation.remote_server_ip;
+    	}
     	$scope.showmessage = false;
     	$scope.checkmessage = true;
     	$scope.backupConfig.config = $scope.installConfig;
@@ -141,6 +145,10 @@ angular.module('backup_restore', ['ui.router',
     $scope.restore = function(){
     	if($scope.installConfig.comType=="QOSAC"||$scope.installConfig.comType=="ATC"){
     		$scope.doRestore();  
+    	}
+    	if($scope.remote_server != true){
+    		delete $scope.backupConfig.backupLocation.remote_server_dir;
+    		delete $scope.backupConfig.backupLocation.remote_server_ip;
     	}
     	$scope.showmessage = false;
     	$scope.checkmessage = true;
