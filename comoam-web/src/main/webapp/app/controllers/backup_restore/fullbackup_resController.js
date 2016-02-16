@@ -84,6 +84,10 @@ angular.module('fullbackup_restore', ['ui.router',
                                 	    	if($scope.installConfig.comType=="QOSAC"||$scope.installConfig.comType=="ATC"){
                                 	    		$scope.dofullbackup();  
                                 	    	}
+                                	    	if($scope.remote_server != true){
+                                	    		delete $scope.fullbackupConfig.remote_server_dir;
+                                	    		delete $scope.fullbackupConfig.remote_server_ip;
+                                	    	}
                                 	    	$scope.showmessage = false;
                                 	    	$scope.checkmessage = true;
                                 	    	$scope.fullbackupConfig.stackName = $scope.installConfig.deployment_prefix;
@@ -129,6 +133,10 @@ angular.module('fullbackup_restore', ['ui.router',
                                 	    $scope.fullrestore = function(){
                                 	    	if($scope.installConfig.comType=="QOSAC"||$scope.installConfig.comType=="ATC"){
                                 	    		$scope.dofullrestore();  
+                                	    	}
+                                	    	if($scope.remote_server != true){
+                                	    		delete $scope.fullbackupConfig.remote_server_dir;
+                                	    		delete $scope.fullbackupConfig.remote_server_ip;
                                 	    	}
                                 	    	$scope.showmessage = false;
                                 	    	$scope.checkmessage = true;
