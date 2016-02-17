@@ -1,4 +1,5 @@
 #!/bin/sh
+ELCM_ROOT=/opt/PlexView/ELCM
 echo "extract playbook"
 if [ -f /opt/PlexView/ELCM/playbook.tar ]; then
     tar -xf  /opt/PlexView/ELCM/playbook.tar -C /opt/PlexView/ELCM/
@@ -31,7 +32,7 @@ fi
 chmod +x /opt/PlexView/ELCM/server/bin/*sh
 
 echo "generate ssl key"
-/opt/PlexView/ELCM/script/sslKey.sh
+${ELCM_ROOT}/script/sslKey.sh
 
 hostname=`hostname --fqdn`
 ip_addr=`hostname -i`
@@ -41,10 +42,14 @@ if [ -n "$ip_addr" ] && [ -n "$hostname" ]; then
 fi
 
 if [ -f /opt/PlexView/ELCM/datasource/comstack.json ]; then
-    /opt/PlexView/ELCM/script/migration-0.7-8.py
+    mkdir -p ${ELCM_ROOT}/backup
+    current_time=`date +%Y-%m-%d.%H:%M:%S`
+    cp -r ${ELCM_ROOT}/datasource ${ELCM_ROOT}/datasource${current_time}
+    ${ELCM_ROOT}/script/migration-0.7-8.py
+    ${ELCM_ROOT}/script/migration-1.5-1.7.py
 fi
 
-/opt/PlexView/ELCM/server/bin/startup.sh
+${ELCM_ROOT}/server/bin/startup.sh
 bootrc=$(grep ELCM /etc/rc.d/rc.local)
 if [ -z "$bootrc" ]; then
     echo "/opt/PlexView/ELCM/server/bin/startup.sh" >>/etc/rc.d/rc.local
