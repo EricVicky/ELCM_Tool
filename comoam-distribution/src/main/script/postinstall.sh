@@ -44,7 +44,7 @@ fi
 if [ -f /opt/PlexView/ELCM/datasource/comstack.json ]; then
     mkdir -p ${ELCM_ROOT}/backup
     current_time=`date +%Y-%m-%d.%H:%M:%S`
-    cp -r ${ELCM_ROOT}/datasource ${ELCM_ROOT}/datasource${current_time}
+    cp -r ${ELCM_ROOT}/datasource ${ELCM_ROOT}/backup/datasource_${current_time}
     ${ELCM_ROOT}/script/migration-0.7-8.py
     ${ELCM_ROOT}/script/migration-1.5-1.7.py
 fi
