@@ -16,8 +16,8 @@ def getHostIP():
 def replaceVars(comConfig, deployment_prefix, hostip):
     p=re.compile("\{\{\s+deployment_prefix\s+\}\}")
     comConfig = p.sub(deployment_prefix, comConfig)
-    p=re.compile("127\.0\.0\.1|localhost")
-    comConfig = p.sub(hostip, comConfig)
+    p=re.compile("\"127\.0\.0\.1\"|\"localhost\"")
+    comConfig = p.sub("\"" + hostip + "\"", comConfig)
     return comConfig
 
 #replace the locahost and 127.0.0.1 as real IP
