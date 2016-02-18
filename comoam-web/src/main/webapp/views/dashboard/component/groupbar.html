@@ -12,7 +12,7 @@
       	<li ng-hide="row.entity.comType=='QOSAC'||row.entity.comType=='HPSIM'||row.entity.comConfig.environment=='OPENSTACK'"><a href="" ng-click="grid.appScope.fullrestore(row)"><i class="glyphicon glyphicon-cloud-download" style="color:grey;"></i>&nbsp;Full Restore</a></li>
      	<li><a href="" ng-click="grid.appScope.operationlog(row)"><i class="glyphicon glyphicon-calendar" style="color:black;"></i>&nbsp;Ansible Log</a></li>
      	<li><a href="" ng-click="grid.appScope.healing(row)"><i class="glyphicon glyphicon-plus-sign" style="color:black;"></i>&nbsp;Healing</a></li>
-   <!-- <li ng-hide="row.entity.comType=='ATC'||row.entity.comType=='QOSAC'||row.entity.comType=='HPSIM'||row.entity.comConfig.environment=='OPENSTACK'"><a href="" ng-click="grid.appScope.addipv6(row)"><i class="glyphicon glyphicon-compressed" style="color:blue;"></i>&nbsp;Add IPV6</a></li> -->
+        <li ng-hide="row.entity.comType=='ARS'||row.entity.comType=='ATC'||row.entity.comType=='QOSAC'||row.entity.comType=='HPSIM'||row.entity.comConfig.environment=='OPENSTACK'"><a href="" ng-click="grid.appScope.addip(row)"><i class="glyphicon glyphicon-compressed" style="color:blue;"></i>&nbsp;Add IP</a></li>
         <li ng-hide="row.entity.comType=='ARS'||row.entity.comType=='ATC'||row.entity.comType=='HPSIM'||row.entity.comConfig.environment=='OPENSTACK'"><a href="" ng-click="grid.appScope.gochhostname(row)"><i class="glyphicon glyphicon-edit" style="color:grey;"></i>&nbsp;Change Hostname</a></li>
       	<li><a href="" ng-click="grid.appScope.godelete(row)"><i class="glyphicon glyphicon-remove" style="color:red;"></i>&nbsp;Delete</a></li>
   </ul>
