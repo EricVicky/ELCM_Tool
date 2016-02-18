@@ -122,8 +122,10 @@ angular.module('datatable',['ui.grid', 'ui.grid.resizeColumns']).controller('dat
 			$scope.iplabel = ipType.label;
 			if($scope.iplabel == "--IPv4--"){
 				alert("444");
+				$state.go('dashboard.'.concat(selectedItems.EnvItem.url).concat(selectedItems.VNFItem.upgradeUrl), {}, {reload: true});
 			}else{
 				alert("666");
+				$state.go('dashboard.'.concat(selectedItems.EnvItem.url).concat(selectedItems.VNFItem.upgradeUrl), {}, {reload: true});
 			}   
 		}, function () {
 		});	
