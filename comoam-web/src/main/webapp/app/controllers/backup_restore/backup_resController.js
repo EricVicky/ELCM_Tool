@@ -94,7 +94,7 @@ angular.module('backup_restore', ['ui.router',
     };
     
     $scope.backup = function(){
-    	if($scope.installConfig.comType=="QOSAC"||$scope.installConfig.comType=="ATC"){
+    	if($scope.installConfig.comType=="QOSAC"||$scope.installConfig.comType=="ATC"||$scope.installConfig.environment != 'KVM'){
     		$scope.doBackup();  
     	}
     	if($scope.remote_server != true){
@@ -143,7 +143,7 @@ angular.module('backup_restore', ['ui.router',
     };
     
     $scope.restore = function(){
-    	if($scope.installConfig.comType=="QOSAC"||$scope.installConfig.comType=="ATC"){
+    	if($scope.installConfig.comType=="QOSAC"||$scope.installConfig.comType=="ATC"||$scope.installConfig.environment != 'KVM'){
     		$scope.doRestore();  
     	}
     	if($scope.remote_server != true){
