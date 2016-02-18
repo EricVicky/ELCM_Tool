@@ -104,7 +104,6 @@
 											</select>
 										</div>
 									</div>
-									{{nics}}
 									<fieldset ng-init="installConfig.vm_config.oam.nic = []" ng-if="installConfig.comType=='FCAPS' || installConfig.comType=='OAM' || installConfig.comType=='CM'">
 										<legend>OAM VM</legend>
 										<div class="row" name="{{nic}}" ng-if="oamCard > $index " ng-repeat="nic in nics">
@@ -168,7 +167,6 @@
 											</div>
 											<div class="col-md-5">
 											<span class="validation text-danger" ng-show="tab3.db_ipv4_ipaddress{{$index}}.$error.validation"><label translate="PLEASE_CONFIG_DB_VM">Please Config DB VM!</label></span>
-										</div>
 										</div>
 										<div class="col-md-1 pull-right">
   											<button title="Add network card" class="btn btn-danger" ng-click="deleteDbCard()"><i class="glyphicon glyphicon-minus"></i></button>
