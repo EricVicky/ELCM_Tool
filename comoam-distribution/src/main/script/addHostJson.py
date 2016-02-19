@@ -1,14 +1,20 @@
 #!/usr/bin/python
 import json
 import sys
+import traceback
+
+if len(sys.argv) < 3:
+   print 'illegal argument'
+   sys.exit(1)
+entry = {'ip_address': sys.argv[1], 'name': sys.argv[2]}
+
 with open('/opt/PlexView/ELCM/datasource/hosts.json', 'r') as hostsjson:
     try:
         feeds = json.load(hostsjson)
-    except ValueError: 
+    except Exception: 
         feeds = []
 
 with open('/opt/PlexView/ELCM/datasource/hosts.json', 'w') as hostsjson:
-	entry = {'ip_address': sys.argv[1], 'name': sys.argv[2]}
 	for host in feeds:
 		if entry['name'] == host['name']:
 			host['name'] = entry['name']

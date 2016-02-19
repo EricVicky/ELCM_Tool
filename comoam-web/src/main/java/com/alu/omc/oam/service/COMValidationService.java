@@ -268,7 +268,7 @@ public class COMValidationService {
                 throw new ValidationException("Unable to excute command " + COMMAND.CHECK_BRIDGE, e);
     		} 
 	   }
-	   int brgNum = Integer.parseInt(res); 
+	   int brgNum = Integer.parseInt(res.trim()); 
 	   return brgNum > 0;
 	}
 	
