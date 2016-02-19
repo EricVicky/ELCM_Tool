@@ -15,7 +15,7 @@ def getHostIP():
 
 #replace the deployment_preifix, localhost, 127.0.0.1
 def replaceVars(comConfigStr, deployment_prefix, hostip):
-    p=re.compile("\{\{\s+deployment_prefix\s+\}\}")
+    p=re.compile("\{\{\s*deployment_prefix\s*\}\}")
     comConfigStr = p.sub(deployment_prefix, comConfigStr)
     comConfig = json.loads(comConfigStr)
     if comConfig['active_host_ip'] == '127.0.0.1':

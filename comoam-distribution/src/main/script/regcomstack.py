@@ -67,7 +67,7 @@ def reg(varfilename,host):
                 print 'create new com stack'
                 comStack = COMStack(comConfig['comType'], comConfig['deployment_prefix'])
                 comConfigStr = json.dumps(comConfig)
-                p=re.compile("\{\{\s+deployment_prefix\s+\}\}")
+                p=re.compile("\{\{\s*deployment_prefix\s*\}\}")
                 comConfigStr = p.sub(comConfig['deployment_prefix'], comConfigStr)
                 comStack.setComconfig(comConfigStr)
                 comStack.append()
