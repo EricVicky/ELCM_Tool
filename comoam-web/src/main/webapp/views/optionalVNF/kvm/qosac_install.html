@@ -96,7 +96,7 @@
 											<label class="control-label" id="basic-addon1"
 												translate="BRIDGE">Bridge</label> <input name="oam_bridge"
 												class="form-control" type="text" placeholder="Example:br0"
-												ng-model="installConfig.vm_config.ovm.bridge" validation="required" />
+												ng-model="installConfig.vm_config.ovm.bridge" validation="required|remote:checkBridge" />
 									</div>
 									<fieldset>
 										<legend>IPv4 NETWORK</legend>

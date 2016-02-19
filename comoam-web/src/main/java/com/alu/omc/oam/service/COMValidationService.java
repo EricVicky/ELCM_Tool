@@ -3,13 +3,9 @@ package com.alu.omc.oam.service;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.util.HashMap;
-import java.util.Hashtable;
-import java.util.Map;
 
 import javax.annotation.Resource;
 
-import org.apache.commons.exec.environment.EnvironmentUtils;
 import org.apache.commons.lang3.SystemUtils;
 import org.springframework.stereotype.Service;
 
@@ -28,7 +24,7 @@ public class COMValidationService {
 	
 	private final class COMMAND{
 		private static final String ROOT = "root";
-		private static final String SOURCE = "/opt/PlexView/ELCM/script/";
+		private static final String SCRIPT_ROOT = "/opt/PlexView/ELCM/script/";
 		private static final String DESTINATION =	"/tmp/";
 		private static final String STRICT_HOST_KEY_CK = "StrictHostKeyChecking";
 		private static final String START_FIREWALL = "service iptables start";
@@ -40,6 +36,8 @@ public class COMValidationService {
 		private static final String DATARESTORE_SH = "datarestore_precheck.sh";
 		private static final String REPLICATE_DATA = "grReplicateData.sh";
 		private static final String GETGRROLE = "get_GRRole.sh";
+		private static final String CHECK_BRIDGE = "check_bridge.sh";
+		
 	}
  
 	@Resource
@@ -225,7 +223,7 @@ public class COMValidationService {
 	
 	public String getGRRole(String script,String command){
 		String res = "";
-		cyFiles2Server(COMMAND.SOURCE,COMMAND.DESTINATION,script);
+		cyFiles2Server(COMMAND.SCRIPT_ROOT,COMMAND.DESTINATION,script);
 		Session session = getSession();
 		try {
 			Channel channel = session.openChannel("exec");
@@ -236,11 +234,37 @@ public class COMValidationService {
 		return res;	
 	}
 	
+	public boolean exsitBridge(String hostip, String bridge) throws ValidationException{
+        String res = null;
+	    if(Host.isLocalHost(hostip)){
+	       ICommandExec command = commandProtype.create(COMMAND.SCRIPT_ROOT + COMMAND.CHECK_BRIDGE);
+    	    try{
+    	        CommandResult commandRes = command .execute();
+    	        res = commandRes.getOutputString();
+            }catch(Exception e){
+                throw new ValidationException("Unable to excute command " + COMMAND.CHECK_BRIDGE, e);
+            }
+	   }else{
+	        cyFiles2Server(COMMAND.SCRIPT_ROOT,COMMAND.DESTINATION, COMMAND.CHECK_BRIDGE);
+    		Session session = getSession();
+    		try {
+    			opFirewall(COMMAND.STOP_FIREWALL);
+    			Channel channel = session.openChannel("exec");
+    			String command = COMMAND.DESTINATION + COMMAND.CHECK_BRIDGE;
+    			res = exeCommand(command,session,channel);
+    		} catch (Exception e) {
+                throw new ValidationException("Unable to excute command " + COMMAND.CHECK_BRIDGE, e);
+    		} 
+	   }
+	   int brgNum = Integer.parseInt(res); 
+	   return brgNum > 0;
+	}
+	
     public String preCheck(String script,String command){
     	String res = "";
     	if(Host.isLocalHost(this.ip)){
-    		System.out.println(COMMAND.SOURCE+command.substring(5));
-    		ICommandExec comamnda = commandProtype.create(COMMAND.SOURCE+command.substring(5));
+    		System.out.println(COMMAND.SCRIPT_ROOT+command.substring(5));
+    		ICommandExec comamnda = commandProtype.create(COMMAND.SCRIPT_ROOT+command.substring(5));
     	    try{
     	        CommandResult commandRes = comamnda.execute();
     	        res = commandRes.getOutputString();
@@ -248,7 +272,7 @@ public class COMValidationService {
             	e.printStackTrace();// NOSONAR
             }
     	}else{
-    		cyFiles2Server(COMMAND.SOURCE,COMMAND.DESTINATION,script);
+    		cyFiles2Server(COMMAND.SCRIPT_ROOT,COMMAND.DESTINATION,script);
     		Session session = getSession();
     		try {
     			opFirewall(COMMAND.STOP_FIREWALL);

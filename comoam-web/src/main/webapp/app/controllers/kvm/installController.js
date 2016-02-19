@@ -319,6 +319,12 @@ angular.module('kvm', [ 'ui.router',
     $scope.ping = function(ip){
     	return validationService.ping(ip);
     };
+    $scope.checkBridge= function(bridge){
+    	if(!bridge || bridge.length == 0){
+    		return;
+    	}
+    	return validationService.checkBridge($scope.active_host_ip, bridge);
+    }
 }).controller('VT_ctrl', function($scope,$state, $modalInstance){
 	$scope.ok = function(){
 		$state.go('dashboard.kvminstall', {}, {reload: true});

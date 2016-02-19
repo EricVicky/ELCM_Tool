@@ -30,6 +30,7 @@ import com.alu.omc.oam.kvm.model.StackStatus;
 import com.alu.omc.oam.service.COMStackService;
 import com.alu.omc.oam.service.COMValidationService;
 import com.alu.omc.oam.service.HostService;
+import com.alu.omc.oam.service.ValidationException;
 import com.alu.omc.oam.util.Json2Object;
 
 @RestController 
@@ -330,6 +331,28 @@ public class CheckController
     			res.addWarningMes(checkRes);
     		}
     	}
+    	return res;
+    }
+    
+    
+    @RequestMapping(value="/check/bridge", method=RequestMethod.GET)
+    public ValidationResult checkBridge(@ModelAttribute("hostip") String hostip,  @ModelAttribute("bridge") String  bridge){
+    	ValidationResult res = new ValidationResult();
+    	try
+        {
+            boolean exsit = cOMValidationService.exsitBridge(hostip, bridge);
+            if(exsit){
+                res.setSucceed(true);
+            }else{
+                res.setSucceed(false);
+                res.setMessage("the bridge doesn't exsit");
+            }
+        }
+        catch (ValidationException e)
+        {
+            res.setSucceed(false);
+            res.setMessage("failed to execute the exception");
+        }
     	return res;
     }
 

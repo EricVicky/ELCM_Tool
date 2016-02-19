@@ -11,6 +11,13 @@ angular.module('validation',[]).factory('validationService', function($location,
 		    });
 		    return deferred.promise;
 		},
+		checkBridge: function (ip, bridge) {
+			var deferred = $q.defer();
+		    $http.get(restUrl + "check/bridge", {"params": {"hostip": ip, "bridge": bridge}}).success(function(res) {
+		        deferred.resolve({ isValid: res.succeed, message: res.message });
+		    });
+		    return deferred.promise;
+		},
 		checkVT: function (hostip) {
 			var deferred = $q.defer();
 		    $http.get(restUrl + "check/cpuVTCheck", {"params": {"hostip": hostip}}).success(function(res) {
