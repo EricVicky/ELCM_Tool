@@ -100,26 +100,6 @@ angular.module('kvm', [ 'ui.router',
             $scope.ntoptions  = [ {"label":"Simple", "mode": 1}, 
     	                             {"label":"Traffic Separation", "mode": 2 },
     	                             { "label":"Traffic Separation & Redundency", "mode": 3}];
-            $scope.oamCard = 1;$scope.dbCard = 1;$scope.cmCard = 1;
-            $scope.addOamCard = function(){
-            	$scope.oamCard++;
-            	$scope.nics.push($scope.oamCard);
-            };
-            $scope.deleteOamCard = function(){
-            	$scope.oamCard--;
-            };
-            $scope.addDbCard = function(){
-            	$scope.dbCard++;
-            };
-            $scope.deleteDbCard = function(){
-            	$scope.dbCard--;
-            };
-            $scope.addCmCard = function(){
-            	$scope.cmCard++;
-            };
-            $scope.deleteCmCard = function(){
-            	$scope.cmCard--;
-            };
             $scope.networktraffic = 1;
             $scope.avaliable_flavors = ["Enterprise", "Low End", "Medium", "High End"];
             $scope.flavor = $scope.avaliable_flavors[2];
