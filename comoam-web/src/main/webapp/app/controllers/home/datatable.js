@@ -98,6 +98,41 @@ angular.module('datatable',['ui.grid', 'ui.grid.resizeColumns']).controller('dat
 		      	
       	  });
 	};
+	
+	$scope.addipv6 = function(row){
+		var modalInstance = $modal.open({
+			animation: true,
+			backdrop:'static',
+			templateUrl: 'views/common/addipv6.html',
+			controller: function($scope, $modalInstance,stackname ){
+				    $scope.ipv6 = {
+				    	stackname : stackname
+				    };
+					$scope.ok = function(){
+						$modalInstance.close($scope.ipv6);
+					};
+					$scope.cancel = function () {
+						$modalInstance.dismiss('cancel');
+					};
+			},
+			resolve: {
+				stackname: function() {
+					return row.entity.comConfig.deployment_prefix;
+				}
+			},   
+		});	
+		modalInstance.result.then(function (ipv6) {
+		    $scope.ipv6_config = ipv6;
+		    KVMService.addipv6($scope.ipv6_config.stackname,$scope.ipv6_config.ipaddress,
+		    		           $scope.ipv6_config.gateway,$scope.ipv6_config.prefix).then( function(data) {
+		    		       		
+		    		    		
+		    		        });
+		    
+		}, function () {
+		});	
+		
+	};
 
 
 	

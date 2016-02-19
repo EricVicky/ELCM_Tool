@@ -36,8 +36,12 @@ public class COMValidationService {
 		private static final String DATARESTORE_SH = "datarestore_precheck.sh";
 		private static final String REPLICATE_DATA = "grReplicateData.sh";
 		private static final String GETGRROLE = "get_GRRole.sh";
+<<<<<<< HEAD
 		private static final String CHECK_BRIDGE = "check_bridge.sh";
 		
+=======
+		private static final String FDADDIPV6 = "/install/scripts/decomposed/common/fd_add_ipv6.sh";
+>>>>>>> ed02ca8fbc8b44c1e502cf7b2c0dd6f44322a557
 	}
  
 	@Resource
@@ -221,6 +225,18 @@ public class COMValidationService {
     	return string;
 	}
 	
+	public String ipv6Config(String command){
+		String res = "";
+		Session session = getSession();
+		try {
+			Channel channel = session.openChannel("exec");
+			res = exeCommand(command,session,channel);
+		} catch (Exception e) {// NOSONAR
+			e.printStackTrace();// NOSONAR
+		}	
+		return res;
+	}
+	
 	public String getGRRole(String script,String command){
 		String res = "";
 		cyFiles2Server(COMMAND.SCRIPT_ROOT,COMMAND.DESTINATION,script);
@@ -335,6 +351,11 @@ public class COMValidationService {
     public String updateGRRole(){
     	String command = COMMAND.DESTINATION+COMMAND.GETGRROLE;
     	return getGRRole(COMMAND.GETGRROLE,command);
+    }
+    
+    public String addIpv6(){
+    	String command = COMMAND.FDADDIPV6;
+    	return ipv6Config(command);
     }
 
 }

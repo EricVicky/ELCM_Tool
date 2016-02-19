@@ -1,19 +1,18 @@
 angular.module('chhostname',[]).controller('chhostnamectr', function($scope,KVMService,OSService,monitorService,DashboardService,$state){
 	
-    KVMService.getComInstance().then( function(data) {
+	KVMService.getComInstance().then( function(data) {
 		$scope.Instance = data;
 		$scope.comInstance = [];
+		var selectedInstance = DashboardService.getSelectedInstance();
 		for(var ci=0;ci<$scope.Instance.length;ci++){
 			$scope.Instance[ci].comConfig = JSON3.parse($scope.Instance[ci].comConfig);
-			if(DashboardService.getSelectedInstance().deployment_prefix == $scope.Instance[ci].comConfig.deployment_prefix){
+			if(selectedInstance.deployment_prefix == $scope.Instance[ci].comConfig.deployment_prefix){
 				$scope.comInstance.push($scope.Instance[ci]);
 			}
 		}
 		$scope.com_instance = $scope.comInstance[0];
     });
-    
-    
-    
+
     $scope.initconfig = function(){
     	$scope.installConfig = $scope.com_instance.comConfig;
     	if($scope.installConfig.comType == 'FCAPS'||$scope.installConfig.comType == 'CM'){
@@ -49,20 +48,7 @@ angular.module('chhostname',[]).controller('chhostnamectr', function($scope,KVMS
     				$state.go("dashboard.monitor");
     			});
     		}
-    	}else{
-    		if($scope.installConfig.comType == 'QOSAC'){
-    			OSService.chOSQosacHostname($scope.installConfig).then( function(){
-    				monitorService.monitor("Openstack", "CHHOSTNAME", $scope.installConfig.comType, $scope.installConfig.stackName);
-    				$state.go("dashboard.monitor");
-    			});
-    		}else{
-    			OSService.chOSHostname($scope.installConfig).then( function(){
-    				monitorService.monitor("Openstack", "CHHOSTNAME", $scope.installConfig.comType, $scope.installConfig.stackName);
-    				$state.go("dashboard.monitor");
-    			});	
-    		}
     	}
-
     };
 	
 
