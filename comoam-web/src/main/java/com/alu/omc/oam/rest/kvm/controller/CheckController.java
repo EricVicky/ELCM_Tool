@@ -345,7 +345,7 @@ public class CheckController
                 res.setSucceed(true);
             }else{
                 res.setSucceed(false);
-                res.setMessage("the bridge doesn't exsit");
+                res.setMessage("The bridge not exsit!");
             }
         }
         catch (ValidationException e)

@@ -260,7 +260,6 @@ public class COMValidationService {
 	        cyFiles2Server(COMMAND.SCRIPT_ROOT,COMMAND.DESTINATION, COMMAND.CHECK_BRIDGE);
     		Session session = getSession();
     		try {
-    			opFirewall(COMMAND.STOP_FIREWALL);
     			Channel channel = session.openChannel("exec");
     			String command = COMMAND.DESTINATION + COMMAND.CHECK_BRIDGE + " " + bridge;
     			res = exeCommand(command,session,channel);
