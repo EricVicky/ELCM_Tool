@@ -36,12 +36,8 @@ public class COMValidationService {
 		private static final String DATARESTORE_SH = "datarestore_precheck.sh";
 		private static final String REPLICATE_DATA = "grReplicateData.sh";
 		private static final String GETGRROLE = "get_GRRole.sh";
-<<<<<<< HEAD
 		private static final String CHECK_BRIDGE = "check_bridge.sh";
-		
-=======
 		private static final String FDADDIPV6 = "/install/scripts/decomposed/common/fd_add_ipv6.sh";
->>>>>>> ed02ca8fbc8b44c1e502cf7b2c0dd6f44322a557
 	}
  
 	@Resource
