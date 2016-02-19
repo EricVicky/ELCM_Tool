@@ -303,5 +303,11 @@ angular.module('kvm').controller('ovmctr', function($scope,  $log, KVMService, m
     };
     $scope.ping = function(ip){
     	return validationService.ping(ip);
+    };
+    $scope.checkBridge= function(bridge){
+    	if(!bridge || bridge.length == 0){
+    		return;
+    	}
+    	return validationService.checkBridge($scope.installConfig.active_host_ip, bridge);
     }
 });

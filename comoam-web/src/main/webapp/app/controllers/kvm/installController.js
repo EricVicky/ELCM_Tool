@@ -151,6 +151,9 @@ angular.module('kvm', [ 'ui.router',
          		         },
             			 vm: function() {
             				 return vm;
+            			 },
+            			 hostip: function() {
+            				 $scope.installConfig.active_host_ip;
             			 }
          		      },
             	});
@@ -290,7 +293,7 @@ angular.module('kvm', [ 'ui.router',
 		$modalInstance.dismiss('cancel');
     };
 })
-.controller('nicctr', function($scope, $modalInstance,config,vm, validationService){
+.controller('nicctr', function($scope, $modalInstance,config,vm, hostip, validationService){
     $scope.ok = function(){
     	$scope.alert=true;
     	if($scope.nic.ip_v4!=null){
@@ -323,7 +326,7 @@ angular.module('kvm', [ 'ui.router',
     	if(!bridge || bridge.length == 0){
     		return;
     	}
-    	return validationService.checkBridge($scope.active_host_ip, bridge);
+    	return validationService.checkBridge(hostip, bridge);
     }
 }).controller('VT_ctrl', function($scope,$state, $modalInstance){
 	$scope.ok = function(){
