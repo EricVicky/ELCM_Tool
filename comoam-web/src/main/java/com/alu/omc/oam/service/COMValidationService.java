@@ -249,7 +249,7 @@ public class COMValidationService {
 	public boolean exsitBridge(String hostip, String bridge) throws ValidationException{
         String res = null;
 	    if(Host.isLocalHost(hostip)){
-	       ICommandExec command = commandProtype.create(COMMAND.SCRIPT_ROOT + COMMAND.CHECK_BRIDGE);
+	       ICommandExec command = commandProtype.create(COMMAND.SCRIPT_ROOT + COMMAND.CHECK_BRIDGE + " " + bridge);
     	    try{
     	        CommandResult commandRes = command .execute();
     	        res = commandRes.getOutputString();
@@ -262,7 +262,7 @@ public class COMValidationService {
     		try {
     			opFirewall(COMMAND.STOP_FIREWALL);
     			Channel channel = session.openChannel("exec");
-    			String command = COMMAND.DESTINATION + COMMAND.CHECK_BRIDGE;
+    			String command = COMMAND.DESTINATION + COMMAND.CHECK_BRIDGE + " " + bridge;
     			res = exeCommand(command,session,channel);
     		} catch (Exception e) {
                 throw new ValidationException("Unable to excute command " + COMMAND.CHECK_BRIDGE, e);

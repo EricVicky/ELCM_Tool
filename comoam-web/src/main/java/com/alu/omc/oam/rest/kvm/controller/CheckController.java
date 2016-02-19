@@ -351,7 +351,7 @@ public class CheckController
         catch (ValidationException e)
         {
             res.setSucceed(false);
-            res.setMessage("failed to execute the exception");
+            res.setMessage("failed to execute the the check_bridge script");
         }
     	return res;
     }

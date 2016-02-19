@@ -153,7 +153,7 @@ angular.module('kvm', [ 'ui.router',
             				 return vm;
             			 },
             			 hostip: function() {
-            				 $scope.installConfig.active_host_ip;
+            				 return $scope.installConfig.active_host_ip;
             			 }
          		      },
             	});
@@ -308,6 +308,7 @@ angular.module('kvm', [ 'ui.router',
 	$scope.nic = config;
 	$scope.oneAtATime = true;
 	$scope.vm = vm;
+	$scope.hostip = hostip;
 	if($scope.nic){
 		if($scope.nic.ip_v6){
 			$scope.open = !status.open;
@@ -326,7 +327,7 @@ angular.module('kvm', [ 'ui.router',
     	if(!bridge || bridge.length == 0){
     		return;
     	}
-    	return validationService.checkBridge(hostip, bridge);
+    	return validationService.checkBridge($scope.hostip, bridge);
     }
 }).controller('VT_ctrl', function($scope,$state, $modalInstance){
 	$scope.ok = function(){
