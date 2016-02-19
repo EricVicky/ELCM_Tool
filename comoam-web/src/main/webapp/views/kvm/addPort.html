@@ -1,0 +1,139 @@
+<div class="container-fluid" ng-controller="addPortctr">
+	<div class="row">
+		<div class="col-md-10">
+			<div rc-wizard="addPortWizard" class="modal-body">
+				<section id="wizard">
+					<div id="rootwizard">
+						<ul class="nav rc-nav-wizard" style="margin-left: 200px">
+							<li class="active"><a class="active" href="#tab1"
+								data-toggle="tab"> <span class="badge">1</span>&nbsp;COM Info&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+							</a></li>
+							<li><a href="#tab2" data-toggle="tab"> <span
+									class="badge">2</span>&nbsp;Port Config&nbsp;&nbsp;
+							</a></li>
+						</ul>
+						<div class="modal-body col-md-12">
+							<div class="tab-content">
+								<form class="tab-pane active ng-pristine ng-valid" id="tab1" name="tab1" rc-submit="initVmInstance()" rc-step>
+									<div class="panel panel-default">
+										<div class="panel-heading">
+											<label class="control-label" translate="COM_INSTANCE">COM Instance</label> <select
+												ng-change="" name="com_instance"
+												ng-model="com_instance" class="form-control"
+												ng-options="inst.name for inst in comInstance"
+												title="COM Instance" validation="required">
+											</select>
+										</div>
+									</div>
+									<div class="panel-body">
+										<div class="dataTable_wrapper">
+											<table class="table table-striped table-bordered table-hover"
+												id="dataTables-example">
+												<tbody>
+													<tr align="center">
+														<td colspan="4" translate="COM_TYPE">COM Type</td>
+														<td colspan="2">{{SelectedCOM.comType}}</td>
+													</tr>
+													<tr align="center">
+														<td colspan="4" translate="HOST_IP">Host IP</td>
+														<td colspan="2">{{SelectedCOM.active_host_ip}}</td>
+													</tr>
+													<tr align="center">
+														<td colspan="4" translate="PREFIX_OF_VM_INS">Prefix
+															of VM Instance</td>
+														<td colspan="2">{{SelectedCOM.deployment_prefix}}</td>
+													</tr>
+													<tr align="center" ng-repeat-start="VM in SelectedCOM.vm_config">
+														<td rowspan="{{VM.nic.length*2+3}}" width="15%"
+															align="center" style="vertical-align: middle">{{VM.hostname}}</td>
+													</tr>
+													<tr align="center" ng-repeat-start="NIC in VM.nic">
+														<td rowspan="2" width="15%" align="center"
+															style="vertical-align: middle">{{NIC.name}}</td>
+														<td rowspan="2" width="15%" align="center"
+															style="vertical-align: middle" translate="BRIDGE">Bridge</td>
+														<td rowspan="2" align="center"
+															style="vertical-align: middle">{{NIC.bridge}}</td>
+														<td width="10%" translate="IPV4">IPv4</td>
+														<td>ip:{{NIC.ip_v4.ipaddress}}/{{NIC.ip_v4.prefix}}
+															gateway:{{NIC.ip_v4.gateway}}</td>
+													</tr>
+													<tr align="center" ng-repeat-end>
+														<td width="10%" translate="IPV6">IPv6</td>
+														<td>ip:{{NIC.ip_v6.ipaddress}}/{{NIC.ip_v6.prefix}}
+															gateway:{{NIC.ip_v6.gateway}}</td>
+													</tr>
+													<tr align="center">
+														<td translate="FLAVOR" colspan="3">Flavor</td>
+														<td colspan="2">vCPU:{{VM.flavor.vCpu}}&nbsp;&nbsp;Memory:{{VM.flavor.memory/1024/1024}}GB&nbsp;&nbsp;Disk:{{VM.flavor.disk}}GB</td>
+													</tr>
+													<tr align="center" ng-repeat-end>
+														<td colspan="3">Image</td>
+														<td colspan="2">{{VM.imgname}}</td>
+													</tr>
+												</tbody>
+											</table>
+										</div>
+									</div>
+								</form>
+								<form class="tab-pane ng-pristine ng-valid" id="tab2" name="tab2" rc-submit="" rc-step>
+									<div class="panel panel-default">
+										<div class="panel-heading">
+											<label class="control-label">Select VM Instance</label> <select
+												ng-change="changeVMInstance()" name="com_instance" ng-model="vm_instance" class="form-control"
+												ng-options="inst for inst in VMInstance" title="COM Instance" validation="required">
+												<option value="" default translate="PLEASE_SELECT">--Please Select--</option>
+											</select>
+										</div>
+									</div>
+									<div class="panel-body" ng-if="vm_instance == 'OAM'||vm_instance == 'DB'||vm_instance == 'CM'">
+										<div class="dataTable_wrapper">
+											<table class="table table-striped table-bordered table-hover" id="dataTables-example">
+												<tbody>
+													<tr align="center">
+														<td rowspan="7" width="15%" align="center" style="vertical-align: middle">{{VM.hostname}}</td>
+													</tr>
+													<tr align="center" ng-repeat-start="nic in VM.nic">
+														<td rowspan="2" width="15%" align="center" style="vertical-align: middle">{{nic.name}}</td>
+														<td rowspan="2" width="15%" align="center" style="vertical-align: middle" translate="BRIDGE">Bridge</td>
+														<td rowspan="2" align="center" style="vertical-align: middle">{{nic.bridge}}</td>
+														<td width="10%" translate="IPV4">IPv4</td>
+														<td>ip:{{nic.ip_v4.ipaddress}}/{{nic.ip_v4.prefix}} gateway:{{nic.ip_v4.gateway}}</td>
+													</tr>
+													<tr align="center" ng-repeat-end>
+														<td width="10%" translate="IPV6">IPv6</td>
+														<td>ip:{{nic.ip_v6.ipaddress}}/{{nic.ip_v6.prefix}} gateway:{{nic.ip_v6.gateway}}</td>
+													</tr>
+												</tbody>
+											</table>
+										</div>
+									</div>
+
+
+
+								</form>
+							</div>
+						</div>
+						<div class="modal-footer">
+							<div class="form-group">
+								<div class="pull-right">
+									<a class="btn btn-default"
+										ng-click="rc.addPortWizard.backward()"
+										ng-show="rc.addPortWizard.currentIndex > rc.addPortWizard.firstIndex"
+										translate="">Back</a> <a class="btn btn-primary"
+										ng-click="rc.addPortWizard.forward()"
+										ng-show="rc.addPortWizard.currentIndex < rc.addPortWizard.navigationLength"
+										translate="">Continue</a> <a class="btn btn-primary"
+										ng-click="changehostname()"
+										ng-show="rc.addPortWizard.currentIndex == rc.addPortWizard.navigationLength"
+										translate="">Change</a>
+								</div>
+							</div>
+						</div>
+					</div>
+				</section>
+			</div>
+		</div>
+	</div>
+</div>
+

@@ -20,7 +20,8 @@ angular.module('comoamApp', [
     'gr',
     'datatable',
     'chhostname',
-    'operationlog'
+    'operationlog',
+    'addport'
   ]).controller('AppController', function($rootScope, $scope, $translate, $cookieStore, $window, $state, $location, $log, $modal, Auth) {
     $rootScope._user = {
         username: $cookieStore.get("username") || "",

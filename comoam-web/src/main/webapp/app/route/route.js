@@ -189,4 +189,12 @@ angular.module('comoamApp')
     	templateUrl:'views/operationlog/operationlog.html',
     	url:'/operationlog',
     })
+    .state('dashboard.addPort', {
+    	templateUrl:'views/kvm/addPort.html',
+    	url:'/addPort',
+    })
+    .state('dashboard.addIPV6', {
+    	templateUrl:'views/kvm/addIPV6.html',
+    	url:'/addIPV6',
+    })
   }])

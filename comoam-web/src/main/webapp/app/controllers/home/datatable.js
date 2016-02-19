@@ -99,38 +99,42 @@ angular.module('datatable',['ui.grid', 'ui.grid.resizeColumns']).controller('dat
       	  });
 	};
 	
-	$scope.addip = function(row){
-		var modalInstance = $modal.open({
-			animation: true,
-			backdrop:'static',
-			templateUrl: 'views/common/addip.html',
-			controller: function($scope, $modalInstance ){
-				    $scope.ipTypes  = [ {"label":"--IPv4--", "mode": 1}, 
-		    	                        {"label":"--IPv6--", "mode": 2 }];
-					$scope.ok = function(){
-						$modalInstance.close($scope.ipType);
-					};
-					$scope.cancel = function () {
-						$modalInstance.dismiss('cancel');
-					};
-			},
-			resolve: {
-				
-			},   
-		});	
-		modalInstance.result.then(function (ipType) {
-			$scope.iplabel = ipType.label;
-			if($scope.iplabel == "--IPv4--"){
-				alert("444");
-				$state.go('dashboard.'.concat(selectedItems.EnvItem.url).concat(selectedItems.VNFItem.upgradeUrl), {}, {reload: true});
-			}else{
-				alert("666");
-				$state.go('dashboard.'.concat(selectedItems.EnvItem.url).concat(selectedItems.VNFItem.upgradeUrl), {}, {reload: true});
-			}   
-		}, function () {
-		});	
-		
-	};
+	$scope.addport = function(row){
+		DashboardService.setSelectedInstance(row.entity.comConfig);
+		$state.go('dashboard.addPort');
+	}
+	
+//	$scope.addip = function(row){
+//		DashboardService.setSelectedInstance(row.entity.comConfig);
+//		var modalInstance = $modal.open({
+//			animation: true,
+//			backdrop:'static',
+//			templateUrl: 'views/common/addip.html',
+//			controller: function($scope, $modalInstance ){
+//				    $scope.ipTypes  = [ {"label":"--IPv4--", "mode": 1}, 
+//		    	                        {"label":"--IPv6--", "mode": 2 }];
+//					$scope.ok = function(){
+//						$modalInstance.close($scope.ipType);
+//					};
+//					$scope.cancel = function () {
+//						$modalInstance.dismiss('cancel');
+//					};
+//			},
+//			resolve: {
+//				
+//			},   
+//		});	
+//		modalInstance.result.then(function (ipType) {
+//			$scope.iplabel = ipType.label;
+//			if($scope.iplabel == "--IPv4--"){
+//				$state.go('dashboard.addV4Port');
+//			}else{
+//				$state.go('dashboard.addV6Port');
+//			}   
+//		}, function () {
+//		});	
+//		
+//	};
 
 
 	
