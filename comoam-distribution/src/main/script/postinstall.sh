@@ -3,6 +3,7 @@ ELCM_ROOT=/opt/PlexView/ELCM
 echo "extract playbook"
 if [ -f /opt/PlexView/ELCM/playbook.tar ]; then
     tar -xf  /opt/PlexView/ELCM/playbook.tar -C /opt/PlexView/ELCM/
+    chown -R root:root  /opt/PlexView/ELCM/ELCM-playbook
 fi
 chmod 600 /opt/PlexView/ELCM/ELCM-playbook/group_vars
 
