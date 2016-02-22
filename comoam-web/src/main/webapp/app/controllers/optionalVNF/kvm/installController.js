@@ -101,6 +101,13 @@ angular.module('kvm').controller('ovmctr', function($scope,  $log, KVMService, m
     	$scope.export = !$scope.export;
     };
     
+    $scope.checkBridge= function(bridge){
+    	if(!bridge || bridge.length == 0){
+    		return;
+    	}
+    	return validationService.checkBridge($scope.installConfig.active_host_ip, bridge);
+    }
+    
 }).controller('ovmarsctr', function($scope,  $log, KVMService, monitorService, timezoneService, $state, validationService){
 	
 	$scope.installConfig = {
@@ -162,6 +169,13 @@ angular.module('kvm').controller('ovmctr', function($scope,  $log, KVMService, m
 
 		});
     };
+    
+    $scope.checkBridge= function(bridge){
+    	if(!bridge || bridge.length == 0){
+    		return;
+    	}
+    	return validationService.checkBridge($scope.installConfig.active_host_ip, bridge);
+    }
 }).controller('ovmqosacctr', function($scope,  $log, KVMService, monitorService, timezoneService, $state, validationService){
      
     $scope.installConfig ={
