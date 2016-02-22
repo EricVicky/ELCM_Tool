@@ -56,6 +56,22 @@ angular.module('addport',[]).controller('addPortctr', function($scope,KVMService
 		$scope.cleanDirty();
 		var aa = $scope.Config;
 		var ff =1;
+		
+		KVMService.comstackStatus($scope.Config.KVMCOMConfig.deployment_prefix).then(function(status){
+    		var ACTION_IN_PROGRESS = 2;
+    		if(status.state == ACTION_IN_PROGRESS){
+    			window.confirm(status.lastAction.toLowerCase()+" has been proceed on selected VNF instance, please wait!");
+    		}else{
+                $scope.doDeploy();
+    		}
+    	});
+	};
+	
+	$scope.doDeploy = function(){
+		KVMService.addPort($scope.Config).then( function(){
+    		monitorService.monitor("KVM", "ADDPORT", $scope.Config.KVMCOMConfig.comType,  $scope.Config.KVMCOMConfig.deployment_prefix);
+ 			$state.go("dashboard.monitor");
+		});
 	};
 	
 	$scope.cleanDirty = function(){

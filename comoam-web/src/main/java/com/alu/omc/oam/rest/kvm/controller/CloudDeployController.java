@@ -1,3 +1,4 @@
+
 package com.alu.omc.oam.rest.kvm.controller;
 
 import java.io.IOException;
@@ -18,6 +19,7 @@ import com.alu.omc.oam.ansible.AnsibleDelegator;
 import com.alu.omc.oam.ansible.Ansibleworkspace;
 import com.alu.omc.oam.ansible.persistence.JsonDataSource;
 import com.alu.omc.oam.ansible.validation.ValidationResult;
+import com.alu.omc.oam.config.ADDPORTConfig;
 import com.alu.omc.oam.config.Action;
 import com.alu.omc.oam.config.AnsibleLog;
 import com.alu.omc.oam.config.ArsCOMConfig;
@@ -73,51 +75,57 @@ public class CloudDeployController
     @Resource
     private JsonDataSource dataSource;
     
-    @RequestMapping(value="/kvm/addipv6", method=RequestMethod.GET)
-    public ValidationResult  repliacateData(@ModelAttribute("stackName") String stackName,@ModelAttribute("ipaddress") String ipaddress,
-    		                                @ModelAttribute("gateway") String gateway,@ModelAttribute("prefix") String prefix) 
-    {
-    	ValidationResult res = new ValidationResult();
-//    	KVMCOMConfig config = getKVMCOMConfig(stackName);
-//    	Map<String, VMConfig> vmconfigs = config.getVm_config();
-//    	Iterator<String> iterator = vmconfigs.keySet().iterator();
-//    	while(iterator.hasNext()){
-//    		String vnfc = iterator.next();
-//    		VMConfig vmConfig = vmconfigs.get(vnfc);
-//			String vmIP = vmConfig.getNic().get(0).getIp_v4().getIpaddress();
-//			cOMValidationService.setIp(vmIP);
-//			String checkRes= cOMValidationService.addIpv6();
-//			res.addWarningMes(checkRes);
+//    @RequestMapping(value="/kvm/addipv6", method=RequestMethod.GET)
+//    public ValidationResult  repliacateData(@ModelAttribute("stackName") String stackName,@ModelAttribute("ipaddress") String ipaddress,
+//    		                                @ModelAttribute("gateway") String gateway,@ModelAttribute("prefix") String prefix) 
+//    {
+//    	ValidationResult res = new ValidationResult();
+////    	KVMCOMConfig config = getKVMCOMConfig(stackName);
+////    	Map<String, VMConfig> vmconfigs = config.getVm_config();
+////    	Iterator<String> iterator = vmconfigs.keySet().iterator();
+////    	while(iterator.hasNext()){
+////    		String vnfc = iterator.next();
+////    		VMConfig vmConfig = vmconfigs.get(vnfc);
+////			String vmIP = vmConfig.getNic().get(0).getIp_v4().getIpaddress();
+////			cOMValidationService.setIp(vmIP);
+////			String checkRes= cOMValidationService.addIpv6();
+////			res.addWarningMes(checkRes);
+////    	}
+//    	if(true){
+//			try {
+//				List<COMStack> stacks = dataSource.list();
+//				for(COMStack stack : stacks){
+//	    			if(stack.getName().equals(stackName)){
+//	    				@SuppressWarnings("unchecked") 
+//	    		        KVMCOMConfig comConfig = new Json2Object<KVMCOMConfig>(){}.toMap(stack.getComConfig());
+//	    		        Map<String, VMConfig> configs = comConfig.getVm_config();
+//	    		        Iterator<String> it = configs.keySet().iterator();
+//	    		        while(it.hasNext()){
+//	    		        	String vnfc = it.next();
+//	    		    		VMConfig vmConfig = configs.get(vnfc);
+//	    		    		NIC nic = vmConfig.getNic().get(0);
+//	    		    		IFCfg cfg = new IFCfg();
+//	    		    		cfg.setIpaddress(ipaddress);
+//	    		    		cfg.setGateway(gateway);
+//	    		    		cfg.setPrefix(prefix);
+//	    		        	nic.setIp_v6(cfg);
+//	    		        }
+//	    		        cOMStackService.update(stack);
+//	    		        break;
+//	    			}
+//	    		}
+//			} catch (Exception e) {
+//				e.printStackTrace();
+//			}
 //    	}
-    	if(true){
-			try {
-				List<COMStack> stacks = dataSource.list();
-				for(COMStack stack : stacks){
-	    			if(stack.getName().equals(stackName)){
-	    				@SuppressWarnings("unchecked") 
-	    		        KVMCOMConfig comConfig = new Json2Object<KVMCOMConfig>(){}.toMap(stack.getComConfig());
-	    		        Map<String, VMConfig> configs = comConfig.getVm_config();
-	    		        Iterator<String> it = configs.keySet().iterator();
-	    		        while(it.hasNext()){
-	    		        	String vnfc = it.next();
-	    		    		VMConfig vmConfig = configs.get(vnfc);
-	    		    		NIC nic = vmConfig.getNic().get(0);
-	    		    		IFCfg cfg = new IFCfg();
-	    		    		cfg.setIpaddress(ipaddress);
-	    		    		cfg.setGateway(gateway);
-	    		    		cfg.setPrefix(prefix);
-	    		        	nic.setIp_v6(cfg);
-	    		        }
-	    		        cOMStackService.update(stack);
-	    		        break;
-	    			}
-	    		}
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-    	}
-
-    	return res;    			
+//
+//    	return res;    			
+//    }
+    
+    @RequestMapping(value="/kvm/addPort", method=RequestMethod.POST)
+    public void deploy( @RequestBody ADDPORTConfig config) throws IOException, InterruptedException
+    {
+        ansibleDelegator.addAnsibleTask(Action.ADDPORT, config );
     }
     
     @RequestMapping(value="/os/deployment", method=RequestMethod.POST)
