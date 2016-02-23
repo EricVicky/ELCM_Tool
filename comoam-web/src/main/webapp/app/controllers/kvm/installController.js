@@ -96,11 +96,48 @@ angular.module('kvm', [ 'ui.router',
             		"db" : { "nic": []}
             };
             
-            $scope.nics = [ "eth0", "eth1", "eth2"];
-            $scope.ntoptions  = [ {"label":"Simple", "mode": 1}, 
-    	                             {"label":"Traffic Separation", "mode": 2 },
-    	                             { "label":"Traffic Separation & Redundency", "mode": 3}];
-            $scope.networktraffic = 1;
+//          $scope.nics = [ "eth0" ];
+//            $scope.ntoptions  = [ {"label":"Simple", "mode": 1}, 
+//    	                             {"label":"Traffic Separation", "mode": 2 },
+//    	                             { "label":"Traffic Separation & Redundency", "mode": 3}];
+//          $scope.networktraffic = 1;
+            
+            $scope.oamnics = ["eth0"];
+            $scope.dbnics = ["eth0"];
+            $scope.cmnics = ["eth0"];
+            
+            
+            $scope.addOAMPort = function(){
+            	$scope.oamnics.push("eth".concat($scope.oamnics.length));	
+        	};
+
+            $scope.deleteOAMPort = function(){
+            	$scope.oamnics.pop("eth".concat($scope.oamnics.length));
+        	};
+        	
+        	$scope.addDBPort = function(){
+            	$scope.dbnics.push("eth".concat($scope.dbnics.length));	
+        	};
+
+            $scope.deleteDBPort = function(){
+            	$scope.dbnics.pop("eth".concat($scope.dbnics.length));
+        	};
+        	
+        	$scope.addCMPort = function(){
+            	$scope.cmnics.push("eth".concat($scope.cmnics.length));	
+        	};
+
+            $scope.deleteCMPort = function(){
+            	$scope.cmnics.pop("eth".concat($scope.cmnics.length));
+        	};
+            
+            
+            
+            
+            
+            
+            
+            
             $scope.avaliable_flavors = ["Enterprise", "Low End", "Medium", "High End"];
             $scope.flavor = $scope.avaliable_flavors[2];
             $scope.HostNameChanged = false;

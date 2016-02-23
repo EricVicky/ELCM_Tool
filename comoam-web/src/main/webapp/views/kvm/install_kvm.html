@@ -93,7 +93,7 @@
 								</form>
 								<form class="tab-pane" id="tab3" name="tab3" rc-submit="Backup_Server_Addr()" rc-step>
 								    <div class="row">
-									<div class="form-group col-md-4">
+								<!-- 	<div class="form-group col-md-4">
 											<label class="control-label" translate="NETWORK_TRAFFIC">Network Traffic</label> <select
 												name="networktraffic" 
 												ng-model="networktraffic"
@@ -101,7 +101,7 @@
 												ng-options="nt.mode as nt.label for nt in ntoptions"
 												title="network options" validation="required" >
 											</select>
-									</div>
+									</div>  -->
 									<div class="form-group col-md-4">
 											<label class="control-label" translate="FLAVOR">Flavor</label> <select
 												name="flavor" 
@@ -115,8 +115,7 @@
 									<fieldset ng-init="installConfig.vm_config.oam.nic = []"
 										ng-if="installConfig.comType=='FCAPS' || installConfig.comType=='OAM' || installConfig.comType=='CM' || installConfig.comType=='QoSAC'">
 										<legend translate="OAM_VM">OAM VM</legend>
-										<div class="row" name="{{nic}}"
-											ng-if="networktraffic > $index " ng-repeat="nic in nics">
+										<div class="row" name="{{nic}}" ng-repeat="nic in oamnics">
 											<div class="form-group col-md-1">
 												<strong class="control-label"> {{nic}}</strong>
 												<input class="form-control"  type="hidden" ng-model="installConfig.vm_config.oam.nic[$index].name"
@@ -143,12 +142,17 @@
 											<span class="validation text-danger" ng-show="tab3.oam_ipv4_ipaddress{{$index}}.$error.validation"><label translate="PLEASE_CONFIG_OAM_VM">Please Config OAM VM!</label></span>
 										</div>
 										</div>
+										<div class="col-md-1 pull-right">
+											<button type="button" class="btn btn-danger" ng-click="deleteOAMPort()"><i class="glyphicon glyphicon-minus"></i></button>
+										</div>
+										<div class="col-md-1 pull-right">
+											<button type="button" class="btn btn-success" ng-click="addOAMPort()"><i class="glyphicon glyphicon-plus"></i></button>
+										</div>	
 									</fieldset>
 									<fieldset ng-init="installConfig.vm_config.cm.nic = []"
 										ng-if="installConfig.comType=='FCAPS' || installConfig.comType=='CM'">
 										<legend translate="CM_VM">CM VM</legend>
-										<div class="row" name="{{nic}}"
-											ng-if="networktraffic > $index " ng-repeat="nic in nics">
+										<div class="row" name="{{nic}}" ng-repeat="nic in cmnics">
 											<div class="form-group col-md-1">
 												<strong class="control-label"> {{nic}}</strong>
 												<input class="form-control" type="hidden" ng-model="installConfig.vm_config.cm.nic[$index].name"
@@ -175,12 +179,17 @@
 											<span class="validation text-danger" ng-show="tab3.cm_ipv4_ipaddress{{$index}}.$error.validation"><label translate="PLEASE_CONFIG_CM_VM">Please Config CM VM!</label></span>
 										</div>
 										</div>
+										<div class="col-md-1 pull-right">
+											<button type="button" class="btn btn-danger" ng-click="deleteCMPort()"><i class="glyphicon glyphicon-minus"></i></button>
+										</div>
+										<div class="col-md-1 pull-right">
+											<button type="button" class="btn btn-success" ng-click="addCMPort()"><i class="glyphicon glyphicon-plus"></i></button>
+										</div>
 									</fieldset>
 									<fieldset ng-init="installConfig.vm_config.db.nic = []"
 										ng-if="installConfig.comType=='FCAPS' || installConfig.comType=='OAM' || installConfig.comType=='CM'">
 										<legend translate="DB_VM">DB VM</legend>
-										<div class="row" name="{{nic}}"
-											ng-if="networktraffic > $index " ng-repeat="nic in nics">
+										<div class="row" name="{{nic}}" ng-repeat="nic in dbnics">
 											<div class="form-group col-md-1">
 												<strong class="control-label"> {{nic}}</strong>
 												<input class="form-control" type="hidden" ng-model="installConfig.vm_config.db.nic[$index].name"
@@ -206,6 +215,12 @@
 											<div class="col-md-5">
 											<span class="validation text-danger" ng-show="tab3.db_ipv4_ipaddress{{$index}}.$error.validation"><label translate="PLEASE_CONFIG_DB_VM">Please Config DB VM!</label></span>
 										</div>
+										</div>
+										<div class="col-md-1 pull-right">
+											<button type="button" class="btn btn-danger" ng-click="deleteDBPort()"><i class="glyphicon glyphicon-minus"></i></button>
+										</div>
+										<div class="col-md-1 pull-right">
+											<button type="button" class="btn btn-success" ng-click="addDBPort()"><i class="glyphicon glyphicon-plus"></i></button>
 										</div>
 									</fieldset>
 									<fieldset>
