@@ -1,10 +1,13 @@
 package com.alu.omc.oam.config;
 
 import java.io.Serializable;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
 import com.alu.omc.oam.ansible.Inventory;
+import com.alu.omc.oam.util.Json2Object;
+import com.alu.omc.oam.util.JsonYamlConverter;
 
 public class ADDPORTConfig extends COMConfig implements Serializable{
 
@@ -13,7 +16,7 @@ public class ADDPORTConfig extends COMConfig implements Serializable{
 	 */
 	private static final long serialVersionUID = 1L;
 	private KVMCOMConfig config;
-	private VMConfig vm_config;
+	public Map<String, VMConfig> vm_config;
 	
 	public KVMCOMConfig getConfig() {
 		return config;
@@ -21,10 +24,10 @@ public class ADDPORTConfig extends COMConfig implements Serializable{
 	public void setConfig(KVMCOMConfig config) {
 		this.config = config;
 	}
-	public VMConfig getVm_config() {
+	public Map<String, VMConfig> getVm_config() {
 		return vm_config;
 	}
-	public void setVm_config(VMConfig vm_config) {
+	public void setVm_config(Map<String, VMConfig> vm_config) {
 		this.vm_config = vm_config;
 	}
 	@Override
@@ -33,7 +36,14 @@ public class ADDPORTConfig extends COMConfig implements Serializable{
 	}
 	@Override
 	public String getVars() {
-		return null;
+        Iterator<String> it = vm_config.keySet().iterator(); 
+	    while(it.hasNext()){
+	        String name = it.next();
+	        @SuppressWarnings("unchecked")
+            VMConfig vmcfg = vm_config.get(name);
+	    }
+	   String json = Json2Object.object2Json(this);
+       return JsonYamlConverter.convertJson2Yaml(json);
 	}
 	@Override
 	public Environment getEnvironment() {
