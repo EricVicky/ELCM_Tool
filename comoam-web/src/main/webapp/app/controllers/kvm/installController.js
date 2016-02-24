@@ -95,8 +95,9 @@ angular.module('kvm', [ 'ui.router',
             		"cm" : { "nic": [ {"name" : "eth0"} ]},
             		"db" : { "nic": [ {"name" : "eth0"} ]}
             };
-            
+            $scope.showNote = true;
             $scope.addPort = function(vm){
+            	$scope.showNote = false;
             	$scope.installConfig.vm_config[vm].nic.push({"name" : "eth".concat($scope.installConfig.vm_config[vm].nic.length)});	
         	};
 

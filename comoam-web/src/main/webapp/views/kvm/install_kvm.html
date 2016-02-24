@@ -132,11 +132,14 @@
 										</div>
 										</div>
 										<div class="col-md-1 pull-right" ng-show="installConfig.vm_config.oam.nic.length!=1">
-											<button type="button" class="btn btn-danger" ng-click="deletePort('oam')"><i class="glyphicon glyphicon-minus"></i></button>
+											<button type="button" class="btn btn-default" ng-click="deletePort('oam')"><i class="glyphicon glyphicon-minus"></i></button>
 										</div>
 										<div class="col-md-1 pull-right">
-											<button type="button" class="btn btn-success" ng-click="addPort('oam')"><i class="glyphicon glyphicon-plus"></i></button>
+											<button type="button" class="btn btn-default" ng-click="addPort('oam')"><i class="glyphicon glyphicon-plus"></i></button>
 										</div>	
+										<div class="col-md-4 pull-right" ng-show="showNote == true">
+											<strong>Note:Click here to add more ports. ----></strong>
+										</div>
 									</fieldset>
 									<fieldset ng-if="installConfig.comType=='FCAPS' || installConfig.comType=='CM'">
 										<legend translate="CM_VM">CM VM</legend>
@@ -167,10 +170,13 @@
 										</div>
 										</div>
 										<div class="col-md-1 pull-right" ng-show="installConfig.vm_config.cm.nic.length!=1">
-											<button type="button" class="btn btn-danger" ng-click="deletePort('cm')"><i class="glyphicon glyphicon-minus"></i></button>
+											<button type="button" class="btn btn-default" ng-click="deletePort('cm')"><i class="glyphicon glyphicon-minus"></i></button>
 										</div>
 										<div class="col-md-1 pull-right">
-											<button type="button" class="btn btn-success" ng-click="addPort('cm')"><i class="glyphicon glyphicon-plus"></i></button>
+											<button type="button" class="btn btn-default" ng-click="addPort('cm')"><i class="glyphicon glyphicon-plus"></i></button>
+										</div>
+										<div class="col-md-4 pull-right" ng-show="showNote == true">
+											<strong>Note:Click here to add more ports. ----></strong>
 										</div>
 									</fieldset>
 									<fieldset ng-if="installConfig.comType=='FCAPS' || installConfig.comType=='OAM' || installConfig.comType=='CM'">
@@ -202,10 +208,13 @@
 										</div>
 										</div>
 										<div class="col-md-1 pull-right" ng-show="installConfig.vm_config.db.nic.length!=1">
-											<button type="button" class="btn btn-danger" ng-click="deletePort('db')"><i class="glyphicon glyphicon-minus"></i></button>
+											<button type="button" class="btn btn-default" ng-click="deletePort('db')"><i class="glyphicon glyphicon-minus"></i></button>
 										</div>
 										<div class="col-md-1 pull-right">
-											<button type="button" class="btn btn-success" ng-click="addPort('db')"><i class="glyphicon glyphicon-plus"></i></button>
+											<button type="button" class="btn btn-default" ng-click="addPort('db')"><i class="glyphicon glyphicon-plus"></i></button>
+										</div>
+										<div class="col-md-4 pull-right" ng-show="showNote == true">
+											<strong>Note:Click here to add more ports. ----></strong>
 										</div>
 									</fieldset>
 									<fieldset>
