@@ -165,7 +165,17 @@ angular.module('gr', [ 'ui.router',
     		 }
     		 if($scope.gr_config.pri.environment == "KVM" && $scope.gr_config.sec.environment == "KVM"){
     			 var priNic = $scope.gr_config.pri.vm_config.oam.nic.length;
+    			 for(var vm in $scope.gr_config.pri.vm_config){
+    				 if(priNic > $scope.gr_config.pri.vm_config[vm].nic.length){
+    					 priNic = $scope.gr_config.pri.vm_config[vm].nic.length;
+    				 }
+    			 }
     			 var secNic = $scope.gr_config.sec.vm_config.oam.nic.length;
+    			 for(var vm in $scope.gr_config.sec.vm_config){
+    				 if(secNic > $scope.gr_config.sec.vm_config[vm].nic.length){
+    					 secNic = $scope.gr_config.sec.vm_config[vm].nic.length;
+    				 }
+    			 }
     			 var minNic = priNic<secNic?priNic:secNic;
     			 $scope.gr_traffic_types = [minNic];
     			 for(var i=0;i<minNic;i++){
