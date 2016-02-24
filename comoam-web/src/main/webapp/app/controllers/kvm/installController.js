@@ -91,53 +91,19 @@ angular.module('kvm', [ 'ui.router',
 			};
 
             $scope.installConfig.vm_config = {
-            		"oam": { "nic": []},
-            		"cm" : { "nic": []},
-            		"db" : { "nic": []}
+            		"oam": { "nic": [ {"name" : "eth0"} ]},
+            		"cm" : { "nic": [ {"name" : "eth0"} ]},
+            		"db" : { "nic": [ {"name" : "eth0"} ]}
             };
             
-//          $scope.nics = [ "eth0" ];
-//            $scope.ntoptions  = [ {"label":"Simple", "mode": 1}, 
-//    	                             {"label":"Traffic Separation", "mode": 2 },
-//    	                             { "label":"Traffic Separation & Redundency", "mode": 3}];
-//          $scope.networktraffic = 1;
-            
-            $scope.oamnics = ["eth0"];
-            $scope.dbnics = ["eth0"];
-            $scope.cmnics = ["eth0"];
-            
-            
-            $scope.addOAMPort = function(){
-            	$scope.oamnics.push("eth".concat($scope.oamnics.length));	
+            $scope.addPort = function(vm){
+            	$scope.installConfig.vm_config[vm].nic.push({"name" : "eth".concat($scope.installConfig.vm_config[vm].nic.length)});	
         	};
 
-            $scope.deleteOAMPort = function(){
-            	$scope.oamnics.pop("eth".concat($scope.oamnics.length));
-        	};
-        	
-        	$scope.addDBPort = function(){
-            	$scope.dbnics.push("eth".concat($scope.dbnics.length));	
+            $scope.deletePort = function(vm){
+            	$scope.installConfig.vm_config[vm].nic.pop($scope.installConfig.vm_config[vm].nic[$scope.installConfig.vm_config[vm].nic.length]);
         	};
 
-            $scope.deleteDBPort = function(){
-            	$scope.dbnics.pop("eth".concat($scope.dbnics.length));
-        	};
-        	
-        	$scope.addCMPort = function(){
-            	$scope.cmnics.push("eth".concat($scope.cmnics.length));	
-        	};
-
-            $scope.deleteCMPort = function(){
-            	$scope.cmnics.pop("eth".concat($scope.cmnics.length));
-        	};
-            
-            
-            
-            
-            
-            
-            
-            
             $scope.avaliable_flavors = ["Enterprise", "Low End", "Medium", "High End"];
             $scope.flavor = $scope.avaliable_flavors[2];
             $scope.HostNameChanged = false;
@@ -167,7 +133,11 @@ angular.module('kvm', [ 'ui.router',
             $scope.Backup_Server_Addr = function(){
             	var vm_config = $scope.installConfig.vm_config;
             	for(var vm in vm_config){
-            		vm_config[vm].nic.length = $scope.networktraffic;
+            		if(vm == 'db'){
+            			$scope.installConfig.vm_config[vm].imgname = $scope.installConfig.db_image;	
+            		}else{
+            			$scope.installConfig.vm_config[vm].imgname = $scope.installConfig.oam_cm_image;	
+            		}
             	}
             	if($scope.installConfig.vm_config.oam.nic[0]!=null&&$scope.installConfig.vm_config.oam.nic[0].ip_v4!=null){
             		$scope.installConfig.app_install_options.SOFTWARE_SERVER_ADDRESS = $scope.installConfig.vm_config.oam.nic[0].ip_v4.ipaddress;
@@ -210,11 +180,6 @@ angular.module('kvm', [ 'ui.router',
 				if($scope.installConfig.comType=='OAM'){
             		delete $scope.installConfig.vm_config['cm'];
             	}
-				for(var vm in vm_config){
-					if(vm_config[vm].nic.length == 0){
-						delete vm_config[vm];
-					}
-				}
             };
             
             $scope.loadimglist = function(host, dir){
