@@ -23,7 +23,7 @@ fullbackup_file_exist() {
     arr=(${hostname//:/ })
     for vm_name in ${arr[@]}
     do
-        ls ${Backup_File_Dir} | grep ${vm_name}_snapshot > /dev/null
+        ls ${Backup_File_Dir} | grep ^${vm_name}_snapshot$ > /dev/null
         if [ $? -eq 0 ]; then
             echo "Warning: Initial backup files will be erased by the new full backup!"
             break;
