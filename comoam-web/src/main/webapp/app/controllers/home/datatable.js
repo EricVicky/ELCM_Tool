@@ -99,40 +99,42 @@ angular.module('datatable',['ui.grid', 'ui.grid.resizeColumns']).controller('dat
       	  });
 	};
 	
-	$scope.addipv6 = function(row){
-		var modalInstance = $modal.open({
-			animation: true,
-			backdrop:'static',
-			templateUrl: 'views/common/addipv6.html',
-			controller: function($scope, $modalInstance,stackname ){
-				    $scope.ipv6 = {
-				    	stackname : stackname
-				    };
-					$scope.ok = function(){
-						$modalInstance.close($scope.ipv6);
-					};
-					$scope.cancel = function () {
-						$modalInstance.dismiss('cancel');
-					};
-			},
-			resolve: {
-				stackname: function() {
-					return row.entity.comConfig.deployment_prefix;
-				}
-			},   
-		});	
-		modalInstance.result.then(function (ipv6) {
-		    $scope.ipv6_config = ipv6;
-		    KVMService.addipv6($scope.ipv6_config.stackname,$scope.ipv6_config.ipaddress,
-		    		           $scope.ipv6_config.gateway,$scope.ipv6_config.prefix).then( function(data) {
-		    		       		
-		    		    		
-		    		        });
-		    
-		}, function () {
-		});	
-		
-	};
+	$scope.addport = function(row){
+		DashboardService.setSelectedInstance(row.entity.comConfig);
+		$state.go('dashboard.addPort');
+	}
+	
+//	$scope.addip = function(row){
+//		DashboardService.setSelectedInstance(row.entity.comConfig);
+//		var modalInstance = $modal.open({
+//			animation: true,
+//			backdrop:'static',
+//			templateUrl: 'views/common/addip.html',
+//			controller: function($scope, $modalInstance ){
+//				    $scope.ipTypes  = [ {"label":"--IPv4--", "mode": 1}, 
+//		    	                        {"label":"--IPv6--", "mode": 2 }];
+//					$scope.ok = function(){
+//						$modalInstance.close($scope.ipType);
+//					};
+//					$scope.cancel = function () {
+//						$modalInstance.dismiss('cancel');
+//					};
+//			},
+//			resolve: {
+//				
+//			},   
+//		});	
+//		modalInstance.result.then(function (ipType) {
+//			$scope.iplabel = ipType.label;
+//			if($scope.iplabel == "--IPv4--"){
+//				$state.go('dashboard.addV4Port');
+//			}else{
+//				$state.go('dashboard.addV6Port');
+//			}   
+//		}, function () {
+//		});	
+//		
+//	};
 
 
 	
