@@ -248,6 +248,7 @@ public class COMValidationService {
 	
 	public boolean exsitBridge(String hostip, String bridge) throws ValidationException{
         String res = null;
+        this.ip = hostip;
 	    if(Host.isLocalHost(hostip)){
 	       ICommandExec command = commandProtype.create(COMMAND.SCRIPT_ROOT + COMMAND.CHECK_BRIDGE + " " + bridge);
     	    try{
