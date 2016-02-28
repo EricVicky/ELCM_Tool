@@ -248,6 +248,7 @@ public class COMValidationService {
 	
 	public boolean exsitBridge(String hostip, String bridge) throws ValidationException{
         String res = null;
+        this.ip = hostip;
 	    if(Host.isLocalHost(hostip)){
 	       ICommandExec command = commandProtype.create(COMMAND.SCRIPT_ROOT + COMMAND.CHECK_BRIDGE + " " + bridge);
     	    try{
@@ -267,7 +268,8 @@ public class COMValidationService {
                 throw new ValidationException("Unable to excute command " + COMMAND.CHECK_BRIDGE, e);
     		} 
 	   }
-	   int brgNum = Integer.parseInt(res.trim()); 
+	   int brgNum = Integer.parseInt(res.trim());
+	   System.out.println("brgNum=" + brgNum);
 	   return brgNum > 0;
 	}
 	

@@ -48,6 +48,27 @@ angular.module('kvm').controller('upgradectr', function($scope, $filter,  $log, 
     };
     
     $scope.initistoption = function(){
+    	if( $scope.installConfig.app_install_options.OMCCN_SUPPORT_SP_PM && $scope.installConfig.comType == 'CM'){
+                //if PM CM not set, given default
+                if(!$scope.installConfig.app_install_options.OMCCN_SUPPORT_SP_PM){
+        	      $scope.installConfig.app_install_options.OMCCN_SUPPORT_SP_PM = 'NO';
+        	      $scope.cl_installConfig.app_install_options.OMCCN_SUPPORT_SP_PM = 'NO';
+                }
+                if(!$scope.installConfig.app_install_options.OMCCN_SUPPORT_SP_FM){
+        	      $scope.installConfig.app_install_options.OMCCN_SUPPORT_SP_FM = 'NO';
+        	      $scope.cl_installConfig.app_install_options.OMCCN_SUPPORT_SP_FM = 'NO';
+                }
+        }else{
+                //if PM CM not set, given default
+                if(!$scope.installConfig.app_install_options.OMCCN_SUPPORT_SP_FM ){
+        	     $scope.installConfig.app_install_options.OMCCN_SUPPORT_SP_FM = 'YES';
+        	     $scope.cl_installConfig.app_install_options.OMCCN_SUPPORT_SP_PM = 'YES';
+                }
+                if(!$scope.installConfig.app_install_options.OMCCN_SUPPORT_SP_PM){
+        	     $scope.installConfig.app_install_options.OMCCN_SUPPORT_SP_PM = 'YES';
+        	     $scope.cl_installConfig.app_install_options.OMCCN_SUPPORT_SP_FM = 'YES';
+                }
+        }
     	//set default value if not set
     	for(var attr in default_app_install_options){
     		if(!$scope.cl_installConfig.app_install_options[attr]){
@@ -55,17 +76,6 @@ angular.module('kvm').controller('upgradectr', function($scope, $filter,  $log, 
     			$scope.installConfig.app_install_options[attr] = default_app_install_options[attr];
     		}
     	}
-    	if($scope.installConfig.comType == 'CM'){
-        	$scope.installConfig.app_install_options.OMCCN_SUPPORT_SP_FM = 'NO';
-        	$scope.installConfig.app_install_options.OMCCN_SUPPORT_SP_PM = 'NO';
-        	$scope.cl_installConfig.app_install_options.OMCCN_SUPPORT_SP_FM = 'NO';
-        	$scope.cl_installConfig.app_install_options.OMCCN_SUPPORT_SP_PM = 'NO';
-        }else{
-        	$scope.installConfig.app_install_options.OMCCN_SUPPORT_SP_FM = 'YES';
-        	$scope.installConfig.app_install_options.OMCCN_SUPPORT_SP_PM = 'YES';
-        	$scope.cl_installConfig.app_install_options.OMCCN_SUPPORT_SP_FM = 'YES';
-        	$scope.cl_installConfig.app_install_options.OMCCN_SUPPORT_SP_PM = 'YES';
-        }
 
     };
     
