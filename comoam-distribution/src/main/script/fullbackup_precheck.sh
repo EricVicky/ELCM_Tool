@@ -91,14 +91,20 @@ backup_precheck() {
 #######################################################################
 
 
-file_space=`du ${local_backup_dir} --max-depth=2|awk '{ print $1 }'|tail -1`
+file_space=0;
+arr=(${hostname//:/ })
+for vm_name in ${arr[@]}
+    do
+       tmp_space=`du ${local_backup_dir}/${vm_name} --max-depth=2|awk '{ print $1 }'|tail -1`
+       file_space=` expr ${file_space} + ${tmp_space}`
+    done
 
-if [ -z ${remote_backup_dir} ];then    
+if [ -z ${remote_backup_dir} ];then
     backup_precheck
 else
     mount_2_server ${remote_backup_dir} ${local_backup_dir}
     if [ $? -eq 0 ];then
-        backup_precheck        
+        backup_precheck
         umount_2_server ${local_backup_dir}
     else
         exit 0
