@@ -54,7 +54,7 @@ check_disk_space() {
    
     sys_space=`df ${local_backup_dir} |tail -1|awk '{ print $3 }'`
     if [ ${sys_space} -lt ${File_space} ];then
-        echo "Error: The target ${local_backup_dir} has NOT enough disk space." 
+        echo "Error: The target ${remote_backup_dir} has NOT enough disk space." 
         return 1
     fi
 }
