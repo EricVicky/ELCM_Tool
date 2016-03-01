@@ -35,13 +35,16 @@ public class LogParserFactory
         parserCache.put(new ActionKey(Action.GRINST_SEC, Environment.OPENSTACK), osGrInstSecParser());
         parserCache.put(new ActionKey(Action.GRUNINST, Environment.OPENSTACK), osGrUnInstParser());
         parserCache.put(new ActionKey(Action.INSTALL, Environment.KVM, COMType.HPSIM), kvmovmInstallParser());
+        parserCache.put(new ActionKey(Action.INSTALL, Environment.KVM, COMType.GANGLIA), kvmovmInstallParser());
         parserCache.put(new ActionKey(Action.INSTALL, Environment.KVM, COMType.ATC), kvmovmInstallParser());
         parserCache.put(new ActionKey(Action.DELETE, Environment.KVM, COMType.ATC), kvmovmDeleteParser());
         parserCache.put(new ActionKey(Action.UPGRADE, Environment.KVM, COMType.ATC), kvmovmUpgradeParser());
         parserCache.put(new ActionKey(Action.INSTALL, Environment.KVM, COMType.QOSAC), kvmqosacInstallParser());
         parserCache.put(new ActionKey(Action.DELETE, Environment.KVM, COMType.QOSAC), kvmQosacDeleteParser());
         parserCache.put(new ActionKey(Action.UPGRADE, Environment.KVM, COMType.HPSIM), kvmovmUpgradeParser());
+        parserCache.put(new ActionKey(Action.UPGRADE, Environment.KVM, COMType.GANGLIA), kvmovmUpgradeParser());
         parserCache.put(new ActionKey(Action.DELETE, Environment.KVM, COMType.HPSIM), kvmovmDeleteParser());
+        parserCache.put(new ActionKey(Action.DELETE, Environment.KVM, COMType.GANGLIA), kvmovmDeleteParser());
         parserCache.put(new ActionKey(Action.UPGRADE, Environment.KVM, COMType.QOSAC), kvmqosacUpgradeParser());
         parserCache.put(new ActionKey(Action.BACKUP, Environment.KVM, COMType.QOSAC), kvmqosacBackupParser());
         parserCache.put(new ActionKey(Action.RESTORE, Environment.KVM, COMType.QOSAC), kvmqosacRestoreParser());
@@ -50,11 +53,13 @@ public class LogParserFactory
         parserCache.put(new ActionKey(Action.INSTALL, Environment.KVM, COMType.ARS), kvmarsInstallParser());
         parserCache.put(new ActionKey(Action.INSTALL, Environment.OPENSTACK, COMType.QOSAC), osqosacInstallParser());
         parserCache.put(new ActionKey(Action.INSTALL, Environment.OPENSTACK, COMType.HPSIM), oshpsimInstallParser());
+        parserCache.put(new ActionKey(Action.INSTALL, Environment.OPENSTACK, COMType.GANGLIA), osgangliaInstallParser());
         parserCache.put(new ActionKey(Action.INSTALL, Environment.OPENSTACK, COMType.ATC), osatcInstallParser());
         parserCache.put(new ActionKey(Action.UPGRADE, Environment.OPENSTACK, COMType.QOSAC), osqosacupgradeParser());
         parserCache.put(new ActionKey(Action.DELETE, Environment.OPENSTACK, COMType.QOSAC), osqosacdeleteParser());
         parserCache.put(new ActionKey(Action.DELETE, Environment.OPENSTACK, COMType.ATC), osatcdeleteParser());
         parserCache.put(new ActionKey(Action.DELETE, Environment.OPENSTACK, COMType.HPSIM), oshpsimdeleteParser());
+        parserCache.put(new ActionKey(Action.DELETE, Environment.OPENSTACK, COMType.GANGLIA), osgangliadeleteParser());
         parserCache.put(new ActionKey(Action.INSTALL, Environment.OPENSTACK, COMType.ARS), osarsInstallParser());
         parserCache.put(new ActionKey(Action.CHHOSTNAME, Environment.KVM), kvmchhostnameParser());
         parserCache.put(new ActionKey(Action.CHHOSTNAME, Environment.KVM, COMType.QOSAC), kvmqosacchhostnameParser());
@@ -441,6 +446,16 @@ public class LogParserFactory
         dict.put("PLAY\\s\\[create\\svirtual\\smachines\\]", "Start");
         return new LogParser(dict);
     }
+
+    private ILogParser osgangliaInstallParser(){
+        Map<String, String> dict = new LinkedHashMap<String, String>();
+        dict.put("PLAY\\sRECAP", "Finished");
+        dict.put("TASK\\:\\s\\[post\\_install\\_atc\\s\\|\\sadd\\sswitches\\sto\\sstats\\.cfg\\]", "Config switches for OVM");
+        dict.put("TASK\\:\\s\\[heat\\_templates\\s\\|\\supdate\\sVNFC\\syaml\\sdocument\\]","Update Document");
+        dict.put("TASK\\:\\s\\[os\\_common\\s\\|\\sRunning\\swith\\sOS\\scredentials\\]", "Running Credentials");
+        dict.put("PLAY\\s\\[create\\svirtual\\smachines\\]", "Start");
+        return new LogParser(dict);
+    }
     
     private ILogParser osatcInstallParser(){
     	Map<String, String> dict = new LinkedHashMap<String, String>();
@@ -482,6 +497,15 @@ public class LogParserFactory
         return new LogParser(dict);
 	}
     
+    private ILogParser osgangliadeleteParser() {
+    	Map<String, String> dict = new LinkedHashMap<String, String>();
+        dict.put("PLAY\\sRECAP", "Finished");
+        dict.put("TASK\\:\\s\\[destroy\\_stack\\s\\|\\sdestroy\\sthe\\sstack\\]", "Destroy stack");
+        dict.put("TASK\\:\\s\\[destroy\\_stack\\s\\|\\scheck\\spresence\\sof\\sstack\\]", "Check Presence of stack");
+        dict.put("GATHERING\\sFACTS", "Start");
+        return new LogParser(dict);
+	}
+
     private ILogParser oshpsimdeleteParser() {
     	Map<String, String> dict = new LinkedHashMap<String, String>();
         dict.put("PLAY\\sRECAP", "Finished");

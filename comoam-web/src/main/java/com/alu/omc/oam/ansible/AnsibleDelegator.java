@@ -21,6 +21,7 @@ import com.alu.omc.oam.config.CHOSQosacCOMConfig;
 import com.alu.omc.oam.config.COMConfig;
 import com.alu.omc.oam.config.COMProvidernetworkConfig;
 import com.alu.omc.oam.config.HpsimOSCOMConfig;
+import com.alu.omc.oam.config.GangliaOSCOMConfig;
 import com.alu.omc.oam.config.OSCOMConfig;
 import com.alu.omc.oam.config.QosacOSCOMConfig;
 import com.alu.omc.oam.log.LogParserFactory;
@@ -217,6 +218,32 @@ public class AnsibleDelegator implements ApplicationContextAware
         }
     } 
     
+    public void addAnsibleTask(Action action, GangliaOSCOMConfig config){
+        try
+        {
+           NeutronService neutronService =  (NeutronService)applicationContext.getBean("neutronService");
+           com.alu.omc.oam.config.GangliaOSCOMConfig.COMProvidernetwork providerNetwork = config.getCom_provider_network();
+           NeutronSubnet subnet =  neutronService.getSubetById(providerNetwork.getSubnet());
+           if(subnet!=null){
+               providerNetwork.setDns1(subnet.getDnsNames()!=null && subnet.getDnsNames().size() >0?subnet.getDnsNames().get(0):"8.8.8.8");
+               providerNetwork.setGateway(subnet.getGateway());
+               providerNetwork.setNetmask(NetworkUtil.getNetMask(subnet.getCidr()));
+           }
+           if(!StringUtils.isBlank(providerNetwork.getV6_subnet())){
+               NeutronSubnet v6subnet =  neutronService.getSubetById(providerNetwork.getV6_subnet());
+               if(v6subnet != null){
+                   providerNetwork.setV6_gateway(v6subnet.getGateway());
+                   providerNetwork.setV6_prefix(NetworkUtil.getNetWorkPrefix(v6subnet.getCidr()));
+               }
+           }
+           ansibleTasks.create(action, config);
+        }
+        catch (AnsibleException e)
+        {
+            e.printStackTrace();
+        }
+    } 
+
     public void addAnsibleTask(Action action, AtcOSCOMConfig config){
         try
         {

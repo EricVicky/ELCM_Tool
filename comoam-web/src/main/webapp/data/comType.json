@@ -6,7 +6,8 @@
    "OVMType": [{"Name": "QOSAC","url":"qosacinstall","upgradeUrl":"qosacupgrade"}, 
         {"Name": "ATC","url":"ovminstall","upgradeUrl":""}, 
         {"Name": "HPSIM","url":"ovminstall","upgradeUrl":""},
-        {"Name": "ARS","url":"arsinstall","upgradeUrl":""} 
+        {"Name": "ARS","url":"arsinstall","upgradeUrl":""}, 
+        {"Name": "GANGLIA","url":"gangliainstall","upgradeUrl":""} 
     ]
     
 }

@@ -206,7 +206,7 @@
 									</sources>
 								</mapping>
 								<mapping>
-									<directory>/opt/PlexView/ELCM/server/bin</directory>
+									<directory>/opt/PlexView/ELCM/server/bin/</directory>
 									<username>root</username>
 									<groupname>root</groupname>
 									<sources>

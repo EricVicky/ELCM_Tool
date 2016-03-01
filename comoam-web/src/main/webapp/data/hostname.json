@@ -21,5 +21,8 @@
     },
     "HPSIM":{
         "ovm": "M001HPSIM01"
+    },
+    "GANGLIA":{
+        "ovm": "M001GANGLIA01"
     }
 }

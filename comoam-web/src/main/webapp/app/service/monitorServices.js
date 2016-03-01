@@ -314,7 +314,7 @@ angular.module('monitor').factory('monitorService', function($log, $location, $r
 			channel  = ch;
 			if(comType == "ARS" || comType == "QOSAC"){
 				environment = env + "_" + comType;
-			}else if(comType == "ATC" || comType == "HPSIM"){
+			}else if(comType == "ATC" || comType == "HPSIM" || comType == "GANGLIA"){
 				environment = env + "_OVM";
 			}
 		},

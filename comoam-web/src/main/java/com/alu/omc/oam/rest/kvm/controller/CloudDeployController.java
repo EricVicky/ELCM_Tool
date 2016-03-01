@@ -47,6 +47,8 @@ import com.alu.omc.oam.config.QosacCOMConfig;
 import com.alu.omc.oam.config.QosacOSCOMConfig;
 import com.alu.omc.oam.config.UpgradeFullBackupConfig;
 import com.alu.omc.oam.config.VMConfig;
+import com.alu.omc.oam.config.GangliaCOMConfig;
+import com.alu.omc.oam.config.GangliaOSCOMConfig;
 import com.alu.omc.oam.kvm.model.Host;
 import com.alu.omc.oam.service.COMStackService;
 import com.alu.omc.oam.service.COMValidationService;
@@ -154,12 +156,24 @@ public class CloudDeployController
         ep.setAxadmin_password(EncryptUtils.encryptPasswd(ep.getAxadmin_password()));
     }
 
+    @RequestMapping(value="/ovm/GANGLIAdeployment", method=RequestMethod.POST)
+    public void deploy( @RequestBody GangliaCOMConfig config) throws IOException, InterruptedException
+    {
+        ansibleDelegator.addAnsibleTask(Action.INSTALL, config );
+    }
+
     @RequestMapping(value="/ovm/HPSIMdeployment", method=RequestMethod.POST)
     public void deploy( @RequestBody HpsimCOMConfig config) throws IOException, InterruptedException
     {
         ansibleDelegator.addAnsibleTask(Action.INSTALL, config );
     }
     
+    @RequestMapping(value="/os/ovm/GANGLIAdeployment", method=RequestMethod.POST)
+    public void deploy( @RequestBody GangliaOSCOMConfig config) throws IOException, InterruptedException
+    {
+        ansibleDelegator.addAnsibleTask(Action.INSTALL, config );
+    }
+
     @RequestMapping(value="/os/ovm/HPSIMdeployment", method=RequestMethod.POST)
     public void deploy( @RequestBody HpsimOSCOMConfig config) throws IOException, InterruptedException
     {
@@ -185,12 +199,19 @@ public class CloudDeployController
         ansibleDelegator.addAnsibleTask(Action.INSTALL, config );
     }
     
+
     @RequestMapping(value="/os/ovm/QOSACdelete", method=RequestMethod.POST)
     public void delete( @RequestBody QosacOSCOMConfig config) throws IOException, InterruptedException
     {
         ansibleDelegator.addAnsibleTask(Action.DELETE, config );
     }
     
+    @RequestMapping(value="/os/ovm/GANGLIAdelete", method=RequestMethod.POST)
+    public void delete( @RequestBody GangliaOSCOMConfig config) throws IOException, InterruptedException
+    {
+        ansibleDelegator.addAnsibleTask(Action.DELETE, config );
+    }
+
     @RequestMapping(value="/os/ovm/HPSIMdelete", method=RequestMethod.POST)
     public void delete( @RequestBody HpsimOSCOMConfig config) throws IOException, InterruptedException
     {
@@ -229,6 +250,12 @@ public class CloudDeployController
         ansibleDelegator.addAnsibleTask(Action.UPGRADE, config );
     }
 
+    @RequestMapping(value="/ovm/GANGLIAupgrade", method=RequestMethod.POST)
+    public void upgrade( @RequestBody GangliaCOMConfig config) throws IOException, InterruptedException
+    {
+        ansibleDelegator.addAnsibleTask(Action.UPGRADE, config );
+    }
+
     @RequestMapping(value="/ovm/QOSACupgrade", method=RequestMethod.POST)
     public void upgrade( @RequestBody QosacCOMConfig config) throws IOException, InterruptedException
     {
@@ -247,6 +274,12 @@ public class CloudDeployController
         ansibleDelegator.addAnsibleTask(Action.DELETE, config );
     }
     
+    @RequestMapping(value="/kvm/instances/GANGLIA{name}", method=RequestMethod.POST)
+    public void deleteKVM( @RequestBody GangliaCOMConfig config) throws IOException, InterruptedException
+    {
+        ansibleDelegator.addAnsibleTask(Action.DELETE, config );
+    }
+
     @RequestMapping(value="/kvm/instances/HPSIM{name}", method=RequestMethod.POST)
     public void deleteKVM( @RequestBody HpsimCOMConfig config) throws IOException, InterruptedException
     {

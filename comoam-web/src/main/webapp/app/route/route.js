@@ -169,6 +169,10 @@ angular.module('comoamApp')
     	templateUrl:'views/optionalVNF/kvm/qosac_upgrade.html',
     	url:'/kvmqosacupgrade',
     })
+    .state('dashboard.kvmgangliainstall', {
+    	templateUrl:'views/optionalVNF/kvm/ganglia_install.html',
+    	url:'/kvmgangliainstall',
+    })
     .state('dashboard.osovminstall', {
     	templateUrl:'views/optionalVNF/os/install.html',
     	url:'/osovminstall',
@@ -184,6 +188,10 @@ angular.module('comoamApp')
     .state('dashboard.osqosacupgrade', {
     	templateUrl:'views/optionalVNF/os/qosac_upgrade.html',
     	url:'/osqosacupgrade',
+    })
+    .state('dashboard.osgangliainstall', {
+    	templateUrl:'views/optionalVNF/os/ganglia_install.html',
+    	url:'/osgangliainstall',
     })
     .state('dashboard.operationlog', {
     	templateUrl:'views/operationlog/operationlog.html',
