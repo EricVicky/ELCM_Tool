@@ -451,6 +451,13 @@ public class CloudDeployController
          AtcCOMConfig config = new Json2Object<AtcCOMConfig>(){}.toMap(comStack.getComConfig());
          return config;
     }
+
+    private GangliaCOMConfig getKVMGANGLIACOMConfig(String stackName){
+        COMStack comStack = cOMStackService.get(stackName);
+         @SuppressWarnings("unchecked")
+         GangliaCOMConfig config = new Json2Object<GangliaCOMConfig>(){}.toMap(comStack.getComConfig());
+         return config;
+    }
     
     private KVMCOMConfig getKVMCOMConfig(String stackName){
         COMStack comStack = cOMStackService.get(stackName); 
