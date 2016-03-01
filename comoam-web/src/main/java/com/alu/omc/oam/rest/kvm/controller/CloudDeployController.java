@@ -425,6 +425,19 @@ public class CloudDeployController
         ansibleDelegator.addAnsibleTask(Action.FULLRESTORE, fullrestoreconfig );
     }
     
+    @RequestMapping(value="/kvm/ganglia/fullbackup", method=RequestMethod.POST)
+    public void kvmgangliafullbackup(@RequestBody FullBackupConfig<GangliaCOMConfig> fullbackupconfig) throws Exception
+    {
+        fullbackupconfig.setConfig(getKVMGANGLIACOMConfig(fullbackupconfig.getStackName()));
+        ansibleDelegator.addAnsibleTask(Action.FULLBACKUP, fullbackupconfig );
+    }
+    @RequestMapping(value="/kvm/ganglia/fullrestore", method=RequestMethod.POST)
+    public void kvmgangliafullrestore(@RequestBody FullBackupConfig<GangliaCOMConfig> fullrestoreconfig) throws Exception
+    {
+        fullrestoreconfig.setConfig(getKVMGANGLIACOMConfig(fullrestoreconfig.getStackName()));
+        ansibleDelegator.addAnsibleTask(Action.FULLRESTORE, fullrestoreconfig );
+    }   
+ 
     private QosacCOMConfig getKVMQOSACCOMConfig(String stackName){
         COMStack comStack = cOMStackService.get(stackName); 
          @SuppressWarnings("unchecked") 

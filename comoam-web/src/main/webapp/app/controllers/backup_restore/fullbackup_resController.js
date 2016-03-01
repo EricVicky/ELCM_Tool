@@ -42,7 +42,7 @@ angular.module('fullbackup_restore', ['ui.router',
                                 	    fullBackup_ResService.getComInstance().then( function(data) {
                                 	    	var comInstance = [];
                                 			for(var index in data){
-                                				if(data[index].comType=='FCAPS'||data[index].comType=='OAM'||data[index].comType=='CM'||data[index].comType=='ATC'||data[index].comType=='QOSAC'){
+                                				if(data[index].comType=='FCAPS'||data[index].comType=='OAM'||data[index].comType=='CM'||data[index].comType=='ATC'||data[index].comType=='QOSAC'||data[index].comType=='GANGLIA'){
                                 					if(JSON3.parse(data[index].comConfig).environment == 'KVM'){
                                 						comInstance.push(data[index]);			
                                 					}
@@ -81,7 +81,7 @@ angular.module('fullbackup_restore', ['ui.router',
                                 	    };
                                 	    
                                 	    $scope.fullbackup = function(){
-                                	    	if($scope.installConfig.comType=="QOSAC"||$scope.installConfig.comType=="ATC"){
+                                	    	if($scope.installConfig.comType=="QOSAC"||$scope.installConfig.comType=="ATC"||$scope.installConfig.comType=="GANGLIA"){
                                 	    		$scope.dofullbackup();  
                                 	    	}
                                 	    	if($scope.remote_server != true){
@@ -131,7 +131,7 @@ angular.module('fullbackup_restore', ['ui.router',
                                 	    };
                                 	    
                                 	    $scope.fullrestore = function(){
-                                	    	if($scope.installConfig.comType=="QOSAC"||$scope.installConfig.comType=="ATC"){
+                                	    	if($scope.installConfig.comType=="QOSAC"||$scope.installConfig.comType=="ATC"||$scope.installConfig.comType=="GANGLIA"){
                                 	    		$scope.dofullrestore();  
                                 	    	}
                                 	    	if($scope.remote_server != true){
@@ -176,7 +176,12 @@ angular.module('fullbackup_restore', ['ui.router',
                                 	    				monitorService.monitorKVMfullBackup($scope.installConfig.deployment_prefix, $scope.installConfig.comType);
                                 	    				$state.go("dashboard.monitor");
                                 	    			}); 
-                                	    		}else{
+                                	    		}else if($scope.installConfig.comType == 'GANGLIA'){
+                                                                fullBackup_ResService.kvmgangliafullbackup($scope.fullbackupConfig).then( function(){
+                                                                        monitorService.monitorKVMfullBackup($scope.installConfig.deployment_prefix, $scope.installConfig.comType);
+                                                                        $state.go("dashboard.monitor");
+                                                                });
+                                                        }else{
                                 	    			fullBackup_ResService.kvmfullbackup($scope.fullbackupConfig).then( function(){
                                 	    				monitorService.monitorKVMfullBackup($scope.installConfig.deployment_prefix, $scope.installConfig.comType);
                                 	    				$state.go("dashboard.monitor");
@@ -205,7 +210,12 @@ angular.module('fullbackup_restore', ['ui.router',
                                 	    				monitorService.monitorKVMfullRestore($scope.installConfig.deployment_prefix, $scope.installConfig.comType);
                                 	    				$state.go("dashboard.monitor");
                                 	    			});  
-                                	    		}else{
+                                	    		}else if($scope.installConfig.comType == 'GANGLIA'){
+                                                                fullBackup_ResService.kvmgangliafullrestore($scope.fullbackupConfig).then( function(){
+                                                                        monitorService.monitorKVMfullRestore($scope.installConfig.deployment_prefix, $scope.installConfig.comType);
+                                                                        $state.go("dashboard.monitor");
+                                                                });
+                                                        }else{
                                 	    			fullBackup_ResService.kvmfullrestore($scope.fullbackupConfig).then( function(){
                                 	    				monitorService.monitorKVMfullRestore($scope.installConfig.deployment_prefix, $scope.installConfig.comType);
                                 	    				$state.go("dashboard.monitor");
