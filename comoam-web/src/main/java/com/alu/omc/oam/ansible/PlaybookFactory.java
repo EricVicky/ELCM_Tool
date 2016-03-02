@@ -69,6 +69,8 @@ public class PlaybookFactory
         playbooks.put(key(Environment.KVM, Action.FULLRESTORE), new Playbook("data_full_restore.yml") );
         playbooks.put(key(Environment.KVM, Action.FULLBACKUP, COMType.ATC), new Playbook("atc_full_backup.yml") );
         playbooks.put(key(Environment.KVM, Action.FULLRESTORE, COMType.ATC), new Playbook("atc_full_restore.yml") );
+        playbooks.put(key(Environment.KVM, Action.FULLBACKUP, COMType.GANGLIA), new Playbook("ganglia_full_backup.yml") );
+        playbooks.put(key(Environment.KVM, Action.FULLRESTORE, COMType.GANGLIA), new Playbook("ganglia_full_restore.yml") );
         playbooks.put(key(Environment.KVM, Action.FULLBACKUP, COMType.QOSAC), new Playbook("data_full_backup.yml") );
         playbooks.put(key(Environment.KVM, Action.FULLRESTORE, COMType.QOSAC), new Playbook("data_full_restore.yml") );
         playbooks.put(key(Environment.KVM, Action.UPGRADE_FULLBACKUP), new Playbook("upgrade_with_fullbackup.yml") );
