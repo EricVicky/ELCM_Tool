@@ -66,24 +66,24 @@
 															<td colspan="3">Image</td>
 															<td colspan="2">{{VM.imgname}}</td>
 														</tr>										
-														<tr align="center" ng-if="installConfig.comType=='QOSAC' || installConfig.comType=='ATC' || installConfig.comType=='HPSIM' || installConfig.comType=='ARS'">
+														<tr align="center" ng-if="installConfig.comType=='QOSAC' || installConfig.comType=='ATC' || installConfig.comType=='HPSIM' || installConfig.comType=='ARS' || installConfig.comType=='GANGLIA'">
 															<td colspan="2">COM Type</td>
 															<td>{{installConfig.comType}}</td>
 														</tr>
-														<tr align="center" ng-if="installConfig.comType=='QOSAC' || installConfig.comType=='ATC' || installConfig.comType=='HPSIM' || installConfig.comType=='ARS'">
+														<tr align="center" ng-if="installConfig.comType=='QOSAC' || installConfig.comType=='ATC' || installConfig.comType=='HPSIM' || installConfig.comType=='ARS' || installConfig.comType=='GANGLIA'">
 															<td colspan="2">Host IP</td>
 															<td>{{installConfig.active_host_ip}}</td>
 														</tr>
-														<tr align="center" ng-if="installConfig.comType=='QOSAC' || installConfig.comType=='ATC' || installConfig.comType=='HPSIM' || installConfig.comType=='ARS'">
+														<tr align="center" ng-if="installConfig.comType=='QOSAC' || installConfig.comType=='ATC' || installConfig.comType=='HPSIM' || installConfig.comType=='ARS' || installConfig.comType=='GANGLIA'">
 															<td colspan="2">Prefix of VM Instance</td>
 															<td>{{installConfig.deployment_prefix}}</td>
 														</tr>
-														<tr align="center" ng-if="installConfig.comType=='QOSAC' || installConfig.comType=='ATC' || installConfig.comType=='HPSIM' || installConfig.comType=='ARS'">
+														<tr align="center" ng-if="installConfig.comType=='QOSAC' || installConfig.comType=='ATC' || installConfig.comType=='HPSIM' || installConfig.comType=='ARS' || installConfig.comType=='GANGLIA'">
 															<td rowspan="2" width="25%" align="center" style="vertical-align: middle">OVM</td>
 															<td width="35%">IP Address</td>
 															<td>{{installConfig.vm_config.ovm.ip_address}}</td>
 														</tr>
-														<tr align="center" ng-if="installConfig.comType=='QOSAC' || installConfig.comType=='ATC' || installConfig.comType=='HPSIM' || installConfig.comType=='ARS'">
+														<tr align="center" ng-if="installConfig.comType=='QOSAC' || installConfig.comType=='ATC' || installConfig.comType=='HPSIM' || installConfig.comType=='ARS' || installConfig.comType=='GANGLIA'">
 															<td>Flavor</td>
 															<td>vCPU:{{installConfig.vm_config.ovm.flavor.vCpu}}&nbsp;&nbsp;Memory:{{installConfig.vm_config.ovm.flavor.memory/1024/1024}}GB&nbsp;&nbsp;Disk:{{installConfig.vm_config.ovm.flavor.disk}}GB</td>
 														</tr>
