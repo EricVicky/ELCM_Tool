@@ -62,32 +62,32 @@
 						
 						
 						
-					<tr align="center" ng-if="selectedIns.comType=='QOSAC' || selectedIns.comType=='ATC' || selectedIns.comType=='HPSIM' || selectedIns.comType=='ARS'">
+					<tr align="center" ng-if="selectedIns.comType=='QOSAC' || selectedIns.comType=='ATC' || selectedIns.comType=='HPSIM' || selectedIns.comType=='ARS' || selectedIns.comType=='GANGLIA'">
 						<td colspan="2" translate="COM_TYPE">COM Type</td>
 						<td>{{selectedIns.comType}}</td>
 					</tr>
-					<tr align="center" ng-if="selectedIns.comType=='QOSAC' || selectedIns.comType=='ATC' || selectedIns.comType=='HPSIM' || selectedIns.comType=='ARS'">
+					<tr align="center" ng-if="selectedIns.comType=='QOSAC' || selectedIns.comType=='ATC' || selectedIns.comType=='HPSIM' || selectedIns.comType=='ARS' || selectedIns.comType=='GANGLIA'">
 						<td colspan="2">Host IP</td>
 						<td>{{selectedIns.active_host_ip}}</td>
 					</tr>
-					<tr align="center" ng-if="selectedIns.comType=='QOSAC' || selectedIns.comType=='ATC' || selectedIns.comType=='HPSIM' || selectedIns.comType=='ARS'">
+					<tr align="center" ng-if="selectedIns.comType=='QOSAC' || selectedIns.comType=='ATC' || selectedIns.comType=='HPSIM' || selectedIns.comType=='ARS' || selectedIns.comType=='GANGLIA'">
 						<td colspan="2">Prefix of VM Instance</td>
 						<td>{{selectedIns.deployment_prefix}}</td>
 					</tr>
-					<tr align="center" ng-if="selectedIns.actionResult!=null && (selectedIns.comType=='ATC' || selectedIns.comType=='HPSIM' || selectedIns.comType=='ARS' || selectedIns.comType=='QOSAC')">
+					<tr align="center" ng-if="selectedIns.actionResult!=null && (selectedIns.comType=='ATC' || selectedIns.comType=='HPSIM' || selectedIns.comType=='ARS' || selectedIns.comType=='QOSAC' || selectedIns.comType=='GANGLIA')">
 						<td colspan="2" translate="OPERATION_STATUS">Status</td>
 						<td translate="{{selectedIns.actionResult}}"></td>
 					</tr>
-					<tr align="center" ng-if="selectedIns.actionResult==null && (selectedIns.comType=='ATC' || selectedIns.comType=='HPSIM' || selectedIns.comType=='ARS' || selectedIns.comType=='QOSAC')">
+					<tr align="center" ng-if="selectedIns.actionResult==null && (selectedIns.comType=='ATC' || selectedIns.comType=='HPSIM' || selectedIns.comType=='ARS' || selectedIns.comType=='QOSAC' || selectedIns.comType=='GANGLIA')">
 						<td colspan="2" translate="OPERATION_STATUS">Operation Status</td>
 						<td>UNKNOWN</td>
 					</tr>
-					<tr align="center" ng-if="selectedIns.comType=='QOSAC' || selectedIns.comType=='ATC' || selectedIns.comType=='HPSIM' || selectedIns.comType=='ARS'">
+					<tr align="center" ng-if="selectedIns.comType=='QOSAC' || selectedIns.comType=='ATC' || selectedIns.comType=='HPSIM' || selectedIns.comType=='ARS' || selectedIns.comType=='GANGLIA'">
 						<td rowspan="2" width="25%" align="center" style="vertical-align: middle">OVM</td>
 						<td width="35%">IP Address</td>
 						<td>{{selectedIns.vm_config.ovm.ip_address}}</td>
 					</tr>
-					<tr align="center" ng-if="selectedIns.comType=='QOSAC' || selectedIns.comType=='ATC' || selectedIns.comType=='HPSIM' || selectedIns.comType=='ARS'">
+					<tr align="center" ng-if="selectedIns.comType=='QOSAC' || selectedIns.comType=='ATC' || selectedIns.comType=='HPSIM' || selectedIns.comType=='ARS' || selectedIns.comType=='GANGLIA'">
 						<td>Flavor</td>
 						<td>vCPU:{{selectedIns.vm_config.ovm.flavor.vCpu}}&nbsp;&nbsp;Memory:{{selectedIns.vm_config.ovm.flavor.memory/1024/1024}}GB&nbsp;&nbsp;Disk:{{selectedIns.vm_config.ovm.flavor.disk}}GB</td>
 					</tr>
