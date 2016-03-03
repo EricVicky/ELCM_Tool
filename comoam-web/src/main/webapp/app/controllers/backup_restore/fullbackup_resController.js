@@ -81,13 +81,13 @@ angular.module('fullbackup_restore', ['ui.router',
                                 	    };
                                 	    
                                 	    $scope.fullbackup = function(){
+                                	    	if($scope.remote_server != true){
+                                	    		delete $scope.fullbackupConfig.remote_server_dir;
+                                	    		delete $scope.fullbackupConfig.remote_server_ip;
+                                	    	}
                                 	    	if($scope.installConfig.comType=="QOSAC"||$scope.installConfig.comType=="ATC"||$scope.installConfig.comType=="GANGLIA"){
                                 	    		$scope.dofullbackup();  
                                 	    	}else{
-                                	    		if($scope.remote_server != true){
-                                    	    		delete $scope.fullbackupConfig.remote_server_dir;
-                                    	    		delete $scope.fullbackupConfig.remote_server_ip;
-                                    	    	}
                                     	    	$scope.showmessage = false;
                                     	    	$scope.checkmessage = true;
                                     	    	$scope.fullbackupConfig.stackName = $scope.installConfig.deployment_prefix;
@@ -132,13 +132,13 @@ angular.module('fullbackup_restore', ['ui.router',
                                 	    };
                                 	    
                                 	    $scope.fullrestore = function(){
+                                	    	if($scope.remote_server != true){
+                                	    		delete $scope.fullbackupConfig.remote_server_dir;
+                                	    		delete $scope.fullbackupConfig.remote_server_ip;
+                                	    	}
                                 	    	if($scope.installConfig.comType=="QOSAC"||$scope.installConfig.comType=="ATC"||$scope.installConfig.comType=="GANGLIA"){
                                 	    		$scope.dofullrestore();  
                                 	    	}else{
-                                	    		if($scope.remote_server != true){
-                                    	    		delete $scope.fullbackupConfig.remote_server_dir;
-                                    	    		delete $scope.fullbackupConfig.remote_server_ip;
-                                    	    	}
                                     	    	$scope.showmessage = false;
                                     	    	$scope.checkmessage = true;
                                     	    	$scope.fullbackupConfig.stackName = $scope.installConfig.deployment_prefix;
