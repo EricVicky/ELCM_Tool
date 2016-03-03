@@ -94,13 +94,13 @@ angular.module('backup_restore', ['ui.router',
     };
     
     $scope.backup = function(){
+		if($scope.remote_server != true){
+    		delete $scope.backupConfig.backupLocation.remote_server_dir;
+    		delete $scope.backupConfig.backupLocation.remote_server_ip;
+    	}
     	if($scope.installConfig.comType=="QOSAC"||$scope.installConfig.comType=="ATC"||$scope.installConfig.environment != 'KVM'){
     		$scope.doBackup();  
     	}else{
-    		if($scope.remote_server != true){
-        		delete $scope.backupConfig.backupLocation.remote_server_dir;
-        		delete $scope.backupConfig.backupLocation.remote_server_ip;
-        	}
         	$scope.showmessage = false;
         	$scope.checkmessage = true;
         	$scope.backupConfig.config = $scope.installConfig;
@@ -144,13 +144,13 @@ angular.module('backup_restore', ['ui.router',
     };
     
     $scope.restore = function(){
+    	if($scope.remote_server != true){
+			delete $scope.backupConfig.backupLocation.remote_server_dir;
+			delete $scope.backupConfig.backupLocation.remote_server_ip;
+		}
     	if($scope.installConfig.comType=="QOSAC"||$scope.installConfig.comType=="ATC"||$scope.installConfig.environment != 'KVM'){
     		$scope.doRestore();  
     	}else{
-    		if($scope.remote_server != true){
-    			delete $scope.backupConfig.backupLocation.remote_server_dir;
-    			delete $scope.backupConfig.backupLocation.remote_server_ip;
-    		}
     		$scope.showmessage = false;
     		$scope.checkmessage = true;
     		$scope.backupConfig.config = $scope.installConfig;
