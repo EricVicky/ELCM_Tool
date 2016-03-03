@@ -197,12 +197,9 @@ angular.module('kvm', [ 'ui.router',
             	KVMService.comstackStatus($scope.installConfig.deployment_prefix).then(function(status){
             		var ACTION_IN_PROGRESS = 2;
             		if(status.state == ACTION_IN_PROGRESS){
-            			if(window.confirm(status.lastAction.toLowerCase()+" has been proceed on selected VNF instance, go to monitor?")){
-            				monitorService.monitor("KVM", "INSTALL", $scope.installConfig.comType,  $scope.installConfig.deployment_prefix);
-            				$state.go('dashboard.monitor');
-            			}
+            			window.confirm(status.lastAction.toLowerCase()+" has been proceed on selected VNF instance, please wait!");
             		}else{
-            			$scope.doDeploy();
+                        $scope.doDeploy();
             		}
             	});
             };

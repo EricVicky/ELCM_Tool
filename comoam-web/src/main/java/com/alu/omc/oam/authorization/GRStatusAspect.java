@@ -11,6 +11,7 @@ import java.util.Stack;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.lang3.SystemUtils;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
@@ -65,32 +66,34 @@ public class GRStatusAspect implements  Serializable{
 				break;
 			}
 		}
-    	List<COMStack> stacks =  dataSource.list();
-		for(COMStack stack : stacks){
-			Date dateOld = new Date(stack.getUpdatedate().getTime());
-			Date dataNow = new Date();
-			if(isValidTime(dateOld,dataNow) && isCoreVNF(stack.getComType())){
-				KVMCOMConfig config = getKVMCOMConfig(stack.getName());
-				Map<String, VMConfig> vmconfigs = config.getVm_config();
-				Iterator<String> iterator = vmconfigs.keySet().iterator();
-				while(iterator.hasNext()){
-					String vnfc = iterator.next();
-					if(("oam").equals(vnfc)){
-						VMConfig vmConfig = vmconfigs.get(vnfc);
-						String oamIP = vmConfig.getNic().get(0).getIp_v4().getIpaddress();
-						cOMValidationService.setIp(oamIP);
-						break;
+		if(!SystemUtils.IS_OS_WINDOWS){
+			List<COMStack> stacks =  dataSource.list();
+			for(COMStack stack : stacks){
+				Date dateOld = new Date(stack.getUpdatedate().getTime());
+				Date dataNow = new Date();
+				if(isValidTime(dateOld,dataNow) && isCoreVNF(stack.getComType())){
+					KVMCOMConfig config = getKVMCOMConfig(stack.getName());
+					Map<String, VMConfig> vmconfigs = config.getVm_config();
+					Iterator<String> iterator = vmconfigs.keySet().iterator();
+					while(iterator.hasNext()){
+						String vnfc = iterator.next();
+						if(("oam").equals(vnfc)){
+							VMConfig vmConfig = vmconfigs.get(vnfc);
+							String oamIP = vmConfig.getNic().get(0).getIp_v4().getIpaddress();
+							cOMValidationService.setIp(oamIP);
+							break;
+						}
 					}
-				}
-				String checkRes = cOMValidationService.updateGRRole();
-				if(checkRes.contains("act")){
-					stack.setRole(GRROLE.Primary);
-					dataSource.save(stacks);
-				}else if (checkRes.contains("stby")){
-					stack.setRole(GRROLE.Secondary);
-					dataSource.save(stacks);
-				}else{
-					continue;
+					String checkRes = cOMValidationService.updateGRRole();
+					if(checkRes.contains("act")){
+						stack.setRole(GRROLE.Primary);
+						dataSource.save(stacks);
+					}else if (checkRes.contains("stby")){
+						stack.setRole(GRROLE.Secondary);
+						dataSource.save(stacks);
+					}else{
+						continue;
+					}
 				}
 			}
 		}

@@ -96,74 +96,76 @@ angular.module('backup_restore', ['ui.router',
     $scope.backup = function(){
     	if($scope.installConfig.comType=="QOSAC"||$scope.installConfig.comType=="ATC"||$scope.installConfig.environment != 'KVM'){
     		$scope.doBackup();  
+    	}else{
+    		if($scope.remote_server != true){
+        		delete $scope.backupConfig.backupLocation.remote_server_dir;
+        		delete $scope.backupConfig.backupLocation.remote_server_ip;
+        	}
+        	$scope.showmessage = false;
+        	$scope.checkmessage = true;
+        	$scope.backupConfig.config = $scope.installConfig;
+        	validationService.databackupPreCheck($scope.backupConfig).then( function(data){
+                $scope.showmessage = true;
+                $scope.checkmessage = false;
+                $scope.valid = data.succeed;
+                $scope.message = data.message;
+                if($scope.valid == true){
+                	if(data.warningMes.indexOf("Warning") != -1){
+    					$scope.showmessage = false;
+    					var modalInstance = $modal.open({
+    						animation: true,
+    						backdrop:'static',
+    						templateUrl: 'views/backup_restore/databackup_message.html',
+    						controller: 'datamessage_ctrl',
+    						resolve: {
+    							msg: function() {
+    								return data.warningMes.split("Success");
+    							},
+    							config: function() {
+    								return $scope.installConfig;
+    							}
+    						},   
+    					});	
+    					modalInstance.result.then(function (res) {
+    					    $scope.result = res;
+    					    if($scope.result == true){
+        						$scope.doBackup();
+        					}
+    					}, function () {
+    					});
+    				}else{
+    					$scope.doBackup();    					
+    				}
+                }else{
+                	 $scope.message = $scope.message.split(":")[1]==" "?"Error: Timeout when mounting server.":$scope.message;
+                }      	
+            });
     	}
-    	if($scope.remote_server != true){
-    		delete $scope.backupConfig.backupLocation.remote_server_dir;
-    		delete $scope.backupConfig.backupLocation.remote_server_ip;
-    	}
-    	$scope.showmessage = false;
-    	$scope.checkmessage = true;
-    	$scope.backupConfig.config = $scope.installConfig;
-    	validationService.databackupPreCheck($scope.backupConfig).then( function(data){
-            $scope.showmessage = true;
-            $scope.checkmessage = false;
-            $scope.valid = data.succeed;
-            $scope.message = data.message;
-            if($scope.valid == true){
-            	if(data.warningMes.indexOf("Warning") != -1){
-					$scope.showmessage = false;
-					var modalInstance = $modal.open({
-						animation: true,
-						backdrop:'static',
-						templateUrl: 'views/backup_restore/databackup_message.html',
-						controller: 'datamessage_ctrl',
-						resolve: {
-							msg: function() {
-								return data.warningMes.split("Success");
-							},
-							config: function() {
-								return $scope.installConfig;
-							}
-						},   
-					});	
-					modalInstance.result.then(function (res) {
-					    $scope.result = res;
-					    if($scope.result == true){
-    						$scope.doBackup();
-    					}
-					}, function () {
-					});
-				}else{
-					$scope.doBackup();    					
-				}
-            }else{
-            	 $scope.message = $scope.message.split(":")[1]==" "?"Error: Timeout when mounting server.":$scope.message;
-            }      	
-        });
     };
     
     $scope.restore = function(){
     	if($scope.installConfig.comType=="QOSAC"||$scope.installConfig.comType=="ATC"||$scope.installConfig.environment != 'KVM'){
     		$scope.doRestore();  
+    	}else{
+    		if($scope.remote_server != true){
+    			delete $scope.backupConfig.backupLocation.remote_server_dir;
+    			delete $scope.backupConfig.backupLocation.remote_server_ip;
+    		}
+    		$scope.showmessage = false;
+    		$scope.checkmessage = true;
+    		$scope.backupConfig.config = $scope.installConfig;
+    		validationService.datarestorePreCheck($scope.backupConfig).then( function(data){
+    			$scope.showmessage = true;
+    			$scope.checkmessage = false;
+    			$scope.valid = data.succeed;
+    			$scope.message = data.message;
+    			if($scope.valid == true){
+    				$scope.doRestore();
+    			}else{
+    				$scope.message = $scope.message.split(":")[1]==" "?"Error: Timeout when mounting server.":$scope.message;
+    			}                                   	 
+    		});
     	}
-    	if($scope.remote_server != true){
-    		delete $scope.backupConfig.backupLocation.remote_server_dir;
-    		delete $scope.backupConfig.backupLocation.remote_server_ip;
-    	}
-    	$scope.showmessage = false;
-    	$scope.checkmessage = true;
-    	$scope.backupConfig.config = $scope.installConfig;
-    	validationService.datarestorePreCheck($scope.backupConfig).then( function(data){
-               $scope.showmessage = true;
-               $scope.checkmessage = false;
-               $scope.valid = data.succeed;
-               $scope.message = data.message;
-               if($scope.valid == true){
-            	   $scope.doRestore();
-               }else{
-            	   $scope.message = $scope.message.split(":")[1]==" "?"Error: Timeout when mounting server.":$scope.message;
-               }                                   	 
-        });
     };
 
     $scope.doBackup = function(){

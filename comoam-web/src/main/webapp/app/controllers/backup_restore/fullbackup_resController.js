@@ -83,77 +83,79 @@ angular.module('fullbackup_restore', ['ui.router',
                                 	    $scope.fullbackup = function(){
                                 	    	if($scope.installConfig.comType=="QOSAC"||$scope.installConfig.comType=="ATC"||$scope.installConfig.comType=="GANGLIA"){
                                 	    		$scope.dofullbackup();  
-                                	    	}
-                                	    	if($scope.remote_server != true){
-                                	    		delete $scope.fullbackupConfig.remote_server_dir;
-                                	    		delete $scope.fullbackupConfig.remote_server_ip;
-                                	    	}
-                                	    	$scope.showmessage = false;
-                                	    	$scope.checkmessage = true;
-                                	    	$scope.fullbackupConfig.stackName = $scope.installConfig.deployment_prefix;
-                                	    	validationService.fullbackupPreCheck($scope.fullbackupConfig).then( function(data){
-                                	                $scope.showmessage = true;
-                                	                $scope.checkmessage = false;
-                                	    			$scope.valid = data.succeed;
-                                	    			$scope.message = data.message;				
-                                	    			if($scope.valid == true){
-                                	    				if($scope.message.indexOf("Warning") != -1){
-                                	    					$scope.showmessage = false;
-                                	    					var modalInstance = $modal.open({
-                                	    						animation: true,
-                                	    						backdrop:'static',
-                                	    						templateUrl: 'views/backup_restore/fullbackup_message.html',
-                                	    						controller: 'fullmessage_ctrl',
-                                	    						resolve: {
-                                	    							msg: function() {
-       
-                                	    									return $scope.message.substring(0,$scope.message.indexOf("Success"));							
+                                	    	}else{
+                                	    		if($scope.remote_server != true){
+                                    	    		delete $scope.fullbackupConfig.remote_server_dir;
+                                    	    		delete $scope.fullbackupConfig.remote_server_ip;
+                                    	    	}
+                                    	    	$scope.showmessage = false;
+                                    	    	$scope.checkmessage = true;
+                                    	    	$scope.fullbackupConfig.stackName = $scope.installConfig.deployment_prefix;
+                                    	    	validationService.fullbackupPreCheck($scope.fullbackupConfig).then( function(data){
+                                    	                $scope.showmessage = true;
+                                    	                $scope.checkmessage = false;
+                                    	    			$scope.valid = data.succeed;
+                                    	    			$scope.message = data.message;				
+                                    	    			if($scope.valid == true){
+                                    	    				if($scope.message.indexOf("Warning") != -1){
+                                    	    					$scope.showmessage = false;
+                                    	    					var modalInstance = $modal.open({
+                                    	    						animation: true,
+                                    	    						backdrop:'static',
+                                    	    						templateUrl: 'views/backup_restore/fullbackup_message.html',
+                                    	    						controller: 'fullmessage_ctrl',
+                                    	    						resolve: {
+                                    	    							msg: function() {
+           
+                                    	    									return $scope.message.substring(0,$scope.message.indexOf("Success"));							
 
-                                	    							}
-                                	    						},   
-                                	    					});	
-                                	    					modalInstance.result.then(function (res) {
-                                	    					    $scope.result = res;
-                                	    					    if($scope.result == true){
-                                    	    						$scope.dofullbackup();
-                                    	    					}
-                                	    					}, function () {
-                                	    					});
-                                	    				}else{
-                                	    					$scope.dofullbackup();    					
-                                	    				}
-                                        	    	}else{
-                                        	    		if($scope.message == ""){
-                                        	    			$scope.message = "Time out while mounting server.";
-                                        	    		}
-                                        	    	}
-                                	    	});
+                                    	    							}
+                                    	    						},   
+                                    	    					});	
+                                    	    					modalInstance.result.then(function (res) {
+                                    	    					    $scope.result = res;
+                                    	    					    if($scope.result == true){
+                                        	    						$scope.dofullbackup();
+                                        	    					}
+                                    	    					}, function () {
+                                    	    					});
+                                    	    				}else{
+                                    	    					$scope.dofullbackup();    					
+                                    	    				}
+                                            	    	}else{
+                                            	    		if($scope.message == ""){
+                                            	    			$scope.message = "Time out while mounting server.";
+                                            	    		}
+                                            	    	}
+                                    	    	});
+                                	    	}
                                 	    };
                                 	    
                                 	    $scope.fullrestore = function(){
                                 	    	if($scope.installConfig.comType=="QOSAC"||$scope.installConfig.comType=="ATC"||$scope.installConfig.comType=="GANGLIA"){
                                 	    		$scope.dofullrestore();  
+                                	    	}else{
+                                	    		if($scope.remote_server != true){
+                                    	    		delete $scope.fullbackupConfig.remote_server_dir;
+                                    	    		delete $scope.fullbackupConfig.remote_server_ip;
+                                    	    	}
+                                    	    	$scope.showmessage = false;
+                                    	    	$scope.checkmessage = true;
+                                    	    	$scope.fullbackupConfig.stackName = $scope.installConfig.deployment_prefix;
+                                    	    	validationService.fullrestorePreCheck($scope.fullbackupConfig).then( function(data){
+       	    			                            	$scope.showmessage = true;
+                                    	                $scope.checkmessage = false;
+                                    	    			$scope.valid = data.succeed;
+                                    	    			$scope.message = data.message;
+                                    	    			if($scope.valid == true){
+                                    	    				$scope.dofullrestore(); 
+                                    	    			}else{
+                                    	    				if($scope.message == ""){
+                                            	    			$scope.message = "Time out while mounting server.";
+                                            	    		}
+                                    	    			} 
+       	    			                        });
                                 	    	}
-                                	    	if($scope.remote_server != true){
-                                	    		delete $scope.fullbackupConfig.remote_server_dir;
-                                	    		delete $scope.fullbackupConfig.remote_server_ip;
-                                	    	}
-                                	    	$scope.showmessage = false;
-                                	    	$scope.checkmessage = true;
-                                	    	$scope.fullbackupConfig.stackName = $scope.installConfig.deployment_prefix;
-                                	    	validationService.fullrestorePreCheck($scope.fullbackupConfig).then( function(data){
-   	    			                            	$scope.showmessage = true;
-                                	                $scope.checkmessage = false;
-                                	    			$scope.valid = data.succeed;
-                                	    			$scope.message = data.message;
-                                	    			if($scope.valid == true){
-                                	    				$scope.dofullrestore(); 
-                                	    			}else{
-                                	    				if($scope.message == ""){
-                                        	    			$scope.message = "Time out while mounting server.";
-                                        	    		}
-                                	    			} 
-   	    			                        });
                                 	    };
                                 	         	    
                                 	    $scope.dofullbackup = function(){
