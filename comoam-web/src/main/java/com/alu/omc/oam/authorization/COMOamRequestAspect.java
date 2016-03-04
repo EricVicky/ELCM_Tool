@@ -1,10 +1,12 @@
 package com.alu.omc.oam.authorization;
 
+import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.lang3.SystemUtils;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
@@ -13,6 +15,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+
+import com.alu.omc.oam.ansible.validation.ValidationResult;
 
 @Service
 @Aspect
@@ -44,6 +48,7 @@ public class COMOamRequestAspect {
 		// log.info("authenticateAround methodName=" + methodName);
 
 		Method[] methods = target.getClass().getDeclaredMethods();
+
 		Method method = null;
 		for (Method m : methods) {
 			String name = m.getName();
@@ -68,6 +73,33 @@ public class COMOamRequestAspect {
 			return null;
 		}
 	}
+	@Around("execution(* com.alu.omc.oam.rest.kvm.controller.CheckController.*(..))")
+	public Object ignoreCheckAround(ProceedingJoinPoint joinPoint) throws Throwable {
+		Object target = joinPoint.getTarget();
+		String methodName = joinPoint.getSignature().getName();
+		Method[] methods = target.getClass().getDeclaredMethods();
+
+		Method method = null;
+		for (Method m : methods) {
+			String name = m.getName();
+			if (methodName.equals(name)) {
+				method = m;
+				break;
+			}
+		}
+		if (SystemUtils.IS_OS_WINDOWS && method.isAnnotationPresent(IgnoreCheck.class)) {
+		    ValidationResult rs = new ValidationResult();
+		    rs.setSucceed(true);
+		    rs.setExist(false);
+		    return rs;
+		} else {
+			Object[] args = joinPoint.getArgs();
+			Object retValue = joinPoint.proceed(args);
+			return retValue;
+		}
+	}
+
+	
 
 	private boolean isSecurityTask(String[] tasks) {
 		for (String task : tasks) {

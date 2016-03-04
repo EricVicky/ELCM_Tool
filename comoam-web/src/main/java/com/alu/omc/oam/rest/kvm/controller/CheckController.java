@@ -1,6 +1,5 @@
 package com.alu.omc.oam.rest.kvm.controller;
 
-import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -15,11 +14,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.alu.omc.oam.ansible.RunningComstackLock;
 import com.alu.omc.oam.ansible.validation.ValidationResult;
+import com.alu.omc.oam.authorization.IgnoreCheck;
 import com.alu.omc.oam.config.Action;
-import com.alu.omc.oam.config.ActionResult;
-import com.alu.omc.oam.config.AtcCOMConfig;
 import com.alu.omc.oam.config.BACKUPConfig;
-import com.alu.omc.oam.config.COMConfig;
 import com.alu.omc.oam.config.COMStack;
 import com.alu.omc.oam.config.FullBackupConfig;
 import com.alu.omc.oam.config.GRInstallConfig;
@@ -100,6 +97,7 @@ public class CheckController
     }
     
     @RequestMapping(value="/check/ping", method=RequestMethod.GET)
+    @IgnoreCheck
     public ValidationResult  ping(@ModelAttribute("host") String host) 
     {
     	ValidationResult res = new ValidationResult();
@@ -114,6 +112,7 @@ public class CheckController
     }
     
     @RequestMapping(value="/check/cpuVTCheck", method=RequestMethod.GET)
+    @IgnoreCheck
     public ValidationResult  vTcheck(@ModelAttribute("hostip") String hostip) 
     {
     	ValidationResult res = new ValidationResult();
@@ -160,6 +159,7 @@ public class CheckController
     }
     
     @RequestMapping(value="/os/check/unique", method=RequestMethod.GET)
+    @IgnoreCheck
     public ValidationResult uniqueSTACK(@ModelAttribute("name") String name){
        List<COMStack> stacks =  cOMStackService.list();
        ValidationResult res = new ValidationResult();
@@ -228,6 +228,7 @@ public class CheckController
     }
     
     @RequestMapping(value="/check/fullbackupPreCheck", method=RequestMethod.POST)
+    @IgnoreCheck
     public ValidationResult fullbackupCheckResult(@RequestBody FullBackupConfig<KVMCOMConfig> fullbackupconfig) {
     	fullbackupconfig.setConfig(getKVMCOMConfig(fullbackupconfig.getStackName()));
     	ValidationResult res = new ValidationResult();
@@ -256,6 +257,7 @@ public class CheckController
     }
     
     @RequestMapping(value="/check/fullrestorePreCheck", method=RequestMethod.POST)
+    @IgnoreCheck
     public ValidationResult fullrestorePreCheck(@RequestBody FullBackupConfig<KVMCOMConfig> fullbackupconfig) {
     	fullbackupconfig.setConfig(getKVMCOMConfig(fullbackupconfig.getStackName()));
     	ValidationResult res = new ValidationResult();
@@ -284,6 +286,7 @@ public class CheckController
     }
     
     @RequestMapping(value="/check/databackupPreCheck", method=RequestMethod.POST)
+    @IgnoreCheck
     public ValidationResult databackupCheckResult(@RequestBody BACKUPConfig<KVMCOMConfig> databackupconfig){
     	databackupconfig.setConfig(getKVMCOMConfig(databackupconfig.getStackName()));
     	ValidationResult res = new ValidationResult();
@@ -310,6 +313,7 @@ public class CheckController
     }
     
     @RequestMapping(value="/check/datarestorePreCheck", method=RequestMethod.POST)
+    @IgnoreCheck
     public ValidationResult datarestorePreCheck(@RequestBody BACKUPConfig<KVMCOMConfig> databackupconfig){
     	databackupconfig.setConfig(getKVMCOMConfig(databackupconfig.getStackName()));
     	ValidationResult res = new ValidationResult();
@@ -336,6 +340,7 @@ public class CheckController
     
     
     @RequestMapping(value="/check/bridge", method=RequestMethod.GET)
+    @IgnoreCheck
     public ValidationResult checkBridge(@ModelAttribute("hostip") String hostip,  @ModelAttribute("bridge") String  bridge){
     	ValidationResult res = new ValidationResult();
     	try
