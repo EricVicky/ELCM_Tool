@@ -82,17 +82,17 @@ public class CloudDeployController
 //    		                                @ModelAttribute("gateway") String gateway,@ModelAttribute("prefix") String prefix) 
 //    {
 //    	ValidationResult res = new ValidationResult();
-////    	KVMCOMConfig config = getKVMCOMConfig(stackName);
-////    	Map<String, VMConfig> vmconfigs = config.getVm_config();
-////    	Iterator<String> iterator = vmconfigs.keySet().iterator();
-////    	while(iterator.hasNext()){
-////    		String vnfc = iterator.next();
-////    		VMConfig vmConfig = vmconfigs.get(vnfc);
-////			String vmIP = vmConfig.getNic().get(0).getIp_v4().getIpaddress();
-////			cOMValidationService.setIp(vmIP);
-////			String checkRes= cOMValidationService.addIpv6();
-////			res.addWarningMes(checkRes);
-////    	}
+//    	KVMCOMConfig config = getKVMCOMConfig(stackName);
+//    	Map<String, VMConfig> vmconfigs = config.getVm_config();
+//    	Iterator<String> iterator = vmconfigs.keySet().iterator();
+//    	while(iterator.hasNext()){
+//    		String vnfc = iterator.next();
+//    		VMConfig vmConfig = vmconfigs.get(vnfc);
+//			String vmIP = vmConfig.getNic().get(0).getIp_v4().getIpaddress();
+//			cOMValidationService.setIp(vmIP);
+//			String checkRes= cOMValidationService.addIpv6();
+//			res.addWarningMes(checkRes);
+//    	}
 //    	if(true){
 //			try {
 //				List<COMStack> stacks = dataSource.list();
@@ -122,12 +122,13 @@ public class CloudDeployController
 //    	}
 //
 //    	return res;    			
-//    }
+//    } 
     
-    @RequestMapping(value="/kvm/addPort", method=RequestMethod.POST)
-    public void deploy( @RequestBody ADDPORTConfig config) throws IOException, InterruptedException
+    @RequestMapping(value="/kvm/addipv6", method=RequestMethod.POST)
+    public void addipv6( @RequestBody KVMCOMConfig config) throws IOException, InterruptedException
     {
-        ansibleDelegator.addAnsibleTask(Action.ADDPORT, config );
+        ansibleDelegator.addAnsibleTask(Action.ADDIPV6, config );
+        encryPassword(config);
     }
     
     @RequestMapping(value="/os/deployment", method=RequestMethod.POST)

@@ -1,0 +1,43 @@
+-------Call Ansible......
+2015-09-16 22:10:57,934 p=32585 u=root |   [WARNING]: The version of gmp you have installed has a known issue regarding
+timing vulnerabilities when used with pycrypto. If possible, you should update
+it (i.e. yum update gmp).
+
+2015-09-16 22:10:58,035 p=32585 u=root |   
+2015-09-16 22:10:58,035 p=32585 u=root |   
+2015-09-16 22:10:58,114 p=32585 u=root |  PLAY [stop com application] *************************************************** 
+2015-09-16 22:10:58,114 p=32585 u=root |  TASK: [stop_com | stop com application] *************************************** 
+2015-09-16 22:10:58,035 p=32585 u=root |  /usr/bin/ansible-playbook -c paramiko -i ../../inventory/hosts backup.yml
+2015-09-16 22:12:42,978 p=32585 u=root |  changed: [135.111.108.208]
+2015-09-16 22:12:42,980 p=32585 u=root |  PLAY [backup com data] ******************************************************** 
+2015-09-16 22:12:42,981 p=32585 u=root |  TASK: [remote_backup | create local backup directory] ************************* 
+2015-09-16 22:12:43,489 p=32585 u=root |  ok: [135.111.108.208]
+2015-09-16 22:12:43,521 p=32585 u=root |  ok: [135.111.108.209]
+2015-09-16 22:12:43,560 p=32585 u=root |  ok: [135.111.108.210]
+2015-09-16 22:12:43,570 p=32585 u=root |  TASK: [remote_backup | mount nfs directory] *********************************** 
+2015-09-16 22:12:43,596 p=32585 u=root |  skipping: [135.111.108.208]
+2015-09-16 22:12:43,598 p=32585 u=root |  skipping: [135.111.108.209]
+2015-09-16 22:12:43,604 p=32585 u=root |  skipping: [135.111.108.210]
+2015-09-16 22:12:43,611 p=32585 u=root |  TASK: [remote_backup | backup data] ******************************************* 
+2015-09-16 22:12:45,800 p=32585 u=root |  changed: [135.111.108.209]
+2015-09-16 22:13:23,415 p=32585 u=root |  changed: [135.111.108.208]
+2015-09-16 22:15:11,377 p=32585 u=root |  changed: [135.111.108.210]
+2015-09-16 22:15:11,396 p=32585 u=root |  TASK: [remote_backup | backup data for CSA and CFMA] ************************** 
+2015-09-16 22:15:11,434 p=32585 u=root |  skipping: [135.111.108.208]
+2015-09-16 22:15:11,435 p=32585 u=root |  skipping: [135.111.108.209]
+2015-09-16 22:15:11,437 p=32585 u=root |  skipping: [135.111.108.210]
+2015-09-16 22:15:11,447 p=32585 u=root |  TASK: [remote_backup | backup data qosac data] ******************************** 
+2015-09-16 22:15:11,469 p=32585 u=root |  skipping: [135.111.108.208]
+2015-09-16 22:15:11,470 p=32585 u=root |  skipping: [135.111.108.209]
+2015-09-16 22:15:11,472 p=32585 u=root |  skipping: [135.111.108.210]
+2015-09-16 22:15:11,481 p=32585 u=root |  TASK: [remote_backup | synchronize data to disk] ****************************** 
+2015-09-16 22:15:11,943 p=32585 u=root |  changed: [135.111.108.208]
+2015-09-16 22:15:12,065 p=32585 u=root |  changed: [135.111.108.210]
+2015-09-16 22:15:12,073 p=32585 u=root |  changed: [135.111.108.209]
+2015-09-16 22:15:12,080 p=32585 u=root |  PLAY [start com application] ************************************************** 
+2015-09-16 22:15:12,081 p=32585 u=root |  TASK: [start_com | start com application] ************************************* 
+2015-09-16 22:15:20,581 p=32585 u=root |  changed: [135.111.108.208]
+2015-09-16 22:15:20,582 p=32585 u=root |  PLAY RECAP ******************************************************************** 
+2015-09-16 22:15:20,582 p=32585 u=root |  135.111.108.208            : ok=5    changed=4    unreachable=0    failed=0   
+2015-09-16 22:15:20,582 p=32585 u=root |  135.111.108.209            : ok=3    changed=2    unreachable=0    failed=0   
+2015-09-16 22:15:20,582 p=32585 u=root |  135.111.108.210            : ok=3    changed=2    unreachable=0    failed=0   

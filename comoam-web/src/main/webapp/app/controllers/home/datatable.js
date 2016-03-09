@@ -99,42 +99,42 @@ angular.module('datatable',['ui.grid', 'ui.grid.resizeColumns']).controller('dat
       	  });
 	};
 	
-	$scope.addport = function(row){
-		DashboardService.setSelectedInstance(row.entity.comConfig);
-		$state.go('dashboard.addPort');
-	}
-	
-//	$scope.addip = function(row){
-//		DashboardService.setSelectedInstance(row.entity.comConfig);
-//		var modalInstance = $modal.open({
-//			animation: true,
-//			backdrop:'static',
-//			templateUrl: 'views/common/addip.html',
-//			controller: function($scope, $modalInstance ){
-//				    $scope.ipTypes  = [ {"label":"--IPv4--", "mode": 1}, 
-//		    	                        {"label":"--IPv6--", "mode": 2 }];
-//					$scope.ok = function(){
-//						$modalInstance.close($scope.ipType);
-//					};
-//					$scope.cancel = function () {
-//						$modalInstance.dismiss('cancel');
-//					};
-//			},
-//			resolve: {
-//				
-//			},   
-//		});	
-//		modalInstance.result.then(function (ipType) {
-//			$scope.iplabel = ipType.label;
-//			if($scope.iplabel == "--IPv4--"){
-//				$state.go('dashboard.addV4Port');
-//			}else{
-//				$state.go('dashboard.addV6Port');
-//			}   
-//		}, function () {
-//		});	
-//		
-//	};
+	$scope.addipv6 = function(row){
+		var modalInstance = $modal.open({
+			animation: true,
+			backdrop:'static',
+			templateUrl: 'views/common/addipv6.html',
+			controller: function($scope, $modalInstance ){	
+				$scope.installConfig = row.entity.comConfig;
+				$scope.ipv6Config = {
+						"oam" : {},
+						"db" : {},
+						"cm" : {}
+				}
+				$scope.ok = function(){
+					for(var vm in $scope.installConfig.vm_config){
+						$scope.installConfig.vm_config[vm].nic[0].ip_v6 = $scope.ipv6Config[vm];
+					}
+					$modalInstance.close($scope.installConfig);
+				};
+				$scope.cancel = function () {
+					$modalInstance.dismiss('cancel');
+				};
+			},
+			resolve: {
+				
+			},   
+		});	
+		modalInstance.result.then(function (installConfig) {
+			$scope.installConfig = installConfig;
+			KVMService.addipv6($scope.installConfig).then( function(){
+	      	      monitorService.monitor("KVM", "ADDIPV6", $scope.installConfig.comType,  $scope.installConfig.deployment_prefix);
+	   			  $state.go("dashboard.monitor");
+	  		}); 
+		}, function () {
+		});	
+		
+	};
 
 
 	

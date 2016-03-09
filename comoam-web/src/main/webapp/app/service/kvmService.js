@@ -98,17 +98,10 @@ angular.module('kvm').factory('KVMService', function($location, $q, $resource, $
 			var healingRes = $resource(restUrl + "rest/kvm/healing");
 			return healingRes.save(config).$promise;
 		},
-		addPort: function(config){
-			var portRes = $resource(restUrl + "rest/kvm/addPort");
-			return portRes.save(config).$promise;
+		addipv6: function (config) {
+			var addRes = $resource(restUrl + "rest/kvm/addipv6");
+			return addRes.save(config).$promise;
 		}
-//		addipv6: function (stackName,ipaddress,gateway,prefix) {
-//			var deferred = $q.defer();
-//		    $http.get(restUrl + "rest/kvm/addipv6", {"params": {"stackName": stackName,"ipaddress": ipaddress,"gateway": gateway,"prefix": prefix}}).success(function(res) {
-//		        deferred.resolve({ isValid: res.succeed, message: res.message });
-//		    });
-//		    return deferred.promise;
-//		}
 	};
 });
 

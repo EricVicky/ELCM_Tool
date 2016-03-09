@@ -75,7 +75,18 @@ public class LogParserFactory
         parserCache.put(new ActionKey(Action.FULLRESTORE, Environment.KVM, COMType.QOSAC), kvmfullqosacRestoreParser());
         parserCache.put(new ActionKey(Action.UPGRADE_FULLBACKUP, Environment.KVM), kvmUpgradeFullbackParser());
         parserCache.put(new ActionKey(Action.HEALING, Environment.KVM), kvmHealingParser());
+        parserCache.put(new ActionKey(Action.ADDIPV6, Environment.KVM), kvmAddipv6Parser());
     }
+    
+    private ILogParser kvmAddipv6Parser() {
+    	Map<String, String> dict = new LinkedHashMap<String, String>();
+    	dict.put("ansible-playbook", "Finished");
+        dict.put("ansible-playbook", "Start COM");
+        dict.put("ansible-playbook", "Adding Ipv6");
+        dict.put("ansible-playbook", "Stop COM");
+        dict.put("ansible-playbook", "Start");
+        return new LogParser(dict);
+	}
     
     private ILogParser kvmfullqosacBackupParser() {
     	Map<String, String> dict = new LinkedHashMap<String, String>();

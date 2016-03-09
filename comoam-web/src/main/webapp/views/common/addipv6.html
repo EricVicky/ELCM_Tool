@@ -1,0 +1,68 @@
+
+    
+    
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title" style="color:blue">IPv6 Network Configuration</h4>
+      </div>
+      <div class="modal-body row">
+      <fieldset ng-if="installConfig.comType=='FCAPS'||installConfig.comType=='CM'||installConfig.comType=='OAM'">
+      <legend>OAM VM</legend>
+      	<div class="form-group col-md-4">
+			<label class="control-label" translate="IP_ADDRESS">IP Address</label> <input
+				name="oam_ipv6_address" class="form-control" type="text"
+				ng-model="ipv6Config.oam.ipaddress" validation="required" />
+		</div>
+		<div class="form-group col-md-4">
+			<label class="control-label" translate="NETWORK_GAT">Network Gateway</label> <input
+				name="oam_ipv6_gateway" class="form-control" type="text"
+				ng-model="ipv6Config.oam.gateway" validation="required" />
+		</div>
+		<div class="form-group col-md-4">
+			<label class="control-label" translate="NETWORK_PRE">Network Prefix</label><input
+				name="oam_ipv6_prefix" class="form-control" type="number" min="1" max="127"
+				ng-model="ipv6Config.oam.prefix" validation="required" />
+		</div>	
+	  </fieldset>
+	  <fieldset ng-if="installConfig.comType=='FCAPS'||installConfig.comType=='CM'||installConfig.comType=='OAM'">
+      <legend>DB VM</legend>
+      	<div class="form-group col-md-4">
+			<label class="control-label" translate="IP_ADDRESS">IP Address</label> <input
+				name="oam_ipv6_address" class="form-control" type="text"
+				ng-model="ipv6Config.db.ipaddress" validation="required" />
+		</div>
+		<div class="form-group col-md-4">
+			<label class="control-label" translate="NETWORK_GAT">Network Gateway</label> <input
+				name="oam_ipv6_gateway" class="form-control" type="text"
+				ng-model="ipv6Config.db.gateway" validation="required" />
+		</div>
+		<div class="form-group col-md-4">
+			<label class="control-label" translate="NETWORK_PRE">Network Prefix</label><input
+				name="oam_ipv6_prefix" class="form-control" type="number" min="1" max="127"
+				ng-model="ipv6Config.db.prefix" validation="required" />
+		</div>	
+	  </fieldset>
+	  <fieldset ng-if="installConfig.comType=='FCAPS'||installConfig.comType=='CM'">
+      <legend>CM VM</legend>
+      	<div class="form-group col-md-4">
+			<label class="control-label" translate="IP_ADDRESS">IP Address</label> <input
+				name="oam_ipv6_address" class="form-control" type="text"
+				ng-model="ipv6Config.cm.ipaddress" validation="required" />
+		</div>
+		<div class="form-group col-md-4">
+			<label class="control-label" translate="NETWORK_GAT">Network Gateway</label> <input
+				name="oam_ipv6_gateway" class="form-control" type="text"
+				ng-model="ipv6Config.cm.gateway" validation="required" />
+		</div>
+		<div class="form-group col-md-4">
+			<label class="control-label" translate="NETWORK_PRE">Network Prefix</label><input
+				name="oam_ipv6_prefix" class="form-control" type="number" min="1" max="127"
+				ng-model="ipv6Config.cm.prefix" validation="required" />
+		</div>	
+	  </fieldset>	
+      </div>
+      <div class="modal-footer">
+      	<button type="button" class="btn btn-success" ng-click="ok()">OK</button>
+        <button type="button" class="btn btn-default" ng-click="cancel()">Cancel</button>
+      </div>
+    </div>
