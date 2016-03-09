@@ -28,7 +28,8 @@ public class Addipv6KVMHandler extends DefaultHandler{
     public void onSucceed()
     {
         log.info("addipv6 succeeded on KVM");
-        
+        COMStack stack = new COMStack(config);
+        service.update(stack);
     }
 
     @Override
