@@ -7,7 +7,7 @@
 		<div class="col-md-5">
 			<label class="control-label" id="basic-addon1" translate="BRIDGE">Bridge</label>
 			<input name="oam_bridge" class="form-control" type="text" placeholder="Example:br0"
-				ng-model="nic.bridge" validation="required|remote:checkBridge"/>
+				ng-model="nic.bridge" validation="required|remote:checkBridge|max_len:256"/>
 		</div>
 	</div>
 	<br/><br/><br/>
@@ -23,7 +23,7 @@
 		<div class="col-md-4">
 			<label class="control-label" translate="NETWORK_GAT">Network
 				Gateway</label> <input name="oam_ipv4_gateway" class="form-control"
-				type="text" ng-model="nic.ip_v4.gateway"/>
+				type="text" ng-model="nic.ip_v4.gateway" validation="ipv4" />
 		</div>
 	</div>
 	<div class="form-group">
@@ -43,12 +43,12 @@
 		<div class="form-group col-md-4">
 			<label class="control-label" translate="IP_ADDRESS">IP Address</label> <input
 				name="oam_ipv6_address" class="form-control" type="text"
-				ng-model="nic.ip_v6.ipaddress" />
+				ng-model="nic.ip_v6.ipaddress" validation="pattern=/^([a-z0-9:])+$/i:alt=Invalid IPv6 format.|max_len:39" />
 		</div>
 		<div class="form-group col-md-4">
 			<label class="control-label" translate="NETWORK_GAT">Network Gateway</label> <input
 				name="oam_ipv6_gateway" class="form-control" type="text"
-				ng-model="nic.ip_v6.gateway" />
+				ng-model="nic.ip_v6.gateway" validation="pattern=/^([a-z0-9:])+$/i:alt=Invalid IPv6 format.|max_len:39" />
 		</div>
 		<div class="form-group col-md-4">
 			<label class="control-label" translate="NETWORK_PRE">Network Prefix</label><input

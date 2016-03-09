@@ -192,19 +192,19 @@
 											<label class="control-label" translate="RESTORE_SERVER_DIRECTORY">Restore Server Directory</label> <input
 												name="backup_server_directory" class="form-control" type="text"
 												ng-model="$parent.backupConfig.backupLocation.remote_server_dir" 
-												title="serverip" validation="required" ng-blur="init()"/>
+												title="serverip" validation="required|max_len:4096" ng-blur="init()"/>
 										</div>
 										<div class="form-group" ng-show="remote_server==false">
 											<label class="control-label" translate="LOCAL_DIRECTORY">Local Directory</label> <input
 												name="local_directory" class="form-control" type="text" ng-blur="init()"
 												ng-model="backupConfig.backupLocation.local_backup_dir" 
-												title="directory" validation="required" ng-init="backupConfig.backupLocation.local_backup_dir='/localbackup'"/>
+												title="directory" validation="required|max_len:4096" ng-init="backupConfig.backupLocation.local_backup_dir='/localbackup'"/>
 										</div>
 										<div class="form-group">
 											<label class="control-label" translate="FILE_NAME">Version</label> <input
 												name="versions" class="form-control" type="text" ng-blur="init()"
 												ng-model="backupConfig.backupLocation.local_backup_file"
-												title="file name" validation="required"/>
+												title="file name" validation="required|max_len:255"/>
 										</div>
 										
 										<div ng-show="checkmessage == true">

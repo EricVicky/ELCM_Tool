@@ -193,17 +193,17 @@
 											<label class="control-label" translate="BACKUP_SERVER_DIRECTORY">Backup Server Directory</label> <input
 												name="backup_server_directory" class="form-control" type="text"
 												ng-model="$parent.backupConfig.backupLocation.remote_server_dir" 
-												title="Backup Server Directory" validation="required" ng-blur="init()"/>
+												title="Backup Server Directory" validation="required|max_len:4096" ng-blur="init()"/>
 										</div>
 										<div class="form-group" ng-show="remote_server==false">
 											<label class="control-label" translate="LOCAL_DIRECTORY">Local Directory</label> <input
 												name="local_directory" class="form-control" type="text" ng-blur="init()"
 												ng-model="backupConfig.backupLocation.local_backup_dir" 
-												title="directory" validation="required" ng-init="backupConfig.backupLocation.local_backup_dir='/localbackup'"/>
+												title="directory" validation="required|max_len:4096" ng-init="backupConfig.backupLocation.local_backup_dir='/localbackup'"/>
 										</div>
 										<div class="form-group">
 											<label class="control-label">File Name<label style="color:red">(must end with .tgz)</label></label> <input
-												name="version" class="form-control" type="text" validation="pattern=/^[0-9a-zA-Z_]+.tgz$/:alt=Invalid Filename|required"
+												name="version" class="form-control" type="text" validation="pattern=/^[0-9a-zA-Z_]+.tgz$/:alt=Invalid Filename|required|max_len:255"
 												ng-model="backupConfig.backupLocation.local_backup_file"
 												title="file name" ng-blur="checkname();init()"/>
 										</div>

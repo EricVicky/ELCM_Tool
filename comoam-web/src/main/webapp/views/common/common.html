@@ -2,20 +2,20 @@
 	<label class="control-label" translate="BACKUP_SERVER_DISK_SPACE">Backup Server Disk Space</label> <input
 		name="BACKUP_SERVER_DISK_SPACE" class="form-control" type="text"
 		ng-model="installConfig.app_install_options.BACKUP_SERVER_DISK_SPACE"
-		title="Backup Server Disk Space" validation="required|int" />
+		title="Backup Server Disk Space" validation="required|int|max_len:64" />
 </div>
 <div class="form-group" ng-if="installConfig.comType!='QOSAC'">
 	<label class="control-label" translate="CALL_TRACE_DISK_SPACE">Call Trace Disk Space</label> <input
 		name="CALL_TRACE_DISK_SPACE" class="form-control" type="text" 
 		ng-model="installConfig.app_install_options.CALL_TRACE_DISK_SPACE"
 		
-		title="Call Trace Disk Space" validation="required|int" />
+		title="Call Trace Disk Space" validation="required|int|max_len:64" />
 </div>
 <div class="form-group" ng-if="installConfig.comType!='QOSAC'">
 	<label class="control-label" translate="CODE_SERVER_DISK_SPACE">Code Server Disk Space</label> <input
 		name="CODE_SERVER_DISK_SPACE" class="form-control" type="text"
 		ng-model="installConfig.app_install_options.CODE_SERVER_DISK_SPACE"
-		title="Code Server Disk Space" validation="required|int" />
+		title="Code Server Disk Space" validation="required|int|max_len:64" />
 </div>
 <div class="form-group" ng-if="installConfig.comType!='QOSAC'">
 	<label class="control-label" translate="OMCCN_SUPPORT_WEBSSO_SANE">OMCCN Support Websso SANE</label> <select
@@ -28,13 +28,13 @@
 </div>
 <div class="form-group">
 	<label class="control-label" translate="NTP_SERVER">NTP Server</label> <input
-		name="NTP_SERVER" class="form-control" type="text"  validation="required" 
+		name="NTP_SERVER" class="form-control" type="text"  validation="required|max_len:64" 
         ng-model="installConfig.app_install_options.NTP_SERVER"
 		title="NTP Server" />
 </div>
 <div class="form-group" ng-if="installConfig.comType!='QOSAC'">
 	<label class="control-label" >Supported NE Types</label> <input
-		name="NTP_SERVER" class="form-control" type="text"  validation="required" 
+		name="SUPPORTED_NE_TYPES" class="form-control" type="text"  validation="required|max_len:64" 
         ng-model="installConfig.app_install_options.OMCCN_SUPPORT_NE_TYPES"
 		title="NE types" />
 </div>
@@ -114,13 +114,13 @@
     <label class="control-label" translate="SOFTWARE_SERVER_ADDRESS">Software Server Address</label> <input
         name="SOFTWARE_SERVER_ADDRESS" class="form-control" type="text"
         ng-model="installConfig.app_install_options.SOFTWARE_SERVER_ADDRESS"
-        title="SOFTWARE SERVER ADDRESS" validation="required" />
+        title="SOFTWARE SERVER ADDRESS" validation="required|max_len:64" />
 </div>
 <div class="form-group">
     <label class="control-label" translate="BACKUP_SERVER_ADDRESS">Backup Server Address</label> <input
         name="BACKUP_SERVER_ADDRESS" class="form-control" type="text"
         ng-model="installConfig.app_install_options.BACKUP_SERVER_ADDRESS"
-        title="BACKUP SERVER ADDRESS" validation="required" />
+        title="BACKUP SERVER ADDRESS" validation="required|max_len:64" />
 </div>
 <div class="form-group" ng-if="installConfig.comType!='QOSAC'">
 	<label class="control-label" translate="OMCCN_SUPPORT_3GPP">Support 3GPP Corba Interface for Alarm</label> <select
