@@ -66,7 +66,7 @@
 									</div>
 									<div class="form-group">
 										<label class="control-label" translate="IMAGE_DIR">Image Directory</label> 
-										<input name="vm_image_dir" class="form-control" type="text" ng-model="installConfig.vm_img_dir" ng-init="installConfig.vm_img_dir='/var/images'" placeholder="Please Insert Image Dir" title="VM image directory" validation="required" />
+										<input name="vm_image_dir" class="form-control" type="text" ng-model="installConfig.vm_img_dir" ng-init="installConfig.vm_img_dir='/var/images'" placeholder="Please Insert Image Dir" title="VM image directory" validation="required|max_len:4096" />
 									</div>
 								</form>
 								<form class="tab-pane" id="tab2" name="tab2" rc-submit="initNic()" rc-step>
@@ -113,7 +113,7 @@
 											<div class="row form-group">
 												<div class="col-md-4" ng-show="installConfig.vm_config.oam.nic[$index].ip_v4.ipaddress" >
 													<label translate="IPV4_ADDRESS:">IPV4 Address:&nbsp;&nbsp;</label>
-													<input align="center" name="oam_ipv4_ipaddress{{$index}}" type="text" validation="required" 
+													<input align="center" name="oam_ipv4_ipaddress{{$index}}" type="text" validation="required"
 													readonly style="border-width:0px;width:120px" ng-model="installConfig.vm_config.oam.nic[$index].ip_v4.ipaddress">
 												</div>
 												<div class="col-md-4" ng-show="installConfig.vm_config.oam.nic[$index].ip_v6.ipaddress" >
@@ -148,7 +148,7 @@
 											<div class="row form-group">
 												<div class="col-md-4" ng-show="installConfig.vm_config.cm.nic[$index].ip_v4.ipaddress" >
 													<label translate="IPV4_ADDRESS:">IPV4 Address:&nbsp;&nbsp;</label>
-													<input align="center" name="cm_ipv4_ipaddress{{$index}}" type="text" validation="required" 
+													<input align="center" name="cm_ipv4_ipaddress{{$index}}" type="text" validation="required"
 													readonly style="border-width:0px;width:120px" ng-model="installConfig.vm_config.cm.nic[$index].ip_v4.ipaddress">
 												</div>
 												<div class="col-md-4" ng-show="installConfig.vm_config.cm.nic[$index].ip_v6.ipaddress" >
@@ -183,7 +183,7 @@
 											<div class="row form-group">
 												<div class="col-md-4" ng-show="installConfig.vm_config.db.nic[$index].ip_v4.ipaddress" >
 													<label translate="IPV4_ADDRESS:">IPV4 Address:&nbsp;&nbsp;</label>
-													<input align="center" name="db_ipv4_ipaddress{{$index}}" type="text" validation="required" 
+													<input align="center" name="db_ipv4_ipaddress{{$index}}" type="text" validation="required"
 													readonly style="border-width:0px;width:120px" ng-model="installConfig.vm_config.db.nic[$index].ip_v4.ipaddress">
 												</div>
 												<div class="col-md-4" ng-show="installConfig.vm_config.db.nic[$index].ip_v6.ipaddress" >
@@ -214,29 +214,29 @@
 											<div class="form-group col-md-3">
 												<label class="control-label">OAM</label> <input
 												name="oam_hostname" class="form-control" type="text" ng-change="changeHostName()"
-												ng-model="installConfig.vm_config.oam.hostname" validation="pattern=/^(([a-zA-Z0-9]|[a-zA-Z0-9][a-zA-Z0-9\-]*[a-zA-Z0-9])\.)*([A-Za-z0-9]|[A-Za-z0-9][A-Za-z0-9\-]*[A-Za-z0-9])$/:alt=host name not qualified for FQDN|required"/>
+												ng-model="installConfig.vm_config.oam.hostname" validation="pattern=/^(([a-zA-Z0-9]|[a-zA-Z0-9][a-zA-Z0-9\-]*[a-zA-Z0-9])\.)*([A-Za-z0-9]|[A-Za-z0-9][A-Za-z0-9\-]*[A-Za-z0-9])$/:alt=host name not qualified for FQDN|required|max_len:64"/>
 									        </div>
 									        <div class="form-group col-md-3">
 												<label class="control-label">DB</label> <input
 												name="db_hostname" class="form-control" type="text" ng-change="changeHostName()"
-												ng-model="installConfig.vm_config.db.hostname"  validation="pattern=/^(([a-zA-Z0-9]|[a-zA-Z0-9][a-zA-Z0-9\-]*[a-zA-Z0-9])\.)*([A-Za-z0-9]|[A-Za-z0-9][A-Za-z0-9\-]*[A-Za-z0-9])$/:alt=host name not qualified for FQDN|required"/>
+												ng-model="installConfig.vm_config.db.hostname"  validation="pattern=/^(([a-zA-Z0-9]|[a-zA-Z0-9][a-zA-Z0-9\-]*[a-zA-Z0-9])\.)*([A-Za-z0-9]|[A-Za-z0-9][A-Za-z0-9\-]*[A-Za-z0-9])$/:alt=host name not qualified for FQDN|required|max_len:64"/>
 									        </div>
 										</div>
 										<div ng-if="installConfig.comType=='FCAPS'||installConfig.comType=='CM'">
 											<div class="form-group col-md-3">
 												<label class="control-label">OAM</label> <input
 												name="oam_hostname" class="form-control" type="text" ng-change="changeHostName()"
-												ng-model="installConfig.vm_config.oam.hostname"  validation="pattern=/^(([a-zA-Z0-9]|[a-zA-Z0-9][a-zA-Z0-9\-]*[a-zA-Z0-9])\.)*([A-Za-z0-9]|[A-Za-z0-9][A-Za-z0-9\-]*[A-Za-z0-9])$/:alt=host name not qualified for FQDN|required"/>
+												ng-model="installConfig.vm_config.oam.hostname"  validation="pattern=/^(([a-zA-Z0-9]|[a-zA-Z0-9][a-zA-Z0-9\-]*[a-zA-Z0-9])\.)*([A-Za-z0-9]|[A-Za-z0-9][A-Za-z0-9\-]*[A-Za-z0-9])$/:alt=host name not qualified for FQDN|required|max_len:64"/>
 									        </div>
 									        <div class="form-group col-md-3">
 												<label class="control-label">CM</label> <input
 												name="cm_hostname" class="form-control" type="text" ng-change="changeHostName()"
-												ng-model="installConfig.vm_config.cm.hostname"  validation="pattern=/^(([a-zA-Z0-9]|[a-zA-Z0-9][a-zA-Z0-9\-]*[a-zA-Z0-9])\.)*([A-Za-z0-9]|[A-Za-z0-9][A-Za-z0-9\-]*[A-Za-z0-9])$/:alt=host name not qualified for FQDN|required"/>
+												ng-model="installConfig.vm_config.cm.hostname"  validation="pattern=/^(([a-zA-Z0-9]|[a-zA-Z0-9][a-zA-Z0-9\-]*[a-zA-Z0-9])\.)*([A-Za-z0-9]|[A-Za-z0-9][A-Za-z0-9\-]*[A-Za-z0-9])$/:alt=host name not qualified for FQDN|required|max_len:64"/>
 									        </div>
 									        <div class="form-group col-md-3">
 												<label class="control-label">DB</label> <input
 												name="db_hostname" class="form-control" type="text" ng-change="changeHostName()"
-												ng-model="installConfig.vm_config.db.hostname"  validation="pattern=/^(([a-zA-Z0-9]|[a-zA-Z0-9][a-zA-Z0-9\-]*[a-zA-Z0-9])\.)*([A-Za-z0-9]|[A-Za-z0-9][A-Za-z0-9\-]*[A-Za-z0-9])$/:alt=host name not qualified for FQDN|required"/>
+												ng-model="installConfig.vm_config.db.hostname"  validation="pattern=/^(([a-zA-Z0-9]|[a-zA-Z0-9][a-zA-Z0-9\-]*[a-zA-Z0-9])\.)*([A-Za-z0-9]|[A-Za-z0-9][A-Za-z0-9\-]*[A-Za-z0-9])$/:alt=host name not qualified for FQDN|required|max_len:64"/>
 									        </div>
 										</div>
 									</fieldset>

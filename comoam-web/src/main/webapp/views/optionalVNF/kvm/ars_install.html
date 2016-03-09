@@ -40,7 +40,7 @@
 										<label class="control-label">Host IP</label> <input
 											name="host_ip" ng-model="installConfig.active_host_ip"
 											class="form-control" type="text"
-											title="Host IP" validation="required" />
+											title="Host IP" validation="required|max_len:39" />
 									</div>
                                     <div class="form-group">
                                             <label class="control-label">DB VM IPv4 Address</label> <input
@@ -56,7 +56,7 @@
                                             name="license" class="form-control" type="text"
                                             ng-model="installConfig.license_key"
                                             placeholder="Please Input License"
-                                            title="License" validation="required" />
+                                            title="License" validation="required|max_len:1024" />
                                     </div>
 								</form>
 								<form class="tab-pane" id="tab3" name="tab3" rc-submit rc-step>

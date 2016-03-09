@@ -56,7 +56,7 @@
 											name="vm_img_dir" class="form-control" type="text"
 											ng-model="installConfig.vm_img_dir" ng-init="installConfig.vm_img_dir='/var/images'"
 											placeholder="Please Insert VM Image directory"
-											title="VM Image directory" validation="required" />
+											title="VM Image directory" validation="required|max_len:4096" />
 									</div>
 									<div class="form-group">
 										<label class="control-label">Deployment Prefix</label> <input unique-com
@@ -69,7 +69,7 @@
 									<div class="form-group" ng-if="installConfig.comType=='ATC'">
 										<label class="control-label">ATC switches</label> <input
 											name="atc_switches" class="form-control" type="text" 
-											ng-model="installConfig.atc_switches" title="ATC switches" />
+											ng-model="installConfig.atc_switches" title="ATC switches" validation="max_len:1024" />
 									</div>
 								</form>
 								<form class="tab-pane" id="tab2" name="tab2" rc-submit="initHostName()" rc-step>
@@ -90,7 +90,7 @@
 											<label class="control-label" id="basic-addon1"
 												translate="BRIDGE">Bridge</label> <input name="oam_bridge"
 												class="form-control" type="text" placeholder="Example:br0"
-												ng-model="installConfig.vm_config.ovm.bridge" validation="required|remote:checkBridge" />
+												ng-model="installConfig.vm_config.ovm.bridge" validation="required|remote:checkBridge|max_len:256" />
 									</div>
 									<fieldset>
 										<legend>IPv4 NETWORK</legend>
@@ -113,7 +113,7 @@
 												name="gateway" class="form-control" type="text"
 												ng-model="installConfig.vm_config.ovm.gateway"
 												placeholder="Please Insert Gateway" title="gateway"
-												validation="gateway|required" />
+												validation="ipv4|required" />
 										</div>
                                     <legend>IPv6 NETWORK</legend>
 										<div class="form-group col-md-4">
@@ -121,19 +121,19 @@
 												name="ipv6_address" class="form-control" type="text"
 												ng-model="installConfig.vm_config.ovm.ipv6_address"
 												placeholder="Please Insert IP Address" title="IPv6 Address"
-												 />
+												validation="pattern=/^([a-z0-9:])+$/i:alt=Invalid IPv6 format.|max_len:39" />
 										</div>
 										<div class="form-group col-md-4">
 											<label class="control-label">IPv6 Prefix</label> <input
-												name="ipv6_prefix" class="form-control" type="text"
+												name="ipv6_prefix" class="form-control" type="number"
 												ng-model="installConfig.vm_config.ovm.ipv6_prefix"
-												title="IPv6 prefix" />
+												title="IPv6 prefix" min="1" max="127" />
 										</div>
 										<div class="form-group col-md-4">
 											<label class="control-label">IPv6 Gateway</label> <input
 												name="ipv6_gateway" class="form-control" type="text"
 												ng-model="installConfig.vm_config.ovm.ipv6_gateway"
-												title="IPv6 Gateway" />
+												title="IPv6 Gateway" validation="pattern=/^([a-z0-9:])+$/i:alt=Invalid IPv6 format.|max_len:39" />
 										</div>
                                     <legend></legend>
 										<div class="form-group col-md-6">
@@ -149,7 +149,7 @@
 										<div class="form-group col-md-6">
 												<label class="control-label">Hostname</label> <input
 												name="oam_hostname" class="form-control" type="text" ng-change="changeHostName()"
-												ng-model="installConfig.vm_config.ovm.hostname" validation="pattern=/^(([a-zA-Z0-9]|[a-zA-Z0-9][a-zA-Z0-9\-]*[a-zA-Z0-9])\.)*([A-Za-z0-9]|[A-Za-z0-9][A-Za-z0-9\-]*[A-Za-z0-9])$/:alt=host name not qualified for FQDN|required"/>
+												ng-model="installConfig.vm_config.ovm.hostname" validation="pattern=/^(([a-zA-Z0-9]|[a-zA-Z0-9][a-zA-Z0-9\-]*[a-zA-Z0-9])\.)*([A-Za-z0-9]|[A-Za-z0-9][A-Za-z0-9\-]*[A-Za-z0-9])$/:alt=host name not qualified for FQDN|required|max_len:64"/>
 										</div>
 									</fieldset>
 								</form>
