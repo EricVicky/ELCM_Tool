@@ -80,10 +80,10 @@ public class LogParserFactory
     
     private ILogParser kvmAddipv6Parser() {
     	Map<String, String> dict = new LinkedHashMap<String, String>();
-    	dict.put("ansible-playbook", "Finished");
-        dict.put("ansible-playbook", "Start COM");
-        dict.put("ansible-playbook", "Adding Ipv6");
-        dict.put("ansible-playbook", "Stop COM");
+    	dict.put("PLAY\\sRECAP", "Finished");
+        dict.put("TASK\\:\\s\\[start\\_com\\s\\|\\sstart\\scom\\sapplication\\]", "Start COM");
+        dict.put("TASK\\:\\s\\[add\\_ipv6\\s\\|\\sadd\\sipv6\\saddress\\]", "Adding Ipv6");
+        dict.put("TASK\\:\\s\\[stop\\_com\\s\\|\\sstop\\scom\\sapplication\\]", "Stop COM");
         dict.put("ansible-playbook", "Start");
         return new LogParser(dict);
 	}

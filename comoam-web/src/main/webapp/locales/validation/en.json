@@ -254,5 +254,7 @@
     "GRUNINSTALL_SUCCEED":"GR Uninstall succeeded",
     "GRUNINSTALL_FAIL":"GR Uninstall failed",
     "HEALING_SUCCEED":"Healthing succeeded",
-    "HEALING_FAIL":"Healthing failed"
+    "HEALING_FAIL":"Healthing failed",
+    "ADDIPV6_SUCCEED":"Add ipv6 succeeded",
+    "ADDIPV6_FAIL":"Add ipv6 failed"
 }
