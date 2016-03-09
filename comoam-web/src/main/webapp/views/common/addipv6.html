@@ -1,6 +1,4 @@
-
-    
-    
+<form>
     <div class="modal-content">
       <div class="modal-header">
         <h4 class="modal-title" style="color:blue">IPv6 Network Configuration</h4>
@@ -11,12 +9,12 @@
       	<div class="form-group col-md-4">
 			<label class="control-label" translate="IP_ADDRESS">IP Address</label> <input
 				name="oam_ipv6_address" class="form-control" type="text"
-				ng-model="ipv6Config.oam.ipaddress" validation="required" />
+				ng-model="ipv6Config.oam.ipaddress" validation="pattern=/^([a-fA-F0-9:])+$/i:alt=Invalid IPv6 format.|max_len:39" />
 		</div>
 		<div class="form-group col-md-4">
 			<label class="control-label" translate="NETWORK_GAT">Network Gateway</label> <input
 				name="oam_ipv6_gateway" class="form-control" type="text"
-				ng-model="ipv6Config.oam.gateway" validation="required" />
+				ng-model="ipv6Config.oam.gateway" validation="pattern=/^([a-fA-F0-9:])+$/i:alt=Invalid IPv6 format.|max_len:39" />
 		</div>
 		<div class="form-group col-md-4">
 			<label class="control-label" translate="NETWORK_PRE">Network Prefix</label><input
@@ -28,17 +26,17 @@
       <legend>DB VM</legend>
       	<div class="form-group col-md-4">
 			<label class="control-label" translate="IP_ADDRESS">IP Address</label> <input
-				name="oam_ipv6_address" class="form-control" type="text"
-				ng-model="ipv6Config.db.ipaddress" validation="required" />
+				name="db_ipv6_address" class="form-control" type="text"
+				ng-model="ipv6Config.db.ipaddress" validation="pattern=/^([a-fA-F0-9:])+$/i:alt=Invalid IPv6 format.|max_len:39" />
 		</div>
 		<div class="form-group col-md-4">
 			<label class="control-label" translate="NETWORK_GAT">Network Gateway</label> <input
-				name="oam_ipv6_gateway" class="form-control" type="text"
-				ng-model="ipv6Config.db.gateway" validation="required" />
+				name="db_ipv6_gateway" class="form-control" type="text"
+				ng-model="ipv6Config.db.gateway" validation="pattern=/^([a-fA-F0-9:])+$/i:alt=Invalid IPv6 format.|max_len:39" />
 		</div>
 		<div class="form-group col-md-4">
 			<label class="control-label" translate="NETWORK_PRE">Network Prefix</label><input
-				name="oam_ipv6_prefix" class="form-control" type="number" min="1" max="127"
+				name="db_ipv6_prefix" class="form-control" type="number" min="1" max="127"
 				ng-model="ipv6Config.db.prefix" validation="required" />
 		</div>	
 	  </fieldset>
@@ -46,17 +44,17 @@
       <legend>CM VM</legend>
       	<div class="form-group col-md-4">
 			<label class="control-label" translate="IP_ADDRESS">IP Address</label> <input
-				name="oam_ipv6_address" class="form-control" type="text"
-				ng-model="ipv6Config.cm.ipaddress" validation="required" />
+				name="cm_ipv6_address" class="form-control" type="text"
+				ng-model="ipv6Config.cm.ipaddress" validation="pattern=/^([a-fA-F0-9:])+$/i:alt=Invalid IPv6 format.|max_len:39" />
 		</div>
 		<div class="form-group col-md-4">
 			<label class="control-label" translate="NETWORK_GAT">Network Gateway</label> <input
-				name="oam_ipv6_gateway" class="form-control" type="text"
-				ng-model="ipv6Config.cm.gateway" validation="required" />
+				name="cm_ipv6_gateway" class="form-control" type="text"
+				ng-model="ipv6Config.cm.gateway" validation="pattern=/^([a-fA-F0-9:])+$/i:alt=Invalid IPv6 format.|max_len:39" />
 		</div>
 		<div class="form-group col-md-4">
 			<label class="control-label" translate="NETWORK_PRE">Network Prefix</label><input
-				name="oam_ipv6_prefix" class="form-control" type="number" min="1" max="127"
+				name="cm_ipv6_prefix" class="form-control" type="number" min="1" max="127"
 				ng-model="ipv6Config.cm.prefix" validation="required" />
 		</div>	
 	  </fieldset>	
@@ -66,3 +64,4 @@
         <button type="button" class="btn btn-default" ng-click="cancel()">Cancel</button>
       </div>
     </div>
+</form>
