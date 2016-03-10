@@ -76,6 +76,7 @@ public class LogParserFactory
         parserCache.put(new ActionKey(Action.UPGRADE_FULLBACKUP, Environment.KVM), kvmUpgradeFullbackParser());
         parserCache.put(new ActionKey(Action.HEALING, Environment.KVM), kvmHealingParser());
         parserCache.put(new ActionKey(Action.ADDIPV6, Environment.KVM), kvmAddipv6Parser());
+        parserCache.put(new ActionKey(Action.REMOVEIPV6, Environment.KVM), kvmRemoveipv6Parser());
     }
     
     private ILogParser kvmAddipv6Parser() {
@@ -83,6 +84,16 @@ public class LogParserFactory
     	dict.put("PLAY\\sRECAP", "Finished");
         dict.put("TASK\\:\\s\\[start\\_com\\s\\|\\sstart\\scom\\sapplication\\]", "Start COM");
         dict.put("TASK\\:\\s\\[add\\_ipv6\\s\\|\\sadd\\sipv6\\saddress\\]", "Adding Ipv6");
+        dict.put("TASK\\:\\s\\[stop\\_com\\s\\|\\sstop\\scom\\sapplication\\]", "Stop COM");
+        dict.put("ansible-playbook", "Start");
+        return new LogParser(dict);
+	}
+    
+    private ILogParser kvmRemoveipv6Parser() {
+    	Map<String, String> dict = new LinkedHashMap<String, String>();
+    	dict.put("PLAY\\sRECAP", "Finished");
+        dict.put("TASK\\:\\s\\[start\\_com\\s\\|\\sstart\\scom\\sapplication\\]", "Start COM");
+        dict.put("TASK\\:\\s\\[remove\\_ipv6\\s\\|\\sremove\\sipv6\\saddress\\]", "Removing Ipv6");
         dict.put("TASK\\:\\s\\[stop\\_com\\s\\|\\sstop\\scom\\sapplication\\]", "Stop COM");
         dict.put("ansible-playbook", "Start");
         return new LogParser(dict);

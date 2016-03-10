@@ -256,5 +256,7 @@
     "HEALING_SUCCEED":"Healthing succeeded",
     "HEALING_FAIL":"Healthing failed",
     "ADDIPV6_SUCCEED":"Add ipv6 succeeded",
-    "ADDIPV6_FAIL":"Add ipv6 failed"
+    "ADDIPV6_FAIL":"Add ipv6 failed",
+    "REMOVEIPV6_SUCCEED":"Remove ipv6 succeeded",
+    "REMOVEIPV6_FAIL":"Remove ipv6 failed"
 }

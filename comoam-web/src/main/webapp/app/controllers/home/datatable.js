@@ -132,11 +132,39 @@ angular.module('datatable',['ui.grid', 'ui.grid.resizeColumns']).controller('dat
 	   			  $state.go("dashboard.monitor");
 	  		}); 
 		}, function () {
-		});	
-		
+		});		
 	};
 
-
+	$scope.removeipv6 = function(row){
+		var modalInstance = $modal.open({
+			animation: true,
+			backdrop:'static',
+			templateUrl: 'views/common/removeipv6.html',
+			controller: function($scope, $modalInstance ){
+				$scope.installConfig = row.entity.comConfig;	
+				$scope.ok = function(){
+					for(var vm in $scope.installConfig.vm_config){
+						delete $scope.installConfig.vm_config[vm].nic[0].ip_v6;
+					}
+					$modalInstance.close($scope.installConfig);
+				};
+				$scope.cancel = function () {
+					$modalInstance.dismiss('cancel');
+				};
+			},
+			resolve: {
+				
+			},   
+		});	
+		modalInstance.result.then(function (installConfig) {
+			$scope.installConfig = installConfig;
+			KVMService.removeipv6($scope.installConfig).then( function(){
+	      	      monitorService.monitor("KVM", "REMOVEIPV6", $scope.installConfig.comType,  $scope.installConfig.deployment_prefix);
+	   			  $state.go("dashboard.monitor");
+	  		}); 
+		}, function () {
+		});	
+	};
 	
 	$scope.details = function(row){
 		  var selectedInsModal = "details" + row.entity.comConfig.environment + 'InsModal';

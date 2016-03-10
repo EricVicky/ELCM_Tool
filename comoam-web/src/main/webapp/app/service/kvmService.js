@@ -101,6 +101,10 @@ angular.module('kvm').factory('KVMService', function($location, $q, $resource, $
 		addipv6: function (config) {
 			var addRes = $resource(restUrl + "rest/kvm/addipv6");
 			return addRes.save(config).$promise;
+		},
+		removeipv6: function (config) {
+			var removeRes = $resource(restUrl + "rest/kvm/removeipv6");
+			return removeRes.save(config).$promise;
 		}
 	};
 });

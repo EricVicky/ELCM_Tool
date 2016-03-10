@@ -1,0 +1,79 @@
+-------Call Ansible......
+2016-03-09 14:36:57,441 p=29293 u=root |   [WARNING]: The version of gmp you have installed has a known issue regarding
+timing vulnerabilities when used with pycrypto. If possible, you should update
+it (i.e. yum update gmp).
+
+2016-03-09 14:36:57,543 p=29293 u=root |
+2016-03-09 14:36:57,543 p=29293 u=root |  /usr/bin/ansible-playbook -c paramiko -i ../../inventory/hosts add_ipv6.yml
+2016-03-09 14:36:57,543 p=29293 u=root |
+2016-03-09 14:36:57,639 p=29293 u=root |  PLAY [stop COM] ***************************************************************
+2016-03-09 14:36:57,639 p=29293 u=root |  TASK: [stop_com | stop com application] ***************************************
+2016-03-09 14:38:45,600 p=29293 u=root |  changed: [10.223.0.230]
+2016-03-09 14:38:45,603 p=29293 u=root |  PLAY [stop COM] ***************************************************************
+2016-03-09 14:38:45,603 p=29293 u=root |  skipping: no hosts matched
+2016-03-09 14:38:45,603 p=29293 u=root |  PLAY [add ipv6 port to OAM VM] ************************************************
+2016-03-09 14:38:45,604 p=29293 u=root |  TASK: [add_ipv6 | add ipv6 address] *******************************************
+2016-03-09 14:39:13,749 p=29293 u=root |  changed: [10.223.0.230]
+2016-03-09 14:39:13,749 p=29293 u=root |  PLAY [add ipv6 port to DB VM] *************************************************
+2016-03-09 14:39:13,750 p=29293 u=root |  TASK: [add_ipv6 | add ipv6 address] *******************************************
+2016-03-09 14:39:17,997 p=29293 u=root |  changed: [10.223.0.232]
+2016-03-09 14:39:17,998 p=29293 u=root |  PLAY [add ipv6 port to CM VM] *************************************************
+2016-03-09 14:39:17,999 p=29293 u=root |  TASK: [add_ipv6 | add ipv6 address] *******************************************
+2016-03-09 14:39:29,449 p=29293 u=root |  changed: [10.223.0.231]
+2016-03-09 14:39:29,449 p=29293 u=root |  PLAY [restart VNF] ************************************************************
+2016-03-09 14:39:29,451 p=29293 u=root |  TASK: [vnf_shutdown_vms | shutdown oam virtual machine] ***********************
+2016-03-09 14:39:30,819 p=29293 u=root |  changed: [135.251.236.98]
+2016-03-09 14:39:30,820 p=29293 u=root |  TASK: [vnf_shutdown_vms | shutdown cm virtual machine] ************************
+2016-03-09 14:39:31,843 p=29293 u=root |  changed: [135.251.236.98]
+2016-03-09 14:39:31,844 p=29293 u=root |  TASK: [vnf_shutdown_vms | shutdown db virtual machine] ************************
+2016-03-09 14:39:32,721 p=29293 u=root |  changed: [135.251.236.98]
+2016-03-09 14:39:32,721 p=29293 u=root |  TASK: [vnf_shutdown_vms | shutdown qosac virtual machine] *********************
+2016-03-09 14:39:32,726 p=29293 u=root |  skipping: [135.251.236.98]
+2016-03-09 14:39:32,727 p=29293 u=root |  TASK: [vnf_shutdown_vms | shutdown ganglia virtual machine] *******************
+2016-03-09 14:39:32,731 p=29293 u=root |  skipping: [135.251.236.98]
+2016-03-09 14:39:32,732 p=29293 u=root |  TASK: [vnf_shutdown_vms | wait for oam virtual machine to shutdown] ***********
+2016-03-09 14:39:45,345 p=29293 u=root |  ok: [135.251.236.98]
+2016-03-09 14:39:45,346 p=29293 u=root |  TASK: [vnf_shutdown_vms | wait for cm vritual machine to shutdown] ************
+2016-03-09 14:39:47,286 p=29293 u=root |  ok: [135.251.236.98]
+2016-03-09 14:39:47,286 p=29293 u=root |  TASK: [vnf_shutdown_vms | wait for db virtual machine to shutdown] ************
+2016-03-09 14:39:58,909 p=29293 u=root |  ok: [135.251.236.98]
+2016-03-09 14:39:58,910 p=29293 u=root |  TASK: [vnf_shutdown_vms | wait for qosac virtual machine to shutdown] *********
+2016-03-09 14:39:58,914 p=29293 u=root |  skipping: [135.251.236.98]
+2016-03-09 14:39:58,915 p=29293 u=root |  TASK: [vnf_shutdown_vms | wait for atc virtual machine to shutdown] ***********
+2016-03-09 14:39:58,919 p=29293 u=root |  skipping: [135.251.236.98]
+2016-03-09 14:39:58,920 p=29293 u=root |  TASK: [vnf_shutdown_vms | wait for ganglia virtual machine to shutdown] *******
+2016-03-09 14:39:58,924 p=29293 u=root |  skipping: [135.251.236.98]
+2016-03-09 14:39:58,924 p=29293 u=root |  TASK: [vnf_start_vms | start virtual machine] *********************************
+2016-03-09 14:40:02,065 p=29293 u=root |  changed: [135.251.236.98]
+2016-03-09 14:40:02,066 p=29293 u=root |  TASK: [vnf_start_vms | start virtual machine] *********************************
+2016-03-09 14:40:05,637 p=29293 u=root |  changed: [135.251.236.98]
+2016-03-09 14:40:05,638 p=29293 u=root |  TASK: [vnf_start_vms | start virtual machine] *********************************
+2016-03-09 14:40:08,486 p=29293 u=root |  changed: [135.251.236.98]
+2016-03-09 14:40:08,486 p=29293 u=root |  TASK: [vnf_start_vms | start virtual machine] *********************************
+2016-03-09 14:40:08,495 p=29293 u=root |  skipping: [135.251.236.98]
+2016-03-09 14:40:08,495 p=29293 u=root |  TASK: [vnf_wait_for_alive | wait for server to alive] *************************
+2016-03-09 14:40:59,757 p=29293 u=root |  ok: [135.251.236.98 -> 127.0.0.1]
+2016-03-09 14:40:59,759 p=29293 u=root |  TASK: [vnf_wait_for_alive | delay 5 seconds so that OS is in stable state] ****
+2016-03-09 14:41:04,961 p=29293 u=root |  ok: [135.251.236.98 -> 127.0.0.1]
+2016-03-09 14:41:04,962 p=29293 u=root |  TASK: [vnf_wait_for_alive | wait for server to alive] *************************
+2016-03-09 14:41:06,135 p=29293 u=root |  ok: [135.251.236.98 -> 127.0.0.1]
+2016-03-09 14:41:06,136 p=29293 u=root |  TASK: [vnf_wait_for_alive | delay 5 seconds so that OS is in stable state] ****
+2016-03-09 14:41:11,286 p=29293 u=root |  ok: [135.251.236.98 -> 127.0.0.1]
+2016-03-09 14:41:11,287 p=29293 u=root |  TASK: [vnf_wait_for_alive | wait for server to alive] *************************
+2016-03-09 14:41:11,435 p=29293 u=root |  ok: [135.251.236.98 -> 127.0.0.1]
+2016-03-09 14:41:11,436 p=29293 u=root |  TASK: [vnf_wait_for_alive | delay 5 seconds so that OS is in stable state] ****
+2016-03-09 14:41:16,590 p=29293 u=root |  ok: [135.251.236.98 -> 127.0.0.1]
+2016-03-09 14:41:16,591 p=29293 u=root |  TASK: [vnf_wait_for_alive | wait for server to alive] *************************
+2016-03-09 14:41:16,720 p=29293 u=root |  skipping: [135.251.236.98]
+2016-03-09 14:41:16,720 p=29293 u=root |  TASK: [vnf_wait_for_alive | delay 5 seconds so that OS is in stable state] ****
+2016-03-09 14:41:16,729 p=29293 u=root |  skipping: [135.251.236.98]
+2016-03-09 14:41:16,730 p=29293 u=root |  PLAY [start com application] **************************************************
+2016-03-09 14:41:16,730 p=29293 u=root |  TASK: [start_com | start com application] *************************************
+2016-03-09 14:41:22,355 p=29293 u=root |  changed: [10.223.0.230]
+2016-03-09 14:41:22,356 p=29293 u=root |  PLAY [start com application] **************************************************
+2016-03-09 14:41:22,356 p=29293 u=root |  skipping: no hosts matched
+2016-03-09 14:41:22,357 p=29293 u=root |  PLAY RECAP ********************************************************************
+2016-03-09 14:41:22,357 p=29293 u=root |  10.223.0.230               : ok=3    changed=3    unreachable=0    failed=0
+2016-03-09 14:41:22,357 p=29293 u=root |  10.223.0.231               : ok=1    changed=1    unreachable=0    failed=0
+2016-03-09 14:41:22,357 p=29293 u=root |  10.223.0.232               : ok=1    changed=1    unreachable=0    failed=0
+2016-03-09 14:41:22,357 p=29293 u=root |  135.251.236.98             : ok=15   changed=6    unreachable=0    failed=0

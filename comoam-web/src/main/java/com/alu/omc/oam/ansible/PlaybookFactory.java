@@ -76,6 +76,7 @@ public class PlaybookFactory
         playbooks.put(key(Environment.KVM, Action.UPGRADE_FULLBACKUP), new Playbook("upgrade_with_fullbackup.yml") );
         playbooks.put(key(Environment.KVM, Action.HEALING), new Playbook("healing.yml") );
         playbooks.put(key(Environment.KVM, Action.ADDIPV6), new Playbook("add_ipv6.yml") );
+        playbooks.put(key(Environment.KVM, Action.REMOVEIPV6), new Playbook("rollback_ipv6.yml") );
     }
 
     public Playbook getPlaybook(Action action, COMFact fact) {

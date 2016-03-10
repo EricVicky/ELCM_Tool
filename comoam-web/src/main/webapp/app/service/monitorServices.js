@@ -16,7 +16,8 @@ angular.module('monitor').factory('monitorService', function($log, $location, $r
 				 "gr_uninstall":["Start","GR Uninstall","Finished"],
 				 "chhostname":["Start","Changing Hostname","Finished"],
 	              "healing": ["Start", "Start VM", "Start COM", "Finished"],
-	              "addipv6": ["Start", "Stop COM", "Adding Ipv6", "Start COM", "Finished"]
+	              "addipv6": ["Start", "Stop COM", "Adding Ipv6", "Start COM", "Finished"],
+	              "removeipv6": ["Start", "Stop COM", "Removing Ipv6", "Start COM", "Finished"]
 			},
 			"Openstack" :{
 				"install" : ["Start", "Valiadtion Key", "Generate Heat Templates",  "Check Presence of Heat Stack", "Cloud Init",  "Start COM", "Finished"],
@@ -118,6 +119,10 @@ angular.module('monitor').factory('monitorService', function($log, $location, $r
 			"addipv6":{
 				"succeed" : "Add Ipv6 Succeed",
 				"failed": "Add Ipv6 Failed"		
+			},
+			"removeipv6":{
+				"succeed" : "Remove Ipv6 Succeed",
+				"failed": "Remove Ipv6 Failed"		
 			}
 	};
 	var baseUrl = $location.absUrl().split("#", 1)[0];
