@@ -76,15 +76,15 @@ public class HostService {
 				ChannelSftp sftp = (ChannelSftp) channel;
 				sftp.cd(directory);
 				Vector<ChannelSftp.LsEntry> files = sftp.ls("*");
-				System.out
-				.printf("Found %d files in dir %s%n", files.size(), directory);
+				System.out.printf("Found %d files in dir %s%n", files.size(), directory);
 				
 				for (ChannelSftp.LsEntry file : files) {
 					if (file.getAttrs().isDir()) {
 						continue;
 					}
+					File obFile = new File(file.getFilename());
 					log.info(file.getFilename());
-					if(!file.getFilename().contains("cksum")){
+					if(!sizeChanged(obFile) && !file.getFilename().contains("cksum")){
 						images.add(file.getFilename());	
 					}
 				}
@@ -97,17 +97,33 @@ public class HostService {
 		Collections.sort(images, new IMGComparator());
 		return images;
 	}
+	
+	public boolean sizeChanged(File file) throws InterruptedException{
+		long first_size = file.length();
+        Thread.sleep(10);
+        long second_size = file.length();
+        if(first_size == second_size){
+        	return false;
+        }else{
+        	return true;
+        }
+	}
 
 	public List<String> getLocalImages(String dir) {
 		File dirFile = new File(dir);
 		log.info("load image list from: " + dirFile.getAbsolutePath());
-		String[] files = dirFile.list();
-		List<String> images = new ArrayList();
-		for (String file : files) {
-			if (file.contains("qcow2") && !file.contains("cksum")) {
-				images.add(file);
+		File[] files = dirFile.listFiles();
+		List<String> images = new ArrayList<String>();
+		for (File file : files) {
+			try {
+				if(!sizeChanged(file) && file.getName().contains("qcow2") && !file.getName().contains("cksum")){
+					images.add(file.getName());
+				}
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
-		Collections.sort(images, new IMGComparator());
+			Collections.sort(images, new IMGComparator());
 		}
 		return images;
 	}
