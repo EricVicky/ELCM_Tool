@@ -84,13 +84,8 @@ public class HostService {
 				}
 				
 				for (ChannelSftp.LsEntry file : files) {
-					if (file.getAttrs().isDir() && !all_img.contains(file.getFilename().concat(".cksum"))) {
-						continue;
-					}
-					File obFile = new File(directory+file.getFilename());
-					log.info(file.getFilename());
-					if(!sizeChanged(obFile) && !file.getFilename().contains("cksum")){
-						images.add(file.getFilename());	
+					if (!file.getAttrs().isDir() && !file.getFilename().endsWith("cksum") && all_img.contains(file.getFilename().concat(".cksum"))) {
+						images.add(file.getFilename());
 					}
 				}
 				
@@ -102,34 +97,22 @@ public class HostService {
 		Collections.sort(images, new IMGComparator());
 		return images;
 	}
-	
-	public boolean sizeChanged(File file) throws InterruptedException{
-		long first_size = file.length();
-        Thread.sleep(10);
-        long second_size = file.length();
-        if(first_size == second_size){
-        	return false;
-        }else{
-        	return true;
-        }
-	}
 
 	public List<String> getLocalImages(String dir) {
 		File dirFile = new File(dir);
 		log.info("load image list from: " + dirFile.getAbsolutePath());
 		File[] files = dirFile.listFiles();
 		List<String> images = new ArrayList<String>();
-		for (File file : files) {
-			try {
-				if(!sizeChanged(file) && file.getName().contains("qcow2") && !file.getName().contains("cksum")){
-					images.add(file.getName());
-				}
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			Collections.sort(images, new IMGComparator());
+		List<String> all_img = new ArrayList<String>();
+		for (File file : files){
+			all_img.add(file.getName());
 		}
+		for (File file : files) {
+			if (file.getName().contains("qcow2") && !file.getName().endsWith("cksum") && all_img.contains(file.getName().concat(".cksum"))) {
+				images.add(file.getName());
+			}
+		}
+		Collections.sort(images, new IMGComparator());
 		return images;
 	}
 
