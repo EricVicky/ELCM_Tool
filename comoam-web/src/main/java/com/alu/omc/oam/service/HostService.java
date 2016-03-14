@@ -78,8 +78,13 @@ public class HostService {
 				Vector<ChannelSftp.LsEntry> files = sftp.ls("*");
 				System.out.printf("Found %d files in dir %s%n", files.size(), directory);
 				
+				List<String> all_img = new ArrayList<String>();
+				for (ChannelSftp.LsEntry file : files){
+					all_img.add(file.getFilename());
+				}
+				
 				for (ChannelSftp.LsEntry file : files) {
-					if (file.getAttrs().isDir()) {
+					if (file.getAttrs().isDir() && !all_img.contains(file.getFilename().concat(".cksum"))) {
 						continue;
 					}
 					File obFile = new File(file.getFilename());
