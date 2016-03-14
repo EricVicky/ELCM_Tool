@@ -87,7 +87,7 @@ public class HostService {
 					if (file.getAttrs().isDir() && !all_img.contains(file.getFilename().concat(".cksum"))) {
 						continue;
 					}
-					File obFile = new File(file.getFilename());
+					File obFile = new File(directory+file.getFilename());
 					log.info(file.getFilename());
 					if(!sizeChanged(obFile) && !file.getFilename().contains("cksum")){
 						images.add(file.getFilename());	
