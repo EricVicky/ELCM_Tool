@@ -245,6 +245,16 @@ angular.module('kvm', [ 'ui.router',
             		});	
             	}
             };
+            
+            $scope.$watchGroup(['installConfig.oam_cm_image', 'installConfig.db_image'], function() {
+            	if($scope.installConfig.oam_cm_image && $scope.installConfig.db_image){
+            		var oam_cm_version = $scope.installConfig.oam_cm_image.match(/[0-9][._][0-9][._][0-9][._][0-9]/);
+            		var db_version = $scope.installConfig.db_image.match(/[0-9][._][0-9][._][0-9][._][0-9]/);
+            		if((oam_cm_version!=null & db_version!=null) && (oam_cm_version[0] != db_version[0])){
+            			alert("The OAM/CM image and DB image may not match !");
+            		}
+            	}
+            });
 
       $scope.$watch("installConfig.comType", function(){
     	        if($scope.installConfig.comType == 'CM'){
