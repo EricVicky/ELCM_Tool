@@ -44,6 +44,28 @@ angular.module('comoamApp')
     }).state('dashboard.kvminstall',{
         templateUrl:'views/kvm/install_kvm.html',
         url:'/kvminstall'
+    }).state('dashboard.chart',{
+        templateUrl:'views/dashboard/chart.html',
+        url:'/chart',
+        controller:'ChartCtrl',
+        resolve: {
+          loadMyFile:function($ocLazyLoad) {
+            return $ocLazyLoad.load(
+                'vendor/Chart.js/Chart.min.js'
+            ),
+            $ocLazyLoad.load({
+              name:'chart.js',
+              files:[
+                'vendor/angular-chart/angular-chart.min.js',
+                'vendor/angular-chart/angular-chart.css'
+              ]
+            }),
+            $ocLazyLoad.load({
+                name:'chart.js',
+                files:['app/controllers/home/chartController.js']
+            })
+          }
+        }
     }).state('login',{
         templateUrl:'views/pages/login.html',
         url:'/login',
