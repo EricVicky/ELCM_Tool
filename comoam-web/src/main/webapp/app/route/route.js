@@ -6,7 +6,7 @@ angular.module('comoamApp')
       events:true,
     });
 
-    $urlRouterProvider.otherwise('login');
+    $urlRouterProvider.otherwise('/login');
 
     $stateProvider
       .state('dashboard', {
@@ -32,36 +32,6 @@ angular.module('comoamApp')
                       ]
                 }),
                 $ocLazyLoad.load(
-                {
-                  name:'logview',
-                  files:['app/directives/ansiblelog/logview.js']
-                }),
-                $ocLazyLoad.load(
-                {
-                  name:'hostcheck',
-                  files:['app/directives/validation/hostcheck.js']
-                }),
-                $ocLazyLoad.load(
-                        {
-                          name:'stackcheck',
-                          files:['app/directives/validation/stackcheck.js']
-                        }),
-                $ocLazyLoad.load(
-                {
-                  name:'comcheck',
-                  files:['app/directives/validation/comcheck.js']
-                }),
-                $ocLazyLoad.load(
-                        {
-                          name:'comcheck',
-                          files:['app/directives/import/import.js']
-                }),
-                $ocLazyLoad.load(
-                        {
-                          name:'oamflavor',
-                          files:['app/directives/flavorinit.js']
-                }),
-                $ocLazyLoad.load(
                         {
                           name:'table_sidebarcss',
                           files:['css/table_sidebar.css']
@@ -71,8 +41,7 @@ angular.module('comoamApp')
     }).state('dashboard.home',{
         templateUrl:'views/dashboard/dashboard.html',
         url:'/datatable'
-    })
-      .state('dashboard.kvminstall',{
+    }).state('dashboard.kvminstall',{
         templateUrl:'views/kvm/install_kvm.html',
         url:'/kvminstall'
     }).state('login',{

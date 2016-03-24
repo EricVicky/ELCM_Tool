@@ -1,14 +1,44 @@
 angular.module('datatable',['ui.grid', 'ui.grid.resizeColumns']).controller('datatablectr', function($scope){
-
-	$scope.comGridOptions = {
-			data: '',
+    
+	  $scope.myData = [
+	                   {
+	                       "firstName": "Cox",
+	                       "lastName": "Carney",
+	                       "company": "Enormo",
+	                       "employed": true
+	                   },
+	                   {
+	                       "firstName": "Lorraine",
+	                       "lastName": "Wise",
+	                       "company": "Comveyer",
+	                       "employed": false
+	                   },
+	                   {
+	                       "firstName": "Nancy",
+	                       "lastName": "Waters",
+	                       "company": "Fuelton",
+	                       "employed": false
+	                   }
+	               ];
+	$scope.uiGridOptions = {
+			data: 'myData',
             enableGridMenu: true,
             enableRowSelection: false,
             enableSelectAll: false,
             multiSelect: false,
             enableFiltering: true,
 			columnDefs: [
-			             {displayName: 'DATA',  name: 'name',
+			             {displayName: 'DATA1',  name: 'firstName',
+			            	 enableFiltering: false,
+                        	 enableColumnMenu: false,
+			            	 width:100
+			             },
+			             {displayName: 'DATA2',  name: 'lastName',
+			            	 enableFiltering: false,
+                        	 enableColumnMenu: false,
+			            	 width:100
+			             },
+			             {displayName: 'DATA3',  name: 'company',
 			            	 enableFiltering: false,
                         	 enableColumnMenu: false,
 			            	 width:100

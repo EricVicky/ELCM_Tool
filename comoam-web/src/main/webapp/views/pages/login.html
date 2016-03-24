@@ -1,71 +1,33 @@
-<link type="text/css" rel="stylesheet" href="css/login.css" />
-
-<div class="login-body" >
-	<div class="login-image">
-		<div>
-			<select class="login-language" ng-model="language" ng-options="lan.label for lan in languages" ng-change="changeLanguage()">
-				<option value="" ng-if="!language"></option>
-			</select>
-		</div>
-		<div class="login-server">
-		   {{'SERVER' | translate}}: {{_server.name}}
-			COM ELCM 
-		</div>
-		<div class="login-release">
-		    <!--{/{'RELEASE' | translate}}: {{_server.release}/}-->
-			1360 COM Deploy Tool
-		</div>
-	</div>
-	
-	<form ng-submit="login()" name="loginForm" class="form-horizontal ng-scope ng-pristine ng-invalid ng-invalid-required">
-	<div class="login-form">
-		<div class="form-group">
-			<label class="sr-only" for="userName">User Name</label>
- 			<div class="col-sm-10">
- 			  <div class="input-group">
- 			    <div class="input-group-addon">
- 			      <span class="glyphicon glyphicon-user"></span>
- 			    </div>
-				<input type="text" name="username" placeholder="username" ng-model="_user.username" required autofocus class="form-control login-input-user ng-pristine ng-invalid ng-invalid-required">
- 			  </div>
-			</div>
-			<!-- 
-			<div class="col-sm-2" style="margin-top: 10px" ng-show="displayUser">testuser1</div>
-			 -->
-		</div>
-		
-		<div class="form-group">
-			<label class="sr-only" for="password">Password</label>
-			<div class="col-sm-10">
- 			  <div class="input-group">
- 			    <div class="input-group-addon">
- 			      <span class="glyphicon glyphicon-lock"></span>
- 			    </div>
-				<input type="password" name="password" placeholder="password" ng-model="_user.password" required class="form-control login-input-password ng-pristine ng-invalid ng-invalid-required">
-			  </div>
-			</div>
-			<!-- 
-			<div class="col-sm-2" style="margin-top: 10px" ng-show="displayUser">COM_cc_n1</div>
-			 -->
-		</div>
-		
-		<div class="form-group">
-			<div class="col-sm-10">
-				<button type="submit" ng-disabled="loginForm.$invalid" class="btn btn-primary login-btn" translate="LOGIN"></button>
-				<div class="checkbox login-checkbox" style="width:50px;">
-					<label for="rememberme" class="checkbox login-checkbox-label" ng-click="toggleRememberMe($event)">
-						<input type="checkbox" ng-model="_user.rememberme" class="ng-prstine ng-valid"><label translate="REMEM_TEXT"></label>
-					</label>
-				</div>
-			</div>
-		</div>
-		
-		<div class="col-sm-10 login-failure">
-				<span ng-show="_user.reason">{{_user.reason}}</span>
-		</div>
-	</div>
-	</form>
-	
-	<div class="login-banner" translate="LOGIN_WARN"></div>
-	<div class="login-copyright" translate="COPYRIGHT"></div>
+<div class="container" ng-controller="LoginController">
+    <div class="row">
+        <div class="col-md-6 col-md-offset-3">
+            <div class="login-panel panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Please Sign In</h3>
+                </div>
+                <div class="panel-body">
+                    <form role="form">
+                        <fieldset>
+                            <div class="form-group">
+                                <label>Username</label>
+                                <input class="form-control" ng-model="username" placeholder="Username" name="username" type="text" autofocus>
+                            </div>
+                            <div class="form-group">
+                                <label>Password</label>
+                                <input class="form-control" ng-model="password" placeholder="Password" name="password" type="password" value="">
+                            </div>
+                            <div class="checkbox">
+                                <label>
+                                    <input name="remember" type="checkbox" value="Remember Me">Remember Me
+                                </label>
+                            </div>
+                            <!-- Change this to a button or input when using this as a form
+                            <a ui-sref="dashboard.home" class="btn btn-lg btn-success btn-block">Login</a> -->
+                            <a class="btn btn-lg btn-success btn-block" ng-click="login()">Login</a>
+                        </fieldset>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
