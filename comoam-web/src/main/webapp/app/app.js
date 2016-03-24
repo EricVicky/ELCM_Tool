@@ -7,21 +7,13 @@ angular.module('comoamApp', [
     'angular-loading-bar',
     'ghiscoding.validation',
     'pascalprecht.translate',
-    'kvm', 
-    'os', 
-    'monitor',
-    'dashboard',
+    'kvm',
+    'os',
     'rcWizard', 
     'mgo-angular-wizard',
     'rcForm', 
     'login',
-    'backup_restore',
-    'fullbackup_restore',
-    'gr',
-    'datatable',
-    'chhostname',
-    'operationlog',
-    'addport'
+    'datatable'
   ]).controller('AppController', function($rootScope, $scope, $translate, $cookieStore, $window, $state, $location, $log, $modal, Auth) {
     $rootScope._user = {
         username: $cookieStore.get("username") || "",

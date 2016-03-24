@@ -10,7 +10,7 @@ angular.module('comoamApp')
     .directive('stats',function() {
     	return {
   		templateUrl:'app/directives/dashboard/stats/stats.html',
-  		restrict:'E',
+  		restrict:'AE',
   		replace:true,
   		scope: {
         'model': '=',

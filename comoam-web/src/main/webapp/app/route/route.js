@@ -6,7 +6,7 @@ angular.module('comoamApp')
       events:true,
     });
 
-    $urlRouterProvider.otherwise('/dashboard/datatable');
+    $urlRouterProvider.otherwise('login');
 
     $stateProvider
       .state('dashboard', {
@@ -68,141 +68,16 @@ angular.module('comoamApp')
                 })
             }
         }
-    })
-      .state('dashboard.home',{
-        url:'/home',
-        controller: 'MainCtrl',
-        templateUrl:'views/dashboard/home.html',
-        resolve: {
-          loadMyFiles:function($ocLazyLoad) {
-            return $ocLazyLoad.load({
-              name:'comoamApp',
-              files:[
-              'app/controllers/home/main.js',
-              'app/directives/dashboard/stats/stats.js',
-              'app/directives/networkTopo/networkTopo.js'
-              ]
-            })
-          }
-        }
-      })
-      .state('dashboard.datatable',{
-        templateUrl:'views/dashboard/datatable.html',
+    }).state('dashboard.home',{
+        templateUrl:'views/dashboard/dashboard.html',
         url:'/datatable'
     })
       .state('dashboard.kvminstall',{
         templateUrl:'views/kvm/install_kvm.html',
         url:'/kvminstall'
-    })
-      .state('dashboard.kvmupgrade',{
-        templateUrl:'views/kvm/upgrade_kvm.html',
-        url:'/kvmupgrade'
-    })
-      .state('dashboard.osupgrade',{
-        templateUrl:'views/os/upgrade_os.html',
-        url:'/osupgrade'
-    })
-    .state('dashboard.osinstall',{
-        templateUrl:'views/os/install_os.html',
-        url:'/osinstall'
-    })
-      .state('login',{
+    }).state('login',{
         templateUrl:'views/pages/login.html',
         url:'/login',
         controller: 'LoginController'
-    })
-      .state('dashboard.oscredential',{
-        templateUrl:'views/os/credential.html',
-        url:'/oscredential',
-    })
-      .state('dashboard.monitor',{
-        templateUrl:'views/monitor/monitor.html',
-        url:'/monitor',
-    })
-    .state('dashboard.backup',{
-        templateUrl:'views/backup_restore/backup.html',
-        url:'/backup',
-    })
-    .state('dashboard.restore',{
-        templateUrl:'views/backup_restore/restore.html',
-        url:'/restore',
-    })
-    
-    .state('dashboard.fullbackup',{
-        templateUrl:'views/backup_restore/fullbackup.html',
-        url:'/fullbackup',
-    })
-    .state('dashboard.fullrestore',{
-        templateUrl:'views/backup_restore/fullrestore.html',
-        url:'/fullrestore',
-    })
-    
-    .state('dashboard.chhostname',{
-        templateUrl:'views/chhostname/chhostname.html',
-        url:'/chhostname',
-    })
-    .state('dashboard.grinstall',{
-        templateUrl:'views/gr/install.html',
-        url:'/gr/install',
-    })
-    .state('dashboard.gruninstall',{
-        templateUrl:'views/gr/uninstall.html',
-        url:'/gr/uninstall',
-    })
-    .state('dashboard.kvmovminstall', {
-    	templateUrl:'views/optionalVNF/kvm/install.html',
-    	url:'/kvmovminstall',
-    })
-    .state('dashboard.kvmovmupgrade', {
-    	templateUrl:'views/optionalVNF/kvm/qosac_upgrade.html',
-    	url:'/kvmovmupgrade',
-    })
-    .state('dashboard.kvmarsinstall', {
-    	templateUrl:'views/optionalVNF/kvm/ars_install.html',
-    	url:'/kvmarsinstall',
-    })
-    .state('dashboard.kvmqosacinstall', {
-    	templateUrl:'views/optionalVNF/kvm/qosac_install.html',
-    	url:'/kvmqosacinstall',
-    })
-    .state('dashboard.kvmqosacupgrade', {
-    	templateUrl:'views/optionalVNF/kvm/qosac_upgrade.html',
-    	url:'/kvmqosacupgrade',
-    })
-    .state('dashboard.kvmgangliainstall', {
-    	templateUrl:'views/optionalVNF/kvm/ganglia_install.html',
-    	url:'/kvmgangliainstall',
-    })
-    .state('dashboard.osovminstall', {
-    	templateUrl:'views/optionalVNF/os/install.html',
-    	url:'/osovminstall',
-    })
-    .state('dashboard.osqosacinstall', {
-    	templateUrl:'views/optionalVNF/os/qosac_install.html',
-    	url:'/osqosacinstall',
-    })
-    .state('dashboard.osarsinstall', {
-    	templateUrl:'views/optionalVNF/os/ars_install.html',
-    	url:'/osarsinstall',
-    })
-    .state('dashboard.osqosacupgrade', {
-    	templateUrl:'views/optionalVNF/os/qosac_upgrade.html',
-    	url:'/osqosacupgrade',
-    })
-    .state('dashboard.osgangliainstall', {
-    	templateUrl:'views/optionalVNF/os/ganglia_install.html',
-    	url:'/osgangliainstall',
-    })
-    .state('dashboard.operationlog', {
-    	templateUrl:'views/operationlog/operationlog.html',
-    	url:'/operationlog',
-    })
-    .state('dashboard.addPort', {
-    	templateUrl:'views/kvm/addPort.html',
-    	url:'/addPort',
-    })
-    .state('dashboard.addIPV6', {
-    	templateUrl:'views/kvm/addIPV6.html',
-    	url:'/addIPV6',
-    })
+    }) 
   }])

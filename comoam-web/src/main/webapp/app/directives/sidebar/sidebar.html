@@ -1,38 +1,38 @@
 <div class="navbar-default sidebar" role="navigation">
     <div class="sidebar-nav navbar-collapse">
         <ul class="nav in" id="side-menu">
-            <sidebar-search></sidebar-search>
             <li ui-sref-active="active">
-                <a ui-sref="dashboard.datatable"><i class="fa fa-dashboard fa-fw"></i> Dashboard</a>
-            </li>
-           <li ng-class="{active:collapseVar==1}">
-                <a href="" ng-click="openInstallSelect()"><i class="fa fa-files-o fa-fw"></i>Installation</a>
-            </li>
-            
-            <li ui-sref-active="active">
-                <a ui-sref="dashboard.backup"><i class="fa fa-edit fa-fw"></i>Data Backup</a>
+                <a href="" ui-sref="dashboard.home"><i class="fa fa-dashboard fa-fw"></i> Dashboard</a>
             </li>
             <li ui-sref-active="active">
-                <a ui-sref="dashboard.restore"><i class="fa fa-edit fa-fw"></i>Data Restore</a>
+                <a href="" ui-sref="dashboard.kvminstall"><i class="fa fa-edit fa-fw"></i>Data Config</a>
             </li>
-            <li ng-class="{active:collapseVar==3}">
-                <a href="" ng-click="check(3)"><i class="fa fa-files-o fa-fw"></i><label translate="GR">GR</label><span
+            <li ui-sref-active="active">
+                <a href="" ui-sref="dashboard.chart"><i class="fa fa-bar-chart-o fa-fw"></i> Charts<span></span></a>
+            </li>
+            <li ng-class="{active: collapseVar==1}">{{dropDown}}
+                <a href="" ng-click="check(1)"><i class="fa fa-wrench fa-fw"></i> UI Elements<span
                         class="fa arrow"></span></a>
-                <ul class="nav nav-second-level" collapse="collapseVar!=3">
-                    <li ng-class="{active: selectedMenu=='kvminstall'}">
-                        <a ui-sref="dashboard.grinstall" ng-click="selectedMenu='grinstall'"><label translate="INSTALL">Install</label></a>
+                <ul class="nav nav-second-level" collapse="collapseVar!=1">
+                    <li ui-sref-active="active">
+                        <a ui-sref="dashboard.panels-wells">Panels and Wells</a>
                     </li>
-                    <li>
-                        <a ui-sref="dashboard.gruninstall"><label translate="UNINSTALL">Uninstall</label></a>
+                    <li ui-sref-active="active">
+                        <a ui-sref="dashboard.buttons">Buttons</a>
+                    </li>
+                    <li ui-sref-active="active">
+                        <a ui-sref="dashboard.notifications">Notifications</a>
+                    </li>
+                    <li ui-sref-active="active">
+                        <a ui-sref="dashboard.typography">Typography</a>
+                    </li>
+                    <li ui-sref-active="active">
+                        <a ui-sref="dashboard.icons"> Icons</a>
+                    </li>
+                    <li ui-sref-active="active">
+                        <a ui-sref="dashboard.grid">Grid</a>
                     </li>
                 </ul>
-            </li>
-
-            <li ng-class="{active:collapseVar==2}">
-                <a href="" ng-click="openUpInstallSelect()"><i class="fa fa-files-o fa-fw"></i>Upgrade</a>
-            </li>
-            <li ui-sref-active="active">
-                <a ui-sref="dashboard.oscredential"><i class="fa fa-edit fa-fw"></i><label translate="OPENSTACK_CREDENTIAL">Openstack Credential</label></a>
             </li>
         </ul>
     </div>
