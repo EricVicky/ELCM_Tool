@@ -10,4 +10,11 @@ angular.module('login', [
 		$state.go('dashboard.home');
 	};
 	
-});
+})
+.controller('LogoutController', function($scope, $state) {
+	
+	$scope.logout = function() {
+		$state.go('login');
+	};
+	
+});;
