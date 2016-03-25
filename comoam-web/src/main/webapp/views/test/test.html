@@ -12,7 +12,7 @@
         </div>
         <div class="panel-body">
         	<div class="row">
-                    <div class="col-lg-8">
+                    <div class="col-lg-5">
                     	<form role="form">
                     		<div class="form-group">
                                 <label>DATA1</label>
@@ -32,10 +32,27 @@
                     	</form>
                     </div>
                     <div class="col-lg-5">
+                    	<table>
+                        	<tr>
+                            	<th>Name</th>
+                            	<th>Roll No</th>
+	                        	<th>Percentage</th>
+                            </tr>
+                            <tr ng-repeat="student in students">
+                            	<td>{{ student.Name }}</td>
+                                <td>{{ student.RollNo }}</td>
+	                        	<td>{{ student.Percentage }}</td>
+                        	</tr>
+                    	</table>
+                    </div>
+                    <div class="col-lg-9">
                     	<button type="submit" class="btn btn-primary" ng-click="getData()">Get data</button>
                     </div>
-                    <div class="col-lg-5">
+                    <div class="col-lg-9">
                     	<button type="submit" class="btn btn-primary" ng-click="getData_Ajax()">Get data(Ajax)</button>
+                    </div>
+                    <div class="col-lg-9">
+                    	<button type="submit" class="btn btn-primary" ng-click="validateScore()">validateScore</button>
                     </div>
             </div>
         </div>

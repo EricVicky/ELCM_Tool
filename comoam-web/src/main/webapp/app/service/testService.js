@@ -5,7 +5,11 @@ angular.module('datatest').factory('DATAService', function($location,$resource) 
 		getTestData : function () {
 			var data = $resource(URL + "data/testdata.json");
 			return data.get().$promise;
-		}
+		},
+	    getValidateScore : function (score) {
+	    	var validate = $resource("/test/validatescore/{score}");
+	    	return validate.get(score).$promise;
+	    }
 	};
 });
 

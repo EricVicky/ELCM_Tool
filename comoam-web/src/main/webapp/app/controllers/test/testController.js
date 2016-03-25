@@ -9,9 +9,24 @@ angular.module('datatest',[]).controller('testController',function ($location,$s
 	}
 	
 	$scope.getData_Ajax = function(){
-		$http.get(URL+"data/testdata.json").success(function(response){
-			$scope.data = response.DATA;
+		$http.get(URL+"data/list.json").success(function(response){
+			$scope.students = response;
 		});	
+	}
+	
+	
+	
+	$scope.validateScore = function(){
+		if(!$scope.students){
+			$scope.getData_Ajax();
+		}else{
+			var students = JSON.parse($scope.students);
+			for(var student in students){
+				DATAService.getValidateScore(student.Percentage).then(function(validate){
+					$scope.validate = validate;
+				});	
+			}
+		}
 	}
 
 });
