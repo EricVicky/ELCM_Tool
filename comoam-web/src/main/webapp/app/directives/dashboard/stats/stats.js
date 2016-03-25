@@ -20,7 +20,11 @@ angular.module('comoamApp')
         'colour': '@',
         'details':'@',
         'type':'@'
-  		}
-  		
+  		},
+    	controller:function($scope, $state){
+    		$scope.goDetails = function(){
+    			$state.go('dashboard.chart');
+    		}
+    	}
   	}
   });

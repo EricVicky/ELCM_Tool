@@ -15,7 +15,7 @@ angular.module('comoamApp')
       replace: true,
       scope: {
       },
-      controller:function($scope, $modal, $state, KVMService){
+      controller:function($scope, $modal, $state){
         $scope.selectedMenu = 'dashboard';
         $scope.collapseVar = 0;
         $scope.multiCollapseVar = 0;

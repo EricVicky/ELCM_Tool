@@ -1,0 +1,44 @@
+<div class="row">
+    <div class="col-lg-12">
+        <h1 class="page-header">Test Data</h1>
+    </div>  
+    <!-- /.col-lg-12 -->
+</div>
+<div class="row" ng-controller="testController">
+    <div class="col-lg-12">
+        <div class="panel panel-primary">
+       	<div class="panel-heading">
+                Get data from existing json file.
+        </div>
+        <div class="panel-body">
+        	<div class="row">
+                    <div class="col-lg-8">
+                    	<form role="form">
+                    		<div class="form-group">
+                                <label>DATA1</label>
+                                <input class="form-control" ng-model="data.data1">
+                                <p class="help-block">Json data will display here.</p>
+                            </div>
+                            <div class="form-group">
+                                <label>DATA2</label>
+                                <input class="form-control" ng-model="data.data2">
+                                <p class="help-block">Json data will display here.</p>
+                            </div>
+                            <div class="form-group">
+                                <label>DATA3</label>
+                                <input class="form-control" ng-model="data.data3">
+                                <p class="help-block">Json data will display here.</p>
+                            </div>
+                    	</form>
+                    </div>
+                    <div class="col-lg-5">
+                    	<button type="submit" class="btn btn-primary" ng-click="getData()">Get data</button>
+                    </div>
+                    <div class="col-lg-5">
+                    	<button type="submit" class="btn btn-primary" ng-click="getData_Ajax()">Get data(Ajax)</button>
+                    </div>
+            </div>
+        </div>
+        </div>
+    </div>
+</div>

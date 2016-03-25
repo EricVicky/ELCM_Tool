@@ -7,12 +7,12 @@ angular.module('comoamApp', [
     'angular-loading-bar',
     'ghiscoding.validation',
     'pascalprecht.translate',
-    'kvm',
     'rcWizard', 
     'mgo-angular-wizard',
     'rcForm', 
     'login',
-    'datatable'
+    'datatable',
+    'datatest'
   ]).controller('AppController', function($scope) {
     
 });

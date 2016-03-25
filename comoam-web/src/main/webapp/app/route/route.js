@@ -41,9 +41,9 @@ angular.module('comoamApp')
     }).state('dashboard.home',{
         templateUrl:'views/dashboard/dashboard.html',
         url:'/datatable'
-    }).state('dashboard.kvminstall',{
-        templateUrl:'views/kvm/install_kvm.html',
-        url:'/kvminstall'
+    }).state('dashboard.test',{
+        templateUrl:'views/test/test.html',
+        url:'/test'
     }).state('dashboard.chart',{
         templateUrl:'views/dashboard/chart.html',
         url:'/chart',
