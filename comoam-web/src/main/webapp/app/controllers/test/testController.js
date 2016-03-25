@@ -10,19 +10,19 @@ angular.module('datatest',[]).controller('testController',function ($location,$s
 	
 	$scope.getData_Ajax = function(){
 		$http.get(URL+"data/list.json").success(function(response){
-			$scope.students = response;
+			$scope.studentsOBJ = response;
+			$scope.students = response.Students;	
 		});	
 	}
 	
 	
 	
 	$scope.validateScore = function(){
-		if(!$scope.students){
+		if(!$scope.studentsOBJ){
 			$scope.getData_Ajax();
 		}else{
-			var students = JSON.parse($scope.students);
-			for(var student in students){
-				DATAService.getValidateScore(student.Percentage).then(function(validate){
+			for(var student in $scope.studentsOBJ.Students){
+				DATAService.getValidateScore($scope.studentsOBJ.Students[student].Percentage).then(function(validate){
 					$scope.validate = validate;
 				});	
 			}

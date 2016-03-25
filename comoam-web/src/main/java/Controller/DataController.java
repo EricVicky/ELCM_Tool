@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 public class DataController {
 	
-	@RequestMapping(value = "/test/validatescore/{score}", method = RequestMethod.GET)
+	@RequestMapping(value = "/test/validatescore/70", method = RequestMethod.GET)
 	public String ValidateScore(@PathVariable("score") int score, Model model){
 		if(score > 60){
 			return "pass";
