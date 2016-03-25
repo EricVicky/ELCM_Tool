@@ -8,7 +8,7 @@ angular.module('datatest').factory('DATAService', function($location,$resource) 
 		},
 	    getValidateScore : function (score) {
 	    	var validate = $resource(URL + "rest/test/validatescore");
-	    	return validate.get(score).$promise;
+	    	return validate.get({"score":score}).$promise;
 	    }
 	};
 });
