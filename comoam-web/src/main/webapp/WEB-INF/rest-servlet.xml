@@ -21,7 +21,7 @@
 
 	<!-- TODO: the initialization should be in sequence, the common should be 
 		initialized first! -->
-	<context:component-scan base-package="com.alu.omc.oam">
+	<context:component-scan base-package="Controller">
 		<!-- <context:exclude-filter type="regex" expression="com.alu.omc.oam.rest.os.*.*" 
 			/> -->
 	</context:component-scan>
